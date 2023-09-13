@@ -12,14 +12,21 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="frgp.utn.edu.ar.controllers.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_notificaciones"
+        android:name="frgp.utn.edu.ar.controllers.ui.notificaciones.NotificacionesFragment"
+        android:label="@string/menu_notificaciones"
+        tools:layout="@layout/fragment_notificaciones" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="frgp.utn.edu.ar.controllers.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_actividad_rec"
+        android:name="frgp.utn.edu.ar.controllers.ui.actividad_rec.ActividadRecFragment"
+        android:label="@string/menu_activity"
+        tools:layout="@layout/fragment_actividad_reciente" />
+
+    <fragment
+        android:id="@+id/nav_cambiarpassword"
+        android:name="frgp.utn.edu.ar.controllers.ui.actividad_rec.ActividadRecFragment"
+        android:label="@string/menu_password"
+        tools:layout="@layout/fragment_cambiar_clave" />
+
 </navigation>
