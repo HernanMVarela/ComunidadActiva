@@ -1,13 +1,12 @@
-package frgp.utn.edu.ar.negocio;
+package frgp.utn.edu.ar.Negocio;
+
+import android.content.Context;
 
 import frgp.utn.edu.ar.entidades.Usuario;
 
 public interface UsuarioNegocio {
-    public boolean guardarUsuario(Usuario nuevo);
-    public boolean modificarUsuario(Usuario modificar);
-    public boolean eliminarUsuarioPorUsername(String username);
-    public boolean eliminarUsuarioPorID(int id);
-    public Usuario buscarUsuarioPorUsername(String username);
-    public Usuario buscarUsuarioPorID(int ID);
-    public boolean existeUsuario(String username);
+    boolean agregarUsuario(Context context, Usuario nuevo);
+    boolean modificarUsuario(Context context, Usuario modifcar);
+    boolean suspenderUsuario(Context context, int ID);
+
 }

@@ -1,18 +1,20 @@
 package frgp.utn.edu.ar.entidades;
 
+import android.location.Location;
+
 import java.util.Date;
 
 public class Publicacion {
     private int id;
     private String titulo;
-    private String Location;
+    private Location location;
     private Date fecha;
     private Usuario owner;
 
-    public Publicacion(int id, String titulo, String location, Date fecha, Usuario owner) {
+    public Publicacion(int id, String titulo, Location location, Date fecha, Usuario owner) {
         this.id = id;
         this.titulo = titulo;
-        Location = location;
+        this.location = location;
         this.fecha = fecha;
         this.owner = owner;
     }
@@ -25,8 +27,7 @@ public class Publicacion {
         return "Publicacion{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
-                ", Location='" + Location + '\'' +
-                ", fecha=" + fecha +
+                ", Location='" + location +
                 ", owner=" + owner +
                 '}';
     }
@@ -47,12 +48,12 @@ public class Publicacion {
         this.titulo = titulo;
     }
 
-    public String getLocation() {
-        return Location;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setLocation(String location) {
-        Location = location;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public Date getFecha() {

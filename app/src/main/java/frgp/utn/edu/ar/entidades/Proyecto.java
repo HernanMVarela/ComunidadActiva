@@ -12,7 +12,7 @@ public class Proyecto extends Publicacion{
     private TipoProyecto tipo;
     private EstadoProyecto estado;
 
-    public Proyecto(int id, String titulo, String location, Date fecha, Usuario owner, String descripcion, int cupo, List<Usuario> voluntarios, TipoProyecto tipo, EstadoProyecto estado) {
+    public Proyecto(int id, String titulo, Location location, Date fecha, Usuario owner, String descripcion, int cupo, List<Usuario> voluntarios, TipoProyecto tipo, EstadoProyecto estado) {
         super(id, titulo, location, fecha, owner);
         this.descripcion = descripcion;
         this.cupo = cupo;

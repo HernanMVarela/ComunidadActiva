@@ -11,7 +11,7 @@ public class Reporte extends Publicacion{
     private EstadoReporte estado;
     private TipoReporte tipo;
 
-    public Reporte(int id, String titulo, String location, Date fecha, Usuario owner, Blob imagen, int puntaje, EstadoReporte estado, TipoReporte tipo) {
+    public Reporte(int id, String titulo, Location location, Date fecha, Usuario owner, Blob imagen, int puntaje, EstadoReporte estado, TipoReporte tipo) {
         super(id, titulo, location, fecha, owner);
         this.imagen = imagen;
         this.puntaje = puntaje;
