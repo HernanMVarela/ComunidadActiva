@@ -3,13 +3,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/green_100"
     tools:context=".ui.nuevo_reporte.NuevoReporteFragment">
 
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="This is the Nuevo Reporte Fragment"
-        android:gravity="center"/>
+        android:layout_margin="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/titulo"
+                android:textSize="18sp"
+                android:layout_marginVertical="5dp"
+                android:gravity="start"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="35dp"
+                android:textSize="20sp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edittext_white_rounded"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/descripcion"
+                android:textSize="18sp"
+                android:layout_marginVertical="5dp"
+                android:gravity="start"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp"
+                android:textSize="18sp"
+                android:layout_marginBottom="10dp"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:hint="@string/descripcion_reporte"
+                android:gravity="top"
+                android:textAlignment="gravity"
+                android:padding="4dp"
+                android:background="@drawable/edittext_white_rounded"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/tipo_de_reporte"
+                android:textSize="18sp"
+                android:layout_marginVertical="10dp"
+                android:gravity="start"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:textSize="18sp"
+                android:minHeight="35dp"
+                android:background="@drawable/edittext_white_rounded"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="40dp">
+
+                <!-- Botón 1 -->
+                <Button
+                    android:id="@+id/btnUbicacion"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:paddingTop="8dp"
+                    android:background="@drawable/boton_redondeado"
+                    android:layout_alignParentStart="true"
+                    android:drawableTop="@drawable/baseline_location_on_24"
+                    android:drawableTint="#FFFFFF"/>
+
+                <!-- Botón 2 -->
+                <Button
+                    android:id="@+id/btnCamara"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:paddingTop="8dp"
+                    android:background="@drawable/boton_redondeado"
+                    android:layout_alignParentEnd="true"
+                    android:drawableTop="@drawable/baseline_photo_camera_24"
+                    android:drawableTint="#FFFFFF"/>
+
+            </RelativeLayout>
+            <Button
+                android:id="@+id/btnCrearReporte"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="30dp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:text="@string/crear_reporte"
+                android:background="@drawable/boton_redondeado"
+                />
+
+        </LinearLayout>
+    </ScrollView>
 </FrameLayout>

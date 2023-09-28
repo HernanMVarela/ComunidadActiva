@@ -14,4 +14,9 @@
     <string name="menu_activity">Ver actividad reciente</string>
     <string name="menu_password">Cambiar Contraseña</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
+    <string name="titulo">Título</string>
+    <string name="descripcion">Descripción del reporte</string>
+    <string name="descripcion_reporte">Ingrese una descripción para el nuevo reporte</string>
+    <string name="tipo_de_reporte">Tipo de reporte</string>
+    <string name="crear_reporte">Crear reporte</string>
 </resources>
