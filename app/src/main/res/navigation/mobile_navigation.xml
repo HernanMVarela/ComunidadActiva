@@ -9,7 +9,20 @@
         android:id="@+id/nav_home"
         android:name="frgp.utn.edu.ar.controllers.ui.home.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_home_to_nav_buscar_reporte"
+            app:destination="@id/nav_buscar_reporte" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_nuevo_reporte"
+            app:destination="@id/nav_nuevo_reporte" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_buscar_proyecto"
+            app:destination="@id/nav_buscar_proyecto" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_nuevo_proyecto"
+            app:destination="@id/nav_nuevo_proyecto" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_notificaciones"
@@ -28,5 +41,28 @@
         android:name="frgp.utn.edu.ar.controllers.ui.actividad_rec.ActividadRecFragment"
         android:label="@string/menu_password"
         tools:layout="@layout/fragment_cambiar_clave" />
+
+    <fragment
+        android:id="@+id/nav_nuevo_reporte"
+        android:name="frgp.utn.edu.ar.controllers.ui.nuevo_reporte.NuevoReporteFragment"
+        android:label="Crear reporte"
+        tools:layout="@layout/fragment_nuevo_reporte" />
+    <fragment
+        android:id="@+id/nav_buscar_reporte"
+        android:name="frgp.utn.edu.ar.controllers.ui.buscar_reporte.BuscarReporteFragment"
+        android:label="Buscar reporte"
+        tools:layout="@layout/fragment_buscar_reporte" />
+    <fragment
+        android:id="@+id/nav_nuevo_proyecto"
+        android:name="frgp.utn.edu.ar.controllers.ui.nuevo_proyecto.NuevoProyectoFragment"
+        android:label="Nuevo Proyecto"
+        tools:layout="@layout/fragment_nuevo_proyecto" />
+
+    <fragment
+        android:id="@+id/nav_buscar_proyecto"
+        android:name="frgp.utn.edu.ar.controllers.ui.nuevo_proyecto.NuevoProyectoFragment"
+        android:label="Buscar Proyecto"
+        tools:layout="@layout/fragment_buscar_proyecto" />
+
 
 </navigation>
