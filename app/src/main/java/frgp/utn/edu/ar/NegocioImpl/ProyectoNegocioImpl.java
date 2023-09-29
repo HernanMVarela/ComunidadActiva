@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.Negocio;
+package frgp.utn.edu.ar.NegocioImpl;
 
 import android.content.Context;
 
@@ -16,6 +16,7 @@ import frgp.utn.edu.ar.DAOImpl.Proyecto.TipoProyecto.TipoProyectoDAOImpl;
 import frgp.utn.edu.ar.DAOImpl.Usuario.EstadoUsuario.EstadoUsuarioDAOImpl;
 import frgp.utn.edu.ar.DAOImpl.Usuario.TipoUsuario.TipoUsuarioDAOImpl;
 import frgp.utn.edu.ar.DAOImpl.Usuario.UsuarioDAOImpl;
+import frgp.utn.edu.ar.Negocio.ProyectoNegocio;
 import frgp.utn.edu.ar.entidades.EstadoProyecto;
 import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.Proyecto;
