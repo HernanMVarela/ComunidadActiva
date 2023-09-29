@@ -10,19 +10,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Objects;
 
+import frgp.utn.edu.ar.DAOImpl.Connector.DataDB;
 import frgp.utn.edu.ar.DAOImpl.Usuario.EstadoUsuario.DMABuscarEstadoUsuarioPorId;
 import frgp.utn.edu.ar.DAOImpl.Usuario.TipoUsuario.DMABuscarTipoUsuarioPorId;
-import frgp.utn.edu.ar.DAOImpl.Connector.DataDB;
 import frgp.utn.edu.ar.entidades.Usuario;
 
-public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
+public class DMALoginUsuario extends AsyncTask<String, Void, Usuario> {
 
     private final Context context;
-    private int id;
+    private String username;
+    private String password;
     //Constructor
-    public DMABuscarUsuarioPorId(int id, Context ct)
+    public DMALoginUsuario(String username, String password, Context ct)
     {
-        this.id = id;
+        this.username = username;
+        this.password = password;
         context = ct;
     }
 
@@ -32,8 +34,9 @@ public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO usuarios (username, password, puntuacion, nombre, apellido, telefono, correo, fecha_nac, fecha_alta. estado, tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-            preparedStatement.setInt(1, id);
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM usuarios WHERE username = ? AND password = ?");
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 usuario = new Usuario();

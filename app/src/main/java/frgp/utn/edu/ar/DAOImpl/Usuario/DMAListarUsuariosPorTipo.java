@@ -8,34 +8,36 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Objects;
 
+import frgp.utn.edu.ar.DAOImpl.Connector.DataDB;
 import frgp.utn.edu.ar.DAOImpl.Usuario.EstadoUsuario.DMABuscarEstadoUsuarioPorId;
 import frgp.utn.edu.ar.DAOImpl.Usuario.TipoUsuario.DMABuscarTipoUsuarioPorId;
-import frgp.utn.edu.ar.DAOImpl.Connector.DataDB;
 import frgp.utn.edu.ar.entidades.Usuario;
 
-public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
+public class DMAListarUsuariosPorTipo extends AsyncTask<String, Void, List<Usuario>> {
 
     private final Context context;
-    private int id;
-    //Constructor
-    public DMABuscarUsuarioPorId(int id, Context ct)
+    private int idTipoUsuario;
+
+    public DMAListarUsuariosPorTipo(Context ct, int idTipoUsuario)
     {
-        this.id = id;
         context = ct;
+        this.idTipoUsuario = idTipoUsuario;
     }
 
     @Override
-    public Usuario doInBackground(String... urls) {
-        Usuario usuario = null;
+    protected List<Usuario> doInBackground(String... urls) {
+        List<Usuario> listaUsuarios = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO usuarios (username, password, puntuacion, nombre, apellido, telefono, correo, fecha_nac, fecha_alta. estado, tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-            preparedStatement.setInt(1, id);
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM usuarios WHERE id_tipo = ?");
+            preparedStatement.setInt(1, idTipoUsuario);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+            while (resultSet.next()) {
+                Usuario usuario = new Usuario();
                 usuario = new Usuario();
                 usuario.setId(resultSet.getInt("id"));
                 usuario.setUsername(resultSet.getString("username"));
@@ -49,7 +51,8 @@ public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
                 usuario.setFecha_alta(resultSet.getDate("fecha_alta"));
                 usuario.setEstado(new DMABuscarEstadoUsuarioPorId(resultSet.getInt("idEstado"),context).doInBackground(String.valueOf(resultSet.getInt("idEstado"))));
                 usuario.setTipo(new DMABuscarTipoUsuarioPorId(resultSet.getInt("idTipo"),context).doInBackground(String.valueOf(resultSet.getInt("idTipo"))));
-                Log.i("Usuario",usuario.getNombre());
+
+                listaUsuarios.add(usuario);
             }
             resultSet.close();
             preparedStatement.close();
@@ -60,6 +63,6 @@ public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
             Log.e("Error", Objects.requireNonNull(e.getMessage()));
             return null;
         }
-        return usuario;
+        return listaUsuarios;
     }
 }

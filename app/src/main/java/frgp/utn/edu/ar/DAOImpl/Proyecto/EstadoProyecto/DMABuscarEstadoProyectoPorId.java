@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.DAOImpl.Usuario.EstadoUsuario;
+package frgp.utn.edu.ar.DAOImpl.Proyecto.EstadoProyecto;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,33 +11,33 @@ import java.sql.ResultSet;
 import java.util.Objects;
 
 import frgp.utn.edu.ar.DAOImpl.Connector.DataDB;
-import frgp.utn.edu.ar.entidades.EstadoUsuario;
+import frgp.utn.edu.ar.entidades.EstadoProyecto;
 
-public class DMABuscarEstadoUsuarioPorId extends AsyncTask<String, Void, EstadoUsuario> {
+public class DMABuscarEstadoProyectoPorId extends AsyncTask<String, Void, EstadoProyecto> {
 
     private final Context context;
     private final int id;
 
-    public DMABuscarEstadoUsuarioPorId(int id, Context context)
+    public DMABuscarEstadoProyectoPorId(int id, Context context)
     {
         this.context = context;
         this.id = id;
     }
 
     @Override
-    public EstadoUsuario doInBackground(String... urls) {
-        EstadoUsuario estadoUsuario = null;
+    public EstadoProyecto doInBackground(String... urls) {
+        EstadoProyecto estadoProyecto = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM estados_usuario WHERE id = ?");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM estados_proyecto WHERE id = ?");
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                estadoUsuario = new EstadoUsuario();
-                estadoUsuario.setId(resultSet.getInt("id"));
-                estadoUsuario.setEstado(resultSet.getString("estado"));
-                Log.i("EstadoUsuario",estadoUsuario.getEstado());
+                estadoProyecto = new EstadoProyecto();
+                estadoProyecto.setId(resultSet.getInt("id"));
+                estadoProyecto.setEstado(resultSet.getString("estado"));
+                Log.i("EstadoUsuario",estadoProyecto.getEstado());
             }
             preparedStatement.close();
             con.close();
@@ -47,6 +47,6 @@ public class DMABuscarEstadoUsuarioPorId extends AsyncTask<String, Void, EstadoU
             Log.e("Error", Objects.requireNonNull(e.getMessage()));
             return null;
         }
-        return estadoUsuario;
+        return estadoProyecto;
     }
 }

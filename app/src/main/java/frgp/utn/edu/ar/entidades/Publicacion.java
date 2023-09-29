@@ -52,8 +52,14 @@ public class Publicacion {
         return location;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(String location) {
+        Location loc = new Location("");
+        String[] latlong =  location.split(",");
+        double latitude = Double.parseDouble(latlong[0]);
+        double longitude = Double.parseDouble(latlong[1]);
+        loc.setLatitude(latitude);
+        loc.setLongitude(longitude);
+        this.location = loc;
     }
 
     public Date getFecha() {

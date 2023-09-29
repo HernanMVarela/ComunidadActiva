@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.DAOImpl.Usuario;
+package frgp.utn.edu.ar.DAOImpl.Proyecto;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -12,14 +12,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 import frgp.utn.edu.ar.DAOImpl.Connector.DataDB;
-import frgp.utn.edu.ar.entidades.Usuario;
+import frgp.utn.edu.ar.entidades.Proyecto;
 
-public class DMANuevoUsuario extends AsyncTask<String, Void, Boolean> {
+public class DMANuevoProyecto extends AsyncTask<String, Void, Boolean> {
 
     private final Context context;
-    private Usuario nuevo;
+    private Proyecto nuevo;
 
-    public DMANuevoUsuario(Usuario nuevo, Context ct)
+    public DMANuevoProyecto(Proyecto nuevo, Context ct)
     {
         this.nuevo = nuevo;
         context = ct;
@@ -31,19 +31,16 @@ public class DMANuevoUsuario extends AsyncTask<String, Void, Boolean> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO usuarios (username, password, puntuacion, nombre, apellido, telefono, correo, fecha_nac, fecha_alta. id_estado, id_tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO proyectos (titulo, descripcion, coordenadas, fecha, cupo, id_user, id_tipo, id_estado) VALUES (?,?,?,?,?,?,?,?)");
 
-            preparedStatement.setString(1, nuevo.getUsername());
-            preparedStatement.setString(2, nuevo.getPassword());
-            preparedStatement.setInt(3, nuevo.getPuntuacion());
-            preparedStatement.setString(4, nuevo.getNombre());
-            preparedStatement.setString(5, nuevo.getApellido());
-            preparedStatement.setString(6, nuevo.getTelefono());
-            preparedStatement.setString(7, nuevo.getCorreo());
-            preparedStatement.setDate(8, (Date) nuevo.getFecha_nac());
-            preparedStatement.setDate(9, (Date) nuevo.getFecha_alta());
-            preparedStatement.setInt(10, nuevo.getEstado().getId());
-            preparedStatement.setInt(11, nuevo.getTipo().getId());
+            preparedStatement.setString(1, nuevo.getTitulo());
+            preparedStatement.setString(2, nuevo.getDescripcion());
+            preparedStatement.setString(3, nuevo.getLocation().toString());
+            preparedStatement.setDate(4, (Date) nuevo.getFecha());
+            preparedStatement.setInt(5, nuevo.getCupo());
+            preparedStatement.setInt(6, nuevo.getOwner().getId());
+            preparedStatement.setInt(7, nuevo.getTipo().getId());
+            preparedStatement.setInt(8, nuevo.getEstado().getId());
 
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();

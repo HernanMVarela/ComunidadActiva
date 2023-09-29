@@ -3,6 +3,7 @@ package frgp.utn.edu.ar.DAOImpl.Usuario;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.List;
 import java.util.Objects;
 
 import frgp.utn.edu.ar.DAO.UsuarioDAO;
@@ -46,4 +47,51 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         }
     }
 
+    @Override
+    public Usuario login(Context context, String username, String password) {
+        DMALoginUsuario DMALU = new DMALoginUsuario(username, password, context);
+        DMALU.execute();
+        try {
+            return DMALU.get();
+        } catch (Exception e) {
+            Log.d("Error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
+
+    @Override
+    public List<Usuario> listarUsuarios(Context context) {
+        DMAListarUsuarios DMALU = new DMAListarUsuarios(context);
+        DMALU.execute();
+        try {
+            return DMALU.get();
+        } catch (Exception e) {
+            Log.d("Error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
+
+    @Override
+    public List<Usuario> listarUsuariosPorTipo(Context context, int tipoUsuario) {
+        DMAListarUsuariosPorTipo DMALUPT = new DMAListarUsuariosPorTipo(context, tipoUsuario);
+        DMALUPT.execute();
+        try {
+            return DMALUPT.get();
+        } catch (Exception e) {
+            Log.d("Error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
+
+    @Override
+    public List<Usuario> listarUsuariosPorEstado(Context context, int estado) {
+        DMAListarUsuariosPorEstado DMALUPE = new DMAListarUsuariosPorEstado(context, estado);
+        DMALUPE.execute();
+        try {
+            return DMALUPE.get();
+        } catch (Exception e) {
+            Log.d("Error", Objects.requireNonNull(e.getMessage()));
+            return null;
+        }
+    }
 }
