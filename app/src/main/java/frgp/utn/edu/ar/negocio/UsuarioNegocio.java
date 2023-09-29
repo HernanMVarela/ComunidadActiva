@@ -7,6 +7,5 @@ import frgp.utn.edu.ar.entidades.Usuario;
 public interface UsuarioNegocio {
     boolean agregarUsuario(Context context, Usuario nuevo);
     boolean modificarUsuario(Context context, Usuario modifcar);
-    boolean suspenderUsuario(Context context, int ID);
-
+    Usuario buscarUsuarioPorId(Context context, int ID);
 }
