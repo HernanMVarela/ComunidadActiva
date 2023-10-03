@@ -1,28 +1,19 @@
-package frgp.utn.edu.ar.NegocioImpl;
+package frgp.utn.edu.ar.negocioImpl;
 
 import android.content.Context;
 
 import java.util.List;
 
 import frgp.utn.edu.ar.DAO.EstadoProyectoDAO;
-import frgp.utn.edu.ar.DAO.EstadoUsuarioDAO;
 import frgp.utn.edu.ar.DAO.ProyectoDAO;
 import frgp.utn.edu.ar.DAO.TipoProyectoDAO;
-import frgp.utn.edu.ar.DAO.TiposUsuarioDAO;
-import frgp.utn.edu.ar.DAO.UsuarioDAO;
 import frgp.utn.edu.ar.DAOImpl.Proyecto.EstadoProyecto.EstadoProyectoDAOImpl;
 import frgp.utn.edu.ar.DAOImpl.Proyecto.ProyectoDAOImpl;
 import frgp.utn.edu.ar.DAOImpl.Proyecto.TipoProyecto.TipoProyectoDAOImpl;
-import frgp.utn.edu.ar.DAOImpl.Usuario.EstadoUsuario.EstadoUsuarioDAOImpl;
-import frgp.utn.edu.ar.DAOImpl.Usuario.TipoUsuario.TipoUsuarioDAOImpl;
-import frgp.utn.edu.ar.DAOImpl.Usuario.UsuarioDAOImpl;
-import frgp.utn.edu.ar.Negocio.ProyectoNegocio;
+import frgp.utn.edu.ar.negocio.ProyectoNegocio;
 import frgp.utn.edu.ar.entidades.EstadoProyecto;
-import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.Proyecto;
 import frgp.utn.edu.ar.entidades.TipoProyecto;
-import frgp.utn.edu.ar.entidades.TipoUsuario;
-import frgp.utn.edu.ar.entidades.Usuario;
 
 public class ProyectoNegocioImpl implements ProyectoNegocio {
 

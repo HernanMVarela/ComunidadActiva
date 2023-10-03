@@ -1,16 +1,25 @@
 package frgp.utn.edu.ar.controllers.ui.ubicacion;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -26,26 +35,45 @@ import frgp.utn.edu.ar.controllers.R;
 
 public class UbicacionFragment extends Fragment {
 
-    LatLng frgputn;
-    GoogleMap miMapa;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    GoogleMap googlemaplocal;
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            frgputn = new LatLng(-34.45516856682106, -58.62416024823926);
-            miMapa = googleMap;
-            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
-            List<Address> datos;
+            // Verifica si tienes permisos de ubicación
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // Si no tienes permisos, solicítalos al usuario
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            } else {
+                // Si ya tienes permisos, accede a la ubicación
+                FusedLocationProviderClient locationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
+                locationClient.getLastLocation().addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+                            List<Address> addresses;
 
-            try {
-                datos = geocoder.getFromLocation(frgputn.latitude, frgputn.longitude, 1);
-                miMapa.addMarker(new MarkerOptions().position(frgputn).title(datos.get(0).getAddressLine(0)));
-                miMapa.moveCamera(CameraUpdateFactory.newLatLngZoom(frgputn,15));
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                            try {
+                                googlemaplocal = googleMap;
+                                addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1);
+                                if (!addresses.isEmpty()) {
+                                    googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title(addresses.get(0).getAddressLine(0)));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                                } else {
+                                    googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title("Sin título"));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                                }
+                            } catch (IOException e) {
+                                Log.e("Error de mapa", e.toString());
+                            }
+                        }
+                    }
+                });
             }
-
         }
     };
 
@@ -67,4 +95,19 @@ public class UbicacionFragment extends Fragment {
         }
     }
 
+    // Manejo de la respuesta de solicitud de permisos
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permiso concedido, puedes acceder a la ubicación aquí
+                // Reinicia el mapa o realiza otras acciones según sea necesario
+                callback.onMapReady(googlemaplocal);
+            } else {
+                // Permiso denegado, muestra un mensaje al usuario o maneja esto según tus requisitos
+                Toast.makeText(requireContext(), "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
