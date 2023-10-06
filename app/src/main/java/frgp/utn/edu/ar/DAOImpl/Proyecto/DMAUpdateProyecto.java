@@ -29,16 +29,17 @@ public class DMAUpdateProyecto extends AsyncTask<String, Void, Boolean> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("UPDATE proyectos SET titulo = ?, descripcion = ?, coordenadas = ?, fecha = ?, cupo = ?, id_user = ?, , id_tipo = ?, id_estado = ?  WHERE id = ?");
+            PreparedStatement preparedStatement = con.prepareStatement("UPDATE proyectos SET titulo = ?, descripcion = ?, latitud = ?, longitud = ?, fecha = ?, cupo = ?, id_user = ?, , id_tipo = ?, id_estado = ?  WHERE id = ?");
 
             preparedStatement.setString(1, modificado.getTitulo());
             preparedStatement.setString(2, modificado.getDescripcion());
-            preparedStatement.setString(3, modificado.getLocation().toString());
-            preparedStatement.setDate(4, (Date) modificado.getFecha());
-            preparedStatement.setInt(5, modificado.getCupo());
-            preparedStatement.setInt(6, modificado.getOwner().getId());
-            preparedStatement.setInt(7, modificado.getTipo().getId());
-            preparedStatement.setInt(8, modificado.getEstado().getId());
+            preparedStatement.setString(3, String.valueOf(modificado.getLatitud()));
+            preparedStatement.setString(4, String.valueOf(modificado.getLongitud()));
+            preparedStatement.setDate(5, (Date) modificado.getFecha());
+            preparedStatement.setInt(6, modificado.getCupo());
+            preparedStatement.setInt(7, modificado.getOwner().getId());
+            preparedStatement.setInt(8, modificado.getTipo().getId());
+            preparedStatement.setInt(9, modificado.getEstado().getId());
 
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();

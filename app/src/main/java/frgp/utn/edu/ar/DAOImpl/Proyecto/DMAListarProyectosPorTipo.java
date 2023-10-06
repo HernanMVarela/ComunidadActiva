@@ -42,7 +42,8 @@ public class DMAListarProyectosPorTipo extends AsyncTask<String, Void, List<Proy
                 proyecto.setId(resultSet.getInt("id"));
                 proyecto.setTitulo(resultSet.getString("titulo"));
                 proyecto.setDescripcion(resultSet.getString("descripcion"));
-                proyecto.setLocation(resultSet.getString("coordenadas"));
+                proyecto.setLatitud(resultSet.getDouble("latitud"));
+                proyecto.setLongitud(resultSet.getDouble("longitud"));
                 proyecto.setFecha(resultSet.getDate("fecha"));
                 proyecto.setCupo(resultSet.getInt("cupo"));
                 proyecto.setOwner(new DMABuscarUsuarioPorId(resultSet.getInt("idUsuario"),context).doInBackground(String.valueOf(resultSet.getInt("idUsuario"))));

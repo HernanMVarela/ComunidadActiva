@@ -1,18 +1,18 @@
 package frgp.utn.edu.ar.entidades;
 
-import android.location.Location;
+import android.graphics.Bitmap;
 
 import java.sql.Blob;
 import java.util.Date;
 
 public class Reporte extends Publicacion{
-    private Blob imagen;
+    private Bitmap imagen;
     private int puntaje;
     private EstadoReporte estado;
     private TipoReporte tipo;
 
-    public Reporte(int id, String titulo, Location location, Date fecha, Usuario owner, Blob imagen, int puntaje, EstadoReporte estado, TipoReporte tipo) {
-        super(id, titulo, location, fecha, owner);
+    public Reporte(int id, String titulo, double latitud, double longitud, Date fecha, Usuario owner, Bitmap imagen, int puntaje, EstadoReporte estado, TipoReporte tipo) {
+        super(id, titulo, latitud,longitud, fecha, owner);
         this.imagen = imagen;
         this.puntaje = puntaje;
         this.estado = estado;
@@ -32,11 +32,11 @@ public class Reporte extends Publicacion{
                 '}';
     }
 
-    public Blob getImagen() {
+    public Bitmap getImagen() {
         return imagen;
     }
 
-    public void setImagen(Blob imagen) {
+    public void setImagen(Bitmap imagen) {
         this.imagen = imagen;
     }
 

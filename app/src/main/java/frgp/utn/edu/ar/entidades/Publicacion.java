@@ -7,14 +7,16 @@ import java.util.Date;
 public class Publicacion {
     private int id;
     private String titulo;
-    private Location location;
+    private double longitud;
+    private double latitud;
     private Date fecha;
     private Usuario owner;
 
-    public Publicacion(int id, String titulo, Location location, Date fecha, Usuario owner) {
+    public Publicacion(int id, String titulo, double longitud, double latitud, Date fecha, Usuario owner) {
         this.id = id;
         this.titulo = titulo;
-        this.location = location;
+        this.longitud = longitud;
+        this.latitud = latitud;
         this.fecha = fecha;
         this.owner = owner;
     }
@@ -27,7 +29,7 @@ public class Publicacion {
         return "Publicacion{" +
                 "id=" + id +
                 ", titulo='" + titulo + '\'' +
-                ", Location='" + location +
+                ", Location='" + longitud + " - " + latitud +
                 ", owner=" + owner +
                 '}';
     }
@@ -48,18 +50,20 @@ public class Publicacion {
         this.titulo = titulo;
     }
 
-    public Location getLocation() {
-        return location;
+    public double getLongitud() {
+        return longitud;
     }
 
-    public void setLocation(String location) {
-        Location loc = new Location("");
-        String[] latlong =  location.split(",");
-        double latitude = Double.parseDouble(latlong[0]);
-        double longitude = Double.parseDouble(latlong[1]);
-        loc.setLatitude(latitude);
-        loc.setLongitude(longitude);
-        this.location = loc;
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
     }
 
     public Date getFecha() {
