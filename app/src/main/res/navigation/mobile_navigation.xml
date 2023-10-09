@@ -49,13 +49,25 @@
         tools:layout="@layout/fragment_nuevo_reporte">
         <action
             android:id="@+id/action_nav_reporte_to_nav_ubicacion"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
             app:destination="@id/elegir_ubicacion" />
     </fragment>
+
     <fragment
         android:id="@+id/nav_buscar_reporte"
         android:name="frgp.utn.edu.ar.controllers.ui.buscar_reporte.BuscarReporteFragment"
         android:label="Buscar reporte"
-        tools:layout="@layout/fragment_buscar_reporte" />
+        tools:layout="@layout/fragment_buscar_reporte">
+        <action
+            android:id="@+id/action_nav_reporte_to_nav_detalle"
+            app:destination="@id/detalle_reporte" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalle_reporte"
+        android:name="frgp.utn.edu.ar.controllers.ui.detalle_reporte.DetalleReporte"
+        android:label="Detalle Reporte"
+        tools:layout="@layout/fragment_detalle_reporte" />
     <fragment
         android:id="@+id/nav_nuevo_proyecto"
         android:name="frgp.utn.edu.ar.controllers.ui.nuevo_proyecto.NuevoProyectoFragment"

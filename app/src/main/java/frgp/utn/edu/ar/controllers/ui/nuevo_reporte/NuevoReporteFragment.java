@@ -74,7 +74,6 @@ public class NuevoReporteFragment extends Fragment {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PIC_REQUEST);
                 }
             }
-
         });
         bUbicacion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
