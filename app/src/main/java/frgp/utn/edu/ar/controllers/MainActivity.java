@@ -1,66 +1,48 @@
 package frgp.utn.edu.ar.controllers;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.Menu;
+import android.widget.EditText;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
-import frgp.utn.edu.ar.controllers.databinding.ActivityMainBinding;
+import frgp.utn.edu.ar.controllers.ui.homeAdmin.AdminActivity;
+import frgp.utn.edu.ar.controllers.ui.homeModerador.ModeradorActivity;
+import frgp.utn.edu.ar.controllers.ui.homeVecino.VecinoActivity;
+import frgp.utn.edu.ar.controllers.ui.registro.RegistroActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
-    private ActivityMainBinding binding;
-    public FloatingActionButton botonmensaje;
-    private NavController navController;
+    public EditText etNombre, etPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-        botonmensaje = findViewById(R.id.fab);
-        setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        DrawerLayout drawer = binding.drawerLayout;
-        NavigationView navigationView = binding.navView;
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_actividad_rec, R.id.nav_notificaciones,R.id.nav_cambiarpassword, R.id.nav_cerrarsesion)
-                .setOpenableLayout(drawer)
-                .build();
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
-        NavigationUI.setupWithNavController(navigationView, navController);
+        etNombre = (EditText) findViewById(R.id.etNombre);
+        etPassword = (EditText) findViewById(R.id.etPassword);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    public void IrRegistro(View view){
+        Intent registro = new Intent(this, RegistroActivity.class);
+        startActivity(registro);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
+    public void IrVecino(View view){
+        Intent registro = new Intent(this, VecinoActivity.class);
+        startActivity(registro);
+    }
+
+    public void IrModerador(View view){
+        Intent registro = new Intent(this, ModeradorActivity.class);
+        startActivity(registro);
+    }
+
+    public void IrAdministrador(View view){
+        Intent registro = new Intent(this, AdminActivity.class);
+        startActivity(registro);
     }
 }
