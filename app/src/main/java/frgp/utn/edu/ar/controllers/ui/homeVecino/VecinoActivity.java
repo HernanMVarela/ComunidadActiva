@@ -1,18 +1,20 @@
 package frgp.utn.edu.ar.controllers.ui.homeVecino;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
+import android.util.Log;
 import android.view.View;
+import android.view.Menu;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.navigation.NavigationView;
+
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import com.google.android.material.navigation.NavigationView;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.appcompat.app.AppCompatActivity;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.databinding.ActivityVecinoBinding;
@@ -20,9 +22,10 @@ import frgp.utn.edu.ar.controllers.databinding.ActivityVecinoBinding;
 
 public class VecinoActivity  extends AppCompatActivity {
 
+
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityVecinoBinding binding;
-
+    public FloatingActionButton botonmensaje;
     private NavController navController;
 
     @Override
@@ -31,7 +34,7 @@ public class VecinoActivity  extends AppCompatActivity {
 
         binding = ActivityVecinoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        botonmensaje = findViewById(R.id.fab);
         setSupportActionBar(binding.appBarMain.toolbar);
         binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
             @Override
