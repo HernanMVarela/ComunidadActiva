@@ -14,11 +14,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import frgp.utn.edu.ar.controllers.R;
-import frgp.utn.edu.ar.controllers.databinding.ActivityVecinoBinding;
+import frgp.utn.edu.ar.controllers.databinding.ActivityModeradorBinding;
 
 public class ModeradorActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityVecinoBinding binding;
+    private ActivityModeradorBinding binding;
     public FloatingActionButton botonmensaje;
     private NavController navController;
     @Override
@@ -26,7 +26,7 @@ public class ModeradorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_moderador);
 
-        binding = ActivityVecinoBinding.inflate(getLayoutInflater());
+        binding = ActivityModeradorBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         botonmensaje = findViewById(R.id.fab);
         setSupportActionBar(binding.appBarMain.toolbar);
