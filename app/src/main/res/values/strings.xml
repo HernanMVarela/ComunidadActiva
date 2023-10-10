@@ -69,4 +69,10 @@
     <string name="exito_estado_proyecto">Estado modificado éxitosamente.</string>
     <string name="exito_confirmacion_proyecto">Esperando confirmación del creador del proyecto.</string>
     <string name="volver">Volver</string>
+
+    <!-- NAVBAR MODERADOR -->
+    <string name="moderador_home">PANEL MODERADOR</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

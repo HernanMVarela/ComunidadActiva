@@ -85,5 +85,14 @@
         android:name="frgp.utn.edu.ar.controllers.ui.ubicacion.UbicacionFragment"
         android:label="Elegir Ubicacion"
         tools:layout="@layout/fragment_ubicacion" />
+    <fragment
+        android:id="@+id/nav_modelador"
+        android:name="frgp.utn.edu.ar.controllers.ui.homeModerador.HomeModeradorFragment"
+        android:label="@string/moderador_home"
+        tools:layout="@layout/fragment_home_moderador" >
+        <action
+        android:id="@+id/action_nav_reporte_to_nav_detalle"
+        app:destination="@id/detalle_reporte" />
+    </fragment>
 
 </navigation>
