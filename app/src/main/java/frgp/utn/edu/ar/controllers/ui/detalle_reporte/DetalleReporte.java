@@ -38,6 +38,7 @@ import java.util.Locale;
 import frgp.utn.edu.ar.adapters.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.MainActivity;
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.ui.homeVecino.VecinoActivity;
 
 public class DetalleReporte extends Fragment {
 
@@ -91,8 +92,8 @@ public class DetalleReporte extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detalle_reporte, container, false);
-        if(getActivity() instanceof MainActivity){
-            ((MainActivity) getActivity()).botonmensaje.hide();
+        if(getActivity() instanceof VecinoActivity){
+            ((VecinoActivity) getActivity()).botonmensaje.hide();
         }
         return view;
     }
