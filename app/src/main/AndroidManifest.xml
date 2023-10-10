@@ -21,6 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ComunidadActiva"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_api" />
+
         <activity
             android:name=".ui.homeVecino.VecinoActivity"
             android:exported="false" />

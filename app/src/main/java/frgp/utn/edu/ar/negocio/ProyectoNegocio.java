@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.Negocio;
+package frgp.utn.edu.ar.negocio;
 
 import android.content.Context;
 

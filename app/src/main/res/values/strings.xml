@@ -14,6 +14,8 @@
     <string name="menu_activity">Ver actividad reciente</string>
     <string name="menu_password">Cambiar Contraseña</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
+
+    <!-- REPORTE TEXTO -->
     <string name="titulo">Título</string>
     <string name="descripcion">Descripción del reporte</string>
     <string name="descripcion_reporte">Ingrese una descripción para el nuevo reporte</string>
@@ -36,4 +38,35 @@
     <string name="correo_electr_nico">Correo electrónico</string>
     <string name="contrase_a">Contraseña</string>
     <string name="repetir_contrase_a">Repetir Contraseña</string>
+    <string name="seleccionar_ubicaci_n">Seleccionar Ubicación</string>
+    <string name="descripcion_prueba">Lorem ipsum dolor sit amet. Hic voluptate incidunt aut perferendis internos ab tenetur necessitatibus ea voluptatibus eaque! Et quia voluptate quo reprehenderit dolorem qui assumenda molestiae aut iure ipsam hic illum rerum et quisquam tenetur.</string>
+    <string name="cerrar_reporte">Solicitar Cierre</string>
+    <string name="valorar_reporte">Valorar</string>
+    <string name="denunciar_reporte">Denunciar</string>
+    <string name="ver_reporte">Ver detalle</string>
+    <string name="estado_pendiente">Estado: Pendiente</string>
+
+    <!-- PROYECTO TEXTO ( SIGUE DESDE REPORTE TEXTO)-->
+    <string name="proyecto">Proyecto</string>
+    <string name="descripcion_proyecto">Descripción del proyecto</string>
+    <string name="ingresar_descripcion_proyecto">Ingrese una descripción del proyecto</string>
+    <string name="requerimientos_proyecto">Requerimientos del proyecto</string>
+    <string name="ingresar_requerimientos_proyecto">Ingrese los requerimientos del proyecto</string>
+    <string name="contacto">Contacto</string>
+    <string name="cupo">Cupo</string>
+    <string name="ubicacion">Ubicación</string>
+    <string name="crear_proyecto">Crear Proyecto</string>
+    <string name="buscar___">Buscar...</string>
+    <string name="filtro">Filtro</string>
+    <string name="error_ocurrido">Ha ocurrido un error.</string>
+    <string name="error">Error</string>
+    <string name="error_campos_obligatorios">Todos los campos son obligatorios.</string>
+    <string name="error_sin_proyectos">Imposible cargar el proyecto especificado.</string>
+    <string name="error_sin_cupos">No existen cupos disponibles.</string>
+    <string name="error_cambio_no_aceptable">El nuevo estado no es aceptable.</string>
+    <string name="error_sin_participantes">No existen participantes para este proyecto.</string>
+    <string name="exito_denuncia_proyecto">Denuncia realizada con éxito.</string>
+    <string name="exito_estado_proyecto">Estado modificado éxitosamente.</string>
+    <string name="exito_confirmacion_proyecto">Esperando confirmación del creador del proyecto.</string>
+    <string name="volver">Volver</string>
 </resources>

@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.NegocioImpl;
+package frgp.utn.edu.ar.negocioImpl;
 
 import android.content.Context;
 
@@ -7,7 +7,7 @@ import java.util.List;
 
 import frgp.utn.edu.ar.DAO.LogsDAO;
 import frgp.utn.edu.ar.DAOImpl.Logs.LogsDAOImpl;
-import frgp.utn.edu.ar.Negocio.LogsNegocio;
+import frgp.utn.edu.ar.negocio.LogsNegocio;
 import frgp.utn.edu.ar.entidades.Logs;
 import frgp.utn.edu.ar.utils.LogsEnum;
 

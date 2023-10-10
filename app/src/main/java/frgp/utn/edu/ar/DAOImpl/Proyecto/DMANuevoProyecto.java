@@ -31,16 +31,17 @@ public class DMANuevoProyecto extends AsyncTask<String, Void, Boolean> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO proyectos (titulo, descripcion, coordenadas, fecha, cupo, id_user, id_tipo, id_estado) VALUES (?,?,?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO proyectos (titulo, descripcion, latitud, longitud, fecha, cupo, id_user, id_tipo, id_estado) VALUES (?,?,?,?,?,?,?,?,?)");
 
             preparedStatement.setString(1, nuevo.getTitulo());
             preparedStatement.setString(2, nuevo.getDescripcion());
-            preparedStatement.setString(3, nuevo.getLocation().toString());
-            preparedStatement.setDate(4, (Date) nuevo.getFecha());
-            preparedStatement.setInt(5, nuevo.getCupo());
-            preparedStatement.setInt(6, nuevo.getOwner().getId());
-            preparedStatement.setInt(7, nuevo.getTipo().getId());
-            preparedStatement.setInt(8, nuevo.getEstado().getId());
+            preparedStatement.setString(3, String.valueOf(nuevo.getLatitud()));
+            preparedStatement.setString(4, String.valueOf(nuevo.getLongitud()));
+            preparedStatement.setDate(5, (Date) nuevo.getFecha());
+            preparedStatement.setInt(6, nuevo.getCupo());
+            preparedStatement.setInt(7, nuevo.getOwner().getId());
+            preparedStatement.setInt(8, nuevo.getTipo().getId());
+            preparedStatement.setInt(9, nuevo.getEstado().getId());
 
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();

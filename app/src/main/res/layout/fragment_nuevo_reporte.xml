@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:minHeight="35dp"
                 android:textSize="20sp"
+                android:paddingLeft="5dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/edittext_white_rounded"/>
             <TextView
@@ -95,6 +96,14 @@
                     android:drawableTint="#FFFFFF"/>
 
             </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgViewFotoTomada"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:scaleType="fitCenter"
+                 />
+
             <Button
                 android:id="@+id/btnCrearReporte"
                 android:layout_width="match_parent"
