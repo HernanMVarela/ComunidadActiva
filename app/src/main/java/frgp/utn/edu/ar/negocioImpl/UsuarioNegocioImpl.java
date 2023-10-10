@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.NegocioImpl;
+package frgp.utn.edu.ar.negocioImpl;
 
 import android.content.Context;
 
@@ -13,7 +13,7 @@ import frgp.utn.edu.ar.DAOImpl.Usuario.UsuarioDAOImpl;
 import frgp.utn.edu.ar.entidades.EstadoUsuario;
 import frgp.utn.edu.ar.entidades.TipoUsuario;
 import frgp.utn.edu.ar.entidades.Usuario;
-import frgp.utn.edu.ar.Negocio.UsuarioNegocio;
+import frgp.utn.edu.ar.negocio.UsuarioNegocio;
 
 public class UsuarioNegocioImpl implements UsuarioNegocio {
     private UsuarioDAO UserDAO = new UsuarioDAOImpl();
