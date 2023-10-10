@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.ui.home;
+package frgp.utn.edu.ar.controllers.ui.homeVecino;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -6,32 +6,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import frgp.utn.edu.ar.adapters.GenMenuGridAdapter;
 import frgp.utn.edu.ar.controllers.R;
-import frgp.utn.edu.ar.controllers.databinding.FragmentHomeBinding;
-import frgp.utn.edu.ar.controllers.ui.buscar_reporte.BuscarReporteFragment;
-import frgp.utn.edu.ar.controllers.ui.nuevo_reporte.NuevoReporteFragment;
+import frgp.utn.edu.ar.controllers.databinding.FragmentHomeVecinoBinding;
 
-public class HomeFragment extends Fragment {
+public class HomeVecinoFragment extends Fragment {
 
-    private FragmentHomeBinding binding;
+    private FragmentHomeVecinoBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeViewModel homeViewModel =
-                new ViewModelProvider(this).get(HomeViewModel.class);
+        HomeVecinoViewModel homeVecinoViewModel =
+                new ViewModelProvider(this).get(HomeVecinoViewModel.class);
 
-        binding = FragmentHomeBinding.inflate(inflater, container, false);
+        binding = FragmentHomeVecinoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         GenMenuGridAdapter adapter = new GenMenuGridAdapter(getContext());
         GridView gridView = root.findViewById(R.id.gvMenuGeneral);
