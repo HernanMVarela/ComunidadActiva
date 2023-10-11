@@ -1,6 +1,5 @@
 package frgp.utn.edu.ar.controllers;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,9 +7,10 @@ import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import frgp.utn.edu.ar.controllers.ui.homeAdmin.AdminActivity;
-import frgp.utn.edu.ar.controllers.ui.homeModerador.ModeradorActivity;
-import frgp.utn.edu.ar.controllers.ui.homeVecino.VecinoActivity;
+import frgp.utn.edu.ar.controllers.ui.home_admin.AdminActivity;
+import frgp.utn.edu.ar.controllers.ui.home_moderador.ModeradorActivity;
+import frgp.utn.edu.ar.controllers.ui.home_vecino.VecinoActivity;
+import frgp.utn.edu.ar.controllers.ui.recupero_contraseña.RecuperoPassActivity;
 import frgp.utn.edu.ar.controllers.ui.registro.RegistroActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void IrRegistro(View view){
         Intent registro = new Intent(this, RegistroActivity.class);
+        startActivity(registro);
+    }
+
+    public void IrRecuperoPass(View view){
+        Intent registro = new Intent(this, RecuperoPassActivity.class);
         startActivity(registro);
     }
 

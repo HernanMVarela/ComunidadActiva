@@ -8,7 +8,7 @@
     tools:context=".ui.registro.RegistroActivity">
 
     <Button
-        android:id="@+id/btnRegistrar"
+        android:id="@+id/btnConfirmarCambioPass"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="52dp"
@@ -33,13 +33,13 @@
         android:layout_marginEnd="55dp"
         android:backgroundTint="@color/green_100"
         android:scaleType="centerCrop"
-        app:layout_constraintEnd_toStartOf="@+id/textView3"
+        app:layout_constraintEnd_toStartOf="@+id/tvCambioPass"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/agregarusuario" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvCambioPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="101dp"
@@ -48,13 +48,13 @@
         android:text="@string/registrarse"
         android:textColor="#303F9F"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/etNombreRegistro"
+        app:layout_constraintBottom_toTopOf="@+id/etCorreo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton2"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etNombreRegistro"
+        android:id="@+id/etCorreo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
@@ -63,13 +63,13 @@
         android:ems="10"
         android:hint="@string/nombre"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etApellido"
+        app:layout_constraintBottom_toTopOf="@+id/etCodigo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/tvCambioPass" />
 
     <EditText
-        android:id="@+id/etApellido"
+        android:id="@+id/etCodigo"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
@@ -78,13 +78,13 @@
         android:ems="10"
         android:hint="@string/apellido"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etUserName"
+        app:layout_constraintBottom_toTopOf="@+id/etPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNombreRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/etCorreo" />
 
     <EditText
-        android:id="@+id/etUserName"
+        android:id="@+id/etPass"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
@@ -96,7 +96,7 @@
         app:layout_constraintBottom_toTopOf="@+id/etFechaNacimiento"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etApellido" />
+        app:layout_constraintTop_toBottomOf="@+id/etCodigo" />
 
     <EditText
         android:id="@+id/etFechaNacimiento"
@@ -111,7 +111,7 @@
         app:layout_constraintBottom_toTopOf="@+id/etTelefono"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUserName" />
+        app:layout_constraintTop_toBottomOf="@+id/etPass" />
 
     <EditText
         android:id="@+id/etTelefono"
@@ -168,7 +168,7 @@
         android:ems="10"
         android:hint="@string/repetir_contrase_a"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegistrar"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarCambioPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassUnoRegistro" />

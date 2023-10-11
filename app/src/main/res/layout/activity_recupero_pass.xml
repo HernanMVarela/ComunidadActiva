@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green_100"
+    tools:context=".ui.recupero_contraseña.RecuperoPassActivity">
+
+    <Button
+        android:id="@+id/btnConfirmarCambioPass"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginEnd="52dp"
+        android:layout_marginBottom="31dp"
+        android:backgroundTint="@color/green_700"
+        android:text="@string/cambiar_pass_titulo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etFechaNacimiento" />
+
+    <Button
+        android:id="@+id/btnEnviarCodigo"
+        android:layout_width="133dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/green_700"
+        android:text="@string/enviar_codigo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/etCorreo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etCorreo"
+        app:layout_constraintTop_toTopOf="@+id/etCorreo"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/btnConfirmarCodigo"
+        android:layout_width="138dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="439dp"
+        android:backgroundTint="@color/green_700"
+        android:text="@string/verificar_codigo"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/etCodigo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/etCodigo"
+        app:layout_constraintTop_toTopOf="@+id/etCodigo"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="126dp"
+        android:layout_height="120dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="13dp"
+        android:backgroundTint="@color/green_100"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/etCorreo"
+        app:layout_constraintEnd_toStartOf="@+id/tvCambioPass"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/pass" />
+
+    <TextView
+        android:id="@+id/tvCambioPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="96dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="51dp"
+        android:text="@string/cambiar_pass_titulo"
+        android:textColor="#303F9F"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnEnviarCodigo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imageButton2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etCorreo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:hint="@string/correo_electr_nico"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/etCodigo"
+        app:layout_constraintEnd_toStartOf="@+id/btnEnviarCodigo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+
+    <EditText
+        android:id="@+id/etCodigo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginBottom="4dp"
+        android:ems="10"
+        android:hint="@string/codigo_verificacion"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/etPass"
+        app:layout_constraintEnd_toStartOf="@+id/btnConfirmarCodigo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCorreo" />
+
+    <EditText
+        android:id="@+id/etPass"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="9dp"
+        android:ems="10"
+        android:hint="@string/nueva_pass"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/etFechaNacimiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCodigo" />
+
+    <EditText
+        android:id="@+id/etFechaNacimiento"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="248dp"
+        android:ems="10"
+        android:hint="@string/confirmar_nueva_pass"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarCambioPass"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPass" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

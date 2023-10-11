@@ -9,15 +9,123 @@
 
     <TextView
         android:id="@+id/text_actividad"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:textAlignment="center"
+        android:textColor="@color/green_100"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvHistorialTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="16dp"
+        android:text="ACTIVIDAD RECIENTE"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvHistorialTitulo3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="16dp"
+        android:text="FECHA"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHistorialTitulo" />
+
+    <TextView
+        android:id="@+id/tvHistorialTitulo6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="FECHA"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="@+id/tvHistorialTitulo3"
+        app:layout_constraintTop_toTopOf="@+id/tvHistorialTitulo3" />
+
+    <TextView
+        android:id="@+id/tvHistorialTitulo7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="FECHA"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="@+id/tvHistorialTitulo6"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <TextView
+        android:id="@+id/tvHistorialTitulo2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="ACCION"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view4" />
+
+    <TextView
+        android:id="@+id/tvHistorialTitulo4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ACCION"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="@+id/tvHistorialTitulo2"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <TextView
+        android:id="@+id/tvHistorialTitulo5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ACCION"
+        android:textSize="34sp"
+        app:layout_constraintStart_toStartOf="@+id/tvHistorialTitulo4"
+        app:layout_constraintTop_toBottomOf="@+id/view2" />
+
+    <View
+        android:id="@+id/view4"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toTopOf="@+id/tvHistorialTitulo3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvHistorialTitulo3" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHistorialTitulo3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHistorialTitulo3" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHistorialTitulo6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHistorialTitulo6" />
+
+    <View
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        app:layout_constraintBottom_toBottomOf="@+id/tvHistorialTitulo5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHistorialTitulo5" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

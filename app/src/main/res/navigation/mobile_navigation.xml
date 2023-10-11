@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="frgp.utn.edu.ar.controllers.ui.homeVecino.HomeVecinoFragment"
+        android:name="frgp.utn.edu.ar.controllers.ui.home_vecino.HomeVecinoFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home_vecino" >
         <action
@@ -38,7 +38,7 @@
 
     <fragment
         android:id="@+id/nav_cambiarpassword"
-        android:name="frgp.utn.edu.ar.controllers.ui.actividad_rec.ActividadRecFragment"
+        android:name="frgp.utn.edu.ar.controllers.ui.cambiar_clave.CambiarClaveFragment"
         android:label="@string/menu_password"
         tools:layout="@layout/fragment_cambiar_clave" />
 
@@ -87,7 +87,7 @@
         tools:layout="@layout/fragment_ubicacion" />
     <fragment
         android:id="@+id/nav_modelador"
-        android:name="frgp.utn.edu.ar.controllers.ui.homeModerador.HomeModeradorFragment"
+        android:name="frgp.utn.edu.ar.controllers.ui.home_moderador.HomeModeradorFragment"
         android:label="@string/moderador_home"
         tools:layout="@layout/fragment_home_moderador" >
 

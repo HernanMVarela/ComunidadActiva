@@ -20,20 +20,24 @@
         android:roundIcon="@mipmap/ic_comunidad_logo_trans_foreground"
         android:supportsRtl="true"
         android:theme="@style/Theme.ComunidadActiva"
-        tools:targetApi="31">
+        tools:targetApi="31" >
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_api" />
 
         <activity
-            android:name=".ui.homeVecino.VecinoActivity"
+            android:name=".ui.recupero_contraseña.RecuperoPassActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.home_vecino.VecinoActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.homeAdmin.AdminActivity"
+            android:name=".ui.home_admin.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.homeModerador.ModeradorActivity"
+            android:name=".ui.home_moderador.ModeradorActivity"
             android:exported="false" />
         <activity
             android:name=".ui.registro.RegistroActivity"
@@ -42,7 +46,7 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.ComunidadActiva.NoActionBar">
+            android:theme="@style/Theme.ComunidadActiva.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

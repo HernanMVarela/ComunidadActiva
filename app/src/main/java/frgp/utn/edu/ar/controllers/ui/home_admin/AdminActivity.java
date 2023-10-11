@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.ui.homeAdmin;
+package frgp.utn.edu.ar.controllers.ui.home_admin;
 
 import androidx.appcompat.app.AppCompatActivity;
 

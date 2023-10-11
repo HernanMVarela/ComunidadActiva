@@ -1,14 +1,14 @@
-package frgp.utn.edu.ar.controllers.ui.homeModerador;
+package frgp.utn.edu.ar.controllers.ui.home_vecino;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeModeladorViewModel extends ViewModel {
+public class HomeVecinoViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public HomeModeladorViewModel() {
+    public HomeVecinoViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

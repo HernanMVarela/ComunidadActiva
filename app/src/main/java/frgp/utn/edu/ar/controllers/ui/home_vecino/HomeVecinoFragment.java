@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.ui.homeModerador;
+package frgp.utn.edu.ar.controllers.ui.home_vecino;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,19 +15,18 @@ import androidx.navigation.Navigation;
 
 import frgp.utn.edu.ar.adapters.GenMenuGridAdapter;
 import frgp.utn.edu.ar.controllers.R;
-import frgp.utn.edu.ar.controllers.databinding.FragmentHomeModeradorBinding;
+import frgp.utn.edu.ar.controllers.databinding.FragmentHomeVecinoBinding;
 
+public class HomeVecinoFragment extends Fragment {
 
-public class HomeModeradorFragment extends Fragment {
-
-    private FragmentHomeModeradorBinding binding;
+    private FragmentHomeVecinoBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeModeladorViewModel homeVecinoViewModel =
-                new ViewModelProvider(this).get(HomeModeladorViewModel.class);
+        HomeVecinoViewModel homeVecinoViewModel =
+                new ViewModelProvider(this).get(HomeVecinoViewModel.class);
 
-        binding = FragmentHomeModeradorBinding.inflate(inflater, container, false);
+        binding = FragmentHomeVecinoBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         GenMenuGridAdapter adapter = new GenMenuGridAdapter(getContext());
         GridView gridView = root.findViewById(R.id.gvMenuGeneral);

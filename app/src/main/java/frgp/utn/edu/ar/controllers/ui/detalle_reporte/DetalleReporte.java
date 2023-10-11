@@ -29,16 +29,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-import frgp.utn.edu.ar.adapters.SharedLocationViewModel;
-import frgp.utn.edu.ar.controllers.MainActivity;
 import frgp.utn.edu.ar.controllers.R;
-import frgp.utn.edu.ar.controllers.ui.homeVecino.VecinoActivity;
+import frgp.utn.edu.ar.controllers.ui.home_vecino.VecinoActivity;
 
 public class DetalleReporte extends Fragment {
 

@@ -1,17 +1,13 @@
-package frgp.utn.edu.ar.controllers.ui.homeModerador;
+package frgp.utn.edu.ar.controllers.ui.home_moderador;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.View;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationView;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.databinding.ActivityModeradorBinding;
@@ -36,6 +32,7 @@ public class ModeradorActivity extends AppCompatActivity {
 
             }
         });
+        /*
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -45,6 +42,7 @@ public class ModeradorActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        */
     }
 
 
