@@ -13,11 +13,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -103,6 +106,14 @@ public class DetalleReporte extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
+        bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON VER REPORTE
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.solicitar_cierre);
+            }
+        });
     }
 
     @Override
