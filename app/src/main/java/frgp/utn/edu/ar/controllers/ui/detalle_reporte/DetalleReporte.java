@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.home_vecino.VecinoActivity;
 
 public class DetalleReporte extends Fragment {
@@ -109,9 +110,17 @@ public class DetalleReporte extends Fragment {
         Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
         bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // BOTON VER REPORTE
+                // BOTON SOLICITAR CIERRE
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.solicitar_cierre);
+            }
+        });
+        Button bValorar = view.findViewById(R.id.btnValorarReporte);
+        bValorar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON VALORAR REPORTE
+                ValorarReporteDialogFragment dialogFragment = new ValorarReporteDialogFragment();
+                dialogFragment.show(getFragmentManager(), "rate_report_dialog");
             }
         });
     }

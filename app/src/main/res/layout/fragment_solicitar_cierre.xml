@@ -76,7 +76,7 @@
             android:layout_height="200dp"
             android:scaleType="fitCenter"
             android:layout_marginHorizontal="10dp"
-            android:src="@mipmap/ic_comunidad_logo_trans_foreground"
+            android:src="@mipmap/image_placeholder"
             />
         <Button
             android:id="@+id/btnCrearReporte"

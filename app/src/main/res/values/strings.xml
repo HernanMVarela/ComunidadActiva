@@ -91,4 +91,6 @@
     <string name="descripcion_hint_cierre">Describa el motivo del cierre</string>
     <string name="agregar_imagen">Agregar imagen</string>
     <string name="solicitar_cierre">Solicitar cierre</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar">Cancelar</string>
 </resources>
