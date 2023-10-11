@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@id/nav_home">
 
+    <!-- FRAGMENTOS MENU INICIAL -->
     <fragment
         android:id="@+id/nav_home"
         android:name="frgp.utn.edu.ar.controllers.ui.home_vecino.HomeVecinoFragment"
@@ -23,25 +24,23 @@
             android:id="@+id/action_nav_home_to_nav_nuevo_proyecto"
             app:destination="@id/nav_nuevo_proyecto" />
     </fragment>
-
     <fragment
         android:id="@+id/nav_notificaciones"
         android:name="frgp.utn.edu.ar.controllers.ui.notificaciones.NotificacionesFragment"
         android:label="@string/menu_notificaciones"
         tools:layout="@layout/fragment_notificaciones" />
-
     <fragment
         android:id="@+id/nav_actividad_rec"
         android:name="frgp.utn.edu.ar.controllers.ui.actividad_rec.ActividadRecFragment"
         android:label="@string/menu_activity"
         tools:layout="@layout/fragment_actividad_reciente" />
-
     <fragment
         android:id="@+id/nav_cambiarpassword"
         android:name="frgp.utn.edu.ar.controllers.ui.cambiar_clave.CambiarClaveFragment"
         android:label="@string/menu_password"
         tools:layout="@layout/fragment_cambiar_clave" />
 
+    <!-- FRAGMENTOS REPORTES -->
     <fragment
         android:id="@+id/nav_nuevo_reporte"
         android:name="frgp.utn.edu.ar.controllers.ui.nuevo_reporte.NuevoReporteFragment"
@@ -53,7 +52,6 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:destination="@id/elegir_ubicacion" />
     </fragment>
-
     <fragment
         android:id="@+id/nav_buscar_reporte"
         android:name="frgp.utn.edu.ar.controllers.ui.buscar_reporte.BuscarReporteFragment"
@@ -67,19 +65,30 @@
         android:id="@+id/detalle_reporte"
         android:name="frgp.utn.edu.ar.controllers.ui.detalle_reporte.DetalleReporte"
         android:label="Detalle Reporte"
-        tools:layout="@layout/fragment_detalle_reporte" />
+        tools:layout="@layout/fragment_detalle_reporte">
+        <action
+            android:id="@+id/action_nav_detalle_to_nav_solicitarcierre"
+            app:destination="@id/solicitar_cierre" />
+    </fragment>
+    <fragment
+        android:id="@+id/solicitar_cierre"
+        android:name="frgp.utn.edu.ar.controllers.ui.solicitar_cierre.SolicitarCierre"
+        android:label="Solicitar Cierre"
+        tools:layout="@layout/fragment_solicitar_cierre" />
+
+    <!-- FRAGMENTOS PROYECTOS -->
     <fragment
         android:id="@+id/nav_nuevo_proyecto"
         android:name="frgp.utn.edu.ar.controllers.ui.nuevo_proyecto.NuevoProyectoFragment"
         android:label="Nuevo Proyecto"
         tools:layout="@layout/fragment_nuevo_proyecto" />
-
     <fragment
         android:id="@+id/nav_buscar_proyecto"
         android:name="frgp.utn.edu.ar.controllers.ui.buscar_proyecto.BuscarProyectoFragment"
         android:label="Buscar Proyecto"
         tools:layout="@layout/fragment_buscar_proyecto" />
 
+    <!-- FRAGMENTOS ADICIONALES -->
     <fragment
         android:id="@+id/elegir_ubicacion"
         android:name="frgp.utn.edu.ar.controllers.ui.ubicacion.UbicacionFragment"
@@ -90,7 +99,6 @@
         android:name="frgp.utn.edu.ar.controllers.ui.home_moderador.HomeModeradorFragment"
         android:label="@string/moderador_home"
         tools:layout="@layout/fragment_home_moderador" >
-
     </fragment>
     <fragment
         android:id="@+id/nav_crear_informe"

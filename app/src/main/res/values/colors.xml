@@ -9,6 +9,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="warning">#FFFFC107</color>
-    <color name="danger">#DCBF0303</color>
+    <color name="danger">#DCE13131</color>
 
 </resources>

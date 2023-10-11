@@ -24,6 +24,10 @@
         <item name="android:background">@drawable/boton_redondeado</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+    <style name="DialogTheme_transparent" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
     <style name="Theme.ComunidadActiva.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.ComunidadActiva.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

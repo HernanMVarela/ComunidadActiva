@@ -3,107 +3,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/green_100"
-    tools:context=".ui.nuevo_reporte.NuevoReporteFragment">
-
+    tools:context=".ui.solicitar_cierre.SolicitarCierre">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="15dp"
         android:orientation="vertical"
-        android:layout_margin="15dp">
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/titulo"
-            android:textSize="20sp"
+            android:textSize="22sp"
+            android:textStyle="bold|italic"
             android:layout_marginVertical="5dp"
             android:gravity="start"/>
-        <EditText
-            android:id="@+id/etxTitulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="35dp"
-            android:textSize="20sp"
-            android:paddingLeft="5dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/edittext_white_rounded"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/descripcion"
+            android:text="@string/descripcion_cierre"
             android:textSize="18sp"
             android:layout_marginVertical="5dp"
             android:gravity="start"/>
         <EditText
-            android:id="@+id/etxDescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="120dp"
             android:textSize="18sp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:inputType="textMultiLine"
             android:lines="5"
-            android:hint="@string/descripcion_reporte"
+            android:hint="@string/descripcion_hint_cierre"
             android:gravity="top"
             android:textAlignment="gravity"
             android:padding="4dp"
             android:background="@drawable/edittext_white_rounded"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/tipo_de_reporte"
-            android:textSize="18sp"
-            android:layout_marginVertical="10dp"
-            android:gravity="start"/>
-        <Spinner
-            android:id="@+id/spnTiposReporte"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:textSize="18sp"
-            android:minHeight="35dp"
-            android:background="@drawable/edittext_white_rounded"/>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginHorizontal="40dp">
-
-            <!-- Botón 1 -->
-            <Button
-                android:id="@+id/btnUbicacion"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:paddingTop="8dp"
-                android:background="@drawable/boton_redondeado"
-                android:layout_alignParentStart="true"
-                android:drawableTop="@drawable/baseline_location_on_24"
-                android:drawableTint="#FFFFFF"/>
-
-            <!-- Botón 2 -->
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="20dp"
+            android:orientation="horizontal">
             <Button
                 android:id="@+id/btnCamara"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:paddingTop="8dp"
                 android:background="@drawable/boton_redondeado"
-                android:layout_alignParentEnd="true"
                 android:drawableTop="@drawable/baseline_photo_camera_24"
-                android:drawableTint="#FFFFFF"/>
+                android:drawableTint="#FFFFFF"
+                android:layout_gravity="center_vertical"/>
 
-        </RelativeLayout>
-
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:lines="3"
+                android:text="@string/agregar_imagen"
+                android:textSize="20sp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="5dp"
+                android:gravity="start|center_vertical"/>
+        </LinearLayout>
         <ImageView
-            android:id="@+id/imgViewFotoTomada"
+            android:id="@+id/imagen_ver_reporte"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:paddingVertical="5dp"
+            android:layout_height="200dp"
             android:scaleType="fitCenter"
-             />
-
+            android:layout_marginHorizontal="10dp"
+            android:src="@mipmap/image_placeholder"
+            />
         <Button
             android:id="@+id/btnCrearReporte"
             android:layout_width="match_parent"
@@ -113,7 +87,7 @@
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
-            android:text="@string/crear_reporte"
+            android:text="@string/solicitar_cierre"
             android:background="@drawable/boton_redondeado"
             />
     </LinearLayout>

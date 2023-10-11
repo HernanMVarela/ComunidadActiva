@@ -91,4 +91,14 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="descripcion_cierre">Motivo del cierre</string>
+    <string name="descripcion_hint_cierre">Describa el motivo del cierre</string>
+    <string name="agregar_imagen">Agregar imagen</string>
+    <string name="solicitar_cierre">Solicitar cierre</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="titulo_denuncia">Ingresar titulo de la denuncia</string>
+    <string name="motivo_denuncia">Motivo</string>
+    <string name="denuncia_descripcion">Ingrese una descripción de la denuncia</string>
+    <string name="denuncia_reporte_titulo">Denunciar reporte</string>
 </resources>

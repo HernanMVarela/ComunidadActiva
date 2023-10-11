@@ -13,11 +13,14 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -35,6 +38,8 @@ import java.util.List;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.dialogs.DenunciaReporteDialogFragment;
+import frgp.utn.edu.ar.controllers.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.home_vecino.VecinoActivity;
 
 public class DetalleReporte extends Fragment {
@@ -103,6 +108,31 @@ public class DetalleReporte extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
+        bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON SOLICITAR CIERRE
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.solicitar_cierre);
+            }
+        });
+        Button bValorar = view.findViewById(R.id.btnValorarReporte);
+        bValorar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON VALORAR REPORTE
+                ValorarReporteDialogFragment dialogFragment = new ValorarReporteDialogFragment();
+                dialogFragment.show(getFragmentManager(), "layout_rating_reporte");
+            }
+        });
+
+        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
+        bDenunciar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON VALORAR REPORTE
+                DenunciaReporteDialogFragment dialogFragment = new DenunciaReporteDialogFragment();
+                dialogFragment.show(getFragmentManager(), "layout_denuciar_reporte");
+            }
+        });
     }
 
     @Override
