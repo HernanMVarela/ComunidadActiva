@@ -1,5 +1,6 @@
 package frgp.utn.edu.ar.controllers.ui.crear_informe;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,18 +11,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import frgp.utn.edu.ar.controllers.R;
-import frgp.utn.edu.ar.controllers.databinding.FragmentActividadRecienteBinding;
+
+
 
 public class CrearInformeFragment extends Fragment {
 
-    private FragmentActividadRecienteBinding binding;
+
+    private CrearInformeViewModel mViewModel;
     private EditText etFechaInicio, etFechaFin;
     private ImageButton btnFechaInicio, btnFechaFin;
 
@@ -29,13 +30,9 @@ public class CrearInformeFragment extends Fragment {
     private Spinner spTipoInforme;
 
 
+    @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        CrearInformeViewModel crearInformeViewModel =
-                new ViewModelProvider(this).get(CrearInformeViewModel.class);
-
-        binding = FragmentActividadRecienteBinding.inflate(inflater, container, false);
-        View root = binding.getRoot();
 
 
         View view = inflater.inflate(R.layout.fragment_crear_informe, container, false);
@@ -54,7 +51,7 @@ public class CrearInformeFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), R.layout.spinner_generico, tipoInforme);
 
         //Seteo valores iniciales
-        spTipoInforme.setAdapter(adapter);
+       // spTipoInforme.setAdapter(adapter);
         etFechaInicio.setText(getFecha(dpFechaInicio));
 
         btnFechaInicio.setOnClickListener(new View.OnClickListener() {
@@ -100,9 +97,7 @@ public class CrearInformeFragment extends Fragment {
         }
 
 
-        final TextView textView = binding.textActividad;
-        crearInformeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        return inflater.inflate(R.layout.fragment_crear_informe, container, false);
     }
 
     public String getFecha(DatePicker dp){
@@ -117,9 +112,5 @@ public class CrearInformeFragment extends Fragment {
 
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
-    }
+
 }

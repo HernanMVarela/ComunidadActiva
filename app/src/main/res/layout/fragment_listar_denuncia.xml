@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.listar_denuncia.ListarDenunciaFragment"
+    android:background="@color/green_100"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-132dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:text="@string/titulo"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            tools:text="LISTADO DENUNCIAS" />
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="20dp">
+
+            <EditText
+                android:id="@+id/etxTitulo"
+                android:layout_width="244dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edittext_white_rounded"
+                android:minHeight="35dp"
+                android:paddingLeft="5dp"
+                android:textSize="20sp" />
+
+            <ImageButton
+                android:id="@+id/imageButton4"
+                android:layout_width="wrap_content"
+                android:layout_height="41dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="1dp"
+                android:src="@android:drawable/ic_menu_search" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="40dp"
+            android:layout_marginTop="20dp">
+
+            <Spinner
+                android:id="@+id/spTipoInforme"
+                android:layout_width="131dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_grey_roundead"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="68dp" />
+
+            <Spinner
+                android:id="@+id/spFiltroDos"
+                android:layout_width="131dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_grey_roundead"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="68dp" />
+
+        </RelativeLayout>
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

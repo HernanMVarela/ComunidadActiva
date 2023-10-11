@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ver_denuncia.VerDenunciaFragment"
+    android:background="@color/green_100"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-132dp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:text="@string/titulo"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            tools:text="VER DENUNCIA" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:gravity="start"
+            android:text="@string/titulo"
+            android:textSize="20sp"
+            tools:text="Titulo Denuncia" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:gravity="start"
+            android:text="@string/titulo"
+            android:textSize="20sp"
+            tools:text="Denunciante" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:gravity="start"
+            android:text="@string/titulo"
+            android:textSize="20sp"
+            tools:text="Denunciado" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:gravity="start"
+            android:text="@string/titulo"
+            android:textSize="20sp"
+            tools:text="Descripción:" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:text="@string/titulo"
+            android:textAlignment="textEnd"
+            android:textSize="20sp"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut
+                    enim ad minim veniam, quis nostrud exercitation ullamco" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="375dp"
+        android:layout_height="249dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="430dp"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/boton_suspender_usuario"
+            android:text="Suspender Usuario" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/boton_eliminar_publicacion"
+            android:text="Eliminar Publicación" />
+
+        <Button
+            android:id="@+id/button6"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/boton_notificar_denuncia"
+            android:text="Notificar y Cerrar Denuncia" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -105,5 +105,30 @@
         android:name="frgp.utn.edu.ar.controllers.ui.crear_informe.CrearInformeFragment"
         android:label="Crear Informe"
         tools:layout="@layout/fragment_crear_informe" />
+    <fragment
+        android:id="@+id/nav_listar_denuncia"
+        android:name="frgp.utn.edu.ar.controllers.ui.listar_denuncia.ListarDenunciaFragment"
+        android:label="Listar Denuncias"
+        tools:layout="@layout/fragment_listar_denuncia" />
+    <fragment
+        android:id="@+id/nav_ver_denuncia"
+        android:name="frgp.utn.edu.ar.controllers.ui.ver_denuncia.VerDenunciaFragment"
+        android:label="fragment_ver_denuncia"
+        tools:layout="@layout/fragment_ver_denuncia" />
+    <fragment
+        android:id="@+id/nav_eliminar_publicacion"
+        android:name="frgp.utn.edu.ar.controllers.ui.eliminar_publicacion.EliminarPublicacionFragment"
+        android:label="fragment_eliminar_publicacion"
+        tools:layout="@layout/fragment_eliminar_publicacion" />
+    <fragment
+        android:id="@+id/nav_notificar_denuncia"
+        android:name="frgp.utn.edu.ar.controllers.ui.notificar_cerrar_denuncia.NotificarCerrarDenunciaFragment"
+        android:label="fragment_notificar_cerrar_denuncia"
+        tools:layout="@layout/fragment_notificar_cerrar_denuncia" />
+    <fragment
+        android:id="@+id/nav_suspender_usuario"
+        android:name="frgp.utn.edu.ar.controllers.ui.suspender_usuario.SuspenderUsuarioFragment"
+        android:label="fragment_suspender_usuario"
+        tools:layout="@layout/fragment_suspender_usuario" />
 
 </navigation>

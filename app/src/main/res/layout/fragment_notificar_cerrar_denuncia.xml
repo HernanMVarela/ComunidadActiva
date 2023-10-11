@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.notificar_cerrar_denuncia.NotificarCerrarDenunciaFragment"
+    android:background="@color/green_100">
+
+
+    <LinearLayout
+        android:layout_width="378dp"
+        android:layout_height="68dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="15dp"
+        tools:layout_editor_absoluteY="618dp"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/boton_notificar_denuncia"
+            android:text="ENVIAR NOTIFICACION" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
+
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-132dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:text="@string/titulo"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            tools:text="NOTIFICAR Y CERRAR DENUNCIA" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:gravity="start"
+            android:text="@string/titulo"
+            android:textSize="20sp"
+            tools:text="Indique la resolucion de la denuncia:" />
+
+        <EditText
+            android:id="@+id/edDesc2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edittext_white_rounded"
+            android:gravity="top"
+            android:hint="Ingrese aquí..."
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:minHeight="120dp"
+            android:padding="4dp"
+            android:textAlignment="gravity"
+            android:textSize="18sp" />
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
