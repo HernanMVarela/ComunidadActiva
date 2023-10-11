@@ -38,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.home_vecino.VecinoActivity;
 
@@ -120,7 +121,16 @@ public class DetalleReporte extends Fragment {
             public void onClick(View v) {
                 // BOTON VALORAR REPORTE
                 ValorarReporteDialogFragment dialogFragment = new ValorarReporteDialogFragment();
-                dialogFragment.show(getFragmentManager(), "rate_report_dialog");
+                dialogFragment.show(getFragmentManager(), "layout_rating_reporte");
+            }
+        });
+
+        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
+        bDenunciar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON VALORAR REPORTE
+                DenunciaReporteDialogFragment dialogFragment = new DenunciaReporteDialogFragment();
+                dialogFragment.show(getFragmentManager(), "layout_denuciar_reporte");
             }
         });
     }

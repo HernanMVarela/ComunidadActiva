@@ -93,4 +93,8 @@
     <string name="solicitar_cierre">Solicitar cierre</string>
     <string name="confirmar">Confirmar</string>
     <string name="cancelar">Cancelar</string>
+    <string name="titulo_denuncia">Ingresar titulo de la denuncia</string>
+    <string name="motivo_denuncia">Motivo</string>
+    <string name="denuncia_descripcion">Ingrese una descripción de la denuncia</string>
+    <string name="denuncia_reporte_titulo">Denunciar reporte</string>
 </resources>

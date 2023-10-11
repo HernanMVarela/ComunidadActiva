@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:layout_gravity="center_horizontal"
-    android:background="@color/green_100"
+    android:background="@drawable/dialog_corner_bg"
     android:gravity="center_horizontal">
 
     <RatingBar
