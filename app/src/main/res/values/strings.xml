@@ -84,6 +84,10 @@
 
     <!-- NAVBAR MODERADOR -->
     <string name="moderador_home">PANEL MODERADOR</string>
+    <string name="fecha_inicio">Fecha Inicio</string>
+    <string name="fecha_fin">Fecha Fin</string>
+    <string name="tipo_informe">Tipo de Informe</string>
+    <string name="crear_informe">Crear Informe</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
