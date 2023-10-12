@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/green_100"
     android:orientation="vertical"
-    tools:context="frgp.utn.edu.controllers.ui.fragments.BuscarReporteFragment">
+    tools:context=".ui.fragments.BuscarReporteFragment">
 
     <TextView
         android:layout_width="match_parent"

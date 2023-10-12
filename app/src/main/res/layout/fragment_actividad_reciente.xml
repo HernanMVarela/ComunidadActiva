@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context="frgp.utn.edu.controllers.ui.fragments.ActividadRecFragment">
+    tools:context=".ui.fragments.ActividadRecFragment">
 
     <TextView
         android:id="@+id/text_actividad"

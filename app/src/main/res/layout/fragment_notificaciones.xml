@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context="frgp.utn.edu.controllers.ui.fragments.NotificacionesFragment">
+    tools:context=".ui.fragments.NotificacionesFragment">
 
     <TextView
         android:id="@+id/text_notificaciones"
