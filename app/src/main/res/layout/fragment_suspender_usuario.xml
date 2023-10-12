@@ -16,7 +16,7 @@
         tools:layout_editor_absoluteY="618dp">
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btnSU"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/boton_suspender_usuario"
@@ -83,7 +83,7 @@
             tools:text="Incar Motivo:" />
 
         <EditText
-            android:id="@+id/edDesc2"
+            android:id="@+id/edMotivoSU"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"

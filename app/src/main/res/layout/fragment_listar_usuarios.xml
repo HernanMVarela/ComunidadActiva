@@ -17,13 +17,13 @@
         tools:layout_editor_absoluteX="-132dp">
 
         <TextView
+            android:id="@+id/txtListarUsuariosTit"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
-            android:text="@string/titulo"
+            android:text="@string/listar_usuarios_titulo"
             android:textAlignment="center"
-            android:textSize="20sp"
-            tools:text="LISTADO DENUNCIAS" />
+            android:textSize="20sp" />
 
 
         <RelativeLayout
@@ -33,7 +33,7 @@
             android:layout_marginTop="20dp">
 
             <EditText
-                android:id="@+id/edBuscarLD"
+                android:id="@+id/edBuscarLU"
                 android:layout_width="244dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -44,7 +44,7 @@
                 android:textSize="20sp" />
 
             <ImageButton
-                android:id="@+id/ibtnBuscarLD"
+                android:id="@+id/ibtnBuscarLU"
                 android:layout_width="wrap_content"
                 android:layout_height="41dp"
                 android:layout_alignParentEnd="true"
@@ -53,35 +53,41 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="20dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
             <Spinner
                 android:id="@+id/spTipoInforme"
                 android:layout_width="131dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/edittext_grey_roundead"
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="68dp" />
 
             <Spinner
-                android:id="@+id/spFiltroDos"
+                android:id="@+id/spFiltroBLU"
                 android:layout_width="131dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/edittext_grey_roundead"
                 tools:ignore="MissingConstraints"
                 tools:layout_editor_absoluteX="68dp" />
 
-        </RelativeLayout>
+            <Spinner
+                android:id="@+id/spFiltroCLU"
+                android:layout_width="131dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/edittext_grey_roundead"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="68dp" />
+        </LinearLayout>
 
         <ListView
+            android:id="@+id/lstUsuarios"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 

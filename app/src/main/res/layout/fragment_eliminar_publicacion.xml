@@ -17,7 +17,7 @@
         tools:ignore="MissingConstraints">
 
         <Button
-            android:id="@+id/button4"
+            android:id="@+id/btnEliminarPublicacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/boton_eliminar_publicacion"
@@ -58,14 +58,11 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@drawable/edittext_white_rounded"
+            android:ems="10"
             android:gravity="top"
             android:hint="Ingrese el motivo aquí..."
             android:inputType="textMultiLine"
-            android:lines="5"
-            android:minHeight="120dp"
-            android:padding="4dp"
-            android:textAlignment="gravity"
-            android:textSize="18sp" />
+            android:lines="5" />
 
 
     </LinearLayout>
