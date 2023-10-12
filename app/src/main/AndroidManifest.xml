@@ -27,23 +27,23 @@
             android:value="@string/google_maps_api" />
 
         <activity
-            android:name=".ui.recupero_contraseña.RecuperoPassActivity"
+            android:name="frgp.utn.edu.controllers.ui.activities.RecuperoPassActivity"
             android:exported="false" />
 
         <activity
-            android:name=".ui.home_vecino.VecinoActivity"
+            android:name="frgp.utn.edu.controllers.ui.activities.VecinoActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home_admin.AdminActivity"
+            android:name="frgp.utn.edu.controllers.ui.activities.AdminActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home_moderador.ModeradorActivity"
+            android:name="frgp.utn.edu.controllers.ui.activities.ModeradorActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.registro.RegistroActivity"
+            android:name="frgp.utn.edu.controllers.ui.activities.RegistroActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="frgp.utn.edu.controllers.ui.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ComunidadActiva.NoActionBar" >

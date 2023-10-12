@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context=".ui.cambiar_clave.CambiarClaveFragment">
+    tools:context="frgp.utn.edu.controllers.ui.fragments.CambiarClaveFragment">
 
     <Button
         android:id="@+id/btnConfirmarCambioPass2"

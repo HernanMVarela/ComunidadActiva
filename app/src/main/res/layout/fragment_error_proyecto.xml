@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context=".ui.buscar_proyecto.BuscarProyectoFragment">
+    tools:context="frgp.utn.edu.controllers.ui.fragments.BuscarProyectoFragment">
 
     <ScrollView
         android:layout_width="match_parent"

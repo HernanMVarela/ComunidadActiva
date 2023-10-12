@@ -101,4 +101,5 @@
     <string name="motivo_denuncia">Motivo</string>
     <string name="denuncia_descripcion">Ingrese una descripción de la denuncia</string>
     <string name="denuncia_reporte_titulo">Denunciar reporte</string>
+    <string name="buscar_reportes">Buscar reportes</string>
 </resources>

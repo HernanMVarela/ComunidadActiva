@@ -1,23 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context=".ui.buscar_reporte.BuscarReporteFragment">
+    android:orientation="vertical"
+    tools:context="frgp.utn.edu.controllers.ui.fragments.BuscarReporteFragment">
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="This is the buscar reporte fragment"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="22sp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="5dp"
+        android:text="@string/buscar_reportes"
         android:gravity="center_horizontal"/>
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/busquedaReporte"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        app:iconifiedByDefault="false"
+        app:queryHint="Buscar..."
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <ListView
+        android:id="@+id/listReportes"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="5dp"/>
+
+    <fragment
+        android:id="@+id/mapListaReportes"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginBottom="10dp" />
     <Button
         android:id="@+id/btnVerDetalle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:layout_gravity="center"
-        android:text="@string/ver_reporte"/>
+        android:gravity="center_horizontal"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/ver_reporte"
+        android:layout_height="wrap_content"/>
 
-</FrameLayout>
+</LinearLayout>

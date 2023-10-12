@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.listar_denuncia.ListarDenunciaFragment"
+    tools:context="frgp.utn.edu.controllers.ui.fragments.ListarDenunciaFragment"
     android:background="@color/green_100"
     >
 

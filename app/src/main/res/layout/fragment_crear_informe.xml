@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context=".ui.crear_informe.CrearInformeFragment">
+    tools:context="frgp.utn.edu.controllers.ui.fragments.CrearInformeFragment">
 
     <DatePicker
         android:id="@+id/dpFechaInicio"

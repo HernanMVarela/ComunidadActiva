@@ -12,7 +12,12 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/green_500</item>
         <!-- Customize your theme here. -->
-
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+    <style name="Theme.ComunidadActiva.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
     <style name="BotonPersonalizado">
         <item name="android:background">@drawable/boton_redondeado</item>
@@ -21,5 +26,9 @@
     <style name="DialogTheme_transparent" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
     </style>
+
+    <style name="Theme.ComunidadActiva.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.ComunidadActiva.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
 
 </resources>

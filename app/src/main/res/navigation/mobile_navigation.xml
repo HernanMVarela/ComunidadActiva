@@ -8,7 +8,7 @@
     <!-- FRAGMENTOS MENU INICIAL -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="frgp.utn.edu.ar.controllers.ui.home_vecino.HomeVecinoFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.HomeVecinoFragment"
         android:label="@string/menu_home"
         tools:layout="@layout/fragment_home_vecino" >
         <action
@@ -26,24 +26,24 @@
     </fragment>
     <fragment
         android:id="@+id/nav_notificaciones"
-        android:name="frgp.utn.edu.ar.controllers.ui.notificaciones.NotificacionesFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.NotificacionesFragment"
         android:label="@string/menu_notificaciones"
         tools:layout="@layout/fragment_notificaciones" />
     <fragment
         android:id="@+id/nav_actividad_rec"
-        android:name="frgp.utn.edu.ar.controllers.ui.actividad_rec.ActividadRecFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.ActividadRecFragment"
         android:label="@string/menu_activity"
         tools:layout="@layout/fragment_actividad_reciente" />
     <fragment
         android:id="@+id/nav_cambiarpassword"
-        android:name="frgp.utn.edu.ar.controllers.ui.cambiar_clave.CambiarClaveFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.CambiarClaveFragment"
         android:label="@string/menu_password"
         tools:layout="@layout/fragment_cambiar_clave" />
 
     <!-- FRAGMENTOS REPORTES -->
     <fragment
         android:id="@+id/nav_nuevo_reporte"
-        android:name="frgp.utn.edu.ar.controllers.ui.nuevo_reporte.NuevoReporteFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.NuevoReporteFragment"
         android:label="Crear reporte"
         tools:layout="@layout/fragment_nuevo_reporte">
         <action
@@ -54,7 +54,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_buscar_reporte"
-        android:name="frgp.utn.edu.ar.controllers.ui.buscar_reporte.BuscarReporteFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.BuscarReporteFragment"
         android:label="Buscar reporte"
         tools:layout="@layout/fragment_buscar_reporte">
         <action
@@ -63,7 +63,7 @@
     </fragment>
     <fragment
         android:id="@+id/detalle_reporte"
-        android:name="frgp.utn.edu.ar.controllers.ui.detalle_reporte.DetalleReporte"
+        android:name="frgp.utn.edu.controllers.ui.fragments.DetalleReporteFragment"
         android:label="Detalle Reporte"
         tools:layout="@layout/fragment_detalle_reporte">
         <action
@@ -72,62 +72,62 @@
     </fragment>
     <fragment
         android:id="@+id/solicitar_cierre"
-        android:name="frgp.utn.edu.ar.controllers.ui.solicitar_cierre.SolicitarCierre"
+        android:name="frgp.utn.edu.controllers.ui.fragments.SolicitarCierreFragment"
         android:label="Solicitar Cierre"
         tools:layout="@layout/fragment_solicitar_cierre" />
 
     <!-- FRAGMENTOS PROYECTOS -->
     <fragment
         android:id="@+id/nav_nuevo_proyecto"
-        android:name="frgp.utn.edu.ar.controllers.ui.nuevo_proyecto.NuevoProyectoFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.NuevoProyectoFragment"
         android:label="Nuevo Proyecto"
         tools:layout="@layout/fragment_nuevo_proyecto" />
     <fragment
         android:id="@+id/nav_buscar_proyecto"
-        android:name="frgp.utn.edu.ar.controllers.ui.buscar_proyecto.BuscarProyectoFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.BuscarProyectoFragment"
         android:label="Buscar Proyecto"
         tools:layout="@layout/fragment_buscar_proyecto" />
 
     <!-- FRAGMENTOS ADICIONALES -->
     <fragment
         android:id="@+id/elegir_ubicacion"
-        android:name="frgp.utn.edu.ar.controllers.ui.ubicacion.UbicacionFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.UbicacionFragment"
         android:label="Elegir Ubicacion"
         tools:layout="@layout/fragment_ubicacion" />
     <fragment
         android:id="@+id/nav_modelador"
-        android:name="frgp.utn.edu.ar.controllers.ui.home_moderador.HomeModeradorFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.HomeModeradorFragment"
         android:label="@string/moderador_home"
         tools:layout="@layout/fragment_home_moderador" >
     </fragment>
     <fragment
         android:id="@+id/nav_crear_informe"
-        android:name="frgp.utn.edu.ar.controllers.ui.crear_informe.CrearInformeFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.CrearInformeFragment"
         android:label="Crear Informe"
         tools:layout="@layout/fragment_crear_informe" />
     <fragment
         android:id="@+id/nav_listar_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.listar_denuncia.ListarDenunciaFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.ListarDenunciaFragment"
         android:label="Listar Denuncias"
         tools:layout="@layout/fragment_listar_denuncia" />
     <fragment
         android:id="@+id/nav_ver_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.ver_denuncia.VerDenunciaFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.VerDenunciaFragment"
         android:label="fragment_ver_denuncia"
         tools:layout="@layout/fragment_ver_denuncia" />
     <fragment
         android:id="@+id/nav_eliminar_publicacion"
-        android:name="frgp.utn.edu.ar.controllers.ui.eliminar_publicacion.EliminarPublicacionFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.EliminarPublicacionFragment"
         android:label="fragment_eliminar_publicacion"
         tools:layout="@layout/fragment_eliminar_publicacion" />
     <fragment
         android:id="@+id/nav_notificar_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.notificar_cerrar_denuncia.NotificarCerrarDenunciaFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.NotificarCerrarDenunciaFragment"
         android:label="fragment_notificar_cerrar_denuncia"
         tools:layout="@layout/fragment_notificar_cerrar_denuncia" />
     <fragment
         android:id="@+id/nav_suspender_usuario"
-        android:name="frgp.utn.edu.ar.controllers.ui.suspender_usuario.SuspenderUsuarioFragment"
+        android:name="frgp.utn.edu.controllers.ui.fragments.SuspenderUsuarioFragment"
         android:label="fragment_suspender_usuario"
         tools:layout="@layout/fragment_suspender_usuario" />
 
