@@ -5,14 +5,16 @@ import java.util.Date;
 public class Publicacion {
     private int id;
     private String titulo;
+    private String descripcion;
     private double longitud;
     private double latitud;
     private Date fecha;
     private Usuario owner;
 
-    public Publicacion(int id, String titulo, double longitud, double latitud, Date fecha, Usuario owner) {
+    public Publicacion(int id, String titulo,String descripcion, double longitud, double latitud, Date fecha, Usuario owner) {
         this.id = id;
         this.titulo = titulo;
+        this.descripcion = descripcion;
         this.longitud = longitud;
         this.latitud = latitud;
         this.fecha = fecha;
@@ -30,6 +32,14 @@ public class Publicacion {
                 ", Location='" + longitud + " - " + latitud +
                 ", owner=" + owner +
                 '}';
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public int getId() {

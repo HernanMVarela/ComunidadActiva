@@ -22,8 +22,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import java.time.Instant;
+import java.util.Date;
+
+import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
+import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.DMASpinnerTiposReporte;
+import frgp.utn.edu.ar.controllers.ui.activities.VecinoActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
 import frgp.utn.edu.ar.controllers.ui.adapters.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.R;
@@ -35,6 +46,8 @@ public class NuevoReporteFragment extends Fragment {
     private NuevoReporteViewModel mViewModel;
     private Bitmap imagenCapturada;
     private SharedLocationViewModel sharedLocationViewModel;
+    private Spinner spinTipoReporte;
+    private EditText titulo, descripcion;
     private Reporte nuevo;
 
     public static NuevoReporteFragment newInstance() {
@@ -44,7 +57,16 @@ public class NuevoReporteFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_nuevo_reporte, container, false);
+        View view = inflater.inflate(R.layout.fragment_nuevo_reporte, container, false);
+        if(getActivity() instanceof VecinoActivity){
+            ((VecinoActivity) getActivity()).botonmensaje.hide();
+        }
+        titulo = view.findViewById(R.id.edTituloReporte);
+        descripcion = view.findViewById(R.id.edDescripcionReporte);
+        spinTipoReporte = view.findViewById(R.id.spnTiposReporte);
+        DMASpinnerTiposReporte dataActivityTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext());
+        dataActivityTiposReporte.execute();
+        return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -87,27 +109,34 @@ public class NuevoReporteFragment extends Fragment {
         });
         bCrearReporte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // Toma las coordenadas desde el ViewModel compartido con el UbicacionFragment
-                double latitude = sharedLocationViewModel.getLatitude();
-                double longitude = sharedLocationViewModel.getLongitude();
 
-                // Crea el objeto Reporte y carga las coordenadas
-                nuevo = new Reporte();
-                nuevo.setLatitud(latitude);
-                nuevo.setLongitud(longitude);
+                try {
+                    // Toma las coordenadas desde el ViewModel compartido con el UbicacionFragment
+                    double latitude = sharedLocationViewModel.getLatitude();
+                    double longitude = sharedLocationViewModel.getLongitude();
 
-                nuevo.setImagen(imagenCapturada);
+                    // Crea el objeto Reporte y carga los datos
+                    nuevo = new Reporte();
+                    nuevo.setLatitud(latitude);
+                    nuevo.setLongitud(longitude);
+                    nuevo.setTitulo(titulo.getText().toString());
+                    nuevo.setDescripcion(descripcion.getText().toString());
+                    nuevo.setEstado(new EstadoReporte(1,"ABIERTO"));
+                    nuevo.setTipo(new TipoReporte(spinTipoReporte.getSelectedItemPosition()+1, spinTipoReporte.getSelectedItem().toString()));
+                    nuevo.setImagen(imagenCapturada);
+                    nuevo.setPuntaje(0);
+                    nuevo.setFecha(new Date(System.currentTimeMillis()));
+                    nuevo.setOwner(null); // REEMPLAZAR POR USUARIO LOGUEADO
 
-                // Referencia al ImageView - prueba de imagen
-                ImageView imgViewFotoTomada = getView().findViewById(R.id.imgViewFotoTomada);
+                    if(checkFormValid(v,nuevo)){
+                        Log.i("Ubicacion Prueba", "Coordenadas: " + nuevo.getLatitud() + " - " + nuevo.getLongitud());
+                        Toast.makeText(v.getContext(), "Reporte creado exitosamente.", Toast.LENGTH_LONG).show();
+                    }
 
-                // Modificación de tamaño - prueba de imagen
-                Bitmap imagenRedimensionada = Bitmap.createScaledBitmap(imagenCapturada, imagenCapturada.getWidth()*3, imagenCapturada.getHeight()*3, true);
+                }catch (Exception e){
+                    Log.e("Error", e.toString());
+                }
 
-                // Configura la imagen capturada en el ImageView - prueba de imagen
-                imgViewFotoTomada.setImageBitmap(imagenRedimensionada);
-
-                Log.i("Ubicacion Prueba", "Coordenadas: " + nuevo.getLatitud() + " - " + nuevo.getLongitud());
             }
         });
     }
@@ -121,6 +150,15 @@ public class NuevoReporteFragment extends Fragment {
             // La imagen se capturó exitosamente
             Bundle extras = data.getExtras();
             imagenCapturada = (Bitmap) extras.get("data");
+
+            // Referencia al ImageView - prueba de imagen
+            ImageView imgViewFotoTomada = getView().findViewById(R.id.imgViewFotoTomada);
+
+            // Modificación de tamaño - prueba de imagen
+            Bitmap imagenRedimensionada = Bitmap.createScaledBitmap(imagenCapturada, imagenCapturada.getWidth()*2, imagenCapturada.getHeight()*2, true);
+
+            // Configura la imagen capturada en el ImageView - prueba de imagen
+            imgViewFotoTomada.setImageBitmap(imagenRedimensionada);
         }
     }
 
@@ -134,6 +172,44 @@ public class NuevoReporteFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(NuevoReporteViewModel.class);
         // TODO: Use the ViewModel
+    }
+
+    /// VALIDACIONES DE CAMPOS
+
+    private boolean checkFormValid(View view, Reporte nuevo) {
+
+        if (nuevo.getTitulo().trim().isEmpty()) {
+            Toast.makeText(this.getContext(), "Debes poner un título al reporte.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (nuevo.getDescripcion().trim().isEmpty()) {
+            Toast.makeText(this.getContext(), "Debes dar una descripcion del problema.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (nuevo.getTipo() == null) {
+            Toast.makeText(this.getContext(), "No has seleccionado un tipo de reporte.", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (nuevo.getTipo().getTipo().isEmpty()){
+            Toast.makeText(this.getContext(), "Tipo de reporte no seleccionado.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (nuevo.getLatitud() == 0 || nuevo.getLongitud() == 0) {
+            Toast.makeText(this.getContext(), "No has seleccionado una ubicación.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if (nuevo.getImagen() == null) {
+            Toast.makeText(this.getContext(), "No has cargado una imagen.", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (nuevo.getImagen().getWidth() < 1 || nuevo.getImagen().getHeight() < 1){
+            Toast.makeText(this.getContext(), "La imagen es inválida.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 
 }

@@ -10,8 +10,8 @@ public class Reporte extends Publicacion{
     private EstadoReporte estado;
     private TipoReporte tipo;
 
-    public Reporte(int id, String titulo, double latitud, double longitud, Date fecha, Usuario owner, Bitmap imagen, int puntaje, EstadoReporte estado, TipoReporte tipo) {
-        super(id, titulo, latitud,longitud, fecha, owner);
+    public Reporte(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, Bitmap imagen, int puntaje, EstadoReporte estado, TipoReporte tipo) {
+        super(id, titulo, descripcion, latitud,longitud, fecha, owner);
         this.imagen = imagen;
         this.puntaje = puntaje;
         this.estado = estado;
