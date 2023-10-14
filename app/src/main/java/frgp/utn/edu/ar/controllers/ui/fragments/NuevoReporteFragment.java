@@ -33,6 +33,7 @@ import java.util.Date;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.DMAGuardarReporte;
 import frgp.utn.edu.ar.controllers.data.remote.DMASpinnerTiposReporte;
 import frgp.utn.edu.ar.controllers.ui.activities.VecinoActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
@@ -129,14 +130,24 @@ public class NuevoReporteFragment extends Fragment {
                     nuevo.setOwner(null); // REEMPLAZAR POR USUARIO LOGUEADO
 
                     if(checkFormValid(v,nuevo)){
-                        Log.i("Ubicacion Prueba", "Coordenadas: " + nuevo.getLatitud() + " - " + nuevo.getLongitud());
-                        Toast.makeText(v.getContext(), "Reporte creado exitosamente.", Toast.LENGTH_LONG).show();
+                        DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo,v.getContext());
+                        DMAGuardar.execute();
+                        titulo.setText("");
+                        descripcion.setText("");
+                        sharedLocationViewModel.setLatitude(0);
+                        sharedLocationViewModel.setLongitude(0);
+                        longitude = 0;
+                        latitude = 0;
+                        imagenCapturada = null;
+                        Log.i("Existoso","Se guardo bien");
+                    }else{
+                        Toast.makeText(v.getContext(), "No se pudo crear el reporte", Toast.LENGTH_LONG).show();
+                        Log.e("ERROR","No se guardo bien");
                     }
 
                 }catch (Exception e){
                     Log.e("Error", e.toString());
                 }
-
             }
         });
     }
