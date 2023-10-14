@@ -23,6 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -40,13 +41,14 @@ import java.util.List;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.remote.DMAListviewReportes;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.BuscarReporteViewModel;
 
 public class BuscarReporteFragment extends Fragment {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private BuscarReporteViewModel mViewModel;
     private ListView listaReportes;
-    private GoogleMap mapaReportes;
+    private GoogleMap googlemaplocal;
     private Marker userMarker;
     private SearchView barraBusqueda;
     public static BuscarReporteFragment newInstance() {
@@ -71,15 +73,18 @@ public class BuscarReporteFragment extends Fragment {
                             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                             List<Address> addresses;
 
+                            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),currentLatLng);
+                            DMAListaReportes.execute();
+
                             try {
-                                mapaReportes = googleMap;
+                                googlemaplocal = googleMap;
                                 addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1);
                                 if (!addresses.isEmpty()) {
-                                    userMarker = mapaReportes.addMarker(new MarkerOptions().position(currentLatLng).title(addresses.get(0).getAddressLine(0)));
-                                    mapaReportes.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                                    userMarker = googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title(addresses.get(0).getAddressLine(0)));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
                                 } else {
-                                    userMarker = mapaReportes.addMarker(new MarkerOptions().position(currentLatLng).title("Sin título"));
-                                    mapaReportes.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                                    userMarker = googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title("Sin título"));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
                                 }
                             } catch (IOException e) {
                                 Log.e("Error de mapa", e.toString());
@@ -106,10 +111,15 @@ public class BuscarReporteFragment extends Fragment {
         barraBusqueda = view.findViewById(R.id.busquedaReporte);
 
         SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_reporte);
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapListaReportes);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
+        }else{
+            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0));
+            DMAListaReportes.execute();
         }
+
+
 
         bVerReporte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

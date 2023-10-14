@@ -7,12 +7,14 @@ import java.util.Date;
 public class Reporte extends Publicacion{
     private Bitmap imagen;
     private int puntaje;
+    private int cant_votos;
     private EstadoReporte estado;
     private TipoReporte tipo;
 
-    public Reporte(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, Bitmap imagen, int puntaje, EstadoReporte estado, TipoReporte tipo) {
+    public Reporte(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, Bitmap imagen, int cant_votos, int puntaje, EstadoReporte estado, TipoReporte tipo) {
         super(id, titulo, descripcion, latitud,longitud, fecha, owner);
         this.imagen = imagen;
+        this.cant_votos = cant_votos;
         this.puntaje = puntaje;
         this.estado = estado;
         this.tipo = tipo;
@@ -29,6 +31,14 @@ public class Reporte extends Publicacion{
                 ", estado=" + estado +
                 ", tipo=" + tipo +
                 '}';
+    }
+
+    public int getCant_votos() {
+        return cant_votos;
+    }
+
+    public void setCant_votos(int cant_votos) {
+        this.cant_votos = cant_votos;
     }
 
     public Bitmap getImagen() {
