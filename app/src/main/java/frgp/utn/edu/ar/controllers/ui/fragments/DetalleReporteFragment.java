@@ -34,12 +34,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.ui.activities.VecinoActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
 
@@ -109,6 +114,37 @@ public class DetalleReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+        Button bUsuario = view.findViewById(R.id.btnUsernameDetalle);
+        bUsuario.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON DETALLE DE USUARIO REPORTE
+                Usuario user = new Usuario();
+                user.setUsername("hvarela");
+                user.setNombre("Hernán");
+                user.setApellido("Varela");
+                // Formatea la fecha de alta
+                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);  // Define el formato
+                try {
+                    Date fechaAlta = new Date(sdf.parse("04-09-2023").getTime());
+                    user.setFecha_alta(fechaAlta);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                // Formatea la fecha de nacimiento
+                try {
+                    Date fechaNacimiento = new Date(sdf.parse("02-04-1990").getTime());
+                    user.setFecha_nac(fechaNacimiento);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                user.setPuntuacion(123);
+                UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(user);
+                dialogFragment.show(getFragmentManager(), "user_detail_reporte");
+            }
+        });
+
         Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
         bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {

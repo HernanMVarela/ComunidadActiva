@@ -10,16 +10,36 @@
         android:layout_height="wrap_content"
         android:background="@color/green_100"
         android:orientation="vertical">
-        <TextView
-            android:id="@+id/titulo_ver_reporte"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="22sp"
-            android:layout_marginHorizontal="10dp"
-            android:paddingVertical="5dp"
-            android:textStyle="italic|bold"
-            android:text="@string/titulo"/>
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="25dp"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/titulo_ver_reporte"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:paddingVertical="5dp"
+                android:textStyle="italic|bold"
+                android:text="@string/titulo"
+                android:layout_weight="1"/>
+
+            <Button
+                android:id="@+id/btnUsernameDetalle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/green_100"
+                android:textStyle="italic"
+                android:text="@string/username_detalle"/>
+        </LinearLayout>
+
+
         <TextView
             android:id="@+id/estado_ver_reporte"
             android:layout_width="match_parent"
