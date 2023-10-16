@@ -25,14 +25,11 @@
                 android:text="@string/titulo"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edTituloP"
+            <TextView
+                android:id="@+id/txtDetTituloP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_white_rounded"
-                android:minHeight="35dp"
-                android:paddingLeft="5dp"
-                android:textSize="20sp" />
+                android:text="@string/rellenar_antes_de_mostrar" />
 
             <TextView
                 android:id="@+id/txtDesc"
@@ -43,19 +40,11 @@
                 android:text="@string/descripcion_proyecto"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edDescP"
+            <TextView
+                android:id="@+id/txtDetDescP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_white_rounded"
-                android:gravity="top"
-                android:hint="@string/ingresar_descripcion_proyecto"
-                android:inputType="textMultiLine"
-                android:lines="5"
-                android:minHeight="120dp"
-                android:padding="4dp"
-                android:textAlignment="gravity"
-                android:textSize="18sp" />
+                android:text="@string/rellenar_antes_de_mostrar" />
 
             <TextView
                 android:id="@+id/txtTipoP"
@@ -66,10 +55,11 @@
                 android:text="@string/tipo_proyecto"
                 android:textSize="18sp" />
 
-            <Spinner
-                android:id="@+id/spTipoP"
+            <TextView
+                android:id="@+id/txtDetTipoP"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:text="@string/rellenar_antes_de_mostrar" />
 
             <TextView
                 android:id="@+id/txtRequerimientosP"
@@ -80,19 +70,11 @@
                 android:text="@string/requerimientos_proyecto"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edRequerimientosP"
+            <TextView
+                android:id="@+id/txtDetReqP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_white_rounded"
-                android:gravity="top"
-                android:hint="@string/ingresar_requerimientos_proyecto"
-                android:inputType="textMultiLine"
-                android:lines="5"
-                android:minHeight="120dp"
-                android:padding="4dp"
-                android:textAlignment="gravity"
-                android:textSize="18sp" />
+                android:text="@string/rellenar_antes_de_mostrar" />
 
             <TextView
                 android:id="@+id/txtContacto"
@@ -103,15 +85,11 @@
                 android:text="@string/contacto"
                 android:textSize="18sp" />
 
-            <EditText
-                android:id="@+id/edContactoP2"
+            <TextView
+                android:id="@+id/txtDetContactoP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/edittext_white_rounded"
-                android:backgroundTint="#FFFFFF"
-                android:ems="10"
-                android:inputType="number"
-                android:maxHeight="35dp" />
+                android:text="@string/rellenar_antes_de_mostrar" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -168,26 +146,23 @@
                         android:text="@string/cupo"
                         android:textSize="18sp" />
 
-                    <EditText
-                        android:id="@+id/edCupoP2"
+                    <TextView
+                        android:id="@+id/txtDetCupoP"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/edittext_white_rounded"
-                        android:ems="10"
-                        android:inputType="number"
-                        android:minHeight="35dp" />
+                        android:text="@string/rellenar_antes_de_mostrar" />
 
                 </LinearLayout>
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnCrearProyecto"
+                android:id="@+id/btnVolverP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
                 android:layout_weight="1"
                 android:background="@drawable/boton_redondeado"
-                android:text="@string/crear_proyecto"
+                android:text="@string/volver"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />

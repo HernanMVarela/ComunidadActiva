@@ -32,7 +32,6 @@ public class DMANuevoProyecto extends AsyncTask<String, Void, Boolean> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO proyectos (titulo, descripcion, latitud, longitud, fecha, cupo, id_user, id_tipo, id_estado) VALUES (?,?,?,?,?,?,?,?,?)");
-
             preparedStatement.setString(1, nuevo.getTitulo());
             preparedStatement.setString(2, nuevo.getDescripcion());
             preparedStatement.setString(3, String.valueOf(nuevo.getLatitud()));

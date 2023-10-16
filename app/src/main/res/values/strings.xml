@@ -91,6 +91,8 @@
     <string name="unirse_pryecto_deseo">¿Desea unirse al proyecto?</string>
     <string name="actualizar_proyecto">Actualizar Proyecto</string>
     <string name="seleccionar_estado">Seleccione un nuevo estado</string>
+    <string name="tipo_proyecto">Tipo de Proyecto</string>
+    <string name="rellenar_antes_de_mostrar">Rellenar antes de Mostrar</string>
 
     <!-- Admin -->
     <string name="listar_usuarios_titulo">Listar Usuarios</string>

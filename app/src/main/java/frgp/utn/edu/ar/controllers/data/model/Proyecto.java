@@ -8,14 +8,18 @@ public class Proyecto extends Publicacion{
     private int cupo;
     private List<Usuario> voluntarios;
     private TipoProyecto tipo;
+    private String requerimientos;
+    private String contacto;
     private EstadoProyecto estado;
 
-    public Proyecto(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, int cupo, List<Usuario> voluntarios, TipoProyecto tipo, EstadoProyecto estado) {
+    public Proyecto(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, int cupo, List<Usuario> voluntarios, TipoProyecto tipo, String requerimientos, String contacto, EstadoProyecto estado) {
         super(id, titulo, descripcion, latitud,longitud, fecha, owner);
         this.descripcion = descripcion;
         this.cupo = cupo;
         this.voluntarios = voluntarios;
         this.tipo = tipo;
+        this.requerimientos = requerimientos;
+        this.contacto = contacto;
         this.estado = estado;
     }
 
@@ -25,10 +29,12 @@ public class Proyecto extends Publicacion{
     @Override
     public String toString() {
         return "Proyecto{" + super.toString() +
-                "descripcion='" + descripcion + '\'' +
+                " tipo=" + tipo + '\'' +
+                " requerimientos=" + requerimientos + '\'' +
+                " descripcion='" + descripcion + '\'' +
                 ", cupo=" + cupo +
                 ", voluntarios=" + voluntarios +
-                ", tipo=" + tipo +
+                ", contacto=" + contacto +
                 ", estado=" + estado +
                 '}';
     }
@@ -72,4 +78,21 @@ public class Proyecto extends Publicacion{
     public void setEstado(EstadoProyecto estado) {
         this.estado = estado;
     }
+
+    public String getRequerimientos() {
+        return requerimientos;
+    }
+
+    public void setRequerimientos(String requerimientos) {
+        this.requerimientos = requerimientos;
+    }
+
+    public String getContacto() {
+        return contacto;
+    }
+
+    public void setContacto(String contacto) {
+        this.contacto = contacto;
+    }
+
 }
