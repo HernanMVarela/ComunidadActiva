@@ -23,6 +23,12 @@
         <action
             android:id="@+id/action_nav_home_to_nav_nuevo_proyecto"
             app:destination="@id/nav_nuevo_proyecto" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_accesibilidad"
+            app:destination="@id/nav_accesibilidad" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_ayuda"
+            app:destination="@id/nav_ayuda"/>
     </fragment>
     <fragment
         android:id="@+id/nav_notificaciones"
@@ -131,4 +137,15 @@
         android:label="fragment_suspender_usuario"
         tools:layout="@layout/fragment_suspender_usuario" />
 
+    <!-- MENUS DE AYUDA Y ACCESIBILIDAD -->
+    <fragment
+        android:id="@+id/nav_accesibilidad"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.AccesibilidadFragment"
+        android:label="@string/accesibilidad"
+        tools:layout="@layout/fragment_accesibilidad" />
+    <fragment
+        android:id="@+id/nav_ayuda"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.AyudaFragment"
+        android:label="@string/ayuda"
+        tools:layout="@layout/fragment_ayuda" />
 </navigation>

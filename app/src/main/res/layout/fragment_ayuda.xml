@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.fragments.AyudaFragment"
+    android:background="@color/green_100"
+    android:padding="10dp"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/acc_preg_uno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="+  Pregunta 1" />
+    <Button
+        android:id="@+id/acc_preg_dos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="+  Pregunta 2" />
+    <Button
+        android:id="@+id/acc_preg_tres"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="+  Pregunta 3" />
+    <Button
+        android:id="@+id/acc_preg_cuatro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="+  Pregunta 4" />
+    <Button
+        android:id="@+id/acc_preg_cinco"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="+  Pregunta 5" />
+    <Button
+        android:id="@+id/acc_preg_seis"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="+  Pregunta 6" />
+</LinearLayout>

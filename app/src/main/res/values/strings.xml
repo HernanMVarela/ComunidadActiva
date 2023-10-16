@@ -117,4 +117,6 @@
     <string name="denuncia_descripcion">Ingrese una descripción de la denuncia</string>
     <string name="denuncia_reporte_titulo">Denunciar reporte</string>
     <string name="buscar_reportes">Buscar reportes</string>
+    <string name="ayuda">Ayuda</string>
+    <string name="accesibilidad">Accesibilidad</string>
 </resources>
