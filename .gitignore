@@ -28,3 +28,6 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# DBConnection
+app/src/main/java/frgp/utn/edu/ar/controllers/data/remote/DataDB.java
