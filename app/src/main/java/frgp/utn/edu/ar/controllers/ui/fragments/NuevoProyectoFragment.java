@@ -43,9 +43,7 @@ public class NuevoProyectoFragment extends Fragment {
     private SharedLocationViewModel sharedLocationViewModel;
     private NuevoProyectoViewModel mViewModel;
     private EditText edTitulo, edDesc, edRequerimientos, edContacto, edCupos;
-    private Button btnUbicacion, btnCrearProyecto;
     private Spinner spTipoProyecto;
-    private Proyecto nuevoP;
     public static NuevoProyectoFragment newInstance() {
         return new NuevoProyectoFragment();
     }
@@ -54,6 +52,13 @@ public class NuevoProyectoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(layout.fragment_nuevo_proyecto, container, false);
+
+        edTitulo = view.findViewById(id.edTituloP);
+        edDesc = view.findViewById(id.edDescP);
+        edRequerimientos = view.findViewById(id.edRequerimientosP);
+        edContacto = view.findViewById(id.edContactoP2);
+        edCupos = view.findViewById(id.edCupoP2);
+
         spTipoProyecto = view.findViewById(id.spTipoP);
         DMASpinnerTiposProyectos tiposPro = new DMASpinnerTiposProyectos(spTipoProyecto, getContext());
         tiposPro.execute();
@@ -71,36 +76,27 @@ public class NuevoProyectoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         //Iniciaza textos, botones, spinner y proyecto.
-        edTitulo = view.findViewById(id.edTituloP);
-        edDesc = view.findViewById(id.edDescP);
-        edRequerimientos = view.findViewById(id.edRequerimientosP);
-        edContacto = view.findViewById(id.edContactoP2);
-        edCupos = view.findViewById(id.edCupoP2);
-        btnUbicacion = view.findViewById(id.btnUbicacionP);
-        btnCrearProyecto = view.findViewById(id.btnCrearProyecto);
+
+        Button btnUbicacion = view.findViewById(id.btnUbicacionP);
+        Button btnCrearProyecto = view.findViewById(id.btnCrearProyecto);
 
         btnCrearProyecto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                nuevoP = new Proyecto();
-                nuevoP.setContacto(edContacto.getText().toString());
-                nuevoP.setCupo(Integer.parseInt(edCupos.getText().toString()));
-                nuevoP.setDescripcion(edDesc.getText().toString());
-                nuevoP.setTipo(new TipoProyecto(spTipoProyecto.getSelectedItemPosition()+1, spTipoProyecto.getSelectedItem().toString()));
-                nuevoP.setRequerimientos(edRequerimientos.getText().toString());
-                nuevoP.setTitulo(edTitulo.getText().toString());
-                nuevoP.setLatitud(sharedLocationViewModel.getLatitude());
-                nuevoP.setLongitud(sharedLocationViewModel.getLongitude());
-                nuevoP.setOwner(null);
-                nuevoP.setFecha(new Date(System.currentTimeMillis()));
-                nuevoP.setEstado(new EstadoProyecto(1,"ABIERTO"));
-                if(validarDatosProyecto(nuevoP)){
-                        DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP,v.getContext());
-                        DMANuevoP.execute();
-                        limpiarCampos();
-                        Log.i("Existoso","Se guardo bien el proyecto");
-                    }
+                // INICIALIZA EL sharedLocationViewModel, QUE PERMITE COMPARTIR LA UBICACION SELECCIONADA ENTRE FRAGMENTOS
+                sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
+                // VALIDA CAMPOS EN PANTALLA
+                if(validarDatosProyecto()){
+                    // CARGA DATOS DE LOS CONTROLES AL NUEVO PROYECTO
+                    Proyecto nuevoP = cargarDatos();
+                    // LLAMA AL DMA PARA EL GUARDADO EN DB
+                    DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP,v.getContext());
+                    //DMANuevoP.execute();  -- COMENTADO PARA NO IMPACTAR EN DB - MODIFICACION DE TABLAS PENDIENTE
+                    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
+                    limpiarCampos();
+                    Log.i("Existoso","Se guardo bien el proyecto");
+                }
                 else {
                 Log.e("ERROR","No se guardo bien el proyecto");
                 }
@@ -123,23 +119,43 @@ public class NuevoProyectoFragment extends Fragment {
         });
     }
 
-    public boolean validarDatosProyecto(Proyecto Proyecto){
-        if(Proyecto.getTitulo().trim().isEmpty()){
+    private Proyecto cargarDatos(){
+        Proyecto nuevoP = new Proyecto();
+        nuevoP.setContacto(edContacto.getText().toString());
+        nuevoP.setCupo(Integer.parseInt(edCupos.getText().toString()));
+        nuevoP.setDescripcion(edDesc.getText().toString());
+        nuevoP.setTipo(new TipoProyecto(spTipoProyecto.getSelectedItemPosition()+1, spTipoProyecto.getSelectedItem().toString()));
+        nuevoP.setRequerimientos(edRequerimientos.getText().toString());
+        nuevoP.setTitulo(edTitulo.getText().toString());
+        nuevoP.setLatitud(sharedLocationViewModel.getLatitude());
+        nuevoP.setLongitud(sharedLocationViewModel.getLongitude());
+        nuevoP.setOwner(null);
+        nuevoP.setFecha(new Date(System.currentTimeMillis()));
+        nuevoP.setEstado(new EstadoProyecto(1,"ABIERTO"));
+
+        return nuevoP;
+    }
+
+    private boolean validarDatosProyecto(){
+        if(edTitulo.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa un titulo para tu proyecto", Toast.LENGTH_LONG).show();
             return false;}
-        if(Proyecto.getDescripcion().trim().isEmpty()){
+        if(edDesc.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa una descripción para tu proyecto", Toast.LENGTH_LONG).show();
             return false;}
-        if(Proyecto.getRequerimientos().trim().isEmpty()){
+        if(edRequerimientos.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa un requerimiento o más para tu proyecto", Toast.LENGTH_LONG).show();
             return false;}
-        if(Proyecto.getContacto().trim().isEmpty()){
+        if(edContacto.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa un telefono de contacto para tu proyecto", Toast.LENGTH_LONG).show();
             return false;}
-        if(Proyecto.getCupo()<=0){
+        if(edCupos.getText().toString().trim().isEmpty()) {
+            Toast.makeText(this.getContext(), "Ingresa un valor para indicar la cantidad máxima de participantes", Toast.LENGTH_LONG).show();
+        }else if (Integer.parseInt(edCupos.getText().toString()) <= 0) {
             Toast.makeText(this.getContext(), "Ingresa un cupo mayor a 0 para tu proyecto", Toast.LENGTH_LONG).show();
-            return false;}
-        if (Proyecto.getLatitud() == 0 || Proyecto.getLongitud() == 0) {
+            return false;
+        }
+        if (sharedLocationViewModel.getLatitude() == 0 || sharedLocationViewModel.getLongitude() == 0) {
             Toast.makeText(this.getContext(), "Ingresa una ubicación.", Toast.LENGTH_LONG).show();
             return false;
         }

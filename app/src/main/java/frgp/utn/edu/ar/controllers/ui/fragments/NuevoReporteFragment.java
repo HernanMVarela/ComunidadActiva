@@ -49,8 +49,6 @@ public class NuevoReporteFragment extends Fragment {
     private SharedLocationViewModel sharedLocationViewModel;
     private Spinner spinTipoReporte;
     private EditText titulo, descripcion;
-    private Reporte nuevo;
-
     public static NuevoReporteFragment newInstance() {
         return new NuevoReporteFragment();
     }
@@ -73,16 +71,11 @@ public class NuevoReporteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // INICIALIZA EL sharedLocationViewModel, QUE PERMITE COMPARTIR LA UBICACION SELECCIONADA ENTRE FRAGMENTOS
-        sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
-
         // INICIAIZA BOTONES DEL FRAGMENTO
         Button bCamara = view.findViewById(R.id.btnCamara);
         Button bUbicacion = view.findViewById(R.id.btnUbicacion);
         Button bCrearReporte = view.findViewById(R.id.btnCrearReporte);
 
-        // INICIALIZA NUEVO REPORTE
-        nuevo = new Reporte();
         bCamara.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Verificar si tiene permiso de la cámara
@@ -112,37 +105,14 @@ public class NuevoReporteFragment extends Fragment {
             public void onClick(View v) {
 
                 try {
-                    // Toma las coordenadas desde el ViewModel compartido con el UbicacionFragment
-                    double latitude = sharedLocationViewModel.getLatitude();
-                    double longitude = sharedLocationViewModel.getLongitude();
+                    // INICIALIZA EL sharedLocationViewModel, QUE PERMITE COMPARTIR LA UBICACION SELECCIONADA ENTRE FRAGMENTOS
+                    sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
 
-                    // Crea el objeto Reporte y carga los datos
-                    nuevo = new Reporte();
-                    nuevo.setLatitud(latitude);
-                    nuevo.setLongitud(longitude);
-                    nuevo.setTitulo(titulo.getText().toString());
-                    nuevo.setDescripcion(descripcion.getText().toString());
-                    nuevo.setEstado(new EstadoReporte(1,"ABIERTO"));
-                    nuevo.setTipo(new TipoReporte(spinTipoReporte.getSelectedItemPosition()+1, spinTipoReporte.getSelectedItem().toString()));
-                    nuevo.setImagen(imagenCapturada);
-                    nuevo.setPuntaje(0);
-                    nuevo.setFecha(new Date(System.currentTimeMillis()));
-                    nuevo.setOwner(null); // REEMPLAZAR POR USUARIO LOGUEADO
-
-                    if(checkFormValid(v,nuevo)){
+                    if(checkFormValid()){
+                        Reporte nuevo = cargarDatos();
                         DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo,v.getContext());
                         DMAGuardar.execute();
-                        titulo.setText("");
-                        descripcion.setText("");
-                        sharedLocationViewModel.setLatitude(0);
-                        sharedLocationViewModel.setLongitude(0);
-                        longitude = 0;
-                        latitude = 0;
-                        imagenCapturada = null;
-                        Log.i("Existoso","Se guardo bien");
-                    }else{
-                        Toast.makeText(v.getContext(), "No se pudo crear el reporte", Toast.LENGTH_LONG).show();
-                        Log.e("ERROR","No se guardo bien");
+                        limpiarCampos();
                     }
 
                 }catch (Exception e){
@@ -186,41 +156,63 @@ public class NuevoReporteFragment extends Fragment {
     }
 
     /// VALIDACIONES DE CAMPOS
+    private boolean checkFormValid() {
 
-    private boolean checkFormValid(View view, Reporte nuevo) {
-
-        if (nuevo.getTitulo().trim().isEmpty()) {
+        if (titulo.getText().toString().trim().isEmpty()) {
             Toast.makeText(this.getContext(), "Debes poner un título al reporte.", Toast.LENGTH_LONG).show();
             return false;
         }
-
-        if (nuevo.getDescripcion().trim().isEmpty()) {
+        if (descripcion.getText().toString().trim().isEmpty()) {
             Toast.makeText(this.getContext(), "Debes dar una descripcion del problema.", Toast.LENGTH_LONG).show();
             return false;
         }
-
-        if (nuevo.getTipo() == null) {
+        if (spinTipoReporte.getSelectedItemPosition()+1 == 0) {
             Toast.makeText(this.getContext(), "No has seleccionado un tipo de reporte.", Toast.LENGTH_LONG).show();
             return false;
-        } else if (nuevo.getTipo().getTipo().isEmpty()){
+        } else if (spinTipoReporte.getSelectedItem().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Tipo de reporte no seleccionado.", Toast.LENGTH_LONG).show();
             return false;
         }
-
-        if (nuevo.getLatitud() == 0 || nuevo.getLongitud() == 0) {
+        if (sharedLocationViewModel.getLatitude() == 0 || sharedLocationViewModel.getLongitude() == 0) {
             Toast.makeText(this.getContext(), "No has seleccionado una ubicación.", Toast.LENGTH_LONG).show();
             return false;
         }
-
-        if (nuevo.getImagen() == null) {
+        if (imagenCapturada == null) {
             Toast.makeText(this.getContext(), "No has cargado una imagen.", Toast.LENGTH_LONG).show();
             return false;
-        } else if (nuevo.getImagen().getWidth() < 1 || nuevo.getImagen().getHeight() < 1){
+        } else if (imagenCapturada.getWidth() < 1 || imagenCapturada.getHeight() < 1){
             Toast.makeText(this.getContext(), "La imagen es inválida.", Toast.LENGTH_LONG).show();
             return false;
         }
-
         return true;
+    }
+    private Reporte cargarDatos(){
+
+        // Toma las coordenadas desde el ViewModel compartido con el UbicacionFragment
+        double latitude = sharedLocationViewModel.getLatitude();
+        double longitude = sharedLocationViewModel.getLongitude();
+
+        // Crea el objeto Reporte y carga los datos
+        Reporte nuevoReporte = new Reporte();
+        nuevoReporte.setLatitud(latitude);
+        nuevoReporte.setLongitud(longitude);
+        nuevoReporte.setTitulo(titulo.getText().toString());
+        nuevoReporte.setDescripcion(descripcion.getText().toString());
+        nuevoReporte.setEstado(new EstadoReporte(1,"ABIERTO"));
+        nuevoReporte.setTipo(new TipoReporte(spinTipoReporte.getSelectedItemPosition()+1, spinTipoReporte.getSelectedItem().toString()));
+        nuevoReporte.setImagen(imagenCapturada);
+        nuevoReporte.setPuntaje(0);
+        nuevoReporte.setFecha(new Date(System.currentTimeMillis()));
+        nuevoReporte.setOwner(null); // REEMPLAZAR POR USUARIO LOGUEADO
+
+        return nuevoReporte;
+    }
+    private void limpiarCampos(){
+        titulo.setText("");
+        descripcion.setText("");
+        sharedLocationViewModel.setLatitude(0);
+        sharedLocationViewModel.setLongitude(0);
+        imagenCapturada = null;
     }
 
 }
