@@ -2,9 +2,11 @@ package frgp.utn.edu.ar.controllers.data.model;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Reporte extends Publicacion{
+public class Reporte extends Publicacion implements Serializable {
+
     private Bitmap imagen;
     private int puntaje;
     private int cant_votos;

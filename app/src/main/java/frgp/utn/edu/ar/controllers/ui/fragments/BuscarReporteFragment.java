@@ -2,10 +2,12 @@ package frgp.utn.edu.ar.controllers.ui.fragments;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -41,6 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DMAListviewReportes;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.BuscarReporteViewModel;
 
@@ -49,8 +53,9 @@ public class BuscarReporteFragment extends Fragment {
     private BuscarReporteViewModel mViewModel;
     private ListView listaReportes;
     private GoogleMap googlemaplocal;
-    private Marker userMarker;
     private SearchView barraBusqueda;
+    private Reporte seleccionado = null;
+    private View viewSeleccionado = null;
     public static BuscarReporteFragment newInstance() {
         return new BuscarReporteFragment();
     }
@@ -78,11 +83,11 @@ public class BuscarReporteFragment extends Fragment {
                             try {
                                 addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1);
                                 if (!addresses.isEmpty()) {
-                                    userMarker = googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title(addresses.get(0).getAddressLine(0)));
-                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 10));
+                                    googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title(addresses.get(0).getAddressLine(0)));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12));
                                 } else {
-                                    userMarker = googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title("Sin título"));
-                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 10));
+                                    googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title("Sin título"));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 12));
                                 }
                             } catch (IOException e) {
                                 Log.e("Error de mapa", e.toString());
@@ -117,7 +122,22 @@ public class BuscarReporteFragment extends Fragment {
             DMAListaReportes.execute();
         }
 
+        listaReportes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Restaura el fondo del elemento previamente seleccionado
+                if (viewSeleccionado != null) {
+                    viewSeleccionado.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_500));
+                }
 
+                // Almacena el informe seleccionado en una variable
+                seleccionado = (Reporte) parent.getItemAtPosition(position);
+                // Cambia el fondo del elemento seleccionado
+                view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_700));
+                // Almacena la vista del elemento seleccionado actualmente
+                viewSeleccionado = view;
+            }
+        });
 
         bVerReporte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -127,8 +147,15 @@ public class BuscarReporteFragment extends Fragment {
     }
 
     public void navegarDetalle(){
-        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-        navController.navigate(R.id.detalle_reporte);
+        if(seleccionado != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selected_report", seleccionado);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.detalle_reporte, bundle);
+        }else {
+            Toast.makeText(this.getContext(), "Debes seleccionar un reporte", Toast.LENGTH_LONG).show();
+        }
+
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

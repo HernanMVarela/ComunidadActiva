@@ -46,7 +46,6 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
     private GoogleMap mapa;
     private static String result2;
     private static List<Reporte> listaReporte;
-    private FusedLocationProviderClient fusedLocationClient;
 
     //Constructor
     public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa) {
