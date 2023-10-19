@@ -21,7 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFechaNacimiento" />
+        app:layout_constraintTop_toBottomOf="@+id/etFechaNacimientoRegistro" />
 
     <Button
         android:id="@+id/btnEnviarCodigo"
@@ -32,10 +32,10 @@
         android:text="@string/enviar_codigo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/etCorreo"
+        app:layout_constraintBottom_toBottomOf="@+id/etNombreRegistro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etCorreo"
-        app:layout_constraintTop_toTopOf="@+id/etCorreo"
+        app:layout_constraintStart_toEndOf="@+id/etNombreRegistro"
+        app:layout_constraintTop_toTopOf="@+id/etNombreRegistro"
         app:layout_constraintVertical_bias="0.0" />
 
     <Button
@@ -48,10 +48,10 @@
         android:text="@string/verificar_codigo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/etCodigo"
+        app:layout_constraintBottom_toBottomOf="@+id/etApellidoRegistro"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etCodigo"
-        app:layout_constraintTop_toTopOf="@+id/etCodigo"
+        app:layout_constraintStart_toEndOf="@+id/etApellidoRegistro"
+        app:layout_constraintTop_toTopOf="@+id/etApellidoRegistro"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageButton
@@ -64,7 +64,7 @@
         android:layout_marginBottom="13dp"
         android:backgroundTint="@color/green_100"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/etCorreo"
+        app:layout_constraintBottom_toTopOf="@+id/etNombreRegistro"
         app:layout_constraintEnd_toStartOf="@+id/tvCambioPass"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -86,7 +86,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etCorreo"
+        android:id="@+id/etNombreRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
@@ -95,13 +95,13 @@
         android:ems="10"
         android:hint="@string/correo_electr_nico"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etCodigo"
+        app:layout_constraintBottom_toTopOf="@+id/etApellidoRegistro"
         app:layout_constraintEnd_toStartOf="@+id/btnEnviarCodigo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
     <EditText
-        android:id="@+id/etCodigo"
+        android:id="@+id/etApellidoRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
@@ -109,13 +109,13 @@
         android:ems="10"
         android:hint="@string/codigo_verificacion"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etPass"
+        app:layout_constraintBottom_toTopOf="@+id/etUserNameRegistro"
         app:layout_constraintEnd_toStartOf="@+id/btnConfirmarCodigo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCorreo" />
+        app:layout_constraintTop_toBottomOf="@+id/etNombreRegistro" />
 
     <EditText
-        android:id="@+id/etPass"
+        android:id="@+id/etUserNameRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
@@ -124,13 +124,13 @@
         android:ems="10"
         android:hint="@string/nueva_pass"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etFechaNacimiento"
+        app:layout_constraintBottom_toTopOf="@+id/etFechaNacimientoRegistro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCodigo" />
+        app:layout_constraintTop_toBottomOf="@+id/etApellidoRegistro" />
 
     <EditText
-        android:id="@+id/etFechaNacimiento"
+        android:id="@+id/etFechaNacimientoRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="25dp"
@@ -142,6 +142,6 @@
         app:layout_constraintBottom_toTopOf="@+id/btnConfirmarCambioPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPass" />
+        app:layout_constraintTop_toBottomOf="@+id/etUserNameRegistro" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

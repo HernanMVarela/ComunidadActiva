@@ -8,7 +8,7 @@
     tools:context=".ui.activities.RegistroActivity">
 
     <Spinner
-        android:id="@+id/spnTiposReporte2"
+        android:id="@+id/spnCategoriaUserRegistro"
         android:layout_width="370dp"
         android:layout_height="42dp"
         android:layout_marginStart="20dp"
@@ -30,7 +30,7 @@
         android:gravity="start"
         android:text="@string/tipo_usuario"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/spnTiposReporte2"
+        app:layout_constraintBottom_toTopOf="@+id/spnCategoriaUserRegistro"
         app:layout_constraintStart_toStartOf="@+id/etPassDosRegistro"
         app:layout_constraintTop_toBottomOf="@+id/etPassDosRegistro" />
 
@@ -42,7 +42,7 @@
         android:layout_marginEnd="52dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/green_700"
-        android:onClick="Registrar"
+        android:onClick="registrarUsuario"
         android:text="@string/aceptar"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black"
@@ -61,7 +61,7 @@
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/green_100"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/etCorreo"
+        app:layout_constraintBottom_toTopOf="@+id/etNombreRegistro"
         app:layout_constraintEnd_toStartOf="@+id/tvCambioPass"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -83,20 +83,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etCorreo"
+        android:id="@+id/etNombreRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="9dp"
         android:ems="10"
         android:hint="@string/nombre"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etCodigo"
-        app:layout_constraintEnd_toEndOf="@+id/etCodigo"
-        app:layout_constraintStart_toStartOf="@+id/etCodigo"
+        app:layout_constraintBottom_toTopOf="@+id/etApellidoRegistro"
+        app:layout_constraintEnd_toEndOf="@+id/etApellidoRegistro"
+        app:layout_constraintStart_toStartOf="@+id/etApellidoRegistro"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
     <EditText
-        android:id="@+id/etPass"
+        android:id="@+id/etUserNameRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
@@ -105,13 +105,13 @@
         android:ems="10"
         android:hint="@string/nombre_de_usuario"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etFechaNacimiento"
+        app:layout_constraintBottom_toTopOf="@+id/etFechaNacimientoRegistro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCodigo" />
+        app:layout_constraintTop_toBottomOf="@+id/etApellidoRegistro" />
 
     <EditText
-        android:id="@+id/etFechaNacimiento"
+        android:id="@+id/etFechaNacimientoRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="22dp"
@@ -120,13 +120,13 @@
         android:ems="10"
         android:hint="@string/fecha_nacimiento"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etTelefono"
+        app:layout_constraintBottom_toTopOf="@+id/etTelefonoRegistro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPass" />
+        app:layout_constraintTop_toBottomOf="@+id/etUserNameRegistro" />
 
     <EditText
-        android:id="@+id/etTelefono"
+        android:id="@+id/etTelefonoRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="23dp"
@@ -134,11 +134,11 @@
         android:layout_marginBottom="10dp"
         android:ems="10"
         android:hint="@string/telefono"
-        android:inputType="text"
+        android:inputType="number"
         app:layout_constraintBottom_toTopOf="@+id/etCorreoRegistro"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFechaNacimiento" />
+        app:layout_constraintTop_toBottomOf="@+id/etFechaNacimientoRegistro" />
 
     <EditText
         android:id="@+id/etCorreoRegistro"
@@ -153,7 +153,7 @@
         app:layout_constraintBottom_toTopOf="@+id/etPassUnoRegistro"
         app:layout_constraintEnd_toEndOf="@+id/etPassUnoRegistro"
         app:layout_constraintStart_toStartOf="@+id/etPassUnoRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/etTelefono" />
+        app:layout_constraintTop_toBottomOf="@+id/etTelefonoRegistro" />
 
     <EditText
         android:id="@+id/etPassUnoRegistro"
@@ -185,16 +185,16 @@
         app:layout_constraintTop_toBottomOf="@+id/etPassUnoRegistro" />
 
     <EditText
-        android:id="@+id/etCodigo"
+        android:id="@+id/etApellidoRegistro"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="9dp"
         android:ems="10"
         android:hint="@string/apellido"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etPass"
-        app:layout_constraintEnd_toEndOf="@+id/etPass"
-        app:layout_constraintStart_toStartOf="@+id/etPass"
-        app:layout_constraintTop_toBottomOf="@+id/etCorreo" />
+        app:layout_constraintBottom_toTopOf="@+id/etUserNameRegistro"
+        app:layout_constraintEnd_toEndOf="@+id/etUserNameRegistro"
+        app:layout_constraintStart_toStartOf="@+id/etUserNameRegistro"
+        app:layout_constraintTop_toBottomOf="@+id/etNombreRegistro" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
