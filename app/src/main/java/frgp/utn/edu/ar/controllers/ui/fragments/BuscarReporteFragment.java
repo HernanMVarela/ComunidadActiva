@@ -72,19 +72,17 @@ public class BuscarReporteFragment extends Fragment {
                             LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
                             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                             List<Address> addresses;
-
-                            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),currentLatLng);
+                            googlemaplocal = googleMap;
+                            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),currentLatLng,googlemaplocal);
                             DMAListaReportes.execute();
-
                             try {
-                                googlemaplocal = googleMap;
                                 addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1);
                                 if (!addresses.isEmpty()) {
                                     userMarker = googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title(addresses.get(0).getAddressLine(0)));
-                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 10));
                                 } else {
                                     userMarker = googlemaplocal.addMarker(new MarkerOptions().position(currentLatLng).title("Sin título"));
-                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 15));
+                                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLatLng, 10));
                                 }
                             } catch (IOException e) {
                                 Log.e("Error de mapa", e.toString());
@@ -115,7 +113,7 @@ public class BuscarReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }else{
-            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0));
+            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal);
             DMAListaReportes.execute();
         }
 

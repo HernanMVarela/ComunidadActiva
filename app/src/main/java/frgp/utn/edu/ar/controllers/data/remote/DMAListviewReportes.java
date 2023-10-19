@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.ListView;
 
 import androidx.core.app.ActivityCompat;
@@ -13,11 +14,16 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -37,15 +43,18 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
     private Context context;
     private ListView listado;
     private LatLng ubicacion;
+    private GoogleMap mapa;
     private static String result2;
     private static List<Reporte> listaReporte;
     private FusedLocationProviderClient fusedLocationClient;
 
     //Constructor
-    public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion) {
+    public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa) {
         listado = listview;
         context = ct;
+        this.mapa = mapa;
         this.ubicacion = ubicacion;
+        Log.i("Coords","Lat: " + this.ubicacion.latitude + " | Long: " + this.ubicacion.longitude);
     }
 
     @Override
@@ -56,36 +65,49 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT\n" +
-                    "    R.ID AS ReporteID,\n" +
-                    "    R.TITULO AS TituloReporte,\n" +
-                    "    R.DESCRIPCION AS DescripcionReporte,\n" +
-                    "    R.LATITUD AS LatitudReporte,\n" +
-                    "    R.LONGITUD AS LongitudReporte,\n" +
-                    "    R.IMAGEN AS ImagenReporte,\n" + //// SIN OBTENER TODAVIA
-                    "    R.FECHA AS FechaReporte,\n" +
-                    "    R.CANT_VOTOS AS CantidadVotos,\n" +
-                    "    R.PUNTAJE AS PuntajeReporte,\n" +
-                    "    R.ID_USER AS IDUsuarioReporte,\n" +
-                    "    R.ID_TIPO AS IDTipoReporte,\n" +
-                    "    R.ID_ESTADO AS IDEstadoReporte,\n" +
-                    "    U.USERNAME AS UsernameUsuario,\n" +
-                    "    U.NOMBRE AS NombreUsuario,\n" +
-                    "    U.APELLIDO AS ApellidoUsuario,\n" +
-                    "    U.TELEFONO AS TelefonoUsuario,\n" +
-                    "    U.CORREO AS CorreoUsuario,\n" +
-                    "    U.FECHA_NAC AS FechaNacimientoUsuario,\n" +
-                    "    U.CREACION AS FechaCreacionUsuario,\n" +
-                    "    TR.TIPO AS TipoReporte,\n" +
-                    "    ER.ESTADO AS EstadoReporte\n" +
-                    "FROM\n" +
-                    "    REPORTES AS R\n" +
-                    "INNER JOIN\n" +
-                    "    USUARIOS AS U ON R.ID_USER = U.ID\n" +
-                    "INNER JOIN\n" +
-                    "    TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID\n" +
-                    "INNER JOIN\n" +
-                    "    ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID;");
+            double dispositivoLatitud = ubicacion.latitude;
+            double dispositivoLongitud = ubicacion.longitude;
+
+            String query = "SELECT " +
+                    "R.ID AS ReporteID, " +
+                    "R.TITULO AS TituloReporte, " +
+                    "R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, " +
+                    "R.LONGITUD AS LongitudReporte, " +
+                    "R.IMAGEN AS ImagenReporte, " +
+                    "R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, " +
+                    "R.PUNTAJE AS PuntajeReporte, " +
+                    "R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, " +
+                    "R.ID_ESTADO AS IDEstadoReporte, " +
+                    "U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, " +
+                    "U.APELLIDO AS ApellidoUsuario, " +
+                    "U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, " +
+                    "U.FECHA_NAC AS FechaNacimientoUsuario, " +
+                    "U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, " +
+                    "ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(" +
+                    "POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
+                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * " +
+                    "POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
+                    ")) AS Distancia " +
+                    "FROM REPORTES AS R " +
+                    "INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID " +
+                    "INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "HAVING Distancia <= 5 " +
+                    "ORDER BY Distancia;";
+
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setDouble(1, dispositivoLatitud); // Nueva ubicación del dispositivo
+            preparedStatement.setDouble(2, dispositivoLatitud); // Nueva ubicación del dispositivo (repetir para el cálculo)
+            preparedStatement.setDouble(3, dispositivoLongitud); // Nueva ubicación del dispositivo
+
+            ResultSet rs = preparedStatement.executeQuery();
             result2 = " ";
             listaReporte = new ArrayList<Reporte>();
             while (rs.next()) {
@@ -129,7 +151,16 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         ListaReportesAdapter adapter = new ListaReportesAdapter(context, listaReporte, ubicacion);
+        assert listaReporte != null;
+        marcarUbicaciones();
         listado.setAdapter(adapter);
+    }
+
+    private void marcarUbicaciones(){
+        for (Reporte item: listaReporte) {
+            LatLng repUbi = new LatLng(item.getLatitud(),item.getLongitud());
+            mapa.addMarker(new MarkerOptions().position(repUbi).title(item.getTitulo()));
+        }
     }
 
 }
