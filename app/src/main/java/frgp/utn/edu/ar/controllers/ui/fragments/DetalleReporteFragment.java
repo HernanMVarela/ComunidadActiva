@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +49,7 @@ import java.util.Locale;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.DMACargarImagenReporte;
 import frgp.utn.edu.ar.controllers.ui.activities.VecinoActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
@@ -61,6 +63,7 @@ public class DetalleReporteFragment extends Fragment {
     private DetalleReporteViewModel mViewModel;
     private TextView titulo, descripcion, estado, fecha, tipo;
     private RatingBar puntaje;
+    private ImageView imagen;
     Button bUsuario;
 
     private Reporte seleccionado;
@@ -102,6 +105,7 @@ public class DetalleReporteFragment extends Fragment {
         tipo = view.findViewById(R.id.reporte_det_tipo);
         bUsuario = view.findViewById(R.id.btnUsernameDetalle);
         puntaje = view.findViewById(R.id.detalle_rep_rating);
+        imagen = view.findViewById(R.id.imagen_ver_reporte);
 
         Bundle bundle = this.getArguments();
         /// OBTIENE EL REPORTE SELECCIONADO EN LA PANTALLA ANTERIOR
@@ -124,7 +128,9 @@ public class DetalleReporteFragment extends Fragment {
                 }else{
                     puntaje.setRating(0);
                 }
-
+                Log.i("LLAMADO","LLAMA A DMA CON ID: " + seleccionado.getId());
+                DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
+                DMAImagen.execute();
             }else {
                 /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
                 Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_SHORT).show();

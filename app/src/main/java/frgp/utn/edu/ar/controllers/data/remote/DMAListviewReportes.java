@@ -73,7 +73,6 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
                     "R.DESCRIPCION AS DescripcionReporte, " +
                     "R.LATITUD AS LatitudReporte, " +
                     "R.LONGITUD AS LongitudReporte, " +
-                    "R.IMAGEN AS ImagenReporte, " +
                     "R.FECHA AS FechaReporte, " +
                     "R.CANT_VOTOS AS CantidadVotos, " +
                     "R.PUNTAJE AS PuntajeReporte, " +
@@ -117,6 +116,7 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
                 reporte.setLatitud(rs.getDouble("LatitudReporte"));
                 reporte.setLongitud(rs.getDouble("LongitudReporte"));
                 reporte.setFecha(rs.getDate("FechaReporte"));
+                reporte.setImagen(null);
                 reporte.setCant_votos(rs.getInt("CantidadVotos"));
                 reporte.setPuntaje(rs.getInt("PuntajeReporte"));
                 Usuario user = new Usuario();
