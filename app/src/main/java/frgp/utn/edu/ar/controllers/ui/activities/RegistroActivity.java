@@ -22,10 +22,12 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.utils.LogService;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.MailService;
 
 public class RegistroActivity extends AppCompatActivity implements View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
     LogService logger = new LogService();
+    MailService mailService = new MailService();
     UsuarioRepository usuarioRepository = new UsuarioRepository();
     private EditText nombre, apellido, userName, fechaNacimiento, telefono, correo, password, password2;
     private Calendar mCalendar;
@@ -103,6 +105,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
             Toast.makeText(this, "Usuario creado correctamente", Toast.LENGTH_LONG).show();
             Usuario usuario = usuarioRepository.checkUserName(userName.getText().toString(), view.getContext());
             logger.log(usuario.getId(), LogsEnum.REGISTRO_USUARIO, "Se registro el usuario " + usuario.getUsername());
+            mailService.sendMail(usuario.getCorreo(), "BIENVENIDO A COMUNIDAD ACTIVA", String.format("Hola %s, tu usuario fue creado correctamente", usuario.getUsername()));
             startActivity(intent);
         }else{
             Toast.makeText(this, "Error al crear el usuario", Toast.LENGTH_LONG).show();

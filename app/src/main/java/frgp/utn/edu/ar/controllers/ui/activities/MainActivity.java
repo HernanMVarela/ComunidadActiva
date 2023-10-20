@@ -8,6 +8,8 @@ import android.widget.EditText;
 import androidx.appcompat.app.AppCompatActivity;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.remote.mail.MailConnection;
+import frgp.utn.edu.ar.controllers.utils.MailService;
 
 public class MainActivity extends AppCompatActivity {
 
