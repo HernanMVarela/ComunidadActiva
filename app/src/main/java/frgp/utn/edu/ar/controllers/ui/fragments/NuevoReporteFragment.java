@@ -27,14 +27,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.time.Instant;
 import java.util.Date;
 
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
-import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.DMAGuardarReporte;
-import frgp.utn.edu.ar.controllers.data.remote.DMASpinnerTiposReporte;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarReporte;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMASpinnerTiposReporte;
 import frgp.utn.edu.ar.controllers.ui.activities.VecinoActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
 import frgp.utn.edu.ar.controllers.ui.adapters.SharedLocationViewModel;

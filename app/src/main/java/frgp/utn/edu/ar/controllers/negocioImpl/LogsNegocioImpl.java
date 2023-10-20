@@ -15,11 +15,6 @@ public class LogsNegocioImpl implements LogsNegocio {
     private LogsDAO logsDAO = new LogsDAOImpl();
 
     @Override
-    public boolean agregarLog(Context context, Logs nuevo) {
-        return logsDAO.agregarLog(context, nuevo);
-    }
-
-    @Override
     public List<Logs> buscarLogsPorUser(Context context, int idUser) {
         return  logsDAO.listarLogsPorUser(context, idUser);
     }

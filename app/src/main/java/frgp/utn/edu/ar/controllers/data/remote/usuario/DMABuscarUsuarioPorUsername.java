@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.DAOImpl.Usuario;
+package frgp.utn.edu.ar.controllers.data.remote.usuario;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -10,19 +10,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Objects;
 
-import frgp.utn.edu.ar.controllers.DAOImpl.Usuario.EstadoUsuario.DMABuscarEstadoUsuarioPorId;
-import frgp.utn.edu.ar.controllers.DAOImpl.Usuario.TipoUsuario.DMABuscarTipoUsuarioPorId;
-import frgp.utn.edu.ar.controllers.data.remote.DataDB;
+import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
+import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
-
+public class DMABuscarUsuarioPorUsername extends AsyncTask<String, Void, Usuario> {
     private final Context context;
-    private int id;
+    private String username;
     //Constructor
-    public DMABuscarUsuarioPorId(int id, Context ct)
+    public DMABuscarUsuarioPorUsername(String username, Context ct)
     {
-        this.id = id;
+        this.username = username;
         context = ct;
     }
 
@@ -32,8 +31,11 @@ public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO usuarios (username, password, puntuacion, nombre, apellido, telefono, correo, fecha_nac, fecha_alta. estado, tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-            preparedStatement.setInt(1, id);
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM USUARIOS AS U" +
+                                                                           " INNER JOIN ESTADOS_USUARIO AS EU ON U.ID_ESTADO = EU.ID" +
+                                                                           " INNER JOIN TIPOS_USUARIO AS TU ON U.ID_TIPO = TU.ID" +
+                                                                           " WHERE U.USERNAME = ?");
+            preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 usuario = new Usuario();
@@ -46,19 +48,18 @@ public class DMABuscarUsuarioPorId extends AsyncTask<String, Void, Usuario> {
                 usuario.setTelefono(resultSet.getString("telefono"));
                 usuario.setCorreo(resultSet.getString("correo"));
                 usuario.setFecha_nac(resultSet.getDate("fecha_nac"));
-                usuario.setFecha_alta(resultSet.getDate("fecha_alta"));
-                usuario.setEstado(new DMABuscarEstadoUsuarioPorId(resultSet.getInt("idEstado"),context).doInBackground(String.valueOf(resultSet.getInt("idEstado"))));
-                usuario.setTipo(new DMABuscarTipoUsuarioPorId(resultSet.getInt("idTipo"),context).doInBackground(String.valueOf(resultSet.getInt("idTipo"))));
-                Log.i("Usuario",usuario.getNombre());
+                usuario.setFecha_alta(resultSet.getDate("creacion"));
+                usuario.setEstado(new EstadoUsuario(resultSet.getInt("id_estado"), resultSet.getString("estado")));
+                usuario.setTipo(new TipoUsuario(resultSet.getInt("id_tipo"), resultSet.getString("tipo")));
+                usuario.setCodigo_recuperacion(resultSet.getString("cod_recuperacion"));
+                usuario.setFecha_bloqueo(resultSet.getDate("fecha_bloqueo"));
             }
-            resultSet.close();
             preparedStatement.close();
             con.close();
         }
         catch(Exception e) {
             e.printStackTrace();
             Log.e("Error", Objects.requireNonNull(e.getMessage()));
-            return null;
         }
         return usuario;
     }

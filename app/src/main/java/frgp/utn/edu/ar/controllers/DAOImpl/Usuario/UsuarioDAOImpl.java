@@ -12,18 +12,6 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 public class UsuarioDAOImpl implements UsuarioDAO {
 
     @Override
-    public boolean agregarUsuario(Context context, Usuario nuevo) {
-        DMANuevoUsuario DMANU = new DMANuevoUsuario(nuevo, context);
-        DMANU.execute();
-        try {
-            return DMANU.get();
-        } catch (Exception e) {
-            Log.d("Error", Objects.requireNonNull(e.getMessage()));
-            return false;
-        }
-    }
-
-    @Override
     public boolean modificarUsuario(Context context, Usuario modificar) {
         DMAUpdateUsuario DMAUU = new DMAUpdateUsuario(modificar, context);
         DMAUU.execute();
@@ -32,18 +20,6 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         } catch (Exception e) {
             Log.d("Error", Objects.requireNonNull(e.getMessage()));
             return false;
-        }
-    }
-
-    @Override
-    public Usuario buscarUsuarioPorId(Context context, int ID) {
-        DMABuscarUsuarioPorId DMABU = new DMABuscarUsuarioPorId(ID, context);
-        DMABU.execute();
-        try {
-            return DMABU.get();
-        } catch (Exception e) {
-            Log.d("Error", Objects.requireNonNull(e.getMessage()));
-            return null;
         }
     }
 

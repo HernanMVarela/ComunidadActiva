@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.DAOImpl.Logs;
+package frgp.utn.edu.ar.controllers.data.remote.log;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -16,13 +16,11 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMANuevoLog extends AsyncTask<String, Void, Boolean> {
 
-    private final Context context;
     private Logs nuevo;
 
-    public DMANuevoLog(Logs nuevo, Context ct)
+    public DMANuevoLog(Logs nuevo)
     {
         this.nuevo = nuevo;
-        context = ct;
     }
 
     @Override
@@ -31,11 +29,11 @@ public class DMANuevoLog extends AsyncTask<String, Void, Boolean> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO logs (id_usuario, accion, descripcion, fecha) VALUES (?, ?, ?, ?)");
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO LOGS (id_user, accion, descripcion, fecha) VALUES (?, ?, ?, ?)");
             preparedStatement.setInt(1, nuevo.getIdUser());
             preparedStatement.setString(2, nuevo.getAccion().name());
             preparedStatement.setString(3, nuevo.getDescripcion());
-            preparedStatement.setDate(4, (Date) nuevo.getFecha());
+            preparedStatement.setDate(4, new java.sql.Date(nuevo.getFecha().getTime()));
 
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
@@ -49,7 +47,7 @@ public class DMANuevoLog extends AsyncTask<String, Void, Boolean> {
             }
         }
         catch (MySQLIntegrityConstraintViolationException s){
-            Log.e("duplicado","usuario duplicado");
+            Log.e("duplicado","Log duplicado");
             s.printStackTrace();
             return false;
         }

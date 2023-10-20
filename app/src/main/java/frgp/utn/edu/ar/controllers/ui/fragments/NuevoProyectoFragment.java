@@ -32,8 +32,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.TipoProyecto;
-import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.DMASpinnerTiposProyectos;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMASpinnerTiposProyectos;
 import frgp.utn.edu.ar.controllers.ui.adapters.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoProyectoViewModel;
 

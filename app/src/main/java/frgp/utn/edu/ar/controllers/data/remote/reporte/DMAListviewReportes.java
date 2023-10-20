@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote;
+package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
 import android.Manifest;
 import android.content.Context;
@@ -35,6 +35,7 @@ import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaReportesAdapter;
 import frgp.utn.edu.ar.controllers.ui.adapters.TipoReporteAdapter;
 

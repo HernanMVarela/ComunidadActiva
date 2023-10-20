@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.DAOImpl.Usuario;
+package frgp.utn.edu.ar.controllers.data.remote.usuario;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -31,7 +31,7 @@ public class DMANuevoUsuario extends AsyncTask<String, Void, Boolean> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO usuarios (username, password, puntuacion, nombre, apellido, telefono, correo, fecha_nac, fecha_alta. id_estado, id_tipo) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO USUARIOS (username, password, puntuacion, nombre, apellido, telefono, correo, fecha_nac, creacion, id_estado, id_tipo, cod_recuperacion, fecha_bloqueo) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             preparedStatement.setString(1, nuevo.getUsername());
             preparedStatement.setString(2, nuevo.getPassword());
@@ -40,10 +40,12 @@ public class DMANuevoUsuario extends AsyncTask<String, Void, Boolean> {
             preparedStatement.setString(5, nuevo.getApellido());
             preparedStatement.setString(6, nuevo.getTelefono());
             preparedStatement.setString(7, nuevo.getCorreo());
-            preparedStatement.setDate(8, (Date) nuevo.getFecha_nac());
-            preparedStatement.setDate(9, (Date) nuevo.getFecha_alta());
+            preparedStatement.setDate(8, new java.sql.Date(nuevo.getFecha_nac().getTime()));
+            preparedStatement.setDate(9, new java.sql.Date(nuevo.getFecha_alta().getTime()));
             preparedStatement.setInt(10, nuevo.getEstado().getId());
             preparedStatement.setInt(11, nuevo.getTipo().getId());
+            preparedStatement.setString(12, nuevo.getCodigo_recuperacion());
+            preparedStatement.setDate(13, null);
 
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();

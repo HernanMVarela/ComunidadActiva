@@ -9,7 +9,6 @@ import frgp.utn.edu.ar.controllers.data.model.Logs;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 
 public interface LogsDAO {
-    boolean agregarLog(Context context, Logs logs);
     List<Logs> listarLogsPorUser(Context context, int idUser);
     List<Logs> listarLogsPorUserEntreFechas(Context context, int idUser, Date fechaDesde, Date fechaHasta);
     List<Logs> listarLogsPorUserPorAccion(Context context, LogsEnum accion, int idUser);

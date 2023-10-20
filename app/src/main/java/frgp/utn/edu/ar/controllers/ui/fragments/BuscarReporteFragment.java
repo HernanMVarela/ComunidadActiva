@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -35,7 +34,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -45,7 +43,7 @@ import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
-import frgp.utn.edu.ar.controllers.data.remote.DMAListviewReportes;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAListviewReportes;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.BuscarReporteViewModel;
 
 public class BuscarReporteFragment extends Fragment {

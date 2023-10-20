@@ -16,23 +16,31 @@ import java.util.Calendar;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
+import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 
 public class RegistroActivity extends AppCompatActivity implements View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
+    LogService logger = new LogService();
+    UsuarioRepository usuarioRepository = new UsuarioRepository();
     private EditText nombre, apellido, userName, fechaNacimiento, telefono, correo, password, password2;
     private Calendar mCalendar;
     private SimpleDateFormat mFormat;
-    private Spinner spinnerCategoriaUSer;
+    private Spinner spinnerCategoriaUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro);
 
-        spinnerCategoriaUSer = (Spinner)findViewById(R.id.spnCategoriaUserRegistro);
+        spinnerCategoriaUser = (Spinner)findViewById(R.id.spnCategoriaUserRegistro);
         String [] opciones = {"VECINO", "MODERADOR", "ADMINISTRADOR"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,opciones);
-        spinnerCategoriaUSer.setAdapter(adapter);
+        spinnerCategoriaUser.setAdapter(adapter);
 
         nombre = (EditText)findViewById(R.id.etNombreRegistro);
         apellido = (EditText)findViewById(R.id.etApellidoRegistro);
@@ -87,7 +95,18 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
             return;
         }
 
-        startActivity(intent);
+        if(!isDataValid(view)){
+            return;
+        }
+
+        if(usuarioRepository.cargarUsuario(crearUsuario(), view.getContext())) {
+            Toast.makeText(this, "Usuario creado correctamente", Toast.LENGTH_LONG).show();
+            Usuario usuario = usuarioRepository.checkUserName(userName.getText().toString(), view.getContext());
+            logger.log(usuario.getId(), LogsEnum.REGISTRO_USUARIO, "Se registro el usuario " + usuario.getUsername());
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "Error al crear el usuario", Toast.LENGTH_LONG).show();
+        }
     }
 
     public boolean isFormValid() {
@@ -135,6 +154,17 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
             return false;
         }
 
+        //CHECH FECHA VALID
+        try {
+            String date = fechaNacimiento.getText().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            sdf.parse(date);
+        } catch (Exception e) {
+            Toast.makeText(this, "Ingrese una fecha de nacimiento valida", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
         //CHECK FECHA NACIMIENTO NO FUTURA
         if (mCalendar.getTimeInMillis() > Calendar.getInstance().getTimeInMillis()) {
             Toast.makeText(this, "La fecha de nacimiento no puede ser futura", Toast.LENGTH_LONG).show();
@@ -144,5 +174,55 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
         return true;
     }
 
+    public boolean isDataValid(View view) {
 
+        //CHECK EXISTENCIA USERNAME L
+        if(usuarioRepository.checkUserName(userName.getText().toString(), view.getContext()) != null) {
+            Toast.makeText(this, "El nombre de usuario ya existe", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        //CHECK EXISTENCIA MAIL
+        if(usuarioRepository.checkMail(correo.getText().toString(), view.getContext()) != null) {
+            Toast.makeText(this, "El correo ya esta registrado", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
+    }
+
+    public Usuario crearUsuario(){
+        Usuario nuevo = new Usuario();
+        nuevo.setUsername(userName.getText().toString());
+        nuevo.setPassword(password.getText().toString());
+        nuevo.setPuntuacion(0);
+        nuevo.setNombre(nombre.getText().toString());
+        nuevo.setApellido(apellido.getText().toString());
+        nuevo.setTelefono(telefono.getText().toString());
+        nuevo.setCorreo(correo.getText().toString());
+        nuevo.setFecha_nac(mCalendar.getTime());
+        nuevo.setFecha_alta(Calendar.getInstance().getTime());
+
+        int tipoUsuarioId = spinnerCategoriaUser.getSelectedItemPosition()+1;
+        String tipoUsuarioString = spinnerCategoriaUser.getSelectedItem().toString();
+        nuevo.setTipo(new TipoUsuario(tipoUsuarioId, tipoUsuarioString));
+
+        int estadoUsuarioId;
+        String estadoUsuarioString;
+
+        if(tipoUsuarioId == 1){
+            estadoUsuarioId = 1;
+            estadoUsuarioString = "ACTIVO";
+        }else{
+            estadoUsuarioId = 2;
+            estadoUsuarioString = "INACTIVO";
+        }
+
+        nuevo.setEstado(new EstadoUsuario(estadoUsuarioId, estadoUsuarioString));
+
+        nuevo.setCodigo_recuperacion(null);
+        nuevo.setFecha_bloqueo(null);
+
+        return nuevo;
+    }
 }

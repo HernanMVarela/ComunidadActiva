@@ -34,13 +34,14 @@ public class ProyectoNegocioImpl implements ProyectoNegocio {
 
     @Override
     public Proyecto buscarProyectoPorId(Context context, int ID) {
-        return proyectoDAO.buscarProyectoPorId(context, ID);
+        return null;
     }
 
     @Override
     public List<Proyecto> listarProyectos(Context context) {
-        return proyectoDAO.listarProyectos(context);
+        return null;
     }
+
 
     @Override
     public List<Proyecto> listarProyectosPorOwner(Context context, int idCreador) {

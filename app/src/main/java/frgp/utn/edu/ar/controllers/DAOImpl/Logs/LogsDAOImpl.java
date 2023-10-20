@@ -7,20 +7,12 @@ import java.util.List;
 
 import frgp.utn.edu.ar.controllers.DAO.LogsDAO;
 import frgp.utn.edu.ar.controllers.data.model.Logs;
+import frgp.utn.edu.ar.controllers.data.remote.log.DMANuevoLog;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 
 public class LogsDAOImpl implements LogsDAO {
 
-    @Override
-    public boolean agregarLog(Context context, Logs logs) {
-        DMANuevoLog DMANL = new DMANuevoLog(logs, context);
-        DMANL.execute();
-        try {
-            return DMANL.get();
-        } catch (Exception e) {
-            return false;
-        }
-    }
+
 
     @Override
     public List<Logs> listarLogsPorUser(Context context, int idUser) {

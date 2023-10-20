@@ -9,7 +9,6 @@ import frgp.utn.edu.ar.controllers.data.model.Logs;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 
 public interface LogsNegocio {
-    boolean agregarLog(Context context, Logs nuevo);
     List<Logs> buscarLogsPorUser(Context context, int idUser);
     List<Logs> buscarLogsPorUserEntreFechas(Context context, int idUser, Date fechaDesde, Date fechaHasta);
     List<Logs> buscarLogsPorUserPorAccion(Context context, LogsEnum accion, int idUser);

@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote;
+package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
+import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.TipoReporteAdapter;
 
 public class DMAGuardarReporte extends AsyncTask<String, Void, String> {

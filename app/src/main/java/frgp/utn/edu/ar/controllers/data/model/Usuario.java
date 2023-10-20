@@ -15,11 +15,13 @@ public class Usuario {
     private Date fecha_alta;
     private EstadoUsuario estado;
     private TipoUsuario tipo;
+    private String codigo_recuperacion;
+    private Date fecha_bloqueo;
 
     public Usuario() {
     }
 
-    public Usuario(int id, String username, String password, int puntuacion, String nombre, String apellido, String telefono, String correo, Date fecha_nac, Date fecha_alta, EstadoUsuario estado, TipoUsuario tipo) {
+    public Usuario(int id, String username, String password, int puntuacion, String nombre, String apellido, String telefono, String correo, Date fecha_nac, Date fecha_alta, EstadoUsuario estado, TipoUsuario tipo, String codigo_recuperacion, Date fecha_bloqueo) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -32,6 +34,8 @@ public class Usuario {
         this.fecha_alta = fecha_alta;
         this.estado = estado;
         this.tipo = tipo;
+        this.codigo_recuperacion = codigo_recuperacion;
+        this.fecha_bloqueo = fecha_bloqueo;
     }
 
     public int getId() {
@@ -128,6 +132,45 @@ public class Usuario {
 
     public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo;
+    }
+
+    public String getCodigo_recuperacion() {
+        return codigo_recuperacion;
+    }
+
+    public void setCodigo_recuperacion(String codigo_recuperacion) {
+        this.codigo_recuperacion = codigo_recuperacion;
+    }
+
+    public Date getFecha_bloqueo() {
+        return fecha_bloqueo;
+    }
+
+    public void setFecha_bloqueo(Date fecha_bloqueo) {
+        this.fecha_bloqueo = fecha_bloqueo;
+    }
+
+    @Override
+    public String toString() {
+        //Create a string builder
+        StringBuilder sb = new StringBuilder();
+        //Append the values from the object to the string builder
+        sb.append("ID: " + this.id + "\n");
+        sb.append("USERNAME: " + this.username + "\n");
+        sb.append("PASSWORD: " + this.password + "\n");
+        sb.append("PUNTUACION: " + this.puntuacion + "\n");
+        sb.append("NOMBRE: " + this.nombre + "\n");
+        sb.append("APELLIDO: " + this.apellido + "\n");
+        sb.append("TELEFONO: " + this.telefono + "\n");
+        sb.append("CORREO: " + this.correo + "\n");
+        sb.append("FECHA_NAC: " + this.fecha_nac + "\n");
+        sb.append("FECHA_ALTA: " + this.fecha_alta + "\n");
+        sb.append("ESTADO: " + this.estado.getEstado() + "\n");
+        sb.append("TIPO: " + this.tipo.getTipo() + "\n");
+        sb.append("CODIGO_RECUPERACION: " + this.codigo_recuperacion + "\n");
+        sb.append("FECHA_BLOQUEO: " + this.fecha_bloqueo + "\n");
+        //Return the string builder as a string
+        return sb.toString();
     }
 }
 

@@ -4,5 +4,5 @@ public enum LogsEnum {
     LOGIN,
     LOGOUT,
     MODIFICAR_USUARIO,
-    AGREGAR_USUARIO,
+    REGISTRO_USUARIO,
 }

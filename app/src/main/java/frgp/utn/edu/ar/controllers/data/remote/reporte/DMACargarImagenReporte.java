@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote;
+package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 
 public class DMACargarImagenReporte extends AsyncTask<String, Void, String> {

@@ -13,7 +13,7 @@ import java.util.Objects;
 
 import frgp.utn.edu.ar.controllers.DAOImpl.Proyecto.EstadoProyecto.DMABuscarEstadoProyectoPorId;
 import frgp.utn.edu.ar.controllers.DAOImpl.Proyecto.TipoProyecto.DMABuscarTipoProyectoPorId;
-import frgp.utn.edu.ar.controllers.DAOImpl.Usuario.DMABuscarUsuarioPorId;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMABuscarUsuarioPorUsername;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
@@ -46,7 +46,6 @@ public class DMAListarProyectosPorOwner extends AsyncTask<String, Void, List<Pro
                 proyecto.setLongitud(resultSet.getDouble("longitud"));
                 proyecto.setFecha(resultSet.getDate("fecha"));
                 proyecto.setCupo(resultSet.getInt("cupo"));
-                proyecto.setOwner(new DMABuscarUsuarioPorId(resultSet.getInt("idUsuario"),context).doInBackground(String.valueOf(resultSet.getInt("idUsuario"))));
                 proyecto.setTipo(new DMABuscarTipoProyectoPorId(resultSet.getInt("idTipoProyecto"),context).doInBackground(String.valueOf(resultSet.getInt("idTipoProyecto"))));
                 proyecto.setEstado(new DMABuscarEstadoProyectoPorId(resultSet.getInt("idEstadoProyecto"),context).doInBackground(String.valueOf(resultSet.getInt("idEstadoProyecto"))));
 

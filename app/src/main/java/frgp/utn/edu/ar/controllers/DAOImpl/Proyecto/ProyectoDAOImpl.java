@@ -36,33 +36,6 @@ public class ProyectoDAOImpl implements ProyectoDAO {
             return false;
         }
     }
-
-    @Override
-    public Proyecto buscarProyectoPorId(Context context, int ID) {
-        DMABuscarProyectoPorId DMABP = new DMABuscarProyectoPorId(ID, context);
-        DMABP.execute();
-        try {
-            return DMABP.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("Error", Objects.requireNonNull(e.getMessage()));
-            return null;
-        }
-    }
-
-    @Override
-    public List<Proyecto> listarProyectos(Context context) {
-        DMAListarProyectos DMALP = new DMAListarProyectos(context);
-        DMALP.execute();
-        try {
-            return DMALP.get();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Log.e("Error", Objects.requireNonNull(e.getMessage()));
-            return null;
-        }
-    }
-
     @Override
     public List<Proyecto> listarProyectosPorTipo(Context context, int tipoProyecto) {
         DMAListarProyectosPorTipo DMALPT = new DMAListarProyectosPorTipo(context, tipoProyecto);

@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote;
+package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -11,20 +11,21 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import frgp.utn.edu.ar.controllers.data.model.TipoProyecto;
-import frgp.utn.edu.ar.controllers.ui.adapters.TipoProyectoAdapter;
+import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
+import frgp.utn.edu.ar.controllers.data.remote.DataDB;
+import frgp.utn.edu.ar.controllers.ui.adapters.TipoReporteAdapter;
 
-public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
+public class DMASpinnerTiposReporte extends AsyncTask<String, Void, String> {
 
     private Context context;
-    private Spinner spinTipoProyectos;
+    private Spinner spinTipoReporte;
     private static String result2;
-    private static List<TipoProyecto> listaTiposProyectos;
+    private static List<TipoReporte> listaTiposReporte;
 
     //Constructor
-    public DMASpinnerTiposProyectos(Spinner spin, Context ct)
+    public DMASpinnerTiposReporte(Spinner spin, Context ct)
     {
-        spinTipoProyectos = spin;
+        spinTipoReporte = spin;
         context = ct;
     }
 
@@ -36,15 +37,15 @@ public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM TIPOS_PROYECTO");
+            ResultSet rs = st.executeQuery("SELECT * FROM TIPOS_REPORTE");
             result2 = " ";
-            listaTiposProyectos = new ArrayList<TipoProyecto>();
+            listaTiposReporte = new ArrayList<TipoReporte>();
             while(rs.next()) {
-                TipoProyecto categoria = new TipoProyecto();
+                TipoReporte categoria = new TipoReporte();
                 categoria.setId(rs.getInt("ID"));
                 categoria.setTipo(rs.getString("TIPO"));
 
-                listaTiposProyectos.add(categoria);
+                listaTiposReporte.add(categoria);
             }
             response = "Conexion exitosa";
         }
@@ -57,7 +58,7 @@ public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
     }
     @Override
     protected void onPostExecute(String response) {
-        TipoProyectoAdapter adapter = new TipoProyectoAdapter(context, listaTiposProyectos);
-        spinTipoProyectos.setAdapter(adapter);
+        TipoReporteAdapter adapter = new TipoReporteAdapter(context, listaTiposReporte);
+        spinTipoReporte.setAdapter(adapter);
     }
 }
