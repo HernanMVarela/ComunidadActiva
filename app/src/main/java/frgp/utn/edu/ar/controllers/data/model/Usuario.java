@@ -1,8 +1,9 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Usuario {
+public class Usuario implements Serializable {
     private int id;
     private String username;
     private String password;

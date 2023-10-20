@@ -109,12 +109,11 @@ public class DetalleReporteFragment extends Fragment {
                 }else{
                     puntaje.setRating(0);
                 }
-                Log.i("LLAMADO","LLAMA A DMA CON ID: " + seleccionado.getId());
                 DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
                 DMAImagen.execute();
             }else {
                 /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
-                Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
             }
         }
         return view;
@@ -142,8 +141,20 @@ public class DetalleReporteFragment extends Fragment {
         bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON SOLICITAR CIERRE
-                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-                navController.navigate(R.id.solicitar_cierre);
+                if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected_report", seleccionado);
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                    navController.navigate(R.id.solicitar_cierre,bundle);
+                } else if (seleccionado.getEstado().getEstado().equals("PENDIENTE")) {
+                    Toast.makeText(getContext(), "Este reporte está pendiente", Toast.LENGTH_LONG).show();
+                } else if (seleccionado.getEstado().getEstado().equals("CERRADO")) {
+                    Toast.makeText(getContext(), "Este reporte ya se encuentra cerrado", Toast.LENGTH_LONG).show();
+                } else if (seleccionado.getEstado().getEstado().equals("CANCELADO")) {
+                    Toast.makeText(getContext(), "Este reporte está cancelado, no se puede cerrar", Toast.LENGTH_LONG).show();
+                } else if (seleccionado.getEstado().getEstado().equals("DENUNCIADO")) {
+                    Toast.makeText(getContext(), "El reporte está denunciado, no se puede cerrar", Toast.LENGTH_LONG).show();
+                }
             }
         });
         Button bValorar = view.findViewById(R.id.btnValorarReporte);

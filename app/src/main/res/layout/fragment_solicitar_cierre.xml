@@ -14,6 +14,7 @@
         android:gravity="center_horizontal">
 
         <TextView
+            android:id="@+id/cerrar_rep_titulo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="@string/titulo"
@@ -30,6 +31,7 @@
             android:layout_marginVertical="5dp"
             android:gravity="start"/>
         <EditText
+            android:id="@+id/cerrar_rep_etdescripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="120dp"
@@ -49,7 +51,7 @@
             android:layout_marginHorizontal="20dp"
             android:orientation="horizontal">
             <Button
-                android:id="@+id/btnCamara"
+                android:id="@+id/btn_cerrar_rep_camara"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:paddingTop="8dp"
@@ -70,16 +72,18 @@
                 android:gravity="start|center_vertical"/>
         </LinearLayout>
         <ImageView
-            android:id="@+id/imagen_ver_reporte"
+            android:id="@+id/cerrar_rep_imagen"
             android:layout_width="match_parent"
             android:paddingVertical="5dp"
             android:layout_height="200dp"
             android:scaleType="fitCenter"
+            android:layout_marginVertical="15dp"
+            android:background="@drawable/dialog_corner_bgd"
             android:layout_marginHorizontal="10dp"
             android:src="@mipmap/image_placeholder"
             />
         <Button
-            android:id="@+id/btnCrearReporte"
+            android:id="@+id/btn_cerrar_rep_confirmar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"

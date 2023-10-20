@@ -127,7 +127,6 @@ public class BuscarReporteFragment extends Fragment {
                 if (viewSeleccionado != null) {
                     viewSeleccionado.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_500));
                 }
-
                 // Almacena el informe seleccionado en una variable
                 seleccionado = (Reporte) parent.getItemAtPosition(position);
                 // Cambia el fondo del elemento seleccionado

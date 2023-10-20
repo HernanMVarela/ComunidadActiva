@@ -103,7 +103,9 @@
             android:paddingVertical="5dp"
             android:layout_height="200dp"
             android:scaleType="fitCenter"
+            android:layout_marginVertical="15dp"
             android:layout_marginHorizontal="10dp"
+            android:background="@drawable/dialog_corner_bgd"
             android:src="@mipmap/image_placeholder_foreground"
             />
 
