@@ -3,9 +3,9 @@ package frgp.utn.edu.ar.controllers.data.model;
 public class ReseniaReporte {
     private Reporte reporte;
     private Usuario votante;
-    private int puntaje;
+    private float puntaje;
 
-    public ReseniaReporte(Reporte reporte, Usuario votante, int puntaje) {
+    public ReseniaReporte(Reporte reporte, Usuario votante, float puntaje) {
         this.reporte = reporte;
         this.votante = votante;
         this.puntaje = puntaje;
@@ -39,11 +39,11 @@ public class ReseniaReporte {
         this.votante = votante;
     }
 
-    public int getPuntaje() {
+    public float getPuntaje() {
         return puntaje;
     }
 
-    public void setPuntaje(int puntaje) {
+    public void setPuntaje(float puntaje) {
         this.puntaje = puntaje;
     }
 }
