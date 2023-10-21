@@ -65,12 +65,12 @@ public class VecinoActivity  extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         ///RECUPERO SHARED PREFERENCES
-        View headerView = navigationView.getHeaderView(0);
-        tvNavUsername = (TextView) headerView.findViewById(R.id.tvNavBarUserName);
-        tvNavUserMail = (TextView) headerView.findViewById(R.id.tvNavBarMail);
-        usuario = sharedPreferences.getUsuarioData(this);
-        tvNavUsername.setText(usuario.getUsername());
-        tvNavUserMail.setText(usuario.getCorreo());
+       View headerView = navigationView.getHeaderView(0);
+       tvNavUsername = (TextView) headerView.findViewById(R.id.tvNavBarUserName);
+       tvNavUserMail = (TextView) headerView.findViewById(R.id.tvNavBarMail);
+       usuario = sharedPreferences.getUsuarioData(this);
+       tvNavUsername.setText(usuario.getUsername());
+       tvNavUserMail.setText(usuario.getCorreo());
     }
 
     @Override

@@ -49,6 +49,12 @@ public class HomeVecinoFragment extends Fragment {
                     case 3:
                         navController.navigate(R.id.action_nav_home_to_nav_buscar_proyecto);
                         break;
+                    case 4:
+                        navController.navigate(R.id.action_nav_home_to_nav_panel_mod);
+                        break;
+                    case 5:
+                        navController.navigate(R.id.action_nav_home_to_nav_panel_admin);
+                        break;
                     default:
                         break;
                 }

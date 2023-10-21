@@ -24,6 +24,12 @@
             android:id="@+id/action_nav_home_to_nav_nuevo_proyecto"
             app:destination="@id/nav_nuevo_proyecto" />
         <action
+            android:id="@+id/action_nav_home_to_nav_panel_mod"
+            app:destination="@id/nav_modelador" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_panel_admin"
+            app:destination="@id/nav_nuevo_proyecto" />
+        <action
             android:id="@+id/action_nav_home_to_nav_accesibilidad"
             app:destination="@id/nav_accesibilidad" />
         <action
@@ -87,12 +93,77 @@
         android:id="@+id/nav_nuevo_proyecto"
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.NuevoProyectoFragment"
         android:label="Nuevo Proyecto"
-        tools:layout="@layout/fragment_nuevo_proyecto" />
+        tools:layout="@layout/fragment_nuevo_proyecto" >
+        <action
+            android:id="@+id/action_nav_nuevo_proyecto_to_nav_ubicacion"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:destination="@id/elegir_ubicacion" />
+    </fragment>
     <fragment
         android:id="@+id/nav_buscar_proyecto"
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.BuscarProyectoFragment"
         android:label="Buscar Proyecto"
         tools:layout="@layout/fragment_buscar_proyecto" />
+
+
+    <!-- FRAGMENTOS MODERADOR -->
+    <fragment
+        android:id="@+id/nav_modelador"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.HomeModeradorFragment"
+        android:label="@string/moderador_home"
+        tools:layout="@layout/fragment_home_moderador" >
+        <action
+            android:id="@+id/action_nav_moderador_to_listar_denunicas"
+            app:destination="@id/nav_listar_denuncia" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_listar_denuncia"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.ListarDenunciaFragment"
+        android:label="Listar Denuncias"
+        tools:layout="@layout/fragment_listar_denuncia" >
+        <action
+            android:id="@+id/action_listar_denunicas_to_nav_ver_denuncia"
+            app:destination="@id/nav_ver_denuncia" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_ver_denuncia"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.VerDenunciaFragment"
+        android:label="fragment_ver_denuncia"
+        tools:layout="@layout/fragment_ver_denuncia" >
+        <action
+            android:id="@+id/action_listar_denunicas_to_nav_eliminar_publicacion"
+            app:destination="@id/nav_eliminar_publicacion" />
+        <action
+            android:id="@+id/action_listar_denunicas_to_nav_suspender_usuario"
+            app:destination="@id/nav_suspender_usuario" />
+        <action
+            android:id="@+id/action_listar_denunicas_to_nav_notificar_denuncia"
+            app:destination="@id/nav_notificar_denuncia" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_eliminar_publicacion"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.EliminarPublicacionFragment"
+        android:label="fragment_eliminar_publicacion"
+        tools:layout="@layout/fragment_eliminar_publicacion" />
+    <fragment
+        android:id="@+id/nav_suspender_usuario"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.SuspenderUsuarioFragment"
+        android:label="fragment_suspender_usuario"
+        tools:layout="@layout/fragment_suspender_usuario" />
+    <fragment
+        android:id="@+id/nav_notificar_denuncia"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.NotificarCerrarDenunciaFragment"
+        android:label="fragment_notificar_cerrar_denuncia"
+        tools:layout="@layout/fragment_notificar_cerrar_denuncia" />
+
+
+    <!-- FRAGMENTOS ADMINISTRADOR -->
+    <fragment
+        android:id="@+id/nav_crear_informe"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.CrearInformeFragment"
+        android:label="Crear Informe"
+        tools:layout="@layout/fragment_crear_informe" />
 
     <!-- FRAGMENTOS ADICIONALES -->
     <fragment
@@ -100,42 +171,8 @@
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.UbicacionFragment"
         android:label="Elegir Ubicacion"
         tools:layout="@layout/fragment_ubicacion" />
-    <fragment
-        android:id="@+id/nav_modelador"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.HomeModeradorFragment"
-        android:label="@string/moderador_home"
-        tools:layout="@layout/fragment_home_moderador" >
-    </fragment>
-    <fragment
-        android:id="@+id/nav_crear_informe"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.CrearInformeFragment"
-        android:label="Crear Informe"
-        tools:layout="@layout/fragment_crear_informe" />
-    <fragment
-        android:id="@+id/nav_listar_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.ListarDenunciaFragment"
-        android:label="Listar Denuncias"
-        tools:layout="@layout/fragment_listar_denuncia" />
-    <fragment
-        android:id="@+id/nav_ver_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.VerDenunciaFragment"
-        android:label="fragment_ver_denuncia"
-        tools:layout="@layout/fragment_ver_denuncia" />
-    <fragment
-        android:id="@+id/nav_eliminar_publicacion"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.EliminarPublicacionFragment"
-        android:label="fragment_eliminar_publicacion"
-        tools:layout="@layout/fragment_eliminar_publicacion" />
-    <fragment
-        android:id="@+id/nav_notificar_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.NotificarCerrarDenunciaFragment"
-        android:label="fragment_notificar_cerrar_denuncia"
-        tools:layout="@layout/fragment_notificar_cerrar_denuncia" />
-    <fragment
-        android:id="@+id/nav_suspender_usuario"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.SuspenderUsuarioFragment"
-        android:label="fragment_suspender_usuario"
-        tools:layout="@layout/fragment_suspender_usuario" />
+
+
 
     <!-- MENUS DE AYUDA Y ACCESIBILIDAD -->
     <fragment

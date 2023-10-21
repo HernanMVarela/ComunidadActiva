@@ -171,6 +171,6 @@ public class NuevoProyectoFragment extends Fragment {
     }
     private void navigateToLocationFragment() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
-        navController.navigate(R.id.elegir_ubicacion);
+        navController.navigate(id.action_nav_nuevo_proyecto_to_nav_ubicacion);
     }
 }

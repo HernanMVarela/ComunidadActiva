@@ -143,7 +143,7 @@ public class NuevoReporteFragment extends Fragment {
 
     private void navigateToLocationFragment() {
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-        navController.navigate(R.id.elegir_ubicacion);
+        navController.navigate(R.id.action_nav_reporte_to_nav_ubicacion);
     }
 
     @Override
