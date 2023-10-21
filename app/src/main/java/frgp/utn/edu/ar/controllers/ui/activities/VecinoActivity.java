@@ -53,6 +53,7 @@ public class VecinoActivity  extends AppCompatActivity {
                 .setOpenableLayout(drawer)
                 .build();
 
+        ///CIERRE SESION
         navigationView.getMenu().findItem(R.id.nav_cerrarsesion).setOnMenuItemClickListener(menuItem -> {
             sharedPreferences.deleteUsuarioData(this);
             finish();
@@ -63,6 +64,7 @@ public class VecinoActivity  extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+        ///RECUPERO SHARED PREFERENCES
         View headerView = navigationView.getHeaderView(0);
         tvNavUsername = (TextView) headerView.findViewById(R.id.tvNavBarUserName);
         tvNavUserMail = (TextView) headerView.findViewById(R.id.tvNavBarMail);
