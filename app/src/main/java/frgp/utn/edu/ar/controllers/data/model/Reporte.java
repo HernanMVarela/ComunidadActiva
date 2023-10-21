@@ -8,12 +8,12 @@ import java.util.Date;
 public class Reporte extends Publicacion implements Serializable {
 
     private Bitmap imagen;
-    private int puntaje;
+    private float puntaje;
     private int cant_votos;
     private EstadoReporte estado;
     private TipoReporte tipo;
 
-    public Reporte(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, Bitmap imagen, int cant_votos, int puntaje, EstadoReporte estado, TipoReporte tipo) {
+    public Reporte(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, Bitmap imagen, int cant_votos, float puntaje, EstadoReporte estado, TipoReporte tipo) {
         super(id, titulo, descripcion, latitud,longitud, fecha, owner);
         this.imagen = imagen;
         this.cant_votos = cant_votos;
@@ -51,11 +51,11 @@ public class Reporte extends Publicacion implements Serializable {
         this.imagen = imagen;
     }
 
-    public int getPuntaje() {
+    public float getPuntaje() {
         return puntaje;
     }
 
-    public void setPuntaje(int puntaje) {
+    public void setPuntaje(float puntaje) {
         this.puntaje = puntaje;
     }
 

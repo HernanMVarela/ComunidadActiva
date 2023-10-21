@@ -94,23 +94,7 @@ public class DetalleReporteFragment extends Fragment {
             seleccionado = (Reporte) bundle.getSerializable("selected_report");
             /// VALIDA QUE EL REPORTE EXISTA
             if (seleccionado != null) {
-                /// CONFIGURO DATOS DEL REPORTE
-                titulo.setText(seleccionado.getTitulo());
-                descripcion.setText(seleccionado.getTitulo());
-                String status_rep = "Estado: " + seleccionado.getEstado().getEstado();
-                estado.setText(status_rep);
-                String tipo_rep = "Tipo: " + seleccionado.getTipo().getTipo();
-                tipo.setText(tipo_rep);
-                fecha.setText(seleccionado.getFecha().toString());
-                String user_rep = "Detalle del usuario " + seleccionado.getOwner().getUsername();
-                bUsuario.setText(user_rep);
-                if(seleccionado.getCant_votos()!=0){
-                    puntaje.setRating((float) seleccionado.getPuntaje()/seleccionado.getCant_votos());
-                }else{
-                    puntaje.setRating(0);
-                }
-                DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
-                DMAImagen.execute();
+                cargarDatosReporte();
             }else {
                 /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
                 Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
@@ -161,7 +145,12 @@ public class DetalleReporteFragment extends Fragment {
         bValorar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON VALORAR REPORTE
+                Bundle args = new Bundle();
+                args.putSerializable("selected_report", seleccionado);
+
                 ValorarReporteDialogFragment dialogFragment = new ValorarReporteDialogFragment();
+
+                dialogFragment.setArguments(args); // Establece el Bundle como argumento
                 dialogFragment.show(getFragmentManager(), "layout_rating_reporte");
             }
         });
@@ -174,6 +163,26 @@ public class DetalleReporteFragment extends Fragment {
                 dialogFragment.show(getFragmentManager(), "layout_denuciar_reporte");
             }
         });
+    }
+
+    private void cargarDatosReporte(){
+        /// CONFIGURO DATOS DEL REPORTE
+        titulo.setText(seleccionado.getTitulo());
+        descripcion.setText(seleccionado.getTitulo());
+        String status_rep = "Estado: " + seleccionado.getEstado().getEstado();
+        estado.setText(status_rep);
+        String tipo_rep = "Tipo: " + seleccionado.getTipo().getTipo();
+        tipo.setText(tipo_rep);
+        fecha.setText(seleccionado.getFecha().toString());
+        String user_rep = "Detalle del usuario " + seleccionado.getOwner().getUsername();
+        bUsuario.setText(user_rep);
+        if(seleccionado.getCant_votos()!=0){
+            puntaje.setRating((float) seleccionado.getPuntaje()/seleccionado.getCant_votos());
+        }else{
+            puntaje.setRating(0);
+        }
+        DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
+        DMAImagen.execute();
     }
 
     @Override
