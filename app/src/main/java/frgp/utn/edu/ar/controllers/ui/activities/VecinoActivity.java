@@ -1,9 +1,11 @@
 package frgp.utn.edu.ar.controllers.ui.activities;
 
+import android.app.usage.NetworkStatsManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -16,7 +18,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.databinding.ActivityVecinoBinding;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class VecinoActivity  extends AppCompatActivity {
 
@@ -25,11 +29,13 @@ public class VecinoActivity  extends AppCompatActivity {
     private ActivityVecinoBinding binding;
     public FloatingActionButton botonmensaje;
     private NavController navController;
+    private TextView tvNavUsername,tvNavUserMail;
+    private Usuario usuario;
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         binding = ActivityVecinoBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         botonmensaje = findViewById(R.id.fab);
@@ -46,9 +52,23 @@ public class VecinoActivity  extends AppCompatActivity {
                 R.id.nav_home, R.id.nav_actividad_rec, R.id.nav_notificaciones,R.id.nav_cambiarpassword, R.id.nav_cerrarsesion)
                 .setOpenableLayout(drawer)
                 .build();
+
+        navigationView.getMenu().findItem(R.id.nav_cerrarsesion).setOnMenuItemClickListener(menuItem -> {
+            sharedPreferences.deleteUsuarioData(this);
+            finish();
+            return true;
+        });
+
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        View headerView = navigationView.getHeaderView(0);
+        tvNavUsername = (TextView) headerView.findViewById(R.id.tvNavBarUserName);
+        tvNavUserMail = (TextView) headerView.findViewById(R.id.tvNavBarMail);
+        usuario = sharedPreferences.getUsuarioData(this);
+        tvNavUsername.setText(usuario.getUsername());
+        tvNavUserMail.setText(usuario.getCorreo());
     }
 
     @Override
@@ -78,5 +98,4 @@ public class VecinoActivity  extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

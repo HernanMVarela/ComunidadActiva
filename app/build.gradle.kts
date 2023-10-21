@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("eu.ocathain.com.sun.mail:javax.mail:1.5.2")
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("mysql:mysql-connector-java:5.1.47")

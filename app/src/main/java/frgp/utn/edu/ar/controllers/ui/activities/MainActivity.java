@@ -15,11 +15,14 @@ import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.utils.LogService;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.MailService;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class MainActivity extends AppCompatActivity {
     LogService logger = new LogService();
     MailService mailService = new MailService();
     UsuarioRepository usuarioRepository = new UsuarioRepository();
+
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     public Usuario usuario;
     public int loginAttemps = 0;
@@ -29,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        etNombre = (EditText) findViewById(R.id.etNombre);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+        etNombre = findViewById(R.id.etNombre);
+        etPassword = findViewById(R.id.etPassword);
+        checkActiveUser();
     }
 
     public void iniciarSesion(View view){
@@ -39,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if(!isDataValid(view)) {
+        if(!isDataValid()) {
             return;
         }
 
@@ -48,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
             bloqueoDesbloqueoUser("BLOQUEO");
             return;
         }
+
+        sharedPreferences.saveUsuarioData(this, usuario);
+        etNombre.setText("");
+        etPassword.setText("");
 
         switch (usuario.getTipo().getTipo()) {
             case "VECINO":
@@ -76,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public boolean isDataValid(View view) {
+    public boolean isDataValid() {
 
         usuario = usuarioRepository.loginUsuario(etNombre.getText().toString(), etPassword.getText().toString());
 
@@ -113,8 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 if(usuarioBloq != null) {
                     usuarioBloq.setEstado(new EstadoUsuario(4, "BLOQUEADO"));
                     usuarioBloq.setFecha_bloqueo(new java.sql.Date(System.currentTimeMillis()));
-                    //Print user un console
-                    System.out.println(usuarioBloq);
                     usuarioRepository.modificarUsuario(usuarioBloq);
                     mailService.sendMail(usuarioBloq.getCorreo(), "Bloqueo de Usuario", "Su usuario ha sido bloqueado por intentos maximos de login");
                     logger.log(usuarioBloq.getId(), LogsEnum.BLOQUEO_USUARIO, String.format("Usuario %s bloqueado por intentos maximos de login", usuarioBloq.getUsername()));
@@ -152,5 +157,22 @@ public class MainActivity extends AppCompatActivity {
     public void IrAdministrador(View view){
         Intent registro = new Intent(this, AdminActivity.class);
         startActivity(registro);
+    }
+
+    public void checkActiveUser() {
+        Usuario usuario = sharedPreferences.getUsuarioData(this);
+        if(usuario != null) {
+            switch (usuario.getTipo().getTipo()) {
+                case "VECINO":
+                    IrVecino(null);
+                    break;
+                case "MODERADOR":
+                    IrModerador(null);
+                    break;
+                case "ADMINISTRADOR":
+                    IrAdministrador(null);
+                    break;
+            }
+        }
     }
 }
