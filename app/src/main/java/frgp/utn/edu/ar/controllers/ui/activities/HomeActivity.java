@@ -18,14 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.databinding.ActivityVecinoBinding;
+import frgp.utn.edu.ar.controllers.databinding.ActivityHomeBinding;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class HomeActivity extends AppCompatActivity {
 
 
     private AppBarConfiguration mAppBarConfiguration;
-    private ActivityVecinoBinding binding;
+    private ActivityHomeBinding binding;
     public FloatingActionButton botonmensaje;
     private NavController navController;
     private TextView tvNavUsername,tvNavUserMail;
@@ -35,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityVecinoBinding.inflate(getLayoutInflater());
+        binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         botonmensaje = findViewById(R.id.fab);
         setSupportActionBar(binding.appBarMain.toolbar);

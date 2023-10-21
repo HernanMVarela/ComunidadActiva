@@ -13,21 +13,21 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import frgp.utn.edu.ar.controllers.databinding.FragmentHomeVecinoBinding;
-import frgp.utn.edu.ar.controllers.ui.viewmodels.HomeVecinoViewModel;
+import frgp.utn.edu.ar.controllers.databinding.FragmentHomeBinding;
+import frgp.utn.edu.ar.controllers.ui.viewmodels.HomeViewModel;
 import frgp.utn.edu.ar.controllers.ui.adapters.GenMenuGridAdapter;
 import frgp.utn.edu.ar.controllers.R;
 
-public class HomeVecinoFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-    private FragmentHomeVecinoBinding binding;
+    private FragmentHomeBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        HomeVecinoViewModel homeVecinoViewModel =
-                new ViewModelProvider(this).get(HomeVecinoViewModel.class);
+        HomeViewModel homeViewModel =
+                new ViewModelProvider(this).get(HomeViewModel.class);
 
-        binding = FragmentHomeVecinoBinding.inflate(inflater, container, false);
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         GenMenuGridAdapter adapter = new GenMenuGridAdapter(getContext());
         GridView gridView = root.findViewById(R.id.gvMenuGeneral);
@@ -50,10 +50,19 @@ public class HomeVecinoFragment extends Fragment {
                         navController.navigate(R.id.action_nav_home_to_nav_buscar_proyecto);
                         break;
                     case 4:
-                        navController.navigate(R.id.action_nav_home_to_nav_panel_mod);
+                        navController.navigate(R.id.action_nav_home_to_nav_crear_informe_admin);
                         break;
                     case 5:
-                        navController.navigate(R.id.action_nav_home_to_nav_panel_admin);
+                        navController.navigate(R.id.action_nav_home_to_nav_listar_usuarios);
+                        break;
+                    case 6:
+                        navController.navigate(R.id.action_nav_home_to_nav_crear_informe_moderador);
+                        break;
+                    case 7:
+                        navController.navigate(R.id.action_nav_home_to_nav_historial_moderacion);
+                        break;
+                    case 8:
+                        navController.navigate(R.id.action_nav_home_to_nav_listar_denuncias);
                         break;
                     default:
                         break;

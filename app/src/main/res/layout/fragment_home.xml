@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context=".ui.fragments.HomeModeradorFragment">
+    tools:context=".ui.fragments.HomeFragment">
 
     <GridView
         android:id="@+id/gvMenuGeneral"

@@ -19,7 +19,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.CrearInformeViewModel;
 
 
-public class CrearInformeFragment extends Fragment {
+public class CrearInformeAdminFragment extends Fragment {
 
 
     private CrearInformeViewModel mViewModel;
@@ -35,7 +35,7 @@ public class CrearInformeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        View view = inflater.inflate(R.layout.fragment_crear_informe, container, false);
+        View view = inflater.inflate(R.layout.fragment_crear_informe_admin, container, false);
 
         //vinculo variables a objetos del view
         etFechaInicio = (EditText) view.findViewById(R.id.editTextFechaInicio);
@@ -97,7 +97,7 @@ public class CrearInformeFragment extends Fragment {
         }
 
 
-        return inflater.inflate(R.layout.fragment_crear_informe, container, false);
+        return inflater.inflate(R.layout.fragment_crear_informe_admin, container, false);
     }
 
     public String getFecha(DatePicker dp){

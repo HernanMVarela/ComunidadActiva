@@ -16,9 +16,20 @@ public class GenMenuGridAdapter extends BaseAdapter {
                                      R.drawable.genmenu_proyectos_24,
                                      R.drawable.genmenu_search_reporte_24,
                                      R.drawable.genmenu_search_proyecto_24,
-                                     R.drawable.genmenu_moderator_24,
-                                     R.drawable.genmenu_admin_24};
-    private final String[] titulos = {"Reportes","Proyectos","Buscar Reporte","Buscar Proyecto", "Panel Mod", "Panel Admin"};
+                                     R.drawable.genmenu_crear_informe_admin_24,
+                                     R.drawable.genmenu_listar_usuarios_24,
+                                     R.drawable.genmenu_crear_informe_moderador_24,
+                                     R.drawable.genmenu_historial_moderacion_24,
+                                     R.drawable.genmenu_listar_denuncias_24};
+    private final String[] titulos = {"CREAR REPORTE",
+                                      "CREAR PROYECTO",
+                                      "BUSCAR REPORTE",
+                                      "BUSCAR PROYECTO",
+                                      "CREAR INFORME (A)",
+                                      "LISTAR USUARIOS",
+                                      "CREAR INFORME (M)",
+                                      "HISTORIAL MODERACION",
+                                      "LISTAR DENUNCIAS"};
     private Context context;
 
     public GenMenuGridAdapter(Context context){

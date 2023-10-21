@@ -35,12 +35,6 @@
             android:name=".ui.activities.HomeActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.activities.AdminActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.activities.ModeradorActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.activities.RegistroActivity"
             android:exported="false" />
         <activity

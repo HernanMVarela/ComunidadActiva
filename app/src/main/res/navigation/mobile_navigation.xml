@@ -8,9 +8,9 @@
     <!-- FRAGMENTOS MENU INICIAL -->
     <fragment
         android:id="@+id/nav_home"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.HomeVecinoFragment"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.HomeFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home_vecino" >
+        tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_nav_home_to_nav_buscar_reporte"
             app:destination="@id/nav_buscar_reporte" />
@@ -24,11 +24,22 @@
             android:id="@+id/action_nav_home_to_nav_nuevo_proyecto"
             app:destination="@id/nav_nuevo_proyecto" />
         <action
-            android:id="@+id/action_nav_home_to_nav_panel_mod"
-            app:destination="@id/nav_modelador" />
+            android:id="@+id/action_nav_home_to_nav_crear_informe_admin"
+            app:destination="@+id/nav_crear_informe_admin" />
         <action
-            android:id="@+id/action_nav_home_to_nav_panel_admin"
-            app:destination="@id/nav_nuevo_proyecto" />
+            android:id="@+id/action_nav_home_to_nav_listar_usuarios"
+            app:destination="@+id/nav_listar_usuarios" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_crear_informe_moderador"
+            app:destination="@+id/nav_crear_informe_moderador" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_historial_moderacion"
+            app:destination="@+id/nav_historial_moderacion" />
+        <action
+            android:id="@+id/action_nav_home_to_nav_listar_denuncias"
+            app:destination="@+id/nav_listar_denuncia" />
+
+
         <action
             android:id="@+id/action_nav_home_to_nav_accesibilidad"
             app:destination="@id/nav_accesibilidad" />
@@ -36,6 +47,8 @@
             android:id="@+id/action_nav_home_to_nav_ayuda"
             app:destination="@id/nav_ayuda"/>
     </fragment>
+
+    <!-- FRAGMENTOS COMUNES -->
     <fragment
         android:id="@+id/nav_notificaciones"
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.NotificacionesFragment"
@@ -109,15 +122,6 @@
 
     <!-- FRAGMENTOS MODERADOR -->
     <fragment
-        android:id="@+id/nav_modelador"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.HomeModeradorFragment"
-        android:label="@string/moderador_home"
-        tools:layout="@layout/fragment_home_moderador" >
-        <action
-            android:id="@+id/action_nav_moderador_to_listar_denunicas"
-            app:destination="@id/nav_listar_denuncia" />
-    </fragment>
-    <fragment
         android:id="@+id/nav_listar_denuncia"
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.ListarDenunciaFragment"
         android:label="Listar Denuncias"
@@ -156,14 +160,30 @@
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.NotificarCerrarDenunciaFragment"
         android:label="fragment_notificar_cerrar_denuncia"
         tools:layout="@layout/fragment_notificar_cerrar_denuncia" />
+    <fragment
+        android:id="@+id/nav_crear_informe_moderador"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.CrearInformeModeradorFragment"
+        android:label="Crear Informe Moderador"
+        tools:layout="@layout/fragment_crear_informe_moderador" />
+    <fragment
+        android:id="@+id/nav_historial_moderacion"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.HistorialModeracionFragment"
+        android:label="Historial Moderacion"
+        tools:layout="@layout/fragment_historial_moderacion" />
 
 
     <!-- FRAGMENTOS ADMINISTRADOR -->
     <fragment
-        android:id="@+id/nav_crear_informe"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.CrearInformeFragment"
-        android:label="Crear Informe"
-        tools:layout="@layout/fragment_crear_informe" />
+        android:id="@+id/nav_crear_informe_admin"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.CrearInformeAdminFragment"
+        android:label="Crear Informe Admin"
+        tools:layout="@layout/fragment_crear_informe_admin" />
+    <!-- FRAGMENTOS ADMINISTRADOR -->
+    <fragment
+        android:id="@+id/nav_listar_usuarios"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.ListarUsuariosFragment"
+        android:label="Listar Usuarios"
+        tools:layout="@layout/fragment_listar_usuarios" />
 
     <!-- FRAGMENTOS ADICIONALES -->
     <fragment
