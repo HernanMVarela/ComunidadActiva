@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +30,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
-import frgp.utn.edu.ar.controllers.ui.activities.VecinoActivity;
+import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
@@ -76,8 +75,8 @@ public class DetalleReporteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detalle_reporte, container, false);
 
         // ESCONDE EL BOTON DEL SOBRE
-        if(getActivity() instanceof VecinoActivity){
-            ((VecinoActivity) getActivity()).botonmensaje.hide();
+        if(getActivity() instanceof HomeActivity){
+            ((HomeActivity) getActivity()).botonmensaje.hide();
         }
         titulo = view.findViewById(R.id.titulo_ver_reporte);
         descripcion = view.findViewById(R.id.descripcion_reporte);

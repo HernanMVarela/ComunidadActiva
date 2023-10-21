@@ -33,7 +33,7 @@ import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMASpinnerTiposReporte;
-import frgp.utn.edu.ar.controllers.ui.activities.VecinoActivity;
+import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
 import frgp.utn.edu.ar.controllers.ui.adapters.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.R;
@@ -55,8 +55,8 @@ public class NuevoReporteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nuevo_reporte, container, false);
-        if(getActivity() instanceof VecinoActivity){
-            ((VecinoActivity) getActivity()).botonmensaje.hide();
+        if(getActivity() instanceof HomeActivity){
+            ((HomeActivity) getActivity()).botonmensaje.hide();
         }
         titulo = view.findViewById(R.id.edTituloReporte);
         descripcion = view.findViewById(R.id.edDescripcionReporte);

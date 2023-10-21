@@ -1,6 +1,5 @@
 package frgp.utn.edu.ar.controllers.ui.activities;
 
-import android.app.usage.NetworkStatsManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -22,7 +21,7 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.databinding.ActivityVecinoBinding;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
-public class VecinoActivity  extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
 
     private AppBarConfiguration mAppBarConfiguration;

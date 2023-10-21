@@ -32,7 +32,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.activities.VecinoActivity"
+            android:name=".ui.activities.HomeActivity"
             android:exported="false" />
         <activity
             android:name=".ui.activities.AdminActivity"

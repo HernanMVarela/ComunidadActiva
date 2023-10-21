@@ -12,12 +12,12 @@ import frgp.utn.edu.ar.controllers.R;
 
 public class GenMenuGridAdapter extends BaseAdapter {
 
-    private final int[] imagenIDs ={R.drawable.genmenu_reportes_24,
-            R.drawable.genmenu_proyectos_24,
-            R.drawable.genmenu_search_reporte_24,
-            R.drawable.genmenu_search_proyecto_24,
-            R.drawable.genmenu_moderator_24,
-            R.drawable.genmenu_admin_24};
+    private final int[] imagenIDs = {R.drawable.genmenu_reportes_24,
+                                     R.drawable.genmenu_proyectos_24,
+                                     R.drawable.genmenu_search_reporte_24,
+                                     R.drawable.genmenu_search_proyecto_24,
+                                     R.drawable.genmenu_moderator_24,
+                                     R.drawable.genmenu_admin_24};
     private final String[] titulos = {"Reportes","Proyectos","Buscar Reporte","Buscar Proyecto", "Panel Mod", "Panel Admin"};
     private Context context;
 

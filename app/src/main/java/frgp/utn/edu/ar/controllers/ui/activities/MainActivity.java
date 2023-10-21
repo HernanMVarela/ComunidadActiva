@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         etNombre = findViewById(R.id.etNombre);
         etPassword = findViewById(R.id.etPassword);
-        checkActiveUser();
+        checkActiveUser(null);
     }
 
     public void iniciarSesion(View view){
@@ -55,18 +55,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences.saveUsuarioData(this, usuario);
         etNombre.setText("");
         etPassword.setText("");
-
-        switch (usuario.getTipo().getTipo()) {
-            case "VECINO":
-                IrVecino(view);
-                break;
-            case "MODERADOR":
-                IrModerador(view);
-                break;
-            case "ADMINISTRADOR":
-                IrAdministrador(view);
-                break;
-        }
+        Ingresar(view);
     }
 
     public void IrRegistro(View view){
@@ -144,35 +133,30 @@ public class MainActivity extends AppCompatActivity {
         startActivity(registro);
     }
 
-    public void IrVecino(View view){
-        Intent registro = new Intent(this, VecinoActivity.class);
+    public void Ingresar(View view){
+        Intent registro = new Intent(this, HomeActivity.class);
         startActivity(registro);
+    }
+
+    public void IrVecino(View view){
+        etNombre.setText("userVecino1");
+        etPassword.setText("123456");
     }
 
     public void IrModerador(View view){
-        Intent registro = new Intent(this, ModeradorActivity.class);
-        startActivity(registro);
+        etNombre.setText("userModerador1");
+        etPassword.setText("123456");
     }
 
     public void IrAdministrador(View view){
-        Intent registro = new Intent(this, AdminActivity.class);
-        startActivity(registro);
+        etNombre.setText("userAdmin1");
+        etPassword.setText("123456");
     }
 
-    public void checkActiveUser() {
+    public void checkActiveUser(View view) {
         Usuario usuario = sharedPreferences.getUsuarioData(this);
         if(usuario != null) {
-            switch (usuario.getTipo().getTipo()) {
-                case "VECINO":
-                    IrVecino(null);
-                    break;
-                case "MODERADOR":
-                    IrModerador(null);
-                    break;
-                case "ADMINISTRADOR":
-                    IrAdministrador(null);
-                    break;
-            }
+            Ingresar(view);
         }
     }
 }
