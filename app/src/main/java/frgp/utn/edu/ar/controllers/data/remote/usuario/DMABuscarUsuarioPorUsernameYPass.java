@@ -14,12 +14,14 @@ import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMABuscarUsuarioPorUsername extends AsyncTask<String, Void, Usuario> {
+public class DMABuscarUsuarioPorUsernameYPass extends AsyncTask<String, Void, Usuario> {
     private String username;
+    private String pass;
     //Constructor
-    public DMABuscarUsuarioPorUsername(String username)
+    public DMABuscarUsuarioPorUsernameYPass(String username, String pass)
     {
         this.username = username;
+        this.pass = pass;
     }
 
     @Override
@@ -31,8 +33,9 @@ public class DMABuscarUsuarioPorUsername extends AsyncTask<String, Void, Usuario
             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM USUARIOS AS U" +
                                                                            " INNER JOIN ESTADOS_USUARIO AS EU ON U.ID_ESTADO = EU.ID" +
                                                                            " INNER JOIN TIPOS_USUARIO AS TU ON U.ID_TIPO = TU.ID" +
-                                                                           " WHERE U.USERNAME = ?");
+                                                                           " WHERE U.username = ? AND U.password = ?");
             preparedStatement.setString(1, username);
+            preparedStatement.setString(2, pass);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 usuario = new Usuario();

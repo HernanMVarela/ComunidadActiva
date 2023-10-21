@@ -73,6 +73,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:backgroundTint="@color/green_700"
+        android:onClick="iniciarSesion"
         android:text="@string/iniciar_sesion"
         android:textAllCaps="false"
         android:textColor="#000000"

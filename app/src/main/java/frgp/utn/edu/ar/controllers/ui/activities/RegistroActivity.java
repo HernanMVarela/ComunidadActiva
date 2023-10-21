@@ -103,7 +103,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
 
         if(usuarioRepository.cargarUsuario(crearUsuario(), view.getContext())) {
             Toast.makeText(this, "Usuario creado correctamente", Toast.LENGTH_LONG).show();
-            Usuario usuario = usuarioRepository.checkUserName(userName.getText().toString(), view.getContext());
+            Usuario usuario = usuarioRepository.getUserByUserName(userName.getText().toString());
             logger.log(usuario.getId(), LogsEnum.REGISTRO_USUARIO, "Se registro el usuario " + usuario.getUsername());
             mailService.sendMail(usuario.getCorreo(), "BIENVENIDO A COMUNIDAD ACTIVA", String.format("Hola %s, tu usuario fue creado correctamente", usuario.getUsername()));
             startActivity(intent);
@@ -113,7 +113,6 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
     }
 
     public boolean isFormValid() {
-
         //CHECK FORM VACIO
         if (nombre.getText().toString().isEmpty()
          || apellido.getText().toString().isEmpty()
@@ -180,13 +179,13 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
     public boolean isDataValid(View view) {
 
         //CHECK EXISTENCIA USERNAME L
-        if(usuarioRepository.checkUserName(userName.getText().toString(), view.getContext()) != null) {
+        if(usuarioRepository.getUserByUserName(userName.getText().toString()) != null) {
             Toast.makeText(this, "El nombre de usuario ya existe", Toast.LENGTH_LONG).show();
             return false;
         }
 
         //CHECK EXISTENCIA MAIL
-        if(usuarioRepository.checkMail(correo.getText().toString(), view.getContext()) != null) {
+        if(usuarioRepository.getUserByMail(correo.getText().toString(), view.getContext()) != null) {
             Toast.makeText(this, "El correo ya esta registrado", Toast.LENGTH_LONG).show();
             return false;
         }
