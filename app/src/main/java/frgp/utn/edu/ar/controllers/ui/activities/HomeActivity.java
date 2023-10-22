@@ -1,6 +1,7 @@
 package frgp.utn.edu.ar.controllers.ui.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,6 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.databinding.ActivityHomeBinding;
+import frgp.utn.edu.ar.controllers.ui.viewmodels.UsuarioViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class HomeActivity extends AppCompatActivity {
@@ -70,6 +73,13 @@ public class HomeActivity extends AppCompatActivity {
        usuario = sharedPreferences.getUsuarioData(this);
        tvNavUsername.setText(usuario.getUsername());
        tvNavUserMail.setText(usuario.getCorreo());
+        if(usuario!=null){
+            Log.i("User", usuario.toString());
+        }else{
+            Log.e("ERROR USER", "NO HAY USAURIO");
+        }
+       UsuarioViewModel userViewModel = new ViewModelProvider(this).get(UsuarioViewModel.class);
+       userViewModel.setUsuario(usuario);
     }
 
     @Override
@@ -98,5 +108,9 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public Usuario getUsuario(){
+        return usuario;
     }
 }

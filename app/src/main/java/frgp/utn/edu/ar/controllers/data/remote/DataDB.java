@@ -6,7 +6,7 @@ public class DataDB {
     public static String port="3306";
     public static String nameBD="sql10652506";
     public static String user="sql10652506";
-    public static String pass=null; // MODIFICAR CLAVE LOCALMENTE PARA EVITAR ALERTAS DE SEGURIDAD
+    public static String pass= "raYiBvhfUg"; // MODIFICAR CLAVE LOCALMENTE PARA EVITAR ALERTAS DE SEGURIDAD
 
     //Información para la conexion
     public static String urlMySQL = "jdbc:mysql://" + host + ":" + port + "/"+nameBD;

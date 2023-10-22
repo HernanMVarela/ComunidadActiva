@@ -81,6 +81,5 @@ public class DMAGuardarReporte extends AsyncTask<String, Void, String> {
         }else{
             Toast.makeText(context, "No se pudo guardar el reporte", Toast.LENGTH_SHORT).show();
         }
-
     }
 }

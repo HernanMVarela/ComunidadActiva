@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.ui.adapters;
+package frgp.utn.edu.ar.controllers.ui.viewmodels;
 import androidx.lifecycle.ViewModel;
 
 public class SharedLocationViewModel extends ViewModel {

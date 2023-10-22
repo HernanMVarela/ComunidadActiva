@@ -2,6 +2,7 @@ package frgp.utn.edu.ar.controllers.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     LogService logger = new LogService();
     MailService mailService = new MailService();
     UsuarioRepository usuarioRepository = new UsuarioRepository();
-
     SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     public Usuario usuario;
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         etNombre = findViewById(R.id.etNombre);
         etPassword = findViewById(R.id.etPassword);
-        checkActiveUser(null);
+        //checkActiveUser(null);
     }
 
     public void iniciarSesion(View view){
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
             bloqueoDesbloqueoUser("BLOQUEO");
             return;
         }
-
         sharedPreferences.saveUsuarioData(this, usuario);
         etNombre.setText("");
         etPassword.setText("");
@@ -134,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Ingresar(View view){
+
         Intent registro = new Intent(this, HomeActivity.class);
         startActivity(registro);
     }

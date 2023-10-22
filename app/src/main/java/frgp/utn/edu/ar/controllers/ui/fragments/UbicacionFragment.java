@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
-import frgp.utn.edu.ar.controllers.ui.adapters.SharedLocationViewModel;
+import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 
 public class UbicacionFragment extends Fragment {
 

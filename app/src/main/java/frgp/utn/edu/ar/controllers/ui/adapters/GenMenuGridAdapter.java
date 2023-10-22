@@ -9,61 +9,52 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.repository.CustomMenuItem ;
+
+import java.util.List;
 
 public class GenMenuGridAdapter extends BaseAdapter {
-
-    private final int[] imagenIDs = {R.drawable.genmenu_reportes_24,
-                                     R.drawable.genmenu_proyectos_24,
-                                     R.drawable.genmenu_search_reporte_24,
-                                     R.drawable.genmenu_search_proyecto_24,
-                                     R.drawable.genmenu_crear_informe_admin_24,
-                                     R.drawable.genmenu_listar_usuarios_24,
-                                     R.drawable.genmenu_crear_informe_moderador_24,
-                                     R.drawable.genmenu_historial_moderacion_24,
-                                     R.drawable.genmenu_listar_denuncias_24};
-    private final String[] titulos = {"CREAR REPORTE",
-                                      "CREAR PROYECTO",
-                                      "BUSCAR REPORTE",
-                                      "BUSCAR PROYECTO",
-                                      "CREAR INFORME (A)",
-                                      "LISTAR USUARIOS",
-                                      "CREAR INFORME (M)",
-                                      "HISTORIAL MODERACION",
-                                      "LISTAR DENUNCIAS"};
+    private List<CustomMenuItem > menuItems;
     private Context context;
 
-    public GenMenuGridAdapter(Context context){
-        this.context=context;
+    public GenMenuGridAdapter(Context context, List<CustomMenuItem > menuItems) {
+        this.context = context;
+        this.menuItems = menuItems;
     }
+
     @Override
     public int getCount() {
-        return imagenIDs.length;
+        return menuItems.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return i;
+    public Object getItem(int position) {
+        return menuItems.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return 0;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View gridView;
-        if(view == null){
+
+        if (convertView == null) {
             gridView = new View(context);
-            gridView = inflater.inflate(R.layout.grid_layout_menu_general,null);
+            gridView = inflater.inflate(R.layout.grid_layout_menu_general, null);
             TextView textView = gridView.findViewById(R.id.gvGenMenu_titulo);
-            textView.setText(titulos[i]);
             ImageView imageView = gridView.findViewById(R.id.gvGenMenu_imagen);
-            imageView.setImageResource(imagenIDs[i]);
+
+            CustomMenuItem  menuItem = menuItems.get(position);
+            textView.setText(menuItem.getTitle());
+            imageView.setImageResource(menuItem.getIconId());
         } else {
-            gridView = view;
+            gridView = convertView;
         }
+
         return gridView;
     }
 }

@@ -35,7 +35,7 @@ import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMASpinnerTiposReporte;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
-import frgp.utn.edu.ar.controllers.ui.adapters.SharedLocationViewModel;
+import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 
