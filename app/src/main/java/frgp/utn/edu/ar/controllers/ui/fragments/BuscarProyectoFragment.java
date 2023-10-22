@@ -31,6 +31,7 @@ public class BuscarProyectoFragment extends Fragment {
     private SearchView buscarProyecto;
     private Proyecto proyectoSeleccionado=null;
     private View viewSeleccionada=null;
+    private Button verDetalle;
 
     public static BuscarProyectoFragment newInstance() {
         return new BuscarProyectoFragment();
@@ -39,15 +40,18 @@ public class BuscarProyectoFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_buscar_proyecto, container, false);
+        View view = inflater.inflate(R.layout.fragment_buscar_proyecto, container, false);
+        verDetalle = view.findViewById(R.id.btnVerDetalleP);
+        listaDeProyectos = view.findViewById(R.id.listProyectos);
+        //buscarProyecto = view.findViewById(R.id.swBuscar);
+        return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        Button verDetalle = view.findViewById(R.id.btnVerDetalleP);
-        listaDeProyectos = view.findViewById(R.id.listProyectos);
-        buscarProyecto = view.findViewById(R.id.swBuscar);
-        DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext());
-        try{DMAListaP.execute();}
+        try{
+            DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext());
+            DMAListaP.execute();
+        }
         catch (Error e){}
 
         listaDeProyectos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -64,7 +68,7 @@ public class BuscarProyectoFragment extends Fragment {
 
         verDetalle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                /*iraDetalles()*/;
+                //iraDetalles();
             }
         });
     }

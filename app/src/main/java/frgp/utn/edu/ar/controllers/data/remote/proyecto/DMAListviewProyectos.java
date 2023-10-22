@@ -106,7 +106,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     }
     protected void onPostExecute(String response) {
         ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
-        assert listaDeProyectos != null;
-        listado.setAdapter(adapter);
+        if(listaDeProyectos!=null)
+        {listado.setAdapter(adapter);}
     }
 }
