@@ -13,20 +13,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_margin="20dp"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/edBuscar"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/swBuscar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_height="match_parent"
                 android:background="@drawable/edittext_white_rounded"
-                android:hint="@string/buscar___"
-                android:minHeight="35dp"
-                android:paddingLeft="5dp"
-                android:textSize="20sp" />
+                android:queryHint="@string/buscar___" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -56,9 +52,21 @@
             <ListView
                 android:id="@+id/listProyectos"
                 android:layout_width="match_parent"
-                android:layout_height="596dp"
+                android:layout_height="556dp"
                 android:layout_marginHorizontal="15dp"
                 android:layout_marginVertical="5dp" />
+
+            <Button
+                android:id="@+id/btnVerDetalleP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_weight="1"
+                android:background="@drawable/boton_redondeado"
+                android:text="@string/ver_detalle"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
 
         </LinearLayout>
 

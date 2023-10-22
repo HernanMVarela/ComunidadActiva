@@ -1,9 +1,10 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Proyecto extends Publicacion{
+public class Proyecto extends Publicacion implements Serializable {
     private String descripcion;
     private int cupo;
     private List<Usuario> voluntarios;
