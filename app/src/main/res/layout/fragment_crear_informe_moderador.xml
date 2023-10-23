@@ -8,104 +8,117 @@
     tools:context=".ui.fragments.CrearInformeAdminFragment">
 
     <DatePicker
-        android:id="@+id/dpFechaInicio"
-        android:layout_width="500dp"
-        android:layout_height="400dp"
+        android:id="@+id/dpFechaInicioModerador"
+        android:layout_width="324dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="56dp"
         android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <DatePicker
-        android:id="@+id/dpFechaFin"
-        android:layout_width="500dp"
-        android:layout_height="400dp"
+        android:id="@+id/dpFechaFinModerador"
+        android:layout_width="380dp"
+        android:layout_height="327dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
         android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/editTextFechaInicio"
+        android:id="@+id/editTextFechaInicioModerador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="40dp"
         android:ems="10"
-        android:hint="@string/fecha_inicio"
+        android:hint="PRUEBA"
         android:inputType="date"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextFechaFin"
+        android:id="@+id/editTextFechaFinModerador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
         android:ems="10"
         android:hint="@string/fecha_fin"
         android:inputType="date"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFechaInicio"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="68dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFechaInicioModerador"
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
-        android:id="@+id/btnFechaInicio"
+        android:id="@+id/btnFechaInicioModerador"
         android:layout_width="51dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="40dp"
         android:contentDescription="@string/fecha_inicio"
         android:src="@android:drawable/ic_menu_today"
-        app:layout_constraintStart_toEndOf="@+id/editTextFechaInicio"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="40dp" />
+        app:layout_constraintStart_toEndOf="@+id/editTextFechaInicioModerador"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <ImageButton
-        android:id="@+id/btnFechaFin"
+        android:id="@+id/btnFechaFinModerador"
         android:layout_width="51dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="20dp"
         android:contentDescription="@string/fecha_fin"
         android:src="@android:drawable/ic_menu_today"
-        app:layout_constraintStart_toEndOf="@+id/editTextFechaFin"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="120dp" />
+        app:layout_constraintStart_toEndOf="@+id/editTextFechaFinModerador"
+        app:layout_constraintTop_toBottomOf="@+id/btnFechaInicioModerador"
+        tools:ignore="MissingConstraints" />
 
     <Spinner
-        android:id="@+id/spTipoInforme"
+        android:id="@+id/spTipoInformeModerador"
         android:layout_width="290dp"
         android:layout_height="39dp"
+        android:layout_marginStart="68dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/edittext_grey_roundead"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        tools:layout_editor_absoluteX="68dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTipoInformeModerador"
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/btnCrearProyecto"
+        android:id="@+id/btnCrearInformeModerador"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="316dp"
+        android:layout_marginTop="248dp"
         android:layout_weight="1"
         android:background="@drawable/boton_redondeado"
         android:text="@string/crear_informe"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintTop_toBottomOf="@+id/spTipoInforme"
-        tools:layout_editor_absoluteX="0dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spTipoInformeModerador" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tvTipoInformeModerador"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="68dp"
+        android:layout_marginTop="32dp"
         android:contentDescription="@string/tipo_informe"
         android:hint="@string/tipo_informe"
         android:text="TextView"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFechaFin"
-        tools:layout_editor_absoluteX="68dp"
-        tools:text="@string/tipo_informe"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextFechaFinModerador"
+        tools:ignore="MissingConstraints"
+        tools:text="@string/tipo_informe" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

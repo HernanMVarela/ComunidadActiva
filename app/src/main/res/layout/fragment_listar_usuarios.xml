@@ -59,7 +59,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/spTipoInforme"
+                android:id="@+id/spTipoInformeModerador"
                 android:layout_width="131dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

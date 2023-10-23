@@ -38,13 +38,13 @@ public class CrearInformeAdminFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_crear_informe_admin, container, false);
 
         //vinculo variables a objetos del view
-        etFechaInicio = (EditText) view.findViewById(R.id.editTextFechaInicio);
-        etFechaFin = (EditText) view.findViewById(R.id.editTextFechaFin);
-        dpFechaInicio = (DatePicker) view.findViewById(R.id.dpFechaInicio);
-        dpFechaFin = (DatePicker) view.findViewById(R.id.dpFechaFin);
-        btnFechaInicio = (ImageButton) view.findViewById(R.id.btnFechaInicio);
-        btnFechaFin = (ImageButton) view.findViewById(R.id.btnFechaFin);
-        spTipoInforme = (Spinner) view.findViewById(R.id.spTipoInforme);
+        etFechaInicio = (EditText) view.findViewById(R.id.editTextFechaInicioAdmin);
+        etFechaFin = (EditText) view.findViewById(R.id.editTextFechaFinAdmin);
+        dpFechaInicio = (DatePicker) view.findViewById(R.id.dpFechaInicioAdmin);
+        dpFechaFin = (DatePicker) view.findViewById(R.id.dpFechaFinAdmin);
+        btnFechaInicio = (ImageButton) view.findViewById(R.id.btnFechaInicioAdmin);
+        btnFechaFin = (ImageButton) view.findViewById(R.id.btnFechaFinAdmin);
+        spTipoInforme = (Spinner) view.findViewById(R.id.spTipoInformeAdmin);
 
         String [] tipoInforme = {"Ambiental","Limpieza","Denuncia"};
 

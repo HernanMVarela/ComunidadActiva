@@ -77,7 +77,7 @@ public class NuevoProyectoFragment extends Fragment {
         //Iniciaza textos, botones, spinner y proyecto.
 
         Button btnUbicacion = view.findViewById(id.btnUbicacionP);
-        Button btnCrearProyecto = view.findViewById(id.btnCrearProyecto);
+        Button btnCrearProyecto = view.findViewById(id.btnCrearInformeModerador);
 
         btnCrearProyecto.setOnClickListener(new View.OnClickListener() {
             @Override

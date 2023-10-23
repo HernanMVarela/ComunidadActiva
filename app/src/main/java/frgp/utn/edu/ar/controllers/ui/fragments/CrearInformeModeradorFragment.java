@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,7 @@ public class CrearInformeModeradorFragment extends Fragment {
 
     private DatePicker dpFechaInicio, dpFechaFin;
     private Spinner spTipoInforme;
+    private TextView tvTipoInformeModerador;
 
 
     @SuppressLint("MissingInflatedId")
@@ -38,13 +40,14 @@ public class CrearInformeModeradorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_crear_informe_moderador, container, false);
 
         //vinculo variables a objetos del view
-        etFechaInicio = (EditText) view.findViewById(R.id.editTextFechaInicio);
-        etFechaFin = (EditText) view.findViewById(R.id.editTextFechaFin);
-        dpFechaInicio = (DatePicker) view.findViewById(R.id.dpFechaInicio);
-        dpFechaFin = (DatePicker) view.findViewById(R.id.dpFechaFin);
-        btnFechaInicio = (ImageButton) view.findViewById(R.id.btnFechaInicio);
-        btnFechaFin = (ImageButton) view.findViewById(R.id.btnFechaFin);
-        spTipoInforme = (Spinner) view.findViewById(R.id.spTipoInforme);
+        etFechaInicio = (EditText) view.findViewById(R.id.editTextFechaInicioModerador);
+        etFechaFin = (EditText) view.findViewById(R.id.editTextFechaFinModerador);
+        dpFechaInicio = (DatePicker) view.findViewById(R.id.dpFechaInicioModerador);
+        dpFechaFin = (DatePicker) view.findViewById(R.id.dpFechaFinModerador);
+        btnFechaInicio = (ImageButton) view.findViewById(R.id.btnFechaInicioModerador);
+        btnFechaFin = (ImageButton) view.findViewById(R.id.btnFechaFinModerador);
+        spTipoInforme = (Spinner) view.findViewById(R.id.spTipoInformeModerador);
+        tvTipoInformeModerador = (TextView) view.findViewById(R.id.tvTipoInformeModerador);
 
         String [] tipoInforme = {"Ambiental","Limpieza","Denuncia"};
 
@@ -52,8 +55,8 @@ public class CrearInformeModeradorFragment extends Fragment {
 
         //Seteo valores iniciales
        // spTipoInforme.setAdapter(adapter);
-        etFechaInicio.setText(getFecha(dpFechaInicio));
-
+        etFechaInicio.setText(getFecha(dpFechaInicio).toString());
+        tvTipoInformeModerador.setText("Tipo Informe");
         btnFechaInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
