@@ -15,6 +15,13 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.CrearInformeViewModel;
 
@@ -57,13 +64,18 @@ public class CrearInformeAdminFragment extends Fragment {
         btnFechaInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (dpFechaInicio.getVisibility() == View.VISIBLE) {
-                    // Si el DatePicker ya está visible, ocúltalo al hacer clic en el botón de selección
-                    dpFechaInicio.setVisibility(View.GONE);
-                } else {
-                    // Si el DatePicker está oculto, muéstralo al hacer clic en el botón de selección
-                    dpFechaInicio.setVisibility(View.VISIBLE);
-                }
+                MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker()
+                        .setTitleText("Fecha Inicio")
+                        .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                        .build();
+                    materialDatePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+                        @Override
+                        public void onPositiveButtonClick(Long selection) {
+                            String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date(selection));
+                            etFechaInicio.setText(date);
+                        }
+                    });
+                    materialDatePicker.show(getActivity().getSupportFragmentManager(), "tag");
             }
         });
         btnFechaFin.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +122,25 @@ public class CrearInformeAdminFragment extends Fragment {
         return fecha;
     }
 
+    public void mostrarOcultarDatePikerInicio(View view){
+        if (dpFechaInicio.getVisibility() == View.VISIBLE) {
+            // Si el DatePicker ya está visible, ocúltalo al hacer clic en el botón de selección
+            dpFechaInicio.setVisibility(View.GONE);
+        } else {
+            // Si el DatePicker está oculto, muéstralo al hacer clic en el botón de selección
+            dpFechaInicio.setVisibility(View.VISIBLE);
+        }
+    }
 
+    public void mostrarOcultarDatePikerFin(View view){
+        if (dpFechaFin.getVisibility() == View.VISIBLE) {
+            // Si el DatePicker ya está visible, ocúltalo al hacer clic en el botón de selección
+            dpFechaFin.setVisibility(View.GONE);
+        } else {
+            // Si el DatePicker está oculto, muéstralo al hacer clic en el botón de selección
+            dpFechaFin.setVisibility(View.VISIBLE);
+        }
+    }
 
 
 }

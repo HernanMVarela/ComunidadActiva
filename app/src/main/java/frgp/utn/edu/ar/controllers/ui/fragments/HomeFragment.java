@@ -69,11 +69,11 @@ public class HomeFragment extends Fragment {
 
                 break;
             case "MODERADOR":
-                menuItems.add(new CustomMenuItem (R.drawable.genmenu_search_reporte_24, "Buscar reporte", R.id.action_nav_home_to_nav_buscar_reporte));
-                menuItems.add(new CustomMenuItem (R.drawable.genmenu_search_proyecto_24, "Buscar proyecto", R.id.action_nav_home_to_nav_buscar_proyecto));
+                //menuItems.add(new CustomMenuItem (R.drawable.genmenu_search_reporte_24, "Buscar reporte", R.id.action_nav_home_to_nav_buscar_reporte));
+                //menuItems.add(new CustomMenuItem (R.drawable.genmenu_search_proyecto_24, "Buscar proyecto", R.id.action_nav_home_to_nav_buscar_proyecto));
                 menuItems.add(new CustomMenuItem (R.drawable.genmenu_crear_informe_moderador_24, "Crear informe", R.id.action_nav_home_to_nav_crear_informe_moderador));
-                menuItems.add(new CustomMenuItem (R.drawable.genmenu_historial_moderacion_24, "Historial", R.id.action_nav_home_to_nav_historial_moderacion));
-                menuItems.add(new CustomMenuItem (R.drawable.genmenu_listar_denuncias_24, "Denuncias", R.id.action_nav_home_to_nav_listar_denuncias));
+                menuItems.add(new CustomMenuItem (R.drawable.genmenu_historial_moderacion_24, "Historial Moderacion", R.id.action_nav_home_to_nav_historial_moderacion));
+                menuItems.add(new CustomMenuItem (R.drawable.genmenu_listar_denuncias_24, "Listar Denuncias", R.id.action_nav_home_to_nav_listar_denuncias));
 
                 break;
             case "ADMINISTRADOR":

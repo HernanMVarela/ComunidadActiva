@@ -31,7 +31,7 @@
             app:destination="@+id/nav_listar_usuarios" />
         <action
             android:id="@+id/action_nav_home_to_nav_crear_informe_moderador"
-            app:destination="@+id/nav_crear_informe_moderador" />
+            app:destination="@id/nav_crear_informe_moderador" />
         <action
             android:id="@+id/action_nav_home_to_nav_historial_moderacion"
             app:destination="@+id/nav_historial_moderacion" />
