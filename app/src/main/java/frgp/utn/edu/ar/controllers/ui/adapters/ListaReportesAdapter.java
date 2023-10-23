@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -43,6 +44,7 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
         TextView rating = convertView.findViewById(R.id.tvtRatingListaReporte);
         TextView usernamefecha = convertView.findViewById(R.id.tvUsernameFechaListaReporte);
         TextView distancia = convertView.findViewById(R.id.tvDistanciaListaReporte);
+        CardView cardview = convertView.findViewById(R.id.cardview_lista_reporte);
         assert reporte != null;
         float puntos = 0;
         if(reporte.getCant_votos() > 0){
@@ -51,14 +53,11 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
         titulo.setText(reporte.getTitulo());
         rating.setText(String.valueOf(puntos));
 
-        Log.i("UBICACION ACTUAL","Lat: " + ubicacion.latitude + " | Long: " + ubicacion.longitude);
-        Log.i("UBICACION REPORTE","Lat: " + reporte.getLatitud() + " | Long: " + reporte.getLongitud());
         assert ubicacion != null;
         if(reporte.getLongitud() != 0.0 && reporte.getLatitud() != 0.0 && ubicacion.longitude != 0.0 && ubicacion.latitude != 0.0){
             Location ubReporte = new Location("point1");
             ubReporte.setLatitude(reporte.getLatitud());
             ubReporte.setLongitude(reporte.getLongitud());
-
             Location ubActual = new Location("point2");
             ubActual.setLatitude(ubicacion.latitude);
             ubActual.setLongitude(ubicacion.longitude);
@@ -70,7 +69,9 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
         }
         usernamefecha.setText("Publicado por " + reporte.getOwner().getUsername() + " el " + reporte.getFecha().toString());
 
+        if(reporte.getEstado().getEstado().equals("DENUNCIADO")){
+            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.danger));
+        }
         return convertView;
     }
-
 }

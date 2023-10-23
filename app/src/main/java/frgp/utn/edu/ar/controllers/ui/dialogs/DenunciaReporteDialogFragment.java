@@ -21,7 +21,7 @@ import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenuncia;
+import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenunciaReporte;
 
 public class DenunciaReporteDialogFragment extends DialogFragment {
     private EditText etxTituloDenuncia;
@@ -65,7 +65,7 @@ public class DenunciaReporteDialogFragment extends DialogFragment {
                     nueva.setFecha_creacion(new Date(System.currentTimeMillis()));
 
                     /// ITENTA GUARDAR LA DENUNCIA Y CAMBIAR EL ESTADO DEL REPORTE
-                    DMAGuardarDenuncia DMAGuardarDen = new DMAGuardarDenuncia(nueva,getContext());
+                    DMAGuardarDenunciaReporte DMAGuardarDen = new DMAGuardarDenunciaReporte(nueva,getContext());
                     DMAGuardarDen.execute();
                 }
                 // Cierra el diálogo.

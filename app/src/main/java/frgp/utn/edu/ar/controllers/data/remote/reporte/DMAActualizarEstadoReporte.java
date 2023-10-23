@@ -50,11 +50,8 @@ public class DMAActualizarEstadoReporte extends AsyncTask<String, Void, String> 
     }
     @Override
     protected void onPostExecute(String response) {
-        if(dataRowModif!=0){
-            Toast.makeText(context, "Reporte modificado exitosamente", Toast.LENGTH_SHORT).show();
-        }else{
+        if(dataRowModif==0){
             Toast.makeText(context, "No se pudo modificar el reporte", Toast.LENGTH_SHORT).show();
         }
-
     }
 }

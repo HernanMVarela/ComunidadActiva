@@ -2,6 +2,7 @@ package frgp.utn.edu.ar.controllers.ui.fragments;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -181,6 +182,9 @@ public class DetalleReporteFragment extends Fragment {
         descripcion.setText(seleccionado.getTitulo());
         String status_rep = "Estado: " + seleccionado.getEstado().getEstado();
         estado.setText(status_rep);
+        if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
+            estado.setBackgroundColor(Color.RED);
+        }
         String tipo_rep = "Tipo: " + seleccionado.getTipo().getTipo();
         tipo.setText(tipo_rep);
         fecha.setText(seleccionado.getFecha().toString());
