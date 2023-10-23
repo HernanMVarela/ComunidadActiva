@@ -1,5 +1,7 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
+import java.util.Date;
+
 public class Denuncia {
     private Publicacion publicacion;
     private TipoDenuncia tipo;
@@ -7,14 +9,16 @@ public class Denuncia {
     private EstadoDenuncia estado;
     private String titulo;
     private String descripcion;
+    private Date fecha_creacion;
 
-    public Denuncia(Publicacion publicacion, TipoDenuncia tipo, Usuario denunciante, EstadoDenuncia estado, String titulo, String descripcion) {
+    public Denuncia(Publicacion publicacion, TipoDenuncia tipo, Usuario denunciante, EstadoDenuncia estado, String titulo, String descripcion, Date fecha_creacion) {
         this.publicacion = publicacion;
         this.tipo = tipo;
         this.denunciante = denunciante;
         this.estado = estado;
         this.titulo = titulo;
         this.descripcion = descripcion;
+        this.fecha_creacion = fecha_creacion;
     }
 
     public Denuncia() {
@@ -78,5 +82,13 @@ public class Denuncia {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    public Date getFecha_creacion() {
+        return fecha_creacion;
+    }
+
+    public void setFecha_creacion(Date fecha_creacion) {
+        this.fecha_creacion = fecha_creacion;
     }
 }

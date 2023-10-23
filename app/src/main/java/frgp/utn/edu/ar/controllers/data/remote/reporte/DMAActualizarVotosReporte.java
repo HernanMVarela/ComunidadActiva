@@ -49,13 +49,4 @@ public class DMAActualizarVotosReporte extends AsyncTask<String, Void, String> {
         }
         return response;
     }
-    @Override
-    protected void onPostExecute(String response) {
-        if(dataRowModif!=0){
-            Log.i("votacion-reporte", "Se registró el voto en el reporte");
-        }else{
-            Log.e("votacion-reporte", " No se registró el voto en el reporte");
-        }
-
-    }
 }

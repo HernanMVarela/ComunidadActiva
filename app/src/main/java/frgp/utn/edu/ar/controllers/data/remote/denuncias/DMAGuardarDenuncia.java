@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote.reporte;
+package frgp.utn.edu.ar.controllers.data.remote.denuncias;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,18 +12,18 @@ import java.sql.PreparedStatement;
 import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
-import frgp.utn.edu.ar.controllers.data.model.ReseniaReporte;
+import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAGuardarResenia extends AsyncTask<String, Void, String> {
+public class DMAGuardarDenuncia extends AsyncTask<String, Void, String> {
 
     private Context context;
-    private ReseniaReporte nuevo;
+    private Denuncia nuevo;
     private static String result2;
     private int dataRowModif;
 
     //Constructor
-    public DMAGuardarResenia(ReseniaReporte nuevo, Context ct)
+    public DMAGuardarDenuncia(Denuncia nuevo, Context ct)
     {
         this.nuevo = nuevo;
         this.context = ct;
@@ -38,13 +38,17 @@ public class DMAGuardarResenia extends AsyncTask<String, Void, String> {
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
 
-            String query = "INSERT INTO RESENIA_REPORTE (ID_REPORTE ,ID_VOTANTE ,PUNTAJE) VALUES (?,?,?);";
+            String query = "INSERT INTO DENUNCIAS (ID_PUBLICACION ,ID_TIPO ,ID_USER ,ID_ESTADO ,TITULO ,DESCRIPCION, FECHA_CREACION) VALUES (?,?,?,?,?,?,?);";
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1,nuevo.getReporte().getId());
-            ps.setInt(2,nuevo.getVotante().getId());
-            ps.setFloat(3,nuevo.getPuntaje());
+            ps.setInt(1,nuevo.getPublicacion().getId());
+            ps.setInt(3,nuevo.getTipo().getId());
+            ps.setInt(2,nuevo.getDenunciante().getId());
+            ps.setInt(4,nuevo.getEstado().getId());
+            ps.setString(5, nuevo.getTitulo());
+            ps.setString(6,nuevo.getDescripcion());
+            ps.setDate(7, new java.sql.Date(nuevo.getFecha_creacion().getTime()));
 
             dataRowModif = ps.executeUpdate();
             result2 = " ";
@@ -55,14 +59,14 @@ public class DMAGuardarResenia extends AsyncTask<String, Void, String> {
             result2 = "Conexion no exitosa";
         }
         return response;
-
     }
     @Override
     protected void onPostExecute(String response) {
         if(dataRowModif!=0){
-            Toast.makeText(context, "Voto registrado!", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Denuncia guardada", Toast.LENGTH_SHORT).show();
         }else{
-            Toast.makeText(context, "Ha ocurrido un error!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "No se pudo crear la denuncia", Toast.LENGTH_SHORT).show();
         }
+
     }
 }

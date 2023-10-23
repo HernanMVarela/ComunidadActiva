@@ -18,6 +18,7 @@ import frgp.utn.edu.ar.controllers.data.model.ReseniaReporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarVotosReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarResenia;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAVerificarUsuarioVoto;
 
 public class ValorarReporteDialogFragment extends DialogFragment {
     Button btnAceptar;
@@ -58,20 +59,17 @@ public class ValorarReporteDialogFragment extends DialogFragment {
                     int votos = selectedReport.getCant_votos() + 1;
                     selectedReport.setCant_votos(votos);
 
-                    DMAActualizarVotosReporte DMAVotosRep = new DMAActualizarVotosReporte(selectedReport,getContext());
-                    DMAVotosRep.execute();
-
                     ReseniaReporte resenia = new ReseniaReporte();
                     resenia.setVotante(loggedInUser);
                     resenia.setReporte(selectedReport);
                     resenia.setPuntaje(rtbValoracion.getRating());
 
-                    DMAGuardarResenia DMAGuardarResenia = new DMAGuardarResenia(resenia,getContext());
-                    DMAGuardarResenia.execute();
+                    DMAVerificarUsuarioVoto DMAUserVoto = new DMAVerificarUsuarioVoto(getContext(),resenia);
+                    DMAUserVoto.execute();
+
                 }else{
                     Toast.makeText(getContext(), "Debes elegir un valor", Toast.LENGTH_LONG).show();
                 }
-
                 dismiss();
             }
         });

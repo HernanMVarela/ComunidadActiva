@@ -35,16 +35,19 @@ import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class DetalleReporteFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private GoogleMap googlemaplocal;
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private DetalleReporteViewModel mViewModel;
     private TextView titulo, descripcion, estado, fecha, tipo;
     private RatingBar puntaje;
     private ImageView imagen;
     Button bUsuario;
+    Usuario loggedInUser = null;
 
     private Reporte seleccionado;
         public static DetalleReporteFragment newInstance() {
@@ -86,6 +89,7 @@ public class DetalleReporteFragment extends Fragment {
         bUsuario = view.findViewById(R.id.btnUsernameDetalle);
         puntaje = view.findViewById(R.id.detalle_rep_rating);
         imagen = view.findViewById(R.id.imagen_ver_reporte);
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
 
         Bundle bundle = this.getArguments();
         /// OBTIENE EL REPORTE SELECCIONADO EN LA PANTALLA ANTERIOR
@@ -113,9 +117,7 @@ public class DetalleReporteFragment extends Fragment {
         bUsuario.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON DETALLE DE USUARIO REPORTE
-                Usuario user = seleccionado.getOwner();
-
-                UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(user);
+                UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(seleccionado.getOwner());
                 dialogFragment.show(getFragmentManager(), "user_detail_reporte");
             }
         });
@@ -124,9 +126,14 @@ public class DetalleReporteFragment extends Fragment {
         bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON SOLICITAR CIERRE
+                if(seleccionado.getOwner().getUsername().equals(loggedInUser.getUsername())){
+                    /// SI EL USUARIO LOGUEADO ES EL DUEÑO DEL REPORTE...
+                }
                 if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+                    /// CARGO
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("selected_report", seleccionado);
+                    bundle.putSerializable("logged_in_user", loggedInUser);
                     NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                     navController.navigate(R.id.solicitar_cierre,bundle);
                 } else if (seleccionado.getEstado().getEstado().equals("PENDIENTE")) {
@@ -146,7 +153,7 @@ public class DetalleReporteFragment extends Fragment {
                 // BOTON VALORAR REPORTE
                 Bundle args = new Bundle();
                 args.putSerializable("selected_report", seleccionado);
-
+                args.putSerializable("logged_in_user", loggedInUser);
                 ValorarReporteDialogFragment dialogFragment = new ValorarReporteDialogFragment();
 
                 dialogFragment.setArguments(args); // Establece el Bundle como argumento
@@ -157,8 +164,12 @@ public class DetalleReporteFragment extends Fragment {
         Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
         bDenunciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // BOTON VALORAR REPORTE
+                // BOTON DENUNCIAR REPORTE
+                Bundle args = new Bundle();
+                args.putSerializable("selected_report", seleccionado);
+                args.putSerializable("logged_in_user", loggedInUser);
                 DenunciaReporteDialogFragment dialogFragment = new DenunciaReporteDialogFragment();
+                dialogFragment.setArguments(args); // Establece el Bundle como argumento
                 dialogFragment.show(getFragmentManager(), "layout_denuciar_reporte");
             }
         });
