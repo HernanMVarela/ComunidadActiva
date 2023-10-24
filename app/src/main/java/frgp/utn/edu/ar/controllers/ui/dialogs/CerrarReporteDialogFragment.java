@@ -23,6 +23,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
+import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
@@ -81,8 +82,10 @@ public class CerrarReporteDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 if(cierreReporte!=null){
-                    DMACerrarReporte dmaCerrarRep = new DMACerrarReporte(cierreReporte,getContext());
-                    dmaCerrarRep.execute();
+                    cierreReporte.setEstado(new EstadoReporte(4,"CERRADO"));
+                    cierreReporte.getReporte().setEstado(new EstadoReporte(3,"ATENDIDO"));
+                    modificarEstadoReporte();
+                    Toast.makeText(getContext(), "Reporte cerrado!", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                 }
@@ -101,7 +104,10 @@ public class CerrarReporteDialogFragment extends DialogFragment {
         btnRearbrir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Cierra el diálogo.
+                cierreReporte.setEstado(new EstadoReporte(5,"CANCELADO"));
+                cierreReporte.getReporte().setEstado(new EstadoReporte(1,"ABIERTO"));
+                modificarEstadoReporte();
+                Toast.makeText(getContext(), "Solicitud rechazada!", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
         });
@@ -118,7 +124,8 @@ public class CerrarReporteDialogFragment extends DialogFragment {
         imagen.setImageBitmap(cierreReporte.getImagen());
     }
 
-    private void modificarEstadoReporte(Reporte reporte){
-
+    private void modificarEstadoReporte(){
+        DMACerrarReporte dmaCerrarReporte = new DMACerrarReporte(cierreReporte,getContext());
+        dmaCerrarReporte.execute();
     }
 }

@@ -132,10 +132,14 @@ public class DetalleReporteFragment extends Fragment {
                 bundle.putSerializable("logged_in_user", loggedInUser);
                 // BOTON SOLICITAR CIERRE
                 if(seleccionado.getOwner().getUsername().equals(loggedInUser.getUsername())){
-                    /// SI EL USUARIO LOGUEADO ES EL DUEÑO DEL REPORTE
-                    CerrarReporteDialogFragment dialogFragment = new CerrarReporteDialogFragment();
-                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-                    dialogFragment.show(getFragmentManager(), "layout_cerrar_reporte");
+                    if(seleccionado.getEstado().getEstado().equals("PENDIENTE")){
+                        /// SI EL USUARIO LOGUEADO ES EL DUEÑO DEL REPORTE
+                        CerrarReporteDialogFragment dialogFragment = new CerrarReporteDialogFragment();
+                        dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                        dialogFragment.show(getFragmentManager(), "layout_cerrar_reporte");
+                    }else{
+                        Toast.makeText(getContext(), "No puedes atender tu propio reporte", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     if (seleccionado.getEstado().getEstado().equals("ABIERTO")) {
                         /// CARGO

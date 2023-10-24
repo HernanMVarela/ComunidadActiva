@@ -70,6 +70,7 @@ public class DMAGuardarCierreReporte extends AsyncTask<String, Void, String> {
             nuevo.getReporte().setEstado(new EstadoReporte(2,"PENDIENTE"));
             DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(nuevo.getReporte(),context);
             dmaActualizar.execute();
+            Toast.makeText(context, "Reporte atendido!", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context, "No se pudo crear la solicitud", Toast.LENGTH_SHORT).show();
         }
