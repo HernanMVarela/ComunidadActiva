@@ -28,9 +28,10 @@ public class ListaProyectosAdapter extends ArrayAdapter<Proyecto> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_lista_proyecto_unidad, parent,false);
         }
+
         TextView titulo = convertView.findViewById(R.id.txtTituloProyectoU);
         TextView datos = convertView.findViewById(R.id.txtDatosCreadorU);
-
+        assert proyecto != null;
         titulo.setText(proyecto.getTitulo());
 
         datos.setText("Publicado por " + proyecto.getOwner().getUsername());

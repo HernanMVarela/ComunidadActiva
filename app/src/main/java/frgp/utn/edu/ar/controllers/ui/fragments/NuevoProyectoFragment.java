@@ -91,7 +91,7 @@ public class NuevoProyectoFragment extends Fragment {
                     Proyecto nuevoP = cargarDatos();
                     DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP,v.getContext());    // LLAMA AL DMA PARA EL GUARDADO EN DB
                     DMANuevoP.execute();    // COMENTADO PARA NO IMPACTAR EN DB - MODIFICACION DE TABLAS PENDIENTE
-                    //limpiarCampos();    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
+                    limpiarCampos();    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
                     Log.i("Existoso","Se guardo bien el proyecto");
                 }
                 else {

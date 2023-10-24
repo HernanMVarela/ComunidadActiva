@@ -16,7 +16,8 @@ public class ProyectoDAOImpl implements ProyectoDAO {
         DMANuevoProyecto DMANP = new DMANuevoProyecto(proyecto, context);
         DMANP.execute();
         try {
-            return DMANP.get();
+            if(DMANP.get()==" "){return true;}
+            else {return false;}
         } catch (Exception e) {
             e.printStackTrace();
             Log.e("Error", Objects.requireNonNull(e.getMessage()));

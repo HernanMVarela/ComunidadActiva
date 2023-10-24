@@ -26,10 +26,10 @@ import frgp.utn.edu.ar.controllers.ui.adapters.ListaProyectosAdapter;
 public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     private Context context;
     private ListView listado;
-    private static String result2;
+    private static String resultado;
     private static List<Proyecto> listaDeProyectos;
-    private int IdTipoProyecto = -1;
-    private int IdEstadoProyecto= -1;
+    private int IdTipoProyecto = 1;
+    private int IdEstadoProyecto= 1;
     public DMAListviewProyectos(ListView listview, Context ct, int idTipoProyecto, int idEstadoProyecto) {
         listado = listview;
         context = ct;
@@ -38,75 +38,50 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     }
     @Override
     protected String doInBackground(String... urls) {
-        String response = "";
-
+        listaDeProyectos = new ArrayList<Proyecto>();
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-
-            String query = "SELECT " +
-                    "P.ID AS PID, " +
-                    "P.TITULO AS PTitulo, " +
-                    "P.DESCRIPCION AS PDesc, " +
-                    "P.ID_TIPO AS IDTipoProyecto, " +
-                    "P.ID_ESTADO AS IDEstadoProyecto, " +
-                    "P.ID_USER AS UID, " +
-                    "P.LATITUD AS PLatitud, " +
-                    "P.LONGITUD AS PLongitud, " +
-                    "P.CUPO AS PCupo, " +
-                    "U.USERNAME AS Username, " +
-                    "U.TELEFONO AS Telefono, " +
-                    "U.CORREO AS Correo, " +
-                    "TP.TIPO AS TipoProyecto, " +
-                    "EP.ESTADO AS EstadoProyecto " +
-                    "FROM PROYECTOS AS P " +
-                    "WHERE id_tipo = ? AND id_estado = ? " +
-                    "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID " +
-                    "INNER JOIN TIPOS_PROYECTO AS TP ON P.ID_TIPO = TP.ID " +
-                    "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID";
-
+            String query = "SELECT ID, TITULO, DESCRIPCION, LATITUD, LONGITUD, CUPO, ID_USER, ID_TIPO, ID_ESTADO, CONTACTO, AYUDA_ESPECIFICA FROM PROYECTOS" +
+                    "WHERE id_tipo = ? AND id_estado = ? "
+                    // + "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID "
+                    // + "INNER JOIN TIPOS_PROYECTO AS TP ON P.ID_TIPO = TP.ID "
+                    // + "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID"
+                    ;
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setInt(1, IdTipoProyecto);
             preparedStatement.setInt(2, IdEstadoProyecto);
             ResultSet rs = preparedStatement.executeQuery();
-            result2 = " ";
-            listaDeProyectos = new ArrayList<Proyecto>();
+            resultado = " ";
             while (rs.next()) {
                 Proyecto proyectobuscado = new Proyecto();
-                Usuario user = new Usuario();
-                user.setTipo(new TipoUsuario());
-                user.setEstado(new EstadoUsuario());
-                TipoProyecto tipo = new TipoProyecto(rs.getInt("IDTipoProyecto"), rs.getString("TipoProyecto"));
-                EstadoProyecto estado = new EstadoProyecto(rs.getInt("IDEstadoProyecto"), rs.getString("EstadoProyecto"));
-                user.setId(rs.getInt("UID"));
-                user.setUsername(rs.getString("Username"));
-                user.setTelefono(rs.getString("Telefono"));
-                user.setCorreo(rs.getString("Correo"));
-                proyectobuscado.setId(rs.getInt("PID"));
-                proyectobuscado.setTitulo(rs.getString("PTitulo"));
-                proyectobuscado.setDescripcion(rs.getString("PDesc"));
-                proyectobuscado.setTipo(tipo);
-                proyectobuscado.setEstado(estado);
-                proyectobuscado.setCupo(rs.getInt("PCupo"));
-                proyectobuscado.setOwner(user);
-                proyectobuscado.setTipo(tipo);
-                proyectobuscado.setEstado(estado);
-                proyectobuscado.setLatitud(rs.getDouble("PLatitud"));
-                proyectobuscado.setLongitud(rs.getDouble("PLongitud"));
-                proyectobuscado.setOwner(user);
+                proyectobuscado.setId(rs.getInt("ID"));
+                proyectobuscado.setTitulo(rs.getString("TITULO"));
+                proyectobuscado.setContacto("CONTACTO");
                 listaDeProyectos.add(proyectobuscado);
             }
-            response = "Conexion exitosa";
+            resultado = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
+            resultado = "Conexion no exitosa";
         }
-        return response;
+        return resultado;
     }
     protected void onPostExecute(String response) {
-        ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
-        if(listaDeProyectos!=null)
-        {listado.setAdapter(adapter);}
+        try{
+            ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
+
+        if(listaDeProyectos!=null) {
+            listado.setAdapter(adapter);
+            Toast.makeText(context, "Carga Exitosa", Toast.LENGTH_SHORT).show();
+                }
+        else {
+            Toast.makeText(context, "Nulo", Toast.LENGTH_SHORT).show();
+        }
+             }
+        catch (Error e){
+            Toast.makeText(context, resultado, Toast.LENGTH_SHORT).show();
+        }
     }
 }
