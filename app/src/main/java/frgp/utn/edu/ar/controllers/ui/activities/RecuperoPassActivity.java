@@ -79,6 +79,7 @@ public class RecuperoPassActivity extends AppCompatActivity {
         usuario.setPassword(pass.getText().toString());
         usuario.setCodigo_recuperacion(null);
         usuarioRepository.modificarUsuario(usuario);
+        mailService.sendMail(usuario.getCorreo(), "Cambio de contraseña", "Su contraseña fue cambiada correctamente");
         logger.log(usuario.getId(), LogsEnum.CAMBIO_PASS, "Se cambio la contraseña del usuario: " + usuario.getUsername());
         Toast.makeText(this, "Se cambio la contraseña correctamente", Toast.LENGTH_LONG).show();
         finish();

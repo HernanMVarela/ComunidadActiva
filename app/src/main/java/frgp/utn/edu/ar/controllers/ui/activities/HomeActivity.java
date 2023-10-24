@@ -72,8 +72,8 @@ public class HomeActivity extends AppCompatActivity {
 
         ///RECUPERO SHARED PREFERENCES
        View headerView = navigationView.getHeaderView(0);
-       tvNavUsername = (TextView) headerView.findViewById(R.id.tvNavBarUserName);
-       tvNavUserMail = (TextView) headerView.findViewById(R.id.tvNavBarMail);
+       tvNavUsername = headerView.findViewById(R.id.tvNavBarUserName);
+       tvNavUserMail = headerView.findViewById(R.id.tvNavBarMail);
        usuario = sharedPreferences.getUsuarioData(this);
        tvNavUsername.setText(usuario.getUsername());
        tvNavUserMail.setText(usuario.getCorreo());

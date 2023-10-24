@@ -13,7 +13,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="52dp"
-        android:layout_marginBottom="27dp"
+        android:layout_marginBottom="132dp"
         android:backgroundTint="@color/green_700"
         android:text="@string/cambiar_pass_titulo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -21,92 +21,98 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_cambiar_clave" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
-    <TextView
-        android:id="@+id/tvCambioPass2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="44dp"
-        android:text="@string/cambiar_pass_titulo"
-        android:textColor="#303F9F"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3" />
-
-    <EditText
-        android:id="@+id/etNuevaPass"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout1"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="23dp"
-        android:ems="10"
-        android:hint="@string/nueva_pass"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etConfrimarNuevaPass"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPassActual" />
+        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
+        app:passwordToggleEnabled="true">
 
-    <EditText
-        android:id="@+id/etConfrimarNuevaPass"
+        <EditText
+            android:id="@+id/etPassActual"
+            android:layout_width="361dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="@string/pass_actual"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="185dp"
-        android:ems="10"
-        android:hint="@string/confirmar_nueva_pass"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/text_cambiar_clave"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNuevaPass" />
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout3"
+        app:layout_constraintEnd_toEndOf="@+id/textInputLayout3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textInputLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout1"
+        app:passwordToggleEnabled="true">
 
-    <EditText
-        android:id="@+id/etPassActual"
+        <EditText
+            android:id="@+id/etNuevaPass"
+            android:layout_width="361dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="@string/nueva_pass"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout3"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
-        android:ems="10"
-        android:hint="@string/pass_actual"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etNuevaPass"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="167dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarCambioPass2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/etConfrimarNuevaPass"
+            android:layout_width="361dp"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:hint="@string/confirmar_nueva_pass"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton
         android:id="@+id/imageButton3"
-        android:layout_width="131dp"
-        android:layout_height="102dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="36dp"
+        android:layout_width="124dp"
+        android:layout_height="124dp"
+        android:layout_marginStart="23dp"
+        android:layout_marginTop="67dp"
         android:layout_marginEnd="14dp"
-        android:layout_marginBottom="49dp"
+        android:layout_marginBottom="15dp"
         android:backgroundTint="@color/green_100"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/etPassActual"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout1"
         app:layout_constraintEnd_toStartOf="@+id/tvCambioPass2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/pass" />
 
     <TextView
-        android:id="@+id/text_cambiar_clave"
-        android:layout_width="0dp"
+        android:id="@+id/tvCambioPass2"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="56dp"
-        android:textAlignment="center"
-        android:textColor="@color/green_100"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="19dp"
+        android:text="@string/cambiar_pass_titulo"
+        android:textColor="#303F9F"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnConfirmarCambioPass2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etConfrimarNuevaPass" />
+        app:layout_constraintStart_toEndOf="@+id/imageButton3"
+        app:layout_constraintTop_toTopOf="@+id/imageButton3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
