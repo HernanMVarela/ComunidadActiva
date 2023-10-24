@@ -11,17 +11,23 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
+import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
+import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAListarDenunciasReporte;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.ListarDenunciaViewModel;
 
 public class ListarDenunciaFragment extends Fragment {
 
     private ListarDenunciaViewModel mViewModel;
+    private ListView listaDenuncias;
+    private DenunciaNuevo seleccionado = null;
+    private View viewSeleccionado = null;
     List<Denuncia> denunciaList = new ArrayList<>();
 
 
@@ -38,6 +44,16 @@ public class ListarDenunciaFragment extends Fragment {
 
 
         return inflater.inflate(R.layout.fragment_listar_denuncia, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        listaDenuncias = view.findViewById(R.id.listDenuncias);
+
+        DMAListarDenunciasReporte DMAListaDenuncias = new DMAListarDenunciasReporte(listaDenuncias,view.getContext());
+        DMAListaDenuncias.execute();
     }
 
     @Override
