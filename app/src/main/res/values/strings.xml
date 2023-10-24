@@ -104,6 +104,7 @@
     <string name="fecha_fin">Fecha Fin</string>
     <string name="tipo_informe">Tipo de Informe</string>
     <string name="crear_informe">Crear Informe</string>
+    <string name="lista_denunci">Listado Denuncias</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
