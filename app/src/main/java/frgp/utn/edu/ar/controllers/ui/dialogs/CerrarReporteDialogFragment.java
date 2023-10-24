@@ -15,9 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
@@ -32,6 +35,8 @@ public class CerrarReporteDialogFragment extends DialogFragment {
     private ImageView imagen;
     private Reporte selectedReport = null;
     private Usuario loggedInUser = null;
+    private CierreReporte cierreReporte = null;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,14 +63,29 @@ public class CerrarReporteDialogFragment extends DialogFragment {
 
         if(selectedReport != null){
             titulo.setText(selectedReport.getTitulo());
-            DMACargarCierreReporte dmaCierreReporte = new DMACargarCierreReporte(atendido,descripcion,imagen,selectedReport.getId(),getContext());
-            dmaCierreReporte.execute();
+            try {
+                DMACargarCierreReporte dmaCierreReporte = new DMACargarCierreReporte(selectedReport.getId());
+                dmaCierreReporte.execute();
+                cierreReporte = dmaCierreReporte.get();
+                if(cierreReporte!=null){
+                    cargarControles(cierreReporte);
+                }
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
         btnCerrarRep.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(cierreReporte!=null){
+                    DMACerrarReporte dmaCerrarRep = new DMACerrarReporte(cierreReporte,getContext());
+                    dmaCerrarRep.execute();
+                }else{
+                    Toast.makeText(getContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                }
                 dismiss();
             }
         });
@@ -85,9 +105,17 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
-
         builder.setView(dialogView);
         return builder.create();
+    }
+
+    private void cargarControles(CierreReporte cierreReporte){
+        descripcion.setText(cierreReporte.getMotivo());
+        Date fechaCierre = cierreReporte.getFechaCierreAsDate();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaFormateada = formatoFecha.format(fechaCierre);
+        atendido.setText("Atendido por " + cierreReporte.getUser().getUsername() + " el día "+ fechaFormateada);
+        imagen.setImageBitmap(cierreReporte.getImagen());
     }
 
     private void modificarEstadoReporte(Reporte reporte){

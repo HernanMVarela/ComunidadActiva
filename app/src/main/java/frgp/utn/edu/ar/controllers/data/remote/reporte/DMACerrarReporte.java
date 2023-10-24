@@ -19,16 +19,14 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 public class DMACerrarReporte extends AsyncTask<String, Void, String> {
 
     private Context context;
-    int idUser;
-    int idReporte;
+    CierreReporte cierreReporte;
     private static String result2;
     private int dataRowModif;
 
     //Constructor
-    public DMACerrarReporte(int idReporte, int idUser, Context ct)
+    public DMACerrarReporte(CierreReporte cierreReporte, Context ct)
     {
-        this.idUser = idUser;
-        this.idReporte = idReporte;
+        this.cierreReporte = cierreReporte;
         this.context = ct;
     }
 
@@ -44,8 +42,8 @@ public class DMACerrarReporte extends AsyncTask<String, Void, String> {
 
             PreparedStatement ps = con.prepareStatement(query);
 
-            ps.setInt(1,idReporte);
-            ps.setInt(2,idUser);
+            ps.setInt(1,cierreReporte.getReporte().getId());
+            ps.setInt(2,cierreReporte.getUser().getId());
 
             dataRowModif = ps.executeUpdate();
             result2 = " ";
@@ -59,11 +57,11 @@ public class DMACerrarReporte extends AsyncTask<String, Void, String> {
     @Override
     protected void onPostExecute(String response) {
         if(dataRowModif!=0){
-            Reporte modifcar = new Reporte();
-            modifcar.setId(idReporte);
+            Reporte modifcar = cierreReporte.getReporte();
             modifcar.setEstado(new EstadoReporte(4,"CERRADO"));
             DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(modifcar,context);
             dmaActualizar.execute();
+            Toast.makeText(context, "El reporte ha sido cerrado", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(context, "No se pudo crear la solicitud", Toast.LENGTH_SHORT).show();
         }

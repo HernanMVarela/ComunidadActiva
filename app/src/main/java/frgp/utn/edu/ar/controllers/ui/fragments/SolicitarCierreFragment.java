@@ -123,7 +123,7 @@ public class SolicitarCierreFragment extends Fragment {
                     cerrarRep.setReporte(selectedReport);
                     cerrarRep.setImagen(imagenCapturada);
                     cerrarRep.setMotivo(motivo.getText().toString());
-                    cerrarRep.setFecha_cierre(new Date(System.currentTimeMillis()));
+                    cerrarRep.setFechaCierreFromDate(new Date(System.currentTimeMillis()));
                     cerrarRep.setEstado(new EstadoReporte(2,"PENDIENTE"));
 
                     DMAGuardarCierreReporte dmaCierreRep = new DMAGuardarCierreReporte(cerrarRep,v.getContext());

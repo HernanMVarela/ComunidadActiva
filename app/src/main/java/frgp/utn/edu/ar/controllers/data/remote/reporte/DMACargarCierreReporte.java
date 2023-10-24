@@ -23,28 +23,21 @@ import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMACargarCierreReporte extends AsyncTask<String, Void, String> {
+public class DMACargarCierreReporte extends AsyncTask<String, Void, CierreReporte> {
 
-    private Context context;
     private CierreReporte leerCierre;
-    private TextView atendido, motivo;
-    private ImageView imagen;
     private int id_reporte;
     private static String result2;
     private int dataRowModif;
 
     //Constructor
-    public DMACargarCierreReporte(TextView atendido, TextView motivo, ImageView imagen, int id_reporte, Context ct)
+    public DMACargarCierreReporte(int id_reporte)
     {
-        this.atendido = atendido;
-        this.motivo = motivo;
-        this.imagen = imagen;
         this.id_reporte = id_reporte;
-        this.context = ct;
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected CierreReporte doInBackground(String... urls) {
         String response = "";
 
         try {
@@ -91,7 +84,7 @@ public class DMACargarCierreReporte extends AsyncTask<String, Void, String> {
                         usuario,
                         resultSet.getString("MOTIVO_CIERRE"),
                         obtenerImagenDesdeResultSet(resultSet, "CIERRE_IMAGEN"),
-                        resultSet.getDate("FECHA_CIERRE"),
+                        resultSet.getString("FECHA_CIERRE"),
                         estadoRep
                 );
             } else {
@@ -104,15 +97,7 @@ public class DMACargarCierreReporte extends AsyncTask<String, Void, String> {
             e.printStackTrace();
             result2 = "Conexion no exitosa";
         }
-        return response;
-    }
-    @Override
-    protected void onPostExecute(String response) {
-        if(leerCierre != null){
-            imagen.setImageBitmap(leerCierre.getImagen());
-            motivo.setText(leerCierre.getMotivo());
-            atendido.setText("Atendido por " + leerCierre.getUser().getUsername() + " el día " + leerCierre.getFecha_cierre().toString());;
-        }
+        return leerCierre;
     }
 
     private Bitmap obtenerImagenDesdeResultSet(ResultSet resultSet, String nombreColumna) {

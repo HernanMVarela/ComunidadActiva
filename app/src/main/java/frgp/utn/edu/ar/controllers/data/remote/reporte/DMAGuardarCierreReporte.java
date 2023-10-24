@@ -50,7 +50,7 @@ public class DMAGuardarCierreReporte extends AsyncTask<String, Void, String> {
             ps.setInt(1,nuevo.getReporte().getId());
             ps.setInt(2,nuevo.getUser().getId());
             ps.setString(3,nuevo.getMotivo());
-            ps.setDate(4, new java.sql.Date(nuevo.getFecha_cierre().getTime()));
+            ps.setDate(4, new java.sql.Date(nuevo.getFechaCierreAsDate().getTime()));
             ps.setBytes(5, byteArray); // Guardar la imagen como un array de bytes
             ps.setInt(6, nuevo.getEstado().getId());
 

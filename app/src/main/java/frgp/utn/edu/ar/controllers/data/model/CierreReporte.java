@@ -2,17 +2,20 @@ package frgp.utn.edu.ar.controllers.data.model;
 
 import android.graphics.Bitmap;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class CierreReporte {
     private Reporte reporte;
     private Usuario user;
     private String motivo;
     private Bitmap imagen;
-    private Date fecha_cierre;
+    private String fecha_cierre; // Cambiado a String
     private EstadoReporte estado;
 
-    public CierreReporte(Reporte reporte, Usuario user, String motivo, Bitmap imagen, Date fecha_cierre, EstadoReporte estado) {
+    public CierreReporte(Reporte reporte, Usuario user, String motivo, Bitmap imagen, String fecha_cierre, EstadoReporte estado) {
         this.reporte = reporte;
         this.user = user;
         this.motivo = motivo;
@@ -68,12 +71,20 @@ public class CierreReporte {
         this.imagen = imagen;
     }
 
-    public Date getFecha_cierre() {
-        return fecha_cierre;
+    // Agrega métodos para convertir entre Date y String
+    public Date getFechaCierreAsDate() {
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+            return format.parse(fecha_cierre);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    public void setFecha_cierre(Date fecha_cierre) {
-        this.fecha_cierre = fecha_cierre;
+    public void setFechaCierreFromDate(Date date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        fecha_cierre = format.format(date);
     }
 
     public EstadoReporte getEstado() {
