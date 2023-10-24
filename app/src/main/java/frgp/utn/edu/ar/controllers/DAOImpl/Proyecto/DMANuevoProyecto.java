@@ -31,7 +31,7 @@ public class DMANuevoProyecto extends AsyncTask<String, Void, Boolean> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO proyectos (titulo, descripcion, latitud, longitud, fecha, cupo, id_user, id_tipo, id_estado) VALUES (?,?,?,?,?,?,?,?,?)");
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO proyectos (titulo, descripcion, latitud, longitud, fecha, cupo, id_user, id_tipo, id_estado, contacto, ayuda_especifica) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             preparedStatement.setString(1, nuevo.getTitulo());
             preparedStatement.setString(2, nuevo.getDescripcion());
             preparedStatement.setString(3, String.valueOf(nuevo.getLatitud()));
@@ -41,7 +41,8 @@ public class DMANuevoProyecto extends AsyncTask<String, Void, Boolean> {
             preparedStatement.setInt(7, nuevo.getOwner().getId());
             preparedStatement.setInt(8, nuevo.getTipo().getId());
             preparedStatement.setInt(9, nuevo.getEstado().getId());
-
+            preparedStatement.setString(10, String.valueOf(nuevo.getContacto()));
+            preparedStatement.setString(11, String.valueOf(nuevo.getRequerimientos()));
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
             con.close();

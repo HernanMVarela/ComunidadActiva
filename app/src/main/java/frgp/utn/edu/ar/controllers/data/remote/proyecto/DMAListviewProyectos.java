@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,9 +28,13 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     private ListView listado;
     private static String result2;
     private static List<Proyecto> listaDeProyectos;
-    public DMAListviewProyectos(ListView listview, Context ct) {
+    private int IdTipoProyecto = -1;
+    private int IdEstadoProyecto= -1;
+    public DMAListviewProyectos(ListView listview, Context ct, int idTipoProyecto, int idEstadoProyecto) {
         listado = listview;
         context = ct;
+        IdTipoProyecto = idTipoProyecto;
+        IdEstadoProyecto = idEstadoProyecto;
     }
     @Override
     protected String doInBackground(String... urls) {
@@ -54,20 +59,16 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                     "U.TELEFONO AS Telefono, " +
                     "U.CORREO AS Correo, " +
                     "TP.TIPO AS TipoProyecto, " +
-                    "EP.ESTADO AS EstadoProyecto, " +
-                    "6371 * 2 * ASIN(SQRT(" +
-                    "POW(SIN(RADIANS(P.LATITUD - ?) / 2), 2) + " +
-                    "COS(RADIANS(?)) * COS(RADIANS(P.LATITUD)) * " +
-                    "POW(SIN(RADIANS(P.LONGITUD - ?) / 2), 2)" +
-                    ")) AS Distancia " +
+                    "EP.ESTADO AS EstadoProyecto " +
                     "FROM PROYECTOS AS P " +
+                    "WHERE id_tipo = ? AND id_estado = ? " +
                     "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID " +
-                    "INNER JOIN TIPOS_PROYECTO AS TR ON P.ID_TIPO = TP.ID " +
-                    "INNER JOIN ESTADOS_PROYECTO AS ER ON P.ID_ESTADO = EP.ID" +
-                    "HAVING Distancia <= 5 " +
-                    "ORDER BY Distancia;";
+                    "INNER JOIN TIPOS_PROYECTO AS TP ON P.ID_TIPO = TP.ID " +
+                    "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID";
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setInt(1, IdTipoProyecto);
+            preparedStatement.setInt(2, IdEstadoProyecto);
             ResultSet rs = preparedStatement.executeQuery();
             result2 = " ";
             listaDeProyectos = new ArrayList<Proyecto>();
@@ -94,7 +95,6 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 proyectobuscado.setLatitud(rs.getDouble("PLatitud"));
                 proyectobuscado.setLongitud(rs.getDouble("PLongitud"));
                 proyectobuscado.setOwner(user);
-
                 listaDeProyectos.add(proyectobuscado);
             }
             response = "Conexion exitosa";

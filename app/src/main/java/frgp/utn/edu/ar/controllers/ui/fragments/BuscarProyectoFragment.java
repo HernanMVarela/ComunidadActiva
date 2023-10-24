@@ -18,10 +18,14 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAListviewProyectos;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectos;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerTiposProyectos;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.BuscarProyectoViewModel;
 
 public class BuscarProyectoFragment extends Fragment {
@@ -31,6 +35,7 @@ public class BuscarProyectoFragment extends Fragment {
     private SearchView buscarProyecto;
     private Proyecto proyectoSeleccionado=null;
     private View viewSeleccionada=null;
+    private Spinner spEstadoP, spTipoProyecto;;
     private Button verDetalle;
 
     public static BuscarProyectoFragment newInstance() {
@@ -43,16 +48,24 @@ public class BuscarProyectoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_buscar_proyecto, container, false);
         verDetalle = view.findViewById(R.id.btnVerDetalleP);
         listaDeProyectos = view.findViewById(R.id.listProyectos);
+        spTipoProyecto = view.findViewById(R.id.spFiltroA);
+        spEstadoP = view.findViewById(R.id.spFiltroB);
+        DMASpinnerTiposProyectos tiposPro = new DMASpinnerTiposProyectos(spTipoProyecto, getContext());
+        tiposPro.execute();
+        DMASpinnerEstadosProyectos estadosP = new DMASpinnerEstadosProyectos(spEstadoP, getContext());
+        estadosP.execute();
         //buscarProyecto = view.findViewById(R.id.swBuscar);
         return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         try{
-            DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext());
+            DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(), spTipoProyecto.getSelectedItemPosition()+1, spEstadoP.getSelectedItemPosition()+1);
             DMAListaP.execute();
         }
-        catch (Error e){}
+        catch (Error e){
+            Toast.makeText(this.getContext(), "NOPE", Toast.LENGTH_SHORT).show();
+        }
 
         listaDeProyectos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

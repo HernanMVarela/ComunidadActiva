@@ -89,11 +89,9 @@ public class NuevoProyectoFragment extends Fragment {
                 if(validarDatosProyecto()){
                     // CARGA DATOS DE LOS CONTROLES AL NUEVO PROYECTO
                     Proyecto nuevoP = cargarDatos();
-                    // LLAMA AL DMA PARA EL GUARDADO EN DB
-                    DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP,v.getContext());
-                    //DMANuevoP.execute();  -- COMENTADO PARA NO IMPACTAR EN DB - MODIFICACION DE TABLAS PENDIENTE
-                    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
-                    limpiarCampos();
+                    DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP,v.getContext());    // LLAMA AL DMA PARA EL GUARDADO EN DB
+                    DMANuevoP.execute();    // COMENTADO PARA NO IMPACTAR EN DB - MODIFICACION DE TABLAS PENDIENTE
+                    //limpiarCampos();    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
                     Log.i("Existoso","Se guardo bien el proyecto");
                 }
                 else {
@@ -131,7 +129,6 @@ public class NuevoProyectoFragment extends Fragment {
         nuevoP.setOwner(null);
         nuevoP.setFecha(new Date(System.currentTimeMillis()));
         nuevoP.setEstado(new EstadoProyecto(1,"ABIERTO"));
-
         return nuevoP;
     }
 
