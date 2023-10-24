@@ -57,8 +57,8 @@ public class UsuarioRepository {
         }
     }
 
-    public Usuario getUserByMail(String correo, Context context) {
-        DMABuscarUsuarioPorMail buscarUsuario = new DMABuscarUsuarioPorMail(correo, context);
+    public Usuario getUserByMail(String correo) {
+        DMABuscarUsuarioPorMail buscarUsuario = new DMABuscarUsuarioPorMail(correo);
         buscarUsuario.execute();
         try {
             return buscarUsuario.get();

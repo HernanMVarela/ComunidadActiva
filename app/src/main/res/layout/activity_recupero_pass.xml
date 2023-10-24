@@ -13,58 +13,44 @@
         android:layout_height="0dp"
         android:layout_marginStart="52dp"
         android:layout_marginEnd="52dp"
-        android:layout_marginBottom="31dp"
+        android:layout_marginBottom="182dp"
         android:backgroundTint="@color/green_700"
+        android:onClick="cambiarPass"
         android:text="@string/cambiar_pass_titulo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etFechaNacimientoRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout2" />
 
     <Button
         android:id="@+id/btnEnviarCodigo"
-        android:layout_width="133dp"
-        android:layout_height="55dp"
-        android:layout_marginEnd="25dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="26dp"
         android:backgroundTint="@color/green_700"
+        android:onClick="obtenerCodigoRecupero"
         android:text="@string/enviar_codigo"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/etNombreRegistro"
+        app:layout_constraintBottom_toTopOf="@+id/etCodigoRecupero"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etNombreRegistro"
-        app:layout_constraintTop_toTopOf="@+id/etNombreRegistro"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/btnConfirmarCodigo"
-        android:layout_width="138dp"
-        android:layout_height="52dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="439dp"
-        android:backgroundTint="@color/green_700"
-        android:text="@string/verificar_codigo"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toBottomOf="@+id/etApellidoRegistro"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/etApellidoRegistro"
-        app:layout_constraintTop_toTopOf="@+id/etApellidoRegistro"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/etCorreoRecupero"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
     <ImageButton
         android:id="@+id/imageButton2"
         android:layout_width="126dp"
-        android:layout_height="120dp"
-        android:layout_marginStart="22dp"
+        android:layout_height="116dp"
+        android:layout_marginStart="23dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="13dp"
+        android:layout_marginEnd="17dp"
+        android:layout_marginBottom="14dp"
         android:backgroundTint="@color/green_100"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/etNombreRegistro"
+        app:layout_constraintBottom_toTopOf="@+id/btnEnviarCodigo"
         app:layout_constraintEnd_toStartOf="@+id/tvCambioPass"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -74,74 +60,84 @@
         android:id="@+id/tvCambioPass"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="46dp"
         android:layout_marginEnd="22dp"
-        android:layout_marginBottom="51dp"
         android:text="@string/cambiar_pass_titulo"
         android:textColor="#303F9F"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/btnEnviarCodigo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageButton2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageButton2" />
 
     <EditText
-        android:id="@+id/etNombreRegistro"
+        android:id="@+id/etCorreoRecupero"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="28dp"
+        android:layout_marginTop="2dp"
         android:layout_marginEnd="3dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="2dp"
         android:ems="10"
         android:hint="@string/correo_electr_nico"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etApellidoRegistro"
+        app:layout_constraintBottom_toBottomOf="@+id/btnEnviarCodigo"
         app:layout_constraintEnd_toStartOf="@+id/btnEnviarCodigo"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
+        app:layout_constraintTop_toTopOf="@+id/btnEnviarCodigo" />
 
     <EditText
-        android:id="@+id/etApellidoRegistro"
-        android:layout_width="0dp"
+        android:id="@+id/etCodigoRecupero"
+        android:layout_width="363dp"
         android:layout_height="0dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginBottom="4dp"
         android:ems="10"
         android:hint="@string/codigo_verificacion"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etUserNameRegistro"
-        app:layout_constraintEnd_toStartOf="@+id/btnConfirmarCodigo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNombreRegistro" />
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
+        app:layout_constraintEnd_toEndOf="@+id/etCorreoRecupero"
+        app:layout_constraintStart_toEndOf="@+id/etCorreoRecupero"
+        app:layout_constraintTop_toBottomOf="@+id/btnEnviarCodigo" />
 
-    <EditText
-        android:id="@+id/etUserNameRegistro"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginEnd="28dp"
-        android:layout_marginBottom="9dp"
-        android:ems="10"
-        android:hint="@string/nueva_pass"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etFechaNacimientoRegistro"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etApellidoRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/etCodigoRecupero"
+        app:passwordToggleEnabled="true">
 
-    <EditText
-        android:id="@+id/etFechaNacimientoRegistro"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="248dp"
-        android:ems="10"
-        android:hint="@string/confirmar_nueva_pass"
-        android:inputType="text"
+        <EditText
+            android:id="@+id/etPassRecupero"
+            android:layout_width="366dp"
+            android:layout_height="52dp"
+            android:ems="10"
+            android:hint="@string/nueva_pass"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textInputLayout2"
+        android:layout_width="366dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="19dp"
+        android:layout_marginEnd="19dp"
+        android:layout_marginBottom="38dp"
         app:layout_constraintBottom_toTopOf="@+id/btnConfirmarCambioPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUserNameRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+        app:passwordToggleEnabled="true">
+
+        <EditText
+            android:id="@+id/etPassConfirmarRecupero"
+            android:layout_width="366dp"
+            android:layout_height="58dp"
+            android:ems="10"
+            android:hint="@string/confirmar_nueva_pass"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,6 +22,8 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.databinding.ActivityHomeBinding;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.UsuarioViewModel;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class HomeActivity extends AppCompatActivity {
@@ -33,6 +35,7 @@ public class HomeActivity extends AppCompatActivity {
     private NavController navController;
     private TextView tvNavUsername,tvNavUserMail;
     private Usuario usuario;
+    LogService logger = new LogService();
     SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     @Override
@@ -57,6 +60,7 @@ public class HomeActivity extends AppCompatActivity {
 
         ///CIERRE SESION
         navigationView.getMenu().findItem(R.id.nav_cerrarsesion).setOnMenuItemClickListener(menuItem -> {
+            logger.log(usuario.getId(), LogsEnum.LOGOUT, String.format("El Usuario %s cerro sesion", usuario.getUsername()));
             sharedPreferences.deleteUsuarioData(this);
             finish();
             return true;

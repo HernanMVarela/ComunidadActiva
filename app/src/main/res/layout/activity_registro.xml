@@ -60,7 +60,7 @@
         android:layout_marginBottom="4dp"
         android:backgroundTint="@color/green_100"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/etNombreRegistro"
+        app:layout_constraintBottom_toTopOf="@+id/etCorreoRecupero"
         app:layout_constraintEnd_toStartOf="@+id/tvCambioPass"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -82,30 +82,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/etNombreRegistro"
+        android:id="@+id/etCorreoRecupero"
         android:layout_width="358dp"
         android:layout_height="45dp"
         android:layout_marginBottom="51dp"
         android:ems="10"
         android:hint="@string/nombre"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etUserNameRegistro"
-        app:layout_constraintStart_toStartOf="@+id/etApellidoRegistro"
+        app:layout_constraintBottom_toTopOf="@+id/etPassRecupero"
+        app:layout_constraintStart_toStartOf="@+id/etCodigoRecupero"
         app:layout_constraintTop_toBottomOf="@+id/imageButton2" />
 
     <EditText
-        android:id="@+id/etUserNameRegistro"
+        android:id="@+id/etPassRecupero"
         android:layout_width="363dp"
         android:layout_height="60dp"
         android:ems="10"
         android:hint="@string/nombre_de_usuario"
         android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/etFechaNacimientoRegistro"
-        app:layout_constraintStart_toStartOf="@+id/etFechaNacimientoRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/etNombreRegistro" />
+        app:layout_constraintBottom_toTopOf="@+id/etPassConfirmarRecupero"
+        app:layout_constraintStart_toStartOf="@+id/etPassConfirmarRecupero"
+        app:layout_constraintTop_toBottomOf="@+id/etCorreoRecupero" />
 
     <EditText
-        android:id="@+id/etFechaNacimientoRegistro"
+        android:id="@+id/etPassConfirmarRecupero"
         android:layout_width="369dp"
         android:layout_height="49dp"
         android:layout_marginBottom="45dp"
@@ -114,7 +114,7 @@
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/etCorreoRegistro"
         app:layout_constraintStart_toStartOf="@+id/etTelefonoRegistro"
-        app:layout_constraintTop_toBottomOf="@+id/etUserNameRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/etPassRecupero" />
 
     <EditText
         android:id="@+id/etTelefonoRegistro"
@@ -127,7 +127,7 @@
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/etCorreoRegistro"
         app:layout_constraintStart_toStartOf="@+id/etCorreoRegistro"
-        app:layout_constraintTop_toTopOf="@+id/etFechaNacimientoRegistro" />
+        app:layout_constraintTop_toTopOf="@+id/etPassConfirmarRecupero" />
 
 
     <EditText
@@ -139,10 +139,10 @@
         android:inputType="textPostalAddress"
         app:layout_constraintBottom_toTopOf="@+id/textInputLayout2"
         app:layout_constraintStart_toStartOf="@+id/textInputLayout2"
-        app:layout_constraintTop_toBottomOf="@+id/etFechaNacimientoRegistro" />
+        app:layout_constraintTop_toBottomOf="@+id/etPassConfirmarRecupero" />
 
     <EditText
-        android:id="@+id/etApellidoRegistro"
+        android:id="@+id/etCodigoRecupero"
         android:layout_width="363dp"
         android:layout_height="51dp"
         android:layout_marginTop="52dp"
@@ -150,9 +150,9 @@
         android:ems="10"
         android:hint="@string/apellido"
         android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/etUserNameRegistro"
-        app:layout_constraintStart_toStartOf="@+id/etUserNameRegistro"
-        app:layout_constraintTop_toTopOf="@+id/etNombreRegistro" />
+        app:layout_constraintBottom_toBottomOf="@+id/etPassRecupero"
+        app:layout_constraintStart_toStartOf="@+id/etPassRecupero"
+        app:layout_constraintTop_toTopOf="@+id/etCorreoRecupero" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"

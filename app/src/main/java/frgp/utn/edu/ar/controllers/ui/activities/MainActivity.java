@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         sharedPreferences.saveUsuarioData(this, usuario);
+        logger.log(usuario.getId(), LogsEnum.LOGIN, String.format("El Usuario %s inicio sesion", usuario.getUsername()));
         etNombre.setText("");
         etPassword.setText("");
         Ingresar(view);

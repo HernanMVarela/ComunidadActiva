@@ -44,14 +44,14 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,opciones);
         spinnerCategoriaUser.setAdapter(adapter);
 
-        nombre = (EditText)findViewById(R.id.etNombreRegistro);
-        apellido = (EditText)findViewById(R.id.etApellidoRegistro);
-        userName = (EditText)findViewById(R.id.etUserNameRegistro);
-        fechaNacimiento = (EditText)findViewById(R.id.etFechaNacimientoRegistro);
-        telefono = (EditText)findViewById(R.id.etTelefonoRegistro);
-        correo = (EditText)findViewById(R.id.etCorreoRegistro);
-        password = (EditText)findViewById(R.id.etPassUnoRegistro);
-        password2 = (EditText)findViewById(R.id.etPassDosRegistro);
+        nombre = findViewById(R.id.etCorreoRecupero);
+        apellido = findViewById(R.id.etCodigoRecupero);
+        userName = findViewById(R.id.etPassRecupero);
+        fechaNacimiento = findViewById(R.id.etPassConfirmarRecupero);
+        telefono = findViewById(R.id.etTelefonoRegistro);
+        correo = findViewById(R.id.etCorreoRegistro);
+        password = findViewById(R.id.etPassUnoRegistro);
+        password2 = findViewById(R.id.etPassDosRegistro);
 
         fechaNacimiento.setOnFocusChangeListener(this);
         fechaNacimiento.setOnClickListener(this);
@@ -185,7 +185,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
         }
 
         //CHECK EXISTENCIA MAIL
-        if(usuarioRepository.getUserByMail(correo.getText().toString(), view.getContext()) != null) {
+        if(usuarioRepository.getUserByMail(correo.getText().toString()) != null) {
             Toast.makeText(this, "El correo ya esta registrado", Toast.LENGTH_LONG).show();
             return false;
         }

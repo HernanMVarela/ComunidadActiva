@@ -49,8 +49,8 @@ public class DMAModificarUsuario extends AsyncTask<String, Void, Boolean> {
             preparedStatement.setDate(9, new java.sql.Date(usuario.getFecha_alta().getTime()));
             preparedStatement.setInt(10, usuario.getEstado().getId());
             preparedStatement.setInt(11, usuario.getTipo().getId());
-            preparedStatement.setString(12, usuario.getCodigo_recuperacion());
-            preparedStatement.setDate(13, new java.sql.Date(usuario.getFecha_bloqueo().getTime()));
+            preparedStatement.setString(12, (usuario.getCodigo_recuperacion() != null) ? usuario.getCodigo_recuperacion() : null);
+            preparedStatement.setDate(13, (usuario.getFecha_bloqueo() != null) ? new java.sql.Date(usuario.getFecha_bloqueo().getTime()) : null);
             preparedStatement.setInt(14, usuario.getId());
 
             int rowsAffected = preparedStatement.executeUpdate();
