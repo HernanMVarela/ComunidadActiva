@@ -1,6 +1,8 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
-public class EstadoUsuario {
+import java.io.Serializable;
+
+public class EstadoUsuario implements Serializable {
     private int id;
     private String estado;
 

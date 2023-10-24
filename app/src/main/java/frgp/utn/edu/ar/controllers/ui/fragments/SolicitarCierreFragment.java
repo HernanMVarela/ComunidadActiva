@@ -35,6 +35,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarEstadoReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarCierreReporte;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SolicitarCierreViewModel;
@@ -42,7 +43,8 @@ import frgp.utn.edu.ar.controllers.ui.viewmodels.SolicitarCierreViewModel;
 public class SolicitarCierreFragment extends Fragment {
     private static final int CAMERA_PIC_REQUEST = 1337;
     private SolicitarCierreViewModel mViewModel;
-    private Reporte seleccionado = null;
+    private Reporte selectedReport = null;
+    private Usuario loggedInUser = null;
     private TextView titulo;
     private EditText motivo;
     private Button btnCamara, btnCerrar;
@@ -53,6 +55,17 @@ public class SolicitarCierreFragment extends Fragment {
         return new SolicitarCierreFragment();
     }
 
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Recupera los datos del Bundle
+        Bundle args = getArguments();
+        if (args != null) {
+            selectedReport = (Reporte) args.getSerializable("selected_report");
+            loggedInUser = (Usuario) args.getSerializable("logged_in_user");
+        }
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -67,9 +80,9 @@ public class SolicitarCierreFragment extends Fragment {
         Bundle bundle = this.getArguments();
         /// OBTIENE EL REPORTE SELECCIONADO EN LA PANTALLA ANTERIOR
         if (bundle != null) {
-            seleccionado = (Reporte) bundle.getSerializable("selected_report");
-            if(seleccionado != null){
-                titulo.setText(seleccionado.getTitulo());
+            selectedReport = (Reporte) bundle.getSerializable("selected_report");
+            if(selectedReport != null){
+                titulo.setText(selectedReport.getTitulo());
             }
         }else{
             FragmentManager fragmentManager = getChildFragmentManager();
@@ -106,8 +119,8 @@ public class SolicitarCierreFragment extends Fragment {
             public void onClick(View v) {
                 if(validarCampos()){
                     CierreReporte cerrarRep = new CierreReporte();
-                    cerrarRep.setUser(seleccionado.getOwner());
-                    cerrarRep.setReporte(seleccionado);
+                    cerrarRep.setUser(loggedInUser);
+                    cerrarRep.setReporte(selectedReport);
                     cerrarRep.setImagen(imagenCapturada);
                     cerrarRep.setMotivo(motivo.getText().toString());
                     cerrarRep.setFecha_cierre(new Date(System.currentTimeMillis()));
@@ -116,9 +129,8 @@ public class SolicitarCierreFragment extends Fragment {
                     DMAGuardarCierreReporte dmaCierreRep = new DMAGuardarCierreReporte(cerrarRep,v.getContext());
                     dmaCierreRep.execute();
 
-                    seleccionado.setEstado(new EstadoReporte(2,"PENDIENTE"));
-                    DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(seleccionado,v.getContext());
-                    dmaActualizar.execute();
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                    navController.popBackStack();
                 }
             }
         });
@@ -162,7 +174,7 @@ public class SolicitarCierreFragment extends Fragment {
             Toast.makeText(getContext(), "Está por cerrar un reporte sin evidencia, para continuar vuelva a presionar Cerrar Repote", Toast.LENGTH_LONG).show();
         }
 
-        if(seleccionado == null){
+        if(selectedReport == null){
             Toast.makeText(getContext(), "Error al obtener el reporte", Toast.LENGTH_LONG).show();
             return false;
         }

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/dialog_corner_bg"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/dialog_cerrar_reporte_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="15dp"
+        android:textSize="18sp"
+        android:text="@string/titulo"
+        android:textAlignment="center"
+        />
+
+    <TextView
+        android:id="@+id/dialog_cerrar_reporte_fecha_at"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginHorizontal="15dp"
+        android:textSize="14sp"
+        android:text="@string/fecha_inicio"
+        android:textAlignment="textStart"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="10dp"
+        />
+
+    <TextView
+        android:id="@+id/dialog_cerrar_reporte_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="10dp"
+        android:layout_marginHorizontal="15dp"
+        android:textSize="14sp"
+        android:text="@string/descripcion_hint_cierre"
+        android:textAlignment="textStart"
+        android:paddingVertical="4dp"
+        android:paddingHorizontal="10dp"
+        android:background="@drawable/grid_item_corner"
+        android:lines="5"
+        />
+
+    <ImageView
+        android:id="@+id/dialog_cerrar_reporte_imagen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitCenter"
+        android:layout_marginHorizontal="15dp"
+        android:background="@drawable/dialog_corner_bgd"
+        android:src="@mipmap/image_placeholder_foreground"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:minWidth="300dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/btnCerrarReporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:textSize="12sp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/boton_redondeado"
+            android:text="@string/cerrar_rep" />
+
+        <Button
+            android:id="@+id/btnReabrirReporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:paddingHorizontal="10dp"
+            android:background="@drawable/boton_redondeado"
+            android:textSize="12sp"
+            android:text="@string/reabrir_reporte" />
+
+        <Button
+            android:id="@+id/btnCancelarCerrarReporte"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:paddingHorizontal="10dp"
+            android:textSize="12sp"
+            android:background="@drawable/boton_redondeado_danger"
+            android:text="@string/cancelar" />
+    </LinearLayout>
+
+
+
+</LinearLayout>

@@ -1,6 +1,8 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
-public class TipoUsuario {
+import java.io.Serializable;
+
+public class TipoUsuario implements Serializable {
     private int id;
     private String tipo;
 

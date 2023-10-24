@@ -31,6 +31,7 @@ import java.util.Date;
 
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMASpinnerTiposReporte;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
@@ -38,11 +39,14 @@ import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class NuevoReporteFragment extends Fragment {
     private static final int CAMERA_PIC_REQUEST = 1337;
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private NuevoReporteViewModel mViewModel;
+    private Usuario loggedInUser = null;
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private Bitmap imagenCapturada;
     private SharedLocationViewModel sharedLocationViewModel;
     private Spinner spinTipoReporte;
@@ -51,6 +55,12 @@ public class NuevoReporteFragment extends Fragment {
         return new NuevoReporteFragment();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Recupera los datos del Shared
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
+    }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -201,7 +211,7 @@ public class NuevoReporteFragment extends Fragment {
         nuevoReporte.setImagen(imagenCapturada);
         nuevoReporte.setPuntaje(0);
         nuevoReporte.setFecha(new Date(System.currentTimeMillis()));
-        nuevoReporte.setOwner(null); // REEMPLAZAR POR USUARIO LOGUEADO
+        nuevoReporte.setOwner(loggedInUser); // REEMPLAZAR POR USUARIO LOGUEADO
 
         return nuevoReporte;
     }

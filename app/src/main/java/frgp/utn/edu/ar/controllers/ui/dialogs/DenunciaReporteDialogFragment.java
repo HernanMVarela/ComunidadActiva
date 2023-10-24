@@ -37,7 +37,6 @@ public class DenunciaReporteDialogFragment extends DialogFragment {
         if (args != null) {
             selectedReport = (Reporte) args.getSerializable("selected_report");
             loggedInUser = (Usuario) args.getSerializable("logged_in_user");
-            Log.i("User",loggedInUser.toString());
         }
     }
     public Dialog onCreateDialog(Bundle savedInstanceState) {

@@ -121,4 +121,6 @@
     <string name="buscar_reportes">Buscar reportes</string>
     <string name="ayuda">Ayuda</string>
     <string name="accesibilidad">Accesibilidad</string>
+    <string name="cerrar_rep">Cerrar</string>
+    <string name="reabrir_reporte">Reabrir</string>
 </resources>

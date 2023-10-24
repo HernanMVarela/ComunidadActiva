@@ -57,9 +57,9 @@ public class DMAGuardarReporte extends AsyncTask<String, Void, String> {
             ps.setDouble(4,nuevo.getLongitud());
             ps.setBytes(5, byteArray); // Guardar la imagen como un array de bytes
             ps.setDate(6, new java.sql.Date(nuevo.getFecha().getTime()));
-            ps.setInt(7, 1);
-            ps.setInt(8, 5);
-            ps.setInt(9, 1);
+            ps.setInt(7, 0);
+            ps.setInt(8, 0);
+            ps.setInt(9, nuevo.getOwner().getId());
             ps.setInt(10, nuevo.getTipo().getId());
             ps.setInt(11, nuevo.getEstado().getId());
 

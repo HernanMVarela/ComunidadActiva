@@ -32,6 +32,7 @@ import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
@@ -126,25 +127,29 @@ public class DetalleReporteFragment extends Fragment {
         Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
         bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("selected_report", seleccionado);
+                bundle.putSerializable("logged_in_user", loggedInUser);
                 // BOTON SOLICITAR CIERRE
                 if(seleccionado.getOwner().getUsername().equals(loggedInUser.getUsername())){
-                    /// SI EL USUARIO LOGUEADO ES EL DUEÑO DEL REPORTE...
-                }
-                if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
-                    /// CARGO
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("selected_report", seleccionado);
-                    bundle.putSerializable("logged_in_user", loggedInUser);
-                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-                    navController.navigate(R.id.solicitar_cierre,bundle);
-                } else if (seleccionado.getEstado().getEstado().equals("PENDIENTE")) {
-                    Toast.makeText(getContext(), "Este reporte está pendiente", Toast.LENGTH_LONG).show();
-                } else if (seleccionado.getEstado().getEstado().equals("CERRADO")) {
-                    Toast.makeText(getContext(), "Este reporte ya se encuentra cerrado", Toast.LENGTH_LONG).show();
-                } else if (seleccionado.getEstado().getEstado().equals("CANCELADO")) {
-                    Toast.makeText(getContext(), "Este reporte está cancelado, no se puede cerrar", Toast.LENGTH_LONG).show();
-                } else if (seleccionado.getEstado().getEstado().equals("DENUNCIADO")) {
-                    Toast.makeText(getContext(), "El reporte está denunciado, no se puede cerrar", Toast.LENGTH_LONG).show();
+                    /// SI EL USUARIO LOGUEADO ES EL DUEÑO DEL REPORTE
+                    CerrarReporteDialogFragment dialogFragment = new CerrarReporteDialogFragment();
+                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                    dialogFragment.show(getFragmentManager(), "layout_cerrar_reporte");
+                } else {
+                    if (seleccionado.getEstado().getEstado().equals("ABIERTO")) {
+                        /// CARGO
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                        navController.navigate(R.id.solicitar_cierre, bundle);
+                    } else if (seleccionado.getEstado().getEstado().equals("PENDIENTE")) {
+                        Toast.makeText(getContext(), "Este reporte está pendiente", Toast.LENGTH_LONG).show();
+                    } else if (seleccionado.getEstado().getEstado().equals("CERRADO")) {
+                        Toast.makeText(getContext(), "Este reporte ya se encuentra cerrado", Toast.LENGTH_LONG).show();
+                    } else if (seleccionado.getEstado().getEstado().equals("CANCELADO")) {
+                        Toast.makeText(getContext(), "Este reporte está cancelado, no se puede cerrar", Toast.LENGTH_LONG).show();
+                    } else if (seleccionado.getEstado().getEstado().equals("DENUNCIADO")) {
+                        Toast.makeText(getContext(), "El reporte está denunciado, no se puede cerrar", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
