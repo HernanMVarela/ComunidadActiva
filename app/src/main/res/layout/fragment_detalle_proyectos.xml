@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/green_100"
-    tools:context=".ui.fragments.NuevoProyectoFragment">
+    tools:context=".detalle_proyectos">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -62,6 +62,21 @@
                 android:text="@string/rellenar_antes_de_mostrar" />
 
             <TextView
+                android:id="@+id/txtEstadoP"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:gravity="start"
+                android:text="@string/tipo_proyecto"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDetEstadP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/rellenar_antes_de_mostrar" />
+
+            <TextView
                 android:id="@+id/txtRequerimientosP"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -91,72 +106,37 @@
                 android:layout_height="wrap_content"
                 android:text="@string/rellenar_antes_de_mostrar" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/txtCupo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:gravity="start"
+                android:text="@string/cupo"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtDetCupoP"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/btnUbicacionP"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_alignParentStart="true"
-                        android:layout_weight="1"
-                        android:background="@drawable/boton_redondeado"
-                        android:drawableTop="@drawable/baseline_location_on_24"
-                        android:drawableTint="#FFFFFF"
-                        android:paddingTop="8dp" />
-
-                    <TextView
-                        android:id="@+id/txtUbicacion"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginVertical="5dp"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:text="@string/ubicacion"
-                        android:textSize="18sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtCupo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginVertical="5dp"
-                        android:gravity="start"
-                        android:text="@string/cupo"
-                        android:textSize="18sp" />
-
-                    <TextView
-                        android:id="@+id/txtDetCupoP"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/rellenar_antes_de_mostrar" />
-
-                </LinearLayout>
-            </LinearLayout>
+                android:layout_height="wrap_content"
+                android:text="@string/rellenar_antes_de_mostrar" />
 
             <Button
-                android:id="@+id/btnVolverP"
+                android:id="@+id/btnUnirseDP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="30dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:layout_weight="1"
+                android:background="@drawable/boton_redondeado"
+                android:text="@string/unirse_proyecto_boton"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/btnVolverP2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="30dp"
@@ -169,5 +149,6 @@
 
         </LinearLayout>
     </ScrollView>
+
 
 </FrameLayout>

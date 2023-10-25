@@ -122,8 +122,11 @@
         android:id="@+id/nav_buscar_proyecto"
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.BuscarProyectoFragment"
         android:label="Buscar Proyecto"
-        tools:layout="@layout/fragment_buscar_proyecto" />
-
+        tools:layout="@layout/fragment_buscar_proyecto" >
+        <action
+            android:id="@+id/action_nav_buscar_proyecto_to_detalle_proyectos"
+            app:destination="@id/detalle_proyectos" />
+    </fragment>
 
     <!-- FRAGMENTOS MODERADOR -->
     <fragment
@@ -210,4 +213,13 @@
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.AyudaFragment"
         android:label="@string/ayuda"
         tools:layout="@layout/fragment_ayuda" />
+    <fragment
+        android:id="@+id/detalle_proyectos"
+        android:name="frgp.utn.edu.ar.controllers.detalle_proyectos"
+        android:label="fragment_detalle_proyectos"
+        tools:layout="@layout/fragment_detalle_proyectos" >
+        <argument
+            android:name="proyectoparadetalles"
+            app:argType="frgp.utn.edu.ar.controllers.data.model.Proyecto" />
+    </fragment>
 </navigation>

@@ -2,7 +2,6 @@ package frgp.utn.edu.ar.controllers.data.remote.proyecto;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -15,10 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
-import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.TipoProyecto;
-import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaProyectosAdapter;
@@ -43,22 +40,35 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-            String query = "SELECT ID, TITULO, DESCRIPCION, LATITUD, LONGITUD, CUPO, ID_USER, ID_TIPO, ID_ESTADO, CONTACTO, AYUDA_ESPECIFICA FROM PROYECTOS " +
-                    "WHERE id_tipo = ? AND id_estado = ?"
-                    // + "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID "
-                    // + "INNER JOIN TIPOS_PROYECTO AS TP ON P.ID_TIPO = TP.ID "
-                    // + "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID"
-                    ;
+            String query = "SELECT P.ID, P.TITULO, P.DESCRIPCION, P.LATITUD, P.LONGITUD, P.CUPO, P.ID_USER, P.ID_TIPO, P.ID_ESTADO, P.CONTACTO, P.AYUDA_ESPECIFICA, " +
+                    "U.USERNAME, TP.TIPO, EP.ESTADO FROM PROYECTOS AS P " +
+                    "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_PROYECTO AS TP ON P.ID_TIPO = TP.ID " +
+                    "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID " +
+                    "WHERE P.ID_TIPO = ? AND P.ID_ESTADO = ?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setInt(1, IdTipoProyecto);
             preparedStatement.setInt(2, IdEstadoProyecto);
             ResultSet rs = preparedStatement.executeQuery();
             resultado = " ";
             while (rs.next()) {
+                TipoProyecto tipo = new TipoProyecto(rs.getInt("P.ID_TIPO"), rs.getString("TP.TIPO"));
+                EstadoProyecto estado = new EstadoProyecto(rs.getInt("P.ID_ESTADO"), rs.getString("EP.ESTADO"));
+                Usuario usu = new Usuario();usu.setId(rs.getInt("P.ID_USER"));usu.setUsername(rs.getString("U.USERNAME"));
+
                 Proyecto proyectobuscado = new Proyecto();
-                proyectobuscado.setId(rs.getInt("ID"));
-                proyectobuscado.setTitulo(rs.getString("TITULO"));
-                proyectobuscado.setContacto(rs.getString("CONTACTO"));
+                proyectobuscado.setId(rs.getInt("P.ID"));
+                proyectobuscado.setTitulo(rs.getString("P.TITULO"));
+                proyectobuscado.setDescripcion(rs.getString("P.DESCRIPCION"));
+                proyectobuscado.setLatitud(rs.getDouble("P.LATITUD"));
+                proyectobuscado.setLongitud(rs.getDouble("P.LONGITUD"));
+                proyectobuscado.setCupo(rs.getInt("P.CUPO"));
+                proyectobuscado.setOwner(usu);
+                proyectobuscado.setTipo(tipo);
+                proyectobuscado.setEstado(estado);
+                proyectobuscado.setContacto(rs.getString("P.CONTACTO"));
+                proyectobuscado.setRequerimientos(rs.getString("P.AYUDA_ESPECIFICA"));
+
                 listaDeProyectos.add(proyectobuscado);
             }
             resultado = "Conexion exitosa";
@@ -72,6 +82,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
         try{
         if(listaDeProyectos.isEmpty()) {
             Toast.makeText(context, "Nulo", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, resultado, Toast.LENGTH_SHORT).show();
                 }
         else {
             ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);

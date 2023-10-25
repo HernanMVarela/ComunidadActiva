@@ -67,6 +67,20 @@ public class BuscarProyectoFragment extends Fragment {
             Toast.makeText(this.getContext(), "NOPE", Toast.LENGTH_SHORT).show();
         }
 
+        spTipoProyecto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                //DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(), (spTipoProyecto.getSelectedItemPosition()+2), (spEstadoP.getSelectedItemPosition()+2));
+                //DMAListaP.execute();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
         listaDeProyectos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -81,7 +95,7 @@ public class BuscarProyectoFragment extends Fragment {
 
         verDetalle.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //iraDetalles();
+                iraDetalles();
             }
         });
     }
@@ -92,14 +106,15 @@ public class BuscarProyectoFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
-    /*public void iraDetalles(){
+    public void iraDetalles(){
         if(proyectoSeleccionado != null){
             Bundle bundle = new Bundle();
-            bundle.putSerializable("selected_proyect", proyectoSeleccionado);
+            bundle.putString("ProyectoString", proyectoSeleccionado.toString());
+            bundle.putSerializable("proyectoactual", proyectoSeleccionado);
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.detalle_, bundle);
+            navController.navigate(R.id.detalle_proyectos, bundle);
         }else {
-            Toast.makeText(this.getContext(), "Debes seleccionar un reporte", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getContext(), "Debes seleccionar un proyecto", Toast.LENGTH_LONG).show();
         }
-    }*/
+    }
 }

@@ -44,8 +44,7 @@ public class ListaProyectosAdapter extends ArrayAdapter<Proyecto> {
         TextView titulo = convertView.findViewById(R.id.txtTituloProyectoU);
         TextView datos = convertView.findViewById(R.id.txtDatosCreadorU);
         titulo.setText(proyecto.getTitulo());
-        titulo.setText(proyecto.getTitulo());
-        datos.setText("Contactar al " + proyecto.getContacto());
+        datos.setText("Telefono: " + proyecto.getContacto());
         return convertView;
     }
 
