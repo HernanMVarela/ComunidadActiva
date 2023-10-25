@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.ui.viewmodels.HistorialModeracionViewModel;
 
 public class HistorialModeracionFragment extends Fragment {
 
