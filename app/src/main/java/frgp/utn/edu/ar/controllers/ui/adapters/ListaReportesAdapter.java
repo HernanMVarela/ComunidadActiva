@@ -17,6 +17,7 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,12 +47,14 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
         TextView distancia = convertView.findViewById(R.id.tvDistanciaListaReporte);
         CardView cardview = convertView.findViewById(R.id.cardview_lista_reporte);
         assert reporte != null;
-        float puntos = 0;
+        String puntosFormateados = "0";
         if(reporte.getCant_votos() > 0){
-            puntos = reporte.getPuntaje() / reporte.getCant_votos();
+            float puntos = reporte.getPuntaje() / reporte.getCant_votos();
+            DecimalFormat decimalFormat = new DecimalFormat("#.#");
+            puntosFormateados = decimalFormat.format(puntos);
         }
         titulo.setText(reporte.getTitulo());
-        rating.setText(String.valueOf(puntos));
+        rating.setText(puntosFormateados);
 
         assert ubicacion != null;
         if(reporte.getLongitud() != 0.0 && reporte.getLatitud() != 0.0 && ubicacion.longitude != 0.0 && ubicacion.latitude != 0.0){

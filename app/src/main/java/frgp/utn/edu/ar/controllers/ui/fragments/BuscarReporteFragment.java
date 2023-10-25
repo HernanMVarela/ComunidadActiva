@@ -44,6 +44,7 @@ import java.util.Locale;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAListviewReportes;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAListviewReportesPorTexto;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.BuscarReporteViewModel;
 
 public class BuscarReporteFragment extends Fragment {
@@ -52,6 +53,7 @@ public class BuscarReporteFragment extends Fragment {
     private ListView listaReportes;
     private GoogleMap googlemaplocal;
     private SearchView barraBusqueda;
+    private String textoBusqueda = "";
     private Reporte seleccionado = null;
     private View viewSeleccionado = null;
     public static BuscarReporteFragment newInstance() {
@@ -76,8 +78,14 @@ public class BuscarReporteFragment extends Fragment {
                             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                             List<Address> addresses;
                             googlemaplocal = googleMap;
-                            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),currentLatLng,googlemaplocal);
-                            DMAListaReportes.execute();
+                            if(!textoBusqueda.isEmpty()){
+                                googlemaplocal.clear();
+                                DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),currentLatLng, googlemaplocal,textoBusqueda);
+                                DMAListaReportes.execute();
+                            } else {
+                                DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),currentLatLng,googlemaplocal);
+                                DMAListaReportes.execute();
+                            }
                             try {
                                 addresses = geocoder.getFromLocation(currentLatLng.latitude, currentLatLng.longitude, 1);
                                 if (!addresses.isEmpty()) {
@@ -119,6 +127,35 @@ public class BuscarReporteFragment extends Fragment {
             DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal);
             DMAListaReportes.execute();
         }
+
+        barraBusqueda.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                textoBusqueda = query.trim();
+                if (mapFragment != null) {
+                    mapFragment.getMapAsync(callback);
+                }else{
+                    DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),new LatLng(0,0), googlemaplocal,textoBusqueda);
+                    DMAListaReportes.execute();
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    // Si el texto está vacío, restaura los parámetros de búsqueda o realiza alguna otra acción
+                    textoBusqueda = "";
+                    if (mapFragment != null) {
+                        mapFragment.getMapAsync(callback);
+                    }else{
+                        DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),new LatLng(0,0), googlemaplocal,textoBusqueda);
+                        DMAListaReportes.execute();
+                    }
+                }
+                return false;
+            }
+        });
 
         listaReportes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

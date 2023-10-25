@@ -1,25 +1,13 @@
 package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ListView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-import com.google.android.gms.location.FusedLocationProviderClient;
-
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -37,22 +25,23 @@ import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaReportesAdapter;
-import frgp.utn.edu.ar.controllers.ui.adapters.TipoReporteAdapter;
 
-public class DMAListviewReportes extends AsyncTask<String, Void, String> {
+public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String> {
 
     private Context context;
     private ListView listado;
     private LatLng ubicacion;
     private GoogleMap mapa;
     private static String result2;
+    private String texto;
     private static List<Reporte> listaReporte;
 
     //Constructor
-    public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa) {
+    public DMAListviewReportesPorTexto(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa, String texto) {
         listado = listview;
         context = ct;
         this.mapa = mapa;
+        this.texto = texto;
         this.ubicacion = ubicacion;
     }
 
@@ -97,13 +86,16 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
                     "INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
                     "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID " +
                     "INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "HAVING Distancia <= 5 " +
+                    "WHERE U.USERNAME LIKE ? OR R.TITULO LIKE ? OR ER.ESTADO LIKE ?" +
                     "ORDER BY Distancia;";
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setDouble(1, dispositivoLatitud); // Nueva ubicación del dispositivo
             preparedStatement.setDouble(2, dispositivoLatitud); // Nueva ubicación del dispositivo (repetir para el cálculo)
             preparedStatement.setDouble(3, dispositivoLongitud); // Nueva ubicación del dispositivo
+            preparedStatement.setString(4, "%"+texto+"%");
+            preparedStatement.setString(5, "%"+texto+"%");
+            preparedStatement.setString(6, "%"+texto+"%");
 
             ResultSet rs = preparedStatement.executeQuery();
             result2 = " ";
