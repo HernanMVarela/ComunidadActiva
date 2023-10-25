@@ -60,7 +60,7 @@ public class BuscarProyectoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         try{
-            DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(), spTipoProyecto.getSelectedItemPosition()+1, spEstadoP.getSelectedItemPosition()+1);
+            DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(), (spTipoProyecto.getSelectedItemPosition()+2), (spEstadoP.getSelectedItemPosition()+2));
             DMAListaP.execute();
         }
         catch (Error e){

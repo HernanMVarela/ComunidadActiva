@@ -38,13 +38,13 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     }
     @Override
     protected String doInBackground(String... urls) {
-        listaDeProyectos = new ArrayList<Proyecto>();
         try {
+            listaDeProyectos = new ArrayList<Proyecto>();
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-            String query = "SELECT ID, TITULO, DESCRIPCION, LATITUD, LONGITUD, CUPO, ID_USER, ID_TIPO, ID_ESTADO, CONTACTO, AYUDA_ESPECIFICA FROM PROYECTOS" +
-                    "WHERE id_tipo = ? AND id_estado = ? "
+            String query = "SELECT ID, TITULO, DESCRIPCION, LATITUD, LONGITUD, CUPO, ID_USER, ID_TIPO, ID_ESTADO, CONTACTO, AYUDA_ESPECIFICA FROM PROYECTOS " +
+                    "WHERE id_tipo = ? AND id_estado = ?"
                     // + "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID "
                     // + "INNER JOIN TIPOS_PROYECTO AS TP ON P.ID_TIPO = TP.ID "
                     // + "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID"
@@ -58,7 +58,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 Proyecto proyectobuscado = new Proyecto();
                 proyectobuscado.setId(rs.getInt("ID"));
                 proyectobuscado.setTitulo(rs.getString("TITULO"));
-                proyectobuscado.setContacto("CONTACTO");
+                proyectobuscado.setContacto(rs.getString("CONTACTO"));
                 listaDeProyectos.add(proyectobuscado);
             }
             resultado = "Conexion exitosa";
@@ -70,14 +70,13 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     }
     protected void onPostExecute(String response) {
         try{
-            ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
-
-        if(listaDeProyectos!=null) {
-            listado.setAdapter(adapter);
-            Toast.makeText(context, "Carga Exitosa", Toast.LENGTH_SHORT).show();
+        if(listaDeProyectos.isEmpty()) {
+            Toast.makeText(context, "Nulo", Toast.LENGTH_SHORT).show();
                 }
         else {
-            Toast.makeText(context, "Nulo", Toast.LENGTH_SHORT).show();
+            ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
+            listado.setAdapter(adapter);
+            Toast.makeText(context, "Carga Exitosa", Toast.LENGTH_SHORT).show();
         }
              }
         catch (Error e){
