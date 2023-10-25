@@ -72,6 +72,11 @@
         android:label="Crear reporte"
         tools:layout="@layout/fragment_nuevo_reporte">
         <action
+            android:id="@+id/action_nuevoReporte_to_buscarReportes"
+            app:destination="@id/nav_buscar_reporte"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"/>
+        <action
             android:id="@+id/action_nav_reporte_to_nav_ubicacion"
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"

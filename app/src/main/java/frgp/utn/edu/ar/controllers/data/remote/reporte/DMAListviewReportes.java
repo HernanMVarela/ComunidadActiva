@@ -3,6 +3,8 @@ package frgp.utn.edu.ar.controllers.data.remote.reporte;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,6 +18,8 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -29,6 +33,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
@@ -155,10 +160,37 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
         listado.setAdapter(adapter);
     }
 
-    private void marcarUbicaciones(){
-        for (Reporte item: listaReporte) {
-            LatLng repUbi = new LatLng(item.getLatitud(),item.getLongitud());
-            mapa.addMarker(new MarkerOptions().position(repUbi).title(item.getTitulo()));
+    private void marcarUbicaciones() {
+        for (Reporte item : listaReporte) {
+            LatLng repUbi = new LatLng(item.getLatitud(), item.getLongitud());
+            int iconResource;
+
+            // Determinar el recurso del ícono según el tipo del reporte
+            if (item.getTipo().getTipo().equals("BASURA ACOMULADO")) {
+                iconResource = R.drawable.garbage_bag;
+            } else if (item.getTipo().getTipo().equals("ALUMBRADO DEFECTUOSO")) {
+                iconResource = R.drawable.broken_bulb;
+            } else if (item.getTipo().getTipo().equals("CALLE EN MAL ESTADO")) {
+                iconResource = R.drawable.pothole;
+            } else if (item.getTipo().getTipo().equals("VEREDA EN MAL ESTADO")) {
+                iconResource = R.drawable.pothole_man;
+            } else {
+                iconResource = 0;
+            }
+            // Configurar el tamaño del ícono
+            int width = 40; // Ancho en píxeles
+            int height = 40; // Alto en píxeles
+            // Cargar el ícono desde el recurso
+            Bitmap iconBitmap = BitmapFactory.decodeResource(context.getResources(), iconResource);
+            // Redimensionar el ícono
+            iconBitmap = Bitmap.createScaledBitmap(iconBitmap, width, height, false);
+            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
+            // Agregar el marcador al mapa
+            mapa.addMarker(new MarkerOptions()
+                    .position(repUbi)
+                    .title(item.getTipo().getTipo())
+                    .icon(icon)
+            );
         }
     }
 

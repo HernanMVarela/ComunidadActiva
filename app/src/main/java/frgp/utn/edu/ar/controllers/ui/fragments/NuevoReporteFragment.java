@@ -60,6 +60,10 @@ public class NuevoReporteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         // Recupera los datos del Shared
         loggedInUser = sharedPreferences.getUsuarioData(getContext());
+        if(loggedInUser == null){ /// VALIDA QUE EXISTA USUARIO
+            Intent registro = new Intent(getContext(), HomeActivity.class);
+            startActivity(registro);
+        }
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -115,14 +119,13 @@ public class NuevoReporteFragment extends Fragment {
                 try {
                     // INICIALIZA EL sharedLocationViewModel, QUE PERMITE COMPARTIR LA UBICACION SELECCIONADA ENTRE FRAGMENTOS
                     sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
-
-                    if(checkFormValid()){
-                        Reporte nuevo = cargarDatos();
+                    if(checkFormValid()){ // VALIDA CAMPOS ANTES DE GUARDAR REPORTE
+                        Reporte nuevo = cargarDatos(); // CARGA LOS DATOS EN EL NUEVO REPORTE
                         DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo,v.getContext());
-                        DMAGuardar.execute();
-                        limpiarCampos();
+                        DMAGuardar.execute(); // GUARDA EL REPORTE EN DB
+                        limpiarCampos(); // LIMPIA CAMPOS DE PANTALLA
+                        navigateToBuscarReporte(); // REGRESA A BUSCARREPORTES
                     }
-
                 }catch (Exception e){
                     Log.e("Error", e.toString());
                 }
@@ -133,29 +136,35 @@ public class NuevoReporteFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // VALIDA QUE LA ACCION SE HAYA COMPLETADO CORRECTAMENTE
         if (requestCode == CAMERA_PIC_REQUEST && resultCode == Activity.RESULT_OK) {
             // La imagen se capturó exitosamente
             Bundle extras = data.getExtras();
             imagenCapturada = (Bitmap) extras.get("data");
-
             // Referencia al ImageView - prueba de imagen
             ImageView imgViewFotoTomada = getView().findViewById(R.id.imgViewFotoTomada);
-
             // Modificación de tamaño - prueba de imagen
             Bitmap imagenRedimensionada = Bitmap.createScaledBitmap(imagenCapturada, imagenCapturada.getWidth()*2, imagenCapturada.getHeight()*2, true);
-
-            // Configura la imagen capturada en el ImageView - prueba de imagen
+            // Configura la imagen capturada en el ImageView
             imgViewFotoTomada.setImageBitmap(imagenRedimensionada);
         }
     }
 
     private void navigateToLocationFragment() {
+        // NAVEGA AL FRAGMENTO DE UBICACIÓN
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
         navController.navigate(R.id.action_nav_reporte_to_nav_ubicacion);
     }
 
+    private void returnToHome(){
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+        navController.popBackStack();
+    }
+
+    private void navigateToBuscarReporte(){
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+        navController.navigate(R.id.action_nuevoReporte_to_buscarReportes);
+    }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -165,7 +174,6 @@ public class NuevoReporteFragment extends Fragment {
 
     /// VALIDACIONES DE CAMPOS
     private boolean checkFormValid() {
-
         if (titulo.getText().toString().trim().isEmpty()) {
             Toast.makeText(this.getContext(), "Debes poner un título al reporte.", Toast.LENGTH_LONG).show();
             return false;
@@ -195,27 +203,26 @@ public class NuevoReporteFragment extends Fragment {
         return true;
     }
     private Reporte cargarDatos(){
-
         // Toma las coordenadas desde el ViewModel compartido con el UbicacionFragment
         double latitude = sharedLocationViewModel.getLatitude();
         double longitude = sharedLocationViewModel.getLongitude();
-
         // Crea el objeto Reporte y carga los datos
         Reporte nuevoReporte = new Reporte();
         nuevoReporte.setLatitud(latitude);
         nuevoReporte.setLongitud(longitude);
         nuevoReporte.setTitulo(titulo.getText().toString());
         nuevoReporte.setDescripcion(descripcion.getText().toString());
-        nuevoReporte.setEstado(new EstadoReporte(1,"ABIERTO"));
+        nuevoReporte.setEstado(new EstadoReporte(1,"ABIERTO")); // INICIA CON ESTADO ABIERTO
         nuevoReporte.setTipo(new TipoReporte(spinTipoReporte.getSelectedItemPosition()+1, spinTipoReporte.getSelectedItem().toString()));
-        nuevoReporte.setImagen(imagenCapturada);
-        nuevoReporte.setPuntaje(0);
-        nuevoReporte.setFecha(new Date(System.currentTimeMillis()));
-        nuevoReporte.setOwner(loggedInUser); // REEMPLAZAR POR USUARIO LOGUEADO
+        nuevoReporte.setImagen(imagenCapturada); // TRAE IMAGEN CAPTURADA
+        nuevoReporte.setPuntaje(0); // INICIA CON PUNTAJE 0
+        nuevoReporte.setFecha(new Date(System.currentTimeMillis())); // FECHA ACTUAL
+        nuevoReporte.setOwner(loggedInUser); // USUARIO LOGUEADO
 
         return nuevoReporte;
     }
     private void limpiarCampos(){
+        // LIMPIA CAMPOS DE TEXTO Y SETEA A 0 TODAS LAS VARIABLES
         titulo.setText("");
         descripcion.setText("");
         sharedLocationViewModel.setLatitude(0);

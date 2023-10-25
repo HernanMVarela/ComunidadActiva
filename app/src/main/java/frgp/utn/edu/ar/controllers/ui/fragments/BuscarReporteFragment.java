@@ -73,13 +73,16 @@ public class BuscarReporteFragment extends Fragment {
                 locationClient.getLastLocation().addOnSuccessListener(requireActivity(), new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
-                        if (location != null) {
+                        if (location != null) { // VERIFICA QUE EXISTA UBICACION
+                            /// OBTIENE LA UBICACIÓN ACTUAL DEL DISPOSITIVO
                             LatLng currentLatLng = new LatLng(location.getLatitude(), location.getLongitude());
+                            /// INICIALIZA EL GEOCODER PARA OBTENER DATOS DE LAS COORDENADAS
                             Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
                             List<Address> addresses;
                             googlemaplocal = googleMap;
+                            /// VALIDA SI EXISTE UN FILTO DE BUSQUEDA ACTIVO
                             if(!textoBusqueda.isEmpty()){
-                                googlemaplocal.clear();
+                                googlemaplocal.clear(); /// LIMPIA LOS MARCADORES DEL MAPA
                                 DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),currentLatLng, googlemaplocal,textoBusqueda);
                                 DMAListaReportes.execute();
                             } else {
