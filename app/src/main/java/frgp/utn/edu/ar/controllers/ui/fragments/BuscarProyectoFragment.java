@@ -35,7 +35,8 @@ public class BuscarProyectoFragment extends Fragment {
     private SearchView buscarProyecto;
     private Proyecto proyectoSeleccionado=null;
     private View viewSeleccionada=null;
-    private Spinner spEstadoP, spTipoProyecto;;
+    private Spinner spEstadoP, spTipoProyecto;
+    private int buscadorE=1, buscadorT=1;
     private Button verDetalle;
 
     public static BuscarProyectoFragment newInstance() {
@@ -47,7 +48,6 @@ public class BuscarProyectoFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_buscar_proyecto, container, false);
         verDetalle = view.findViewById(R.id.btnVerDetalleP);
-        listaDeProyectos = view.findViewById(R.id.listProyectos);
         spTipoProyecto = view.findViewById(R.id.spFiltroA);
         spEstadoP = view.findViewById(R.id.spFiltroB);
         DMASpinnerTiposProyectos tiposPro = new DMASpinnerTiposProyectos(spTipoProyecto, getContext());
@@ -59,19 +59,26 @@ public class BuscarProyectoFragment extends Fragment {
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        try{
-            DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(), (spTipoProyecto.getSelectedItemPosition()+2), (spEstadoP.getSelectedItemPosition()+2));
-            DMAListaP.execute();
-        }
-        catch (Error e){
-            Toast.makeText(this.getContext(), "NOPE", Toast.LENGTH_SHORT).show();
-        }
+        super.onViewCreated(view, savedInstanceState);
+        listaDeProyectos = view.findViewById(R.id.listProyectos);
 
         spTipoProyecto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                //DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(), (spTipoProyecto.getSelectedItemPosition()+2), (spEstadoP.getSelectedItemPosition()+2));
-                //DMAListaP.execute();
+                cargarProyectos(view);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+        spEstadoP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                cargarProyectos(view);
             }
 
             @Override
@@ -109,12 +116,19 @@ public class BuscarProyectoFragment extends Fragment {
     public void iraDetalles(){
         if(proyectoSeleccionado != null){
             Bundle bundle = new Bundle();
-            bundle.putString("ProyectoString", proyectoSeleccionado.toString());
             bundle.putSerializable("proyectoactual", proyectoSeleccionado);
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
             navController.navigate(R.id.detalle_proyectos, bundle);
         }else {
             Toast.makeText(this.getContext(), "Debes seleccionar un proyecto", Toast.LENGTH_LONG).show();
         }
+    }
+    public void cargarProyectos(View view){
+        buscadorT = spTipoProyecto.getSelectedItemPosition()+1;
+        if(buscadorT<1){buscadorT=1;}
+        buscadorE = spEstadoP.getSelectedItemPosition()+1;
+        if(buscadorE<1){buscadorE=1;}
+        DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(),buscadorT,buscadorE);
+        DMAListaP.execute();
     }
 }

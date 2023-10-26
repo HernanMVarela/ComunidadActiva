@@ -35,8 +35,8 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     }
     @Override
     protected String doInBackground(String... urls) {
+        listaDeProyectos = new ArrayList<Proyecto>();
         try {
-            listaDeProyectos = new ArrayList<Proyecto>();
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
@@ -81,13 +81,14 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         try{
         if(listaDeProyectos.isEmpty()) {
-            Toast.makeText(context, "Nulo", Toast.LENGTH_SHORT).show();
+            resultado = "Sin Resultados";
             Toast.makeText(context, resultado, Toast.LENGTH_SHORT).show();
+            ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
+            listado.setAdapter(adapter);
                 }
         else {
             ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
             listado.setAdapter(adapter);
-            Toast.makeText(context, "Carga Exitosa", Toast.LENGTH_SHORT).show();
         }
              }
         catch (Error e){
