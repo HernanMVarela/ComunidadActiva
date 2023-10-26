@@ -5,6 +5,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -12,6 +18,8 @@ import android.widget.ListView;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 
@@ -102,8 +110,8 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
                     "INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
                     "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID " +
                     "INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "HAVING Distancia <= 5 " +
-                    "ORDER BY Distancia;";
+                    "HAVING Distancia <= 10 " +
+                    "ORDER BY Distancia LIMIT 15;";
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setDouble(1, dispositivoLatitud); // Nueva ubicación del dispositivo
@@ -165,33 +173,82 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
             LatLng repUbi = new LatLng(item.getLatitud(), item.getLongitud());
             int iconResource;
 
-            // Determinar el recurso del ícono según el tipo del reporte
-            if (item.getTipo().getTipo().equals("BASURA ACOMULADO")) {
+            if (item.getTipo().getTipo().equals("BASURA")) {
                 iconResource = R.drawable.garbage_bag;
-            } else if (item.getTipo().getTipo().equals("ALUMBRADO DEFECTUOSO")) {
+            } else if (item.getTipo().getTipo().equals("ILUMINACION")) {
                 iconResource = R.drawable.broken_bulb;
-            } else if (item.getTipo().getTipo().equals("CALLE EN MAL ESTADO")) {
+            } else if (item.getTipo().getTipo().equals("BACHE")) {
                 iconResource = R.drawable.pothole;
-            } else if (item.getTipo().getTipo().equals("VEREDA EN MAL ESTADO")) {
-                iconResource = R.drawable.pothole_man;
-            } else {
+            } else if (item.getTipo().getTipo().equals("ARBOL CAIDO")) {
+                iconResource = R.drawable.tree;
+            }else if (item.getTipo().getTipo().equals("ANIMALES SUELTOS")) {
+                iconResource = R.drawable.animales;
+            } else if (item.getTipo().getTipo().equals("FUGA DE AGUA")) {
+                iconResource = R.drawable.fuga_agua;
+            } else if (item.getTipo().getTipo().equals("CABLES CAIDOS")) {
+                iconResource = R.drawable.cables_sueltos;
+            } else if (item.getTipo().getTipo().equals("PARQUE DESCUIDADO")) {
+                iconResource = R.drawable.parque;
+            } else if (item.getTipo().getTipo().equals("CONTAMINACION")) {
+                iconResource = R.drawable.contaminacion;
+            }  else {
                 iconResource = 0;
             }
-            // Configurar el tamaño del ícono
-            int width = 40; // Ancho en píxeles
-            int height = 40; // Alto en píxeles
-            // Cargar el ícono desde el recurso
-            Bitmap iconBitmap = BitmapFactory.decodeResource(context.getResources(), iconResource);
-            // Redimensionar el ícono
-            iconBitmap = Bitmap.createScaledBitmap(iconBitmap, width, height, false);
-            BitmapDescriptor icon = BitmapDescriptorFactory.fromBitmap(iconBitmap);
-            // Agregar el marcador al mapa
-            mapa.addMarker(new MarkerOptions()
-                    .position(repUbi)
-                    .title(item.getTipo().getTipo())
-                    .icon(icon)
-            );
+
+            if (iconResource != 0) {
+                // Carga el ícono SVG y cambia su color en tiempo real
+                Drawable drawable = VectorDrawableCompat.create(context.getResources(), iconResource, null);
+                drawable = DrawableCompat.wrap(drawable);
+                DrawableCompat.setTint(drawable, getColorForReportType(item.getTipo().getTipo()));
+                // Configura el tamaño del ícono
+                int width = 50; // Ancho en píxeles
+                int height = 50; // Alto en píxeles
+                // Converte el Drawable a Bitmap
+                BitmapDescriptor icon = getBitmapDescriptorFromDrawable(drawable, width, height);
+                // Agrega el marcador al mapa
+                mapa.addMarker(new MarkerOptions()
+                        .position(repUbi)
+                        .title(item.getTipo().getTipo())
+                        .icon(icon)
+                );
+            }
         }
+    }
+
+    private int getColorForReportType(String reportType) {
+        // Define los colores para cada tipo de reporte
+        if (reportType.equals("BASURA")) {
+            return Color.BLUE;
+        } else if (reportType.equals("ILUMINACION")) {
+            return Color.RED;
+        } else if (reportType.equals("BACHE")) {
+            return Color.rgb(0, 128, 0);
+        } else if (reportType.equals("VEREDA EN MAL ESTADO")) {
+            return Color.rgb(218, 165, 32);
+        } else if (reportType.equals("ARBOL CAIDO")) {
+            return Color.rgb(0, 100, 0);
+        } else if (reportType.equals("ANIMALES SUELTOS")) {
+            return Color.rgb(255, 165, 0);
+        } else if (reportType.equals("FUGA DE AGUA")) {
+            return Color.CYAN;
+        } else if (reportType.equals("CABLES CAIDOS")) {
+            return Color.DKGRAY;
+        } else if (reportType.equals("PARQUE DESCUIDADO")) {
+            return Color.GREEN;
+        } else if (reportType.equals("CONTAMINACION")) {
+            return Color.MAGENTA;
+        } else {
+            return Color.BLACK; // Color por defecto (negro)
+        }
+    }
+
+    private BitmapDescriptor getBitmapDescriptorFromDrawable(Drawable drawable, int width, int height) {
+        // Convierte el Drawable a Bitmap y lo redimensiona
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
 }
