@@ -123,4 +123,5 @@
     <string name="accesibilidad">Accesibilidad</string>
     <string name="cerrar_rep">Cerrar</string>
     <string name="reabrir_reporte">Reabrir</string>
+    <string name="abiertos">Abiertos</string>
 </resources>

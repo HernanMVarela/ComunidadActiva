@@ -47,7 +47,7 @@ public class NuevoReporteFragment extends Fragment {
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private NuevoReporteViewModel mViewModel;
     private Usuario loggedInUser = null;
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private Bitmap imagenCapturada;
     private SharedLocationViewModel sharedLocationViewModel;
     private Spinner spinTipoReporte;

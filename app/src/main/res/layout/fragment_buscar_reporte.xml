@@ -18,20 +18,47 @@
         android:text="@string/buscar_reportes"
         android:gravity="center_horizontal"/>
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/busquedaReporte"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="15dp"
         android:layout_marginVertical="5dp"
-        android:background="@drawable/grid_item_corner"
-        app:iconifiedByDefault="false"
-        app:queryHint="Buscar..."
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        android:padding="5dp">
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/busquedaReporte"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:iconifiedByDefault="false"
+            app:queryHint="Buscar..."
+            android:background="@drawable/grid_item_corner"
+            android:layout_marginEnd="5dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/abiertos" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchFiltrarAbiertos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:checked="true" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
     <ListView
         android:id="@+id/listReportes"
         android:layout_width="match_parent"

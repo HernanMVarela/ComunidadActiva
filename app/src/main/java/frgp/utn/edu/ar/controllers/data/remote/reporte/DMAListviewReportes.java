@@ -57,15 +57,19 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
     private Context context;
     private ListView listado;
     private LatLng ubicacion;
+    private Usuario loggedUser;
+    private boolean todo;
     private GoogleMap mapa;
     private static String result2;
     private static List<Reporte> listaReporte;
 
     //Constructor
-    public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa) {
+    public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa, Usuario loggedUser, boolean todo) {
         listado = listview;
         context = ct;
         this.mapa = mapa;
+        this.loggedUser = loggedUser;
+        this.todo = todo;
         this.ubicacion = ubicacion;
     }
 
@@ -77,47 +81,9 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-            double dispositivoLatitud = ubicacion.latitude;
-            double dispositivoLongitud = ubicacion.longitude;
 
-            String query = "SELECT " +
-                    "R.ID AS ReporteID, " +
-                    "R.TITULO AS TituloReporte, " +
-                    "R.DESCRIPCION AS DescripcionReporte, " +
-                    "R.LATITUD AS LatitudReporte, " +
-                    "R.LONGITUD AS LongitudReporte, " +
-                    "R.FECHA AS FechaReporte, " +
-                    "R.CANT_VOTOS AS CantidadVotos, " +
-                    "R.PUNTAJE AS PuntajeReporte, " +
-                    "R.ID_USER AS IDUsuarioReporte, " +
-                    "R.ID_TIPO AS IDTipoReporte, " +
-                    "R.ID_ESTADO AS IDEstadoReporte, " +
-                    "U.USERNAME AS UsernameUsuario, " +
-                    "U.NOMBRE AS NombreUsuario, " +
-                    "U.APELLIDO AS ApellidoUsuario, " +
-                    "U.TELEFONO AS TelefonoUsuario, " +
-                    "U.CORREO AS CorreoUsuario, " +
-                    "U.FECHA_NAC AS FechaNacimientoUsuario, " +
-                    "U.CREACION AS FechaCreacionUsuario, " +
-                    "TR.TIPO AS TipoReporte, " +
-                    "ER.ESTADO AS EstadoReporte, " +
-                    "6371 * 2 * ASIN(SQRT(" +
-                    "POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
-                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * " +
-                    "POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
-                    ")) AS Distancia " +
-                    "FROM REPORTES AS R " +
-                    "INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
-                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID " +
-                    "INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "HAVING Distancia <= 10 " +
-                    "ORDER BY Distancia LIMIT 15;";
-
-            PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setDouble(1, dispositivoLatitud); // Nueva ubicación del dispositivo
-            preparedStatement.setDouble(2, dispositivoLatitud); // Nueva ubicación del dispositivo (repetir para el cálculo)
-            preparedStatement.setDouble(3, dispositivoLongitud); // Nueva ubicación del dispositivo
-
+            PreparedStatement preparedStatement = generadorConsulta(con,loggedUser.getTipo().getTipo(),todo);
+            assert preparedStatement != null;
             ResultSet rs = preparedStatement.executeQuery();
             result2 = " ";
             listaReporte = new ArrayList<Reporte>();
@@ -251,4 +217,84 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
+    private PreparedStatement generadorConsulta(Connection con, String userType, boolean todo){
+        double dispositivoLatitud = ubicacion.latitude;
+        double dispositivoLongitud = ubicacion.longitude;
+        String query = "";
+        if(userType.equals("VECINO") && todo){
+            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, R.Puntaje AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
+                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
+                    ")) AS Distancia FROM REPORTES AS R " +
+                    "INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID " +
+                    "INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "WHERE ER.ESTADO NOT IN ('CERRADO', 'DENUNCIADO') " +
+                    "AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
+                    "HAVING Distancia <= 10 " +
+                    "ORDER BY Distancia LIMIT 15;";
+        }
+        if(userType.equals("VECINO") && !todo ){
+            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
+                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
+                    ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "WHERE ER.ESTADO = 'ABIERTO' AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
+                    "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
+        }
+        if ((userType.equals("MODERADOR") || userType.equals("ADMINISTRADOR"))&& todo) {
+            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
+                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
+                    ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "WHERE ER.ESTADO = 'ABIERTO' AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
+                    "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
+        }
+        if ((userType.equals("MODERADOR") || userType.equals("ADMINISTRADOR"))&& !todo) {
+            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
+                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
+                    ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "WHERE R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
+                    "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
+        }
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setDouble(1, dispositivoLatitud); // Nueva ubicación del dispositivo
+            preparedStatement.setDouble(2, dispositivoLatitud); // Nueva ubicación del dispositivo (repetir para el cálculo)
+            preparedStatement.setDouble(3, dispositivoLongitud); // Nueva ubicación del dispositivo
+            return preparedStatement;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

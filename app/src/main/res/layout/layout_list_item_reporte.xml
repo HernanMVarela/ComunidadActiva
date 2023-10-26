@@ -71,5 +71,11 @@
                 android:text="2.3 km"
                 android:textSize="14sp" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/tvEstadoRepote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/estado_pendiente"
+            android:textSize="14sp" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -45,6 +45,7 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
         TextView rating = convertView.findViewById(R.id.tvtRatingListaReporte);
         TextView usernamefecha = convertView.findViewById(R.id.tvUsernameFechaListaReporte);
         TextView distancia = convertView.findViewById(R.id.tvDistanciaListaReporte);
+        TextView estado = convertView.findViewById(R.id.tvEstadoRepote);
         CardView cardview = convertView.findViewById(R.id.cardview_lista_reporte);
         assert reporte != null;
         String puntosFormateados = "0";
@@ -55,6 +56,7 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
         }
         titulo.setText(reporte.getTitulo());
         rating.setText(puntosFormateados);
+        estado.setText("Estado: " + reporte.getEstado().getEstado());
 
         assert ubicacion != null;
         if(reporte.getLongitud() != 0.0 && reporte.getLatitud() != 0.0 && ubicacion.longitude != 0.0 && ubicacion.latitude != 0.0){
@@ -72,13 +74,6 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
         }
         usernamefecha.setText("Publicado por " + reporte.getOwner().getUsername() + " el " + reporte.getFecha().toString());
 
-        if(reporte.getEstado().getEstado().equals("DENUNCIADO")){
-            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.danger));
-        } else if (reporte.getEstado().getEstado().equals("CERRADO")){
-            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.closed));
-        } else if (reporte.getEstado().getEstado().equals("ATENDIDO")){
-            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.teal_700));
-        }
         return convertView;
     }
 }

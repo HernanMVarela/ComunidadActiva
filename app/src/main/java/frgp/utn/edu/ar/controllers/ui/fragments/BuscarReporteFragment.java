@@ -1,11 +1,13 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -24,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -44,9 +47,13 @@ import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAListviewReportes;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAListviewReportesPorTexto;
+import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.BuscarReporteViewModel;
+import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class BuscarReporteFragment extends Fragment {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
@@ -54,6 +61,9 @@ public class BuscarReporteFragment extends Fragment {
     private ListView listaReportes;
     private GoogleMap googlemaplocal;
     private SearchView barraBusqueda;
+    private SwitchCompat switch_abiertos;
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private Usuario loggedInUser = null;
     private LatLng ubicacionMapa;
     private String textoBusqueda = "";
     private Reporte seleccionado = null;
@@ -88,7 +98,7 @@ public class BuscarReporteFragment extends Fragment {
                                 DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes, getContext(), currentLatLng, googlemaplocal, textoBusqueda);
                                 DMAListaReportes.execute();
                             } else {
-                                DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes, getContext(), currentLatLng, googlemaplocal);
+                                DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes, getContext(), currentLatLng, googlemaplocal,loggedInUser,switch_abiertos.isChecked());
                                 DMAListaReportes.execute();
                             }
                             try {
@@ -133,6 +143,16 @@ public class BuscarReporteFragment extends Fragment {
         }
     };
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Recupera los datos del Shared
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
+        if(loggedInUser == null){ /// VALIDA QUE EXISTA USUARIO
+            Intent registro = new Intent(getContext(), HomeActivity.class);
+            startActivity(registro);
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -147,16 +167,27 @@ public class BuscarReporteFragment extends Fragment {
 
         listaReportes = view.findViewById(R.id.listReportes);
         barraBusqueda = view.findViewById(R.id.busquedaReporte);
+        switch_abiertos = view.findViewById(R.id.switchFiltrarAbiertos);
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapListaReportes);
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }else{
-            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal);
+            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, switch_abiertos.isChecked());
             DMAListaReportes.execute();
         }
-
+        switch_abiertos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (mapFragment != null) {
+                    mapFragment.getMapAsync(callback);
+                }else{
+                    DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, switch_abiertos.isChecked());
+                    DMAListaReportes.execute();
+                }
+            }
+        });
         barraBusqueda.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
