@@ -19,13 +19,15 @@ public class DMASpinnerTiposReporte extends AsyncTask<String, Void, String> {
 
     private Context context;
     private Spinner spinTipoReporte;
+    private int selected;
     private static String result2;
     private static List<TipoReporte> listaTiposReporte;
 
     //Constructor
-    public DMASpinnerTiposReporte(Spinner spin, Context ct)
+    public DMASpinnerTiposReporte(Spinner spin, Context ct, int selected)
     {
         spinTipoReporte = spin;
+        this.selected = selected;
         context = ct;
     }
 
@@ -60,5 +62,6 @@ public class DMASpinnerTiposReporte extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         TipoReporteAdapter adapter = new TipoReporteAdapter(context, listaTiposReporte);
         spinTipoReporte.setAdapter(adapter);
+        spinTipoReporte.setSelection(selected);
     }
 }

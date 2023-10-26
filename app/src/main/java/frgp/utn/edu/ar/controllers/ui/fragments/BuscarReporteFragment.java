@@ -34,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
@@ -53,6 +54,7 @@ public class BuscarReporteFragment extends Fragment {
     private ListView listaReportes;
     private GoogleMap googlemaplocal;
     private SearchView barraBusqueda;
+    private LatLng ubicacionMapa;
     private String textoBusqueda = "";
     private Reporte seleccionado = null;
     private View viewSeleccionado = null;
@@ -81,12 +83,12 @@ public class BuscarReporteFragment extends Fragment {
                             List<Address> addresses;
                             googlemaplocal = googleMap;
                             /// VALIDA SI EXISTE UN FILTO DE BUSQUEDA ACTIVO
-                            if(!textoBusqueda.isEmpty()){
+                            if (!textoBusqueda.isEmpty()) {
                                 googlemaplocal.clear(); /// LIMPIA LOS MARCADORES DEL MAPA
-                                DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),currentLatLng, googlemaplocal,textoBusqueda);
+                                DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes, getContext(), currentLatLng, googlemaplocal, textoBusqueda);
                                 DMAListaReportes.execute();
                             } else {
-                                DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),currentLatLng,googlemaplocal);
+                                DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes, getContext(), currentLatLng, googlemaplocal);
                                 DMAListaReportes.execute();
                             }
                             try {
@@ -104,9 +106,33 @@ public class BuscarReporteFragment extends Fragment {
                         }
                     }
                 });
+                googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                    @Override
+                    public void onMapClick(LatLng latLng) {
+                        // Borra el reporte seleccionado al hacer clic en cualquier otra parte del mapa
+                        seleccionado = null;
+                    }
+                });
+                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        // Accede a las coordenadas del marcador en el mapa
+                        ubicacionMapa = marker.getPosition();
+                        // BUSCAR EL REPORTE QUE COINCIDA CON LAS COORDENADAS SELECCIONADAS
+                        for(int i = 0; i < listaReportes.getCount(); i++){
+                            Reporte reporte = (Reporte) listaReportes.getItemAtPosition(i);
+                            if (reporte.getLatitud() == ubicacionMapa.latitude && reporte.getLongitud() == ubicacionMapa.longitude) {
+                                seleccionado = (Reporte) listaReportes.getItemAtPosition(i);
+                                break;
+                            }
+                        }
+                        return false;
+                    }
+                });
             }
         }
     };
+
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -175,7 +201,6 @@ public class BuscarReporteFragment extends Fragment {
                 viewSeleccionado = view;
             }
         });
-
         bVerReporte.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 navegarDetalle();
@@ -192,7 +217,6 @@ public class BuscarReporteFragment extends Fragment {
         }else {
             Toast.makeText(this.getContext(), "Debes seleccionar un reporte", Toast.LENGTH_LONG).show();
         }
-
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

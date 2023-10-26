@@ -3,22 +3,16 @@ package frgp.utn.edu.ar.controllers.data.remote.reporte;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
-import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
-import frgp.utn.edu.ar.controllers.ui.adapters.TipoReporteAdapter;
 
 public class DMAGuardarReporte extends AsyncTask<String, Void, String> {
 

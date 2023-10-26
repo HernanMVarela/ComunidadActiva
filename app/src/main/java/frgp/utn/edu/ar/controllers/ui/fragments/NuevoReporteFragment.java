@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -50,6 +51,7 @@ public class NuevoReporteFragment extends Fragment {
     private Bitmap imagenCapturada;
     private SharedLocationViewModel sharedLocationViewModel;
     private Spinner spinTipoReporte;
+    private int selectedSpinnerPosition = 0;
     private EditText titulo, descripcion;
     public static NuevoReporteFragment newInstance() {
         return new NuevoReporteFragment();
@@ -64,6 +66,9 @@ public class NuevoReporteFragment extends Fragment {
             Intent registro = new Intent(getContext(), HomeActivity.class);
             startActivity(registro);
         }
+        if (savedInstanceState != null) {
+            selectedSpinnerPosition = savedInstanceState.getInt("selectedSpinnerPosition", 0);
+        }
     }
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -75,8 +80,12 @@ public class NuevoReporteFragment extends Fragment {
         titulo = view.findViewById(R.id.edTituloReporte);
         descripcion = view.findViewById(R.id.edDescripcionReporte);
         spinTipoReporte = view.findViewById(R.id.spnTiposReporte);
-        DMASpinnerTiposReporte dataActivityTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext());
-        dataActivityTiposReporte.execute();
+
+        if (savedInstanceState == null) {
+            DMASpinnerTiposReporte dataActivityTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext(),selectedSpinnerPosition);
+            dataActivityTiposReporte.execute();
+        }
+
         return view;
     }
     @Override
@@ -99,6 +108,18 @@ public class NuevoReporteFragment extends Fragment {
                     // Si no tiene el permiso, se pide al usuario
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PIC_REQUEST);
                 }
+            }
+        });
+        spinTipoReporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Guarda la posición seleccionada en la variable
+                selectedSpinnerPosition = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // No es necesario hacer nada aquí en este caso
             }
         });
         bUbicacion.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +153,11 @@ public class NuevoReporteFragment extends Fragment {
             }
         });
     }
-
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("selectedSpinnerPosition", selectedSpinnerPosition);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

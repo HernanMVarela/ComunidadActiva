@@ -10,5 +10,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="warning">#FFFFC107</color>
     <color name="danger">#DCE13131</color>
+    <color name="closed">#DC8A8787</color>
 
 </resources>

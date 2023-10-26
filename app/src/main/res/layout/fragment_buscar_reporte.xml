@@ -35,7 +35,7 @@
     <ListView
         android:id="@+id/listReportes"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="320dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginVertical="5dp"/>
 
@@ -43,15 +43,18 @@
         android:id="@+id/mapListaReportes"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:layout_marginHorizontal="15dp"
         android:layout_marginVertical="5dp"
         android:layout_marginBottom="10dp" />
     <Button
         android:id="@+id/btnVerDetalle"
         android:layout_width="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/boton_redondeado"
+        android:paddingHorizontal="16dp"
+        android:layout_marginVertical="10dp"
         android:text="@string/ver_reporte"
         android:layout_height="wrap_content"/>
 

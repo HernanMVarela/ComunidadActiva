@@ -74,6 +74,10 @@ public class ListaReportesAdapter extends ArrayAdapter<Reporte> {
 
         if(reporte.getEstado().getEstado().equals("DENUNCIADO")){
             cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.danger));
+        } else if (reporte.getEstado().getEstado().equals("CERRADO")){
+            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.closed));
+        } else if (reporte.getEstado().getEstado().equals("ATENDIDO")){
+            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.teal_700));
         }
         return convertView;
     }
