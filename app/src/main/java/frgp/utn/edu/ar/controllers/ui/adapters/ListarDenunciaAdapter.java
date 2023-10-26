@@ -15,11 +15,12 @@ import androidx.core.content.ContextCompat;
 import java.util.List;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
 
-public class ListarDenunciaAdapter extends ArrayAdapter<DenunciaNuevo> {
+public class ListarDenunciaAdapter extends ArrayAdapter<Denuncia> {
 
-    public ListarDenunciaAdapter(Context context, List<DenunciaNuevo> listaDenuncia) {
+    public ListarDenunciaAdapter(Context context, List<Denuncia> listaDenuncia) {
         super(context, R.layout.layout_lista_denuncia, listaDenuncia);
         setDropDownViewResource(R.layout.layout_lista_denuncia);
     }
@@ -29,7 +30,7 @@ public class ListarDenunciaAdapter extends ArrayAdapter<DenunciaNuevo> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        DenunciaNuevo denuncia = getItem(position);
+        Denuncia denuncia = getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.layout_lista_denuncia, parent,false);

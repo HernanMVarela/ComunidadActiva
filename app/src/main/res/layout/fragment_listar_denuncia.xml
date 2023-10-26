@@ -53,34 +53,16 @@
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <Spinner
+            android:id="@+id/spnTipoDenuncia"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="20dp">
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edittext_white_rounded"
+            android:minHeight="35dp"
+            android:textSize="18sp">
 
-            <Spinner
-                android:id="@+id/spTipoInformeModerador"
-                android:layout_width="131dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edittext_grey_roundead"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="68dp" />
-
-            <Spinner
-                android:id="@+id/spFiltroDos"
-                android:layout_width="131dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edittext_grey_roundead"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="68dp" />
-
-        </RelativeLayout>
+        </Spinner>
 
         <ListView
             android:id="@+id/listDenuncias"
