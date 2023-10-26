@@ -2,6 +2,7 @@ package frgp.utn.edu.ar.controllers.data.remote.denuncia;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.sql.Connection;
@@ -12,6 +13,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
@@ -165,7 +167,14 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
         ListarDenunciaAdapter adapter = new ListarDenunciaAdapter(context, listaDenuncias);
         assert listaDenuncias != null;
 
-        listado.setAdapter(adapter);
+        if (listaDenuncias.size() == 0){
+            String [] tipoInforme = {"No hay datos disponibles"};
+            ArrayAdapter<String> vacio = new ArrayAdapter<String>(this.context, R.layout.spinner_generico, tipoInforme);
+            listado.setAdapter(vacio);
+        }else{
+            listado.setAdapter(adapter);
+        }
+
     }
 
 

@@ -12,8 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -62,15 +65,19 @@ public class ListarDenunciaFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+
+
                 if(spinTipoDenuncia.getSelectedItem().toString().equals("1 - REPORTE")){
                     Toast.makeText(getContext(), "ENTRE A REPORTE", Toast.LENGTH_LONG).show();
                     DMAListarDenunciasReporte DMAListaDenuncias = new DMAListarDenunciasReporte(listaDenuncias,view.getContext());
                     DMAListaDenuncias.execute();
+
                 }
                 if(spinTipoDenuncia.getSelectedItem().toString().equals("2 - PROYECTO")){
-                    Toast.makeText(getContext(), "ENTRE A PROYECTO", Toast.LENGTH_LONG).show();
+
                     DMAListarDenunciaProyecto DMAListaDenuncias = new DMAListarDenunciaProyecto(listaDenuncias,view.getContext());
                     DMAListaDenuncias.execute();
+
                 }
             }
 
