@@ -11,14 +11,19 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import frgp.utn.edu.ar.controllers.R;
@@ -36,7 +41,9 @@ public class BuscarProyectoFragment extends Fragment {
     private Proyecto proyectoSeleccionado=null;
     private View viewSeleccionada=null;
     private Spinner spEstadoP, spTipoProyecto;
-    private int buscadorE=1, buscadorT=1;
+    private int buscadorE=1, buscadorT=1, usarE=0, usarT=0;
+    private EditText nombreProyectoBuscado;
+    private Switch swTipo, swEstado;
     private Button verDetalle;
 
     public static BuscarProyectoFragment newInstance() {
@@ -50,11 +57,13 @@ public class BuscarProyectoFragment extends Fragment {
         verDetalle = view.findViewById(R.id.btnVerDetalleP);
         spTipoProyecto = view.findViewById(R.id.spFiltroA);
         spEstadoP = view.findViewById(R.id.spFiltroB);
+        nombreProyectoBuscado = view.findViewById(R.id.edBusquedaP);
+        swEstado = view.findViewById(R.id.swEstado);
+        swTipo = view.findViewById(R.id.swTipo);
         DMASpinnerTiposProyectos tiposPro = new DMASpinnerTiposProyectos(spTipoProyecto, getContext());
         tiposPro.execute();
         DMASpinnerEstadosProyectos estadosP = new DMASpinnerEstadosProyectos(spEstadoP, getContext());
         estadosP.execute();
-        //buscarProyecto = view.findViewById(R.id.swBuscar);
         return view;
     }
     @Override
@@ -62,6 +71,40 @@ public class BuscarProyectoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         listaDeProyectos = view.findViewById(R.id.listProyectos);
 
+        nombreProyectoBuscado.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                cargarProyectos(view);
+            }
+        });
+        swTipo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    usarT=1;
+                } else {
+                    usarT=0;
+                }
+                cargarProyectos(view);
+            }
+        });
+        swEstado.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    usarE=1;
+                } else {
+                    usarE=0;
+                }
+                cargarProyectos(view);
+            }
+        });
         spTipoProyecto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -70,7 +113,6 @@ public class BuscarProyectoFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
             }
 
         });
@@ -83,7 +125,6 @@ public class BuscarProyectoFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // your code here
             }
 
         });
@@ -128,7 +169,7 @@ public class BuscarProyectoFragment extends Fragment {
         if(buscadorT<1){buscadorT=1;}
         buscadorE = spEstadoP.getSelectedItemPosition()+1;
         if(buscadorE<1){buscadorE=1;}
-        DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(),buscadorT,buscadorE);
+        DMAListviewProyectos DMAListaP = new DMAListviewProyectos(listaDeProyectos,view.getContext(),usarT,usarE,buscadorT,buscadorE,nombreProyectoBuscado.getText().toString());
         DMAListaP.execute();
     }
 }

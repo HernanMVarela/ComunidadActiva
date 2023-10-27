@@ -63,9 +63,9 @@
 
     <!-- PROYECTO TEXTO ( SIGUE DESDE REPORTE TEXTO)-->
     <string name="proyecto">Proyecto</string>
-    <string name="descripcion_proyecto">Descripción del proyecto</string>
+    <string name="descripcion_proyecto">Descripción del Proyecto</string>
     <string name="ingresar_descripcion_proyecto">Ingrese una descripción del proyecto</string>
-    <string name="requerimientos_proyecto">Requerimientos del proyecto</string>
+    <string name="requerimientos_proyecto">Requerimientos del Proyecto</string>
     <string name="ingresar_requerimientos_proyecto">Ingrese los requerimientos del proyecto</string>
     <string name="contacto">Contacto</string>
     <string name="cupo">Cupo</string>
@@ -92,8 +92,11 @@
     <string name="actualizar_proyecto">Actualizar Proyecto</string>
     <string name="seleccionar_estado">Seleccione un nuevo estado</string>
     <string name="tipo_proyecto">Tipo de Proyecto</string>
+    <string name="estado_proyecto">Estado de Proyecto</string>
     <string name="rellenar_antes_de_mostrar">Rellenar antes de Mostrar</string>
     <string name="ver_detalle">Ver Detalle</string>
+    <string name="filtrar_tipo">Filtrar: Tipo</string>
+    <string name="filtrar_estado">Filtrar: Estado</string>
 
     <!-- Admin -->
     <string name="listar_usuarios_titulo">Listar Usuarios</string>
