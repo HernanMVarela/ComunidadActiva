@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.ui.fragments;
+package frgp.utn.edu.ar.controllers.ui.viewmodels;
 
 import androidx.lifecycle.ViewModel;
 

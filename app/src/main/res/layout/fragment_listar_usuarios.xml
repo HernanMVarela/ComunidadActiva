@@ -5,94 +5,64 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.fragments.ListarDenunciaFragment"
-    android:background="@color/green_100"
-    >
+    android:background="@color/green_100">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="15dp"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-132dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/txtListarUsuariosTit"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginVertical="5dp"
             android:text="@string/listar_usuarios_titulo"
             android:textAlignment="center"
             android:textSize="20sp" />
 
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/svBusquedaUser"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="40dp"
-            android:layout_marginTop="20dp">
+            app:iconifiedByDefault="false"
+            app:queryHint="Buscar..."
+            android:paddingHorizontal="6dp"
+            android:layout_marginHorizontal="10dp"
+            android:background="@drawable/grid_item_corner" />
 
-            <EditText
-                android:id="@+id/edBuscarLU"
-                android:layout_width="244dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="10dp"
-                android:background="@drawable/edittext_white_rounded"
-                android:minHeight="35dp"
-                android:paddingLeft="5dp"
-                android:textSize="20sp" />
-
-            <ImageButton
-                android:id="@+id/ibtnBuscarLU"
-                android:layout_width="wrap_content"
-                android:layout_height="41dp"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="1dp"
-                android:src="@android:drawable/ic_menu_search" />
-
-        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="5dp">
 
-            <Spinner
-                android:id="@+id/spTipoInformeModerador"
-                android:layout_width="131dp"
+            <TextView
+                android:id="@+id/txtTipoUser"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edittext_grey_roundead"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="68dp" />
+                android:layout_marginVertical="5dp"
+                android:text="@string/tipo_usuario"
+                android:textAlignment="center"
+                android:textSize="20sp" />
+            <Spinner
+                android:id="@+id/spTipoUser"
+                android:layout_width="0dp"
+                android:layout_height="35dp"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/edittext_grey_roundead" />
 
-            <Spinner
-                android:id="@+id/spFiltroBLU"
-                android:layout_width="131dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edittext_grey_roundead"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="68dp" />
-
-            <Spinner
-                android:id="@+id/spFiltroCLU"
-                android:layout_width="131dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/edittext_grey_roundead"
-                tools:ignore="MissingConstraints"
-                tools:layout_editor_absoluteX="68dp" />
         </LinearLayout>
-
         <ListView
             android:id="@+id/lstUsuarios"
+            android:layout_marginVertical="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
