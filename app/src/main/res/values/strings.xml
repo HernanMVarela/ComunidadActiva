@@ -127,4 +127,11 @@
     <string name="cerrar_rep">Cerrar</string>
     <string name="reabrir_reporte">Reabrir</string>
     <string name="abiertos">Abiertos</string>
+    <string name="ver_detalle_del_usuario">Ver detalle del usuario</string>
+    <string name="detalles_del_usuario">Detalles del usuario</string>
+    <string name="creaci_n_de_cuenta">Creación de cuenta</string>
+    <string name="ultimo_bloqueo">Último bloqueo</string>
+    <string name="datos_personales">Datos personales</string>
+    <string name="notificar">Notificar</string>
+    <string name="suspender">Suspender</string>
 </resources>

@@ -58,11 +58,24 @@
                 android:background="@drawable/edittext_grey_roundead" />
 
         </LinearLayout>
+
         <ListView
             android:id="@+id/lstUsuarios"
-            android:layout_marginVertical="10dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp" />
+
+        <Button
+            android:id="@+id/btnVerDetalleUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="5dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_gravity="center"
+            android:background="@drawable/boton_redondeado"
+            android:text="@string/ver_detalle_del_usuario"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

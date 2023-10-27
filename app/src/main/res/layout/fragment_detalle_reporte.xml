@@ -120,47 +120,47 @@
         </LinearLayout>
     </ScrollView>
 
-<LinearLayout
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:orientation="horizontal"
-android:paddingVertical="15dp"
-android:background="@color/green_500">
-
-<Button
-    android:id="@+id/btnCerrarReporte"
-    android:layout_width="0dp"
+    <LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:lines="2"
-    android:textStyle="bold"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="10dp"
-    android:background="@drawable/boton_redondeado"
-    android:text="@string/cerrar_reporte"/>
+    android:orientation="horizontal"
+    android:paddingVertical="15dp"
+    android:background="@color/green_500">
 
-<Button
-    android:id="@+id/btnValorarReporte"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:lines="2"
-    android:textStyle="bold"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="10dp"
-    android:background="@drawable/boton_redondeado"
-    android:text="@string/valorar_reporte"/>
+    <Button
+        android:id="@+id/btnCerrarReporte"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:lines="2"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/boton_redondeado"
+        android:text="@string/cerrar_reporte"/>
 
-<Button
-    android:id="@+id/btnDenunciarReporte"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:lines="2"
-    android:textStyle="bold"
-    android:layout_gravity="center"
-    android:layout_marginHorizontal="10dp"
-    android:background="@drawable/boton_redondeado"
-    android:text="@string/denunciar_reporte"/>
-</LinearLayout>
+    <Button
+        android:id="@+id/btnValorarReporte"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:lines="2"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/boton_redondeado"
+        android:text="@string/valorar_reporte"/>
+
+    <Button
+        android:id="@+id/btnDenunciarReporte"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:lines="2"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="10dp"
+        android:background="@drawable/boton_redondeado"
+        android:text="@string/denunciar_reporte"/>
+    </LinearLayout>
 </LinearLayout>

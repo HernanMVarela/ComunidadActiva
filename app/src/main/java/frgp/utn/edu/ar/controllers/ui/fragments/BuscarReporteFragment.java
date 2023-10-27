@@ -153,7 +153,6 @@ public class BuscarReporteFragment extends Fragment {
             startActivity(registro);
         }
     }
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {

@@ -103,6 +103,8 @@ public class DetalleReporteFragment extends Fragment {
             }else {
                 /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
                 Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.popBackStack();
             }
         }
         return view;
