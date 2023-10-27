@@ -67,7 +67,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginVertical="5dp"
                 android:gravity="start"
-                android:text="@string/tipo_proyecto"
+                android:text="@string/estado_proyecto"
                 android:textSize="18sp" />
 
             <TextView

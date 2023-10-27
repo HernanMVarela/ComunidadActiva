@@ -17,12 +17,35 @@
             android:layout_margin="20dp"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/swBuscar"
+            <EditText
+                android:id="@+id/edBusquedaP"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/edittext_white_rounded"
+                android:ems="10"
+                android:hint="@string/buscar___"
+                android:inputType="text" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/edittext_white_rounded"
-                android:queryHint="@string/buscar___" />
+                android:orientation="horizontal">
+
+                <Switch
+                    android:id="@+id/swTipo"
+                    android:layout_width="135dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filtrar_tipo" />
+
+                <Switch
+                    android:id="@+id/swEstado"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/filtrar_estado" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -33,12 +56,14 @@
                     android:id="@+id/spFiltroA"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight="1" />
 
                 <Spinner
                     android:id="@+id/spFiltroB"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
                     android:layout_weight="1" />
 
             </LinearLayout>

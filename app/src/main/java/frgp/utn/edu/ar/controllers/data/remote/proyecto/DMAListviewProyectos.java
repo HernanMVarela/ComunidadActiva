@@ -27,15 +27,23 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
     private static List<Proyecto> listaDeProyectos;
     private int IdTipoProyecto = 1;
     private int IdEstadoProyecto= 1;
-    public DMAListviewProyectos(ListView listview, Context ct, int idTipoProyecto, int idEstadoProyecto) {
+    private int filtroEstado=0;
+    private int filtroTipo=0;
+    private String nombreProyectoBuscado="";
+    public DMAListviewProyectos(ListView listview, Context ct,int usarT,int usarE, int idTipoProyecto, int idEstadoProyecto, String nombuscado) {
         listado = listview;
         context = ct;
         IdTipoProyecto = idTipoProyecto;
         IdEstadoProyecto = idEstadoProyecto;
+        nombreProyectoBuscado = nombuscado;
+        filtroEstado=usarE;
+        filtroTipo=usarT;
     }
     @Override
     protected String doInBackground(String... urls) {
         listaDeProyectos = new ArrayList<Proyecto>();
+        boolean filtrado = false;
+        int contador=0, ordenT=0, ordenE=0,ordenN=0;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
@@ -44,11 +52,51 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                     "U.USERNAME, TP.TIPO, EP.ESTADO FROM PROYECTOS AS P " +
                     "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID " +
                     "INNER JOIN TIPOS_PROYECTO AS TP ON P.ID_TIPO = TP.ID " +
-                    "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID " +
-                    "WHERE P.ID_TIPO = ? AND P.ID_ESTADO = ?";
+                    "INNER JOIN ESTADOS_PROYECTO AS EP ON P.ID_ESTADO = EP.ID ";
+            if(filtroTipo==1){
+                contador+=1;
+                ordenT=contador;
+                if(!filtrado){
+                    query = query + "WHERE P.ID_TIPO = ?";
+                    filtrado=true;
+                }
+                else{
+                    query = query + " AND P.ID_TIPO = ?";
+                }
+            }
+            if(filtroEstado==1){
+                contador+=1;
+                ordenE=contador;
+                if(!filtrado){
+                    query = query + "WHERE P.ID_ESTADO = ?";
+                    filtrado=true;
+                }
+                else{
+                    query = query + " AND P.ID_ESTADO = ?";
+                }
+            }
+            if (!nombreProyectoBuscado.trim().isEmpty()) {
+                contador+=1;
+                ordenN=contador;
+                if(!filtrado){
+                    query = query + "WHERE P.TITULO LIKE ?";
+                    filtrado=true;
+                }
+                else{
+                    query = query + " AND P.TITULO LIKE ?";
+                }
+            }
+            query = query + " ORDER BY ID DESC";
             PreparedStatement preparedStatement = con.prepareStatement(query);
-            preparedStatement.setInt(1, IdTipoProyecto);
-            preparedStatement.setInt(2, IdEstadoProyecto);
+            if(filtroTipo==1){
+                preparedStatement.setInt(ordenT, IdTipoProyecto);
+            }
+            if(filtroEstado==1){
+                preparedStatement.setInt(ordenE, IdEstadoProyecto);
+            }
+            if (!nombreProyectoBuscado.trim().isEmpty()) {
+                preparedStatement.setString(ordenN, "%" + nombreProyectoBuscado + "%");
+            }
             ResultSet rs = preparedStatement.executeQuery();
             resultado = " ";
             while (rs.next()) {
