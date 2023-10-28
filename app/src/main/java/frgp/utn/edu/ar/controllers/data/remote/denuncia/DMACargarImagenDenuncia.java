@@ -12,6 +12,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
@@ -20,11 +21,13 @@ public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
     private Bitmap bitmap;
     private static String result2;
     private int ID;
+    private TipoDenuncia tipo;
 
-    public DMACargarImagenDenuncia(ImageView imagen, Context ct, int ID) {
+    public DMACargarImagenDenuncia(ImageView imagen, Context ct, int ID, TipoDenuncia tipo) {
         this.context = ct;
         this.imagen = imagen;
         this.ID = ID;
+        this.tipo = tipo;
     }
 
     @Override
@@ -37,14 +40,14 @@ public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
 
-            // ACA TENGO QUE ARMAR LA QUERY CON EL ID DE LA PUBLICACION, PUEDE SER REPORTE O PROYECTO
-            String query = "SELECT R.IMAGEN AS ImagenReporte FROM REPORTES AS R WHERE R.ID=?";
+            //  QUERY CON EL ID DE LA PUBLICACION, PUEDE SER REPORTE O PROYECTO
+            String query = "SELECT R.IMAGEN AS Imagen FROM "+ tipo.getTipo() +" AS R WHERE R.ID=?";
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setInt(1, this.ID); // ID del reporte
             ResultSet rs = preparedStatement.executeQuery();
 
             if (rs.next()) {
-                byte[] imageData = rs.getBytes("ImagenReporte");
+                byte[] imageData = rs.getBytes("Imagen");
 
                 // Convierte los bytes a un objeto Bitmap
                 Log.i("DB-ACCESS","TOMA IMAGEN DE LA DB");

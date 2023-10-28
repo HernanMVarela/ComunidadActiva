@@ -94,12 +94,11 @@
     <string name="estado_proyecto">Estado de Proyecto</string>
     <string name="rellenar_antes_de_mostrar">Rellenar antes de Mostrar</string>
     <string name="ver_detalle">Ver Detalle</string>
-<<<<<<< Updated upstream
     <string name="filtrar_tipo">Filtrar: Tipo</string>
     <string name="filtrar_estado">Filtrar: Estado</string>
-=======
+
     <string name="ver_denuncia">Ver Denuncia</string>
->>>>>>> Stashed changes
+
 
     <!-- Admin -->
     <string name="listar_usuarios_titulo">Listar Usuarios</string>
