@@ -178,7 +178,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
 
     public boolean isDataValid(View view) {
 
-        //CHECK EXISTENCIA USERNAME L
+        //CHECK EXISTENCIA USERNAME
         if(usuarioRepository.getUserByUserName(userName.getText().toString()) != null) {
             Toast.makeText(this, "El nombre de usuario ya existe", Toast.LENGTH_LONG).show();
             return false;
