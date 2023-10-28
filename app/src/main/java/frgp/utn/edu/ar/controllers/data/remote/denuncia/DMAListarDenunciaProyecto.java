@@ -101,6 +101,7 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
                 userPublicacion.setFecha_nac(rs.getDate("FechaNacimientoUsuarioPublicacion"));
                 userPublicacion.setFecha_alta(rs.getDate("FechaCreacionUsuarioPublicacion"));
 
+                publicacion.setId(rs.getInt("IDProyecto"));
                 publicacion.setDescripcion(rs.getString("DescripcionPublicacion"));
                 publicacion.setTitulo(rs.getString("TituloPublicacion"));
                 publicacion.setFecha(rs.getDate("FechaPublicacion"));

@@ -1,8 +1,9 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Denuncia {
+public class Denuncia implements Serializable {
     private Publicacion publicacion;
     private TipoDenuncia tipo;
     private Usuario denunciante;
