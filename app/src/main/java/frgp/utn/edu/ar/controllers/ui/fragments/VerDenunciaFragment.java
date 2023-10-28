@@ -20,8 +20,11 @@ import android.widget.Toast;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
+import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
+import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.VerDenunciaViewModel;
@@ -41,6 +44,7 @@ public class VerDenunciaFragment extends Fragment {
     private ImageView imagenPublicacion;
     private Denuncia seleccionado;
     Button btnSuspenderUsuario, btnEliminarPublicacion, btnNotificar;
+    UsuarioRepository usuarioRepository = new UsuarioRepository();
 
     public static VerDenunciaFragment newInstance() {
         return new VerDenunciaFragment();
@@ -90,8 +94,17 @@ public class VerDenunciaFragment extends Fragment {
 
         btnSuspenderUsuario.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // EJECUTAR DMA SUSPENDER USUARIO
 
+                Usuario usuario = seleccionado.getPublicacion().getOwner();
+                
+                // EJECUTAR DMA SUSPENDER USUARIO
+                if(usuario.getEstado().getEstado().equals("ACTIVO")) {
+                    usuario.setEstado(new EstadoUsuario(3,"SUSPENDIDO"));
+                    usuarioRepository.modificarUsuario(usuario);
+                    Toast.makeText(getContext(), "Usuario SUSPENDIDO ", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getContext(), "El Usuario ya se encuentra: "+usuario.getEstado().getEstado(), Toast.LENGTH_LONG).show();
+                }
             }
         });
         btnEliminarPublicacion.setOnClickListener(new View.OnClickListener() {

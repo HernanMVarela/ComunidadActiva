@@ -16,6 +16,7 @@ import java.util.List;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
+import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Publicacion;
 import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
@@ -70,12 +71,15 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                     "UP.TELEFONO AS TelefonoUsuarioPublicacion, " +
                     "UP.CORREO AS CorreoUsuarioPublicacion, " +
                     "UP.FECHA_NAC AS FechaNacimientoUsuarioPublicacion, " +
-                    "UP.CREACION AS FechaCreacionUsuarioPublicacion " +
+                    "UP.CREACION AS FechaCreacionUsuarioPublicacion, " +
+                    "UP.ID_ESTADO AS IDEstadoUserPublicacion, " +
+                    "EUP.ESTADO AS EstadoUsuarioPublicacion " +
                     "FROM DENUNCIAS_REPORTES AS D " +
                     "INNER JOIN REPORTES AS R ON D.ID_REPORTE = R.ID " +
                     "INNER JOIN USUARIOS AS U ON D.ID_USER = U.ID " +
                     "INNER JOIN ESTADOS_DENUNCIA AS ED ON D.ID_ESTADO = ED.ID " +
                     "INNER JOIN USUARIOS AS UP ON R.ID_USER = UP.ID " +
+                    "INNER JOIN ESTADOS_USUARIO AS EUP ON UP.ID_ESTADO = EUP.ID " +
                     "ORDER BY FECHA_CREACION;";
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
@@ -89,6 +93,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                 Publicacion publicacion = new Publicacion();
                 Usuario user = new Usuario();
                 EstadoDenuncia estadoDenuncia = new EstadoDenuncia(rs.getInt("IDEstado"), rs.getString("EstadoDenuncia"));
+                EstadoUsuario estadoUsuarioPublicacion = new EstadoUsuario(rs.getInt("IDEstadoUserPublicacion"), rs.getString("EstadoUsuarioPublicacion"));
                 TipoDenuncia tipoDenuncia = new TipoDenuncia(1,"REPORTE");
 
                 userPublicacion.setId(rs.getInt("IDUserPublicacion"));
@@ -99,6 +104,9 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                 userPublicacion.setCorreo(rs.getString("CorreoUsuarioPublicacion"));
                 userPublicacion.setFecha_nac(rs.getDate("FechaNacimientoUsuarioPublicacion"));
                 userPublicacion.setFecha_alta(rs.getDate("FechaCreacionUsuarioPublicacion"));
+                userPublicacion.setEstado(estadoUsuarioPublicacion);
+
+
 
                 publicacion.setId(rs.getInt("IDReporte"));
                 publicacion.setDescripcion(rs.getString("DescripcionPublicacion"));
