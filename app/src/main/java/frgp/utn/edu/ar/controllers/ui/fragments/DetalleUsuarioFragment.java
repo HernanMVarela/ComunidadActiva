@@ -19,8 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMACambiarEstadoUsuario;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleUsuarioViewModel;
 
@@ -78,6 +80,16 @@ public class DetalleUsuarioFragment extends Fragment {
                 navegarAtras();
             }
         }
+
+        /// BOTON SUSPENDER / ACTIVAR
+        suspender = view.findViewById(R.id.btn_detalleuser_suspender);
+        boton_suspender(suspender);
+        /// BOTON SUSPENDER / ACTIVAR
+        notificar = view.findViewById(R.id.btn_detalleuser_notificacion);
+
+        /// BOTON SUSPENDER / ACTIVAR
+        cambiarclave = view.findViewById(R.id.btn_detalleuser_contraseña);
+
     }
 
     @Override
@@ -127,5 +139,33 @@ public class DetalleUsuarioFragment extends Fragment {
     private void navegarAtras(){
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
         navController.popBackStack();
+    }
+
+    private void cambiar_boton(Button suspender){
+        if(selectedUser.getEstado().getEstado().equals("ACTIVO")){
+            suspender.setText("Suspender");
+        } else if (selectedUser.getEstado().getEstado().equals("INACTIVO") || selectedUser.getEstado().getEstado().equals("SUSPENDIDO")){
+            suspender.setText("Activar");
+        } else if (selectedUser.getEstado().getEstado().equals("BLOQUEADO")){
+            suspender.setText("Desbloquear");
+        }
+    }
+    private void boton_suspender(Button suspender){
+        cambiar_boton(suspender);
+        suspender.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(selectedUser.getEstado().getEstado().equals("ACTIVO")){
+                    /// SI ESTA ACTIVO, SE SUSPENDE AL USUARIO
+                    selectedUser.setEstado(new EstadoUsuario(3,"SUSPENDIDO"));
+                } else if (selectedUser.getEstado().getEstado().equals("INACTIVO") || selectedUser.getEstado().getEstado().equals("SUSPENDIDO") || selectedUser.getEstado().getEstado().equals("BLOQUEADO")){
+                    /// SI ESTA INACTIVO, SUSPENDIDO O BLOQUEADO: SE ACTIVA USAURIO
+                    selectedUser.setEstado(new EstadoUsuario(1,"ACTIVO"));
+                }
+                cargarDatosUsuario();
+                cambiar_boton(suspender);
+                DMACambiarEstadoUsuario DMACambiarEstadoUser = new DMACambiarEstadoUsuario(selectedUser,getContext());
+                DMACambiarEstadoUser.execute();
+            }
+        });
     }
 }
