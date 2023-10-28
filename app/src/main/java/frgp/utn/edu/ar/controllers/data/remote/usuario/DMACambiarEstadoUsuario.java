@@ -51,7 +51,11 @@ public class DMACambiarEstadoUsuario extends AsyncTask<String, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
         if(aBoolean){
-            Toast.makeText(context, "Usuario modificado", Toast.LENGTH_LONG).show();
+            if(usuario.getEstado().getEstado().equals("ELIMINADO")){
+                Toast.makeText(context, "USUARIO ELIMINADO", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(context, "Usuario modificado", Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(context, "Ha ocurrido un error", Toast.LENGTH_LONG).show();
         }

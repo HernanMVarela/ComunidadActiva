@@ -218,7 +218,7 @@
             android:background="@drawable/boton_redondeado"
             android:text="@string/notificar"/>
         <Button
-            android:id="@+id/btn_detalleuser_contraseña"
+            android:id="@+id/btn_detalleuser_eliminar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -226,7 +226,7 @@
             android:textStyle="bold"
             android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
-            android:background="@drawable/boton_redondeado"
-            android:text="@string/contrasena"/>
+            android:background="@drawable/boton_redondeado_danger"
+            android:text="@string/eliminar"/>
     </LinearLayout>
 </LinearLayout>
