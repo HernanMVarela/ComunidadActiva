@@ -130,7 +130,6 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
         try{
         if(listaDeProyectos.isEmpty()) {
             resultado = "Sin Resultados";
-            Toast.makeText(context, resultado, Toast.LENGTH_SHORT).show();
             ListaProyectosAdapter adapter = new ListaProyectosAdapter(context, listaDeProyectos);
             listado.setAdapter(adapter);
                 }

@@ -83,7 +83,7 @@
             <EditText
                 android:id="@+id/edRequerimientosP"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:background="@drawable/edittext_white_rounded"
                 android:gravity="top"
                 android:hint="@string/ingresar_requerimientos_proyecto"
