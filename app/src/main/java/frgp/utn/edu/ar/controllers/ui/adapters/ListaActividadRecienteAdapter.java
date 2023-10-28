@@ -13,8 +13,8 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Logs;
 
 public class ListaActividadRecienteAdapter extends ArrayAdapter<Logs> {
-    public ListaActividadRecienteAdapter(Context context, List<Logs> listaReportes) {
-        super(context, R.layout.layout_list_item_actividad_reciente, listaReportes);
+    public ListaActividadRecienteAdapter(Context context, List<Logs> listaLogs) {
+        super(context, R.layout.layout_list_item_actividad_reciente, listaLogs);
         setDropDownViewResource(R.layout.layout_list_item_actividad_reciente);
     }
 

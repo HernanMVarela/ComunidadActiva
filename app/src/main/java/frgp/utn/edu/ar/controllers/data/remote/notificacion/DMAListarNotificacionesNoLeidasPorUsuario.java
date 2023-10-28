@@ -32,8 +32,7 @@ public class DMAListarNotificacionesNoLeidasPorUsuario extends AsyncTask<String,
             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM NOTIFICACIONES " +
                                                                            "WHERE ID_USER = ? " +
                                                                            "AND LECTURA = FALSE " +
-                                                                           "ORDER BY FECHA DESC " +
-                                                                           "LIMIT 10");
+                                                                           "ORDER BY FECHA DESC");
             preparedStatement.setInt(1, userId);
             ResultSet rs = preparedStatement.executeQuery();
             notificaciones = new ArrayList<>();

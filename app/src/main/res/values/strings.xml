@@ -21,7 +21,6 @@
     <string name="descripcion_reporte">Ingrese una descripción para el nuevo reporte</string>
     <string name="tipo_de_reporte">Tipo de reporte</string>
     <string name="crear_reporte">Crear reporte</string>
-
     <string name="username_detalle"><u>Username</u></string>
 
     <!-- LOGIN -->
@@ -134,4 +133,7 @@
     <string name="datos_personales">Datos personales</string>
     <string name="notificar">Notificar</string>
     <string name="suspender">Suspender</string>
+    <string name="notificaciones_pendientes">NOTIFICACIONES PENDIENTES</string>
+    <string name="generar_informe">GENERAR INFORME</string>
+    <string name="actividad_reciente">ACTIVIDAD RECIENTE</string>
 </resources>

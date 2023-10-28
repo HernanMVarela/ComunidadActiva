@@ -17,12 +17,14 @@ public class LogRepository {
         }
     }
     public List<Logs> listarLogsPorId(int userId) {
-        DMAListarLogsPorUsuario DMAListarLogsPorUsuario = new DMAListarLogsPorUsuario(userId);
-        DMAListarLogsPorUsuario.execute();
+        DMAListarLogsPorUsuario DMALLPU = new DMAListarLogsPorUsuario(userId);
+        DMALLPU.execute();
         try {
-            return DMAListarLogsPorUsuario.get();
+            return DMALLPU.get();
         } catch (Exception e) {
             return null;
         }
     }
+
+
 }

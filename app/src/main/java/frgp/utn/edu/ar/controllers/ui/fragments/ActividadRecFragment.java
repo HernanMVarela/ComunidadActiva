@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +31,6 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.repository.log.LogRepository;
 import frgp.utn.edu.ar.controllers.databinding.FragmentActividadRecienteBinding;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaActividadRecienteAdapter;
-import frgp.utn.edu.ar.controllers.ui.viewmodels.ActividadRecViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class ActividadRecFragment extends Fragment {
@@ -46,8 +44,6 @@ public class ActividadRecFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ActividadRecViewModel actividadRecViewModel =
-                new ViewModelProvider(this).get(ActividadRecViewModel.class);
 
         binding = FragmentActividadRecienteBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -107,8 +103,14 @@ public class ActividadRecFragment extends Fragment {
             paint.setTextSize(6);
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
             int y = 150;
+            paint.setStrokeWidth(1);
+            canvas.drawLine(20, y, pageInfo.getPageWidth() - 100, y, paint);
+            y += 10;
             for (Logs log : listaLogs) {
-                canvas.drawText(log.getFecha() + " - " + log.getDescripcion(), 10, y, paint);
+                canvas.drawText(log.getFecha() + " | " + log.getDescripcion(), 100, y, paint);
+                y += 10;
+                paint.setStrokeWidth(1);
+                canvas.drawLine(20, y, pageInfo.getPageWidth() - 100, y, paint);
                 y += 10;
             }
             pdfDocument.finishPage(page);
