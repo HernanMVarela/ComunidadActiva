@@ -91,6 +91,7 @@
     <string name="unirse_proyecto_titulo">Unirse a Proyecto</string>
     <string name="unirse_proyecto_boton">Unirse</string>
     <string name="abandonar_proyecto_boton">Abandonar</string>
+    <string name="actualizar_proyecto_boton">Actualizar</string>
     <string name="unirse_pryecto_deseo">¿Desea unirse al proyecto?</string>
     <string name="actualizar_proyecto">Actualizar Proyecto</string>
     <string name="seleccionar_estado">Seleccione un nuevo estado</string>
