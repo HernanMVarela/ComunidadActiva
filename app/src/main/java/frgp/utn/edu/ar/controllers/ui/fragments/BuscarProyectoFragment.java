@@ -159,9 +159,9 @@ public class BuscarProyectoFragment extends Fragment {
             Bundle bundle = new Bundle();
             bundle.putSerializable("proyectoactual", proyectoSeleccionado);
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.detalle_proyectos, bundle);
+            navController.navigate(R.id.detalleProyectoFragment, bundle);
         }else {
-            Toast.makeText(this.getContext(), "Debes seleccionar un proyecto", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.getContext(), "Debes seleccionar un proyecto.", Toast.LENGTH_LONG).show();
         }
     }
     public void cargarProyectos(View view){

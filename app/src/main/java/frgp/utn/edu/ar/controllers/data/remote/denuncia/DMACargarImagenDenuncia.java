@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,9 +22,9 @@ public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
     private Bitmap bitmap;
     private static String result2;
     private int ID;
-    private TipoDenuncia tipo;
+    private String tipo;
 
-    public DMACargarImagenDenuncia(ImageView imagen, Context ct, int ID, TipoDenuncia tipo) {
+    public DMACargarImagenDenuncia(ImageView imagen, Context ct, int ID, String tipo) {
         this.context = ct;
         this.imagen = imagen;
         this.ID = ID;
@@ -39,9 +40,15 @@ public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
             // Conecta a la base de datos y obtén la URL de la imagen en formato de bytes
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-
+            String query = "";
             //  QUERY CON EL ID DE LA PUBLICACION, PUEDE SER REPORTE O PROYECTO
-            String query = "SELECT R.IMAGEN AS Imagen FROM "+ tipo.getTipo() +" AS R WHERE R.ID=?";
+            if(tipo.equals("REPORTE")){
+                query = "SELECT R.IMAGEN AS Imagen FROM REPORTES AS R WHERE R.ID=?";
+            }
+            if(tipo.equals("PROYECTO")){
+                query = "SELECT R.IMAGEN AS Imagen FROM PROYECTOS AS R WHERE R.ID=?";
+            }
+
             PreparedStatement preparedStatement = con.prepareStatement(query);
             preparedStatement.setInt(1, this.ID); // ID del reporte
             ResultSet rs = preparedStatement.executeQuery();
@@ -58,4 +65,15 @@ public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
         }
         return result2;
     }
+
+    @Override
+    protected void onPostExecute(String result) {
+        if (bitmap != null) {
+            Log.i("IMG-LOAD","CARGA IMAGEN EN CONTROL");
+            imagen.setImageBitmap(bitmap);
+        } else {
+            Toast.makeText(context, "ERROR AL CARGAR IMAGEN", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

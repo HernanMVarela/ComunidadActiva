@@ -23,11 +23,14 @@ import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMACargarImagenDenuncia;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
+import frgp.utn.edu.ar.controllers.data.repository.denuncia.DenunciaRepository;
 import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.VerDenunciaViewModel;
+import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class VerDenunciaFragment extends Fragment {
@@ -44,7 +47,11 @@ public class VerDenunciaFragment extends Fragment {
     private ImageView imagenPublicacion;
     private Denuncia seleccionado;
     Button btnSuspenderUsuario, btnEliminarPublicacion, btnNotificar;
-    UsuarioRepository usuarioRepository = new UsuarioRepository();
+    UsuarioRepository usuarioRepository;
+
+    NotificacionService serviceNotificacion;
+
+    DenunciaRepository denunciaRepository = new DenunciaRepository();
 
     public static VerDenunciaFragment newInstance() {
         return new VerDenunciaFragment();
@@ -55,6 +62,9 @@ public class VerDenunciaFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ver_denuncia, container, false);
+
+        serviceNotificacion = new NotificacionService();
+        usuarioRepository = new UsuarioRepository();
 
         // ESCONDE EL BOTON DEL SOBRE
         if(getActivity() instanceof HomeActivity){
@@ -94,14 +104,16 @@ public class VerDenunciaFragment extends Fragment {
 
         btnSuspenderUsuario.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 Usuario usuario = seleccionado.getPublicacion().getOwner();
-                
                 // EJECUTAR DMA SUSPENDER USUARIO
                 if(usuario.getEstado().getEstado().equals("ACTIVO")) {
+
                     usuario.setEstado(new EstadoUsuario(3,"SUSPENDIDO"));
-                    usuarioRepository.modificarUsuario(usuario);
-                    Toast.makeText(getContext(), "Usuario SUSPENDIDO ", Toast.LENGTH_LONG).show();
+                    if(usuarioRepository.modificarUsuario(usuario)){
+                        Toast.makeText(getContext(), "Usuario SUSPENDIDO ", Toast.LENGTH_LONG).show();
+                    }else {
+                        Toast.makeText(getContext(), "NO SE LOGRO MODIFICAR EL USUARIO", Toast.LENGTH_LONG).show();
+                    }
                 } else {
                     Toast.makeText(getContext(), "El Usuario ya se encuentra: "+usuario.getEstado().getEstado(), Toast.LENGTH_LONG).show();
                 }
@@ -109,14 +121,20 @@ public class VerDenunciaFragment extends Fragment {
         });
         btnEliminarPublicacion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                // EJECUTAR DMA EliminarPublicacion
+                // EJECUTAR DMA EliminarPublicacion OBTENER EL ESTADO DE LA PUBLICACION si es reporte o proyecto por el tipo de denuncia y ejecutar el DMA que corresponda
 
+                    if(seleccionado.getTipo().getTipo().equals("REPORTE")){
+                        Toast.makeText(getContext(), "ES UN REPORTE", Toast.LENGTH_LONG).show();
+                    }
+                    if(seleccionado.getTipo().getTipo().equals("PROYECTO")){
+                        Toast.makeText(getContext(), "ES UN PROYECTO", Toast.LENGTH_LONG).show();
+                    }
             }
         });
         btnNotificar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // EJECUTAR DMA notificar
-
+                serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(),"Se notifica el cierre de la Denuncia.");
             }
         });
     }
@@ -133,8 +151,14 @@ public class VerDenunciaFragment extends Fragment {
         idPublicacion.setText("N°: " +seleccionado.getPublicacion().getId());
         fecha.setText(seleccionado.getFecha_creacion().toString());
 
-        DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagenPublicacion, this.getContext(),seleccionado.getPublicacion().getId());
-        DMAImagen.execute();
+        /*String res = denunciaRepository.CargarImagenDenuncia(imagenPublicacion, this.getContext(),seleccionado.getPublicacion().getId(),seleccionado.getTipo().getTipo());
+
+        if(res.equals("")){
+            Toast.makeText(this.getContext(), "LA IMAGEN NO SE PUDO CARGAR", Toast.LENGTH_SHORT).show();
+        }*/
+
+        DMACargarImagenDenuncia DMAImagenDenuncia = new DMACargarImagenDenuncia(imagenPublicacion, this.getContext(),seleccionado.getPublicacion().getId(),seleccionado.getTipo().getTipo());
+        DMAImagenDenuncia.execute();
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

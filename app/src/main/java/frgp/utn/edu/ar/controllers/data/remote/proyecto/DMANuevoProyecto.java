@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.DAOImpl.Proyecto;
+package frgp.utn.edu.ar.controllers.data.remote.proyecto;
 
 import android.content.Context;
 import android.os.AsyncTask;

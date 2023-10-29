@@ -84,7 +84,6 @@ public class ListarDenunciaFragment extends Fragment {
                     Toast.makeText(getContext(), "ENTRE A REPORTE", Toast.LENGTH_LONG).show();
                     DMAListarDenunciasReporte DMAListaDenuncias = new DMAListarDenunciasReporte(listaDenuncias,view.getContext());
                     DMAListaDenuncias.execute();
-
                 }
                 if(spinTipoDenuncia.getSelectedItem().toString().equals("2 - PROYECTO")){
 

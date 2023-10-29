@@ -27,11 +27,11 @@ import android.widget.Toast;
 
 import java.util.Date;
 
-import frgp.utn.edu.ar.controllers.DAOImpl.Proyecto.DMANuevoProyecto;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.TipoProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMANuevoProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerTiposProyectos;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoProyectoViewModel;
