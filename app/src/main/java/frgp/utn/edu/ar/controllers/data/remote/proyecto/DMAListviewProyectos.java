@@ -103,7 +103,6 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 TipoProyecto tipo = new TipoProyecto(rs.getInt("P.ID_TIPO"), rs.getString("TP.TIPO"));
                 EstadoProyecto estado = new EstadoProyecto(rs.getInt("P.ID_ESTADO"), rs.getString("EP.ESTADO"));
                 Usuario usu = new Usuario();usu.setId(rs.getInt("P.ID_USER"));usu.setUsername(rs.getString("U.USERNAME"));
-
                 Proyecto proyectobuscado = new Proyecto();
                 proyectobuscado.setId(rs.getInt("P.ID"));
                 proyectobuscado.setTitulo(rs.getString("P.TITULO"));
