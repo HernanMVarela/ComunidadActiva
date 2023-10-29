@@ -22,6 +22,9 @@
     <string name="tipo_de_reporte">Tipo de reporte</string>
     <string name="crear_reporte">Crear reporte</string>
     <string name="username_detalle"><u>Username</u></string>
+    <string name="cerrar_rep">Cerrar</string>
+    <string name="reabrir_reporte">Reabrir</string>
+    <string name="abiertos">Abiertos</string>
 
     <!-- LOGIN -->
     <string name="nombre_de_usuario">Nombre de Usuario</string>
@@ -106,6 +109,13 @@
 
     <!-- Admin -->
     <string name="listar_usuarios_titulo">Listar Usuarios</string>
+    <string name="ver_detalle_del_usuario">Ver detalle del usuario</string>
+    <string name="detalles_del_usuario">Detalles del usuario</string>
+    <string name="creaci_n_de_cuenta">Creación de cuenta</string>
+    <string name="ultimo_bloqueo">Último bloqueo</string>
+    <string name="datos_personales">Datos personales</string>
+    <string name="notificar">Notificar</string>
+    <string name="suspender">Suspender</string>
 
     <!-- NAVBAR MODERADOR -->
     <string name="moderador_home">PANEL MODERADOR</string>
@@ -130,17 +140,12 @@
     <string name="buscar_reportes">Buscar reportes</string>
     <string name="ayuda">Ayuda</string>
     <string name="accesibilidad">Accesibilidad</string>
-    <string name="cerrar_rep">Cerrar</string>
-    <string name="reabrir_reporte">Reabrir</string>
-    <string name="abiertos">Abiertos</string>
-    <string name="ver_detalle_del_usuario">Ver detalle del usuario</string>
-    <string name="detalles_del_usuario">Detalles del usuario</string>
-    <string name="creaci_n_de_cuenta">Creación de cuenta</string>
-    <string name="ultimo_bloqueo">Último bloqueo</string>
-    <string name="datos_personales">Datos personales</string>
-    <string name="notificar">Notificar</string>
-    <string name="suspender">Suspender</string>
+
+
     <string name="notificaciones_pendientes">NOTIFICACIONES PENDIENTES</string>
     <string name="generar_informe">GENERAR INFORME</string>
     <string name="actividad_reciente">ACTIVIDAD RECIENTE</string>
+    <string name="eliminar">Eliminar</string>
+    <string name="desea_eliminar_el_usuario">¿Desea eliminar el usuario?</string>
+    <string name="esta_acci_n_no_se_puede_deshacer">Esta acción no se puede deshacer!</string>
 </resources>

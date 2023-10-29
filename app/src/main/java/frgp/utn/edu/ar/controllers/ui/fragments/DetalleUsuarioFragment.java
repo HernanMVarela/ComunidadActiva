@@ -24,6 +24,8 @@ import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMACambiarEstadoUsuario;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleUsuarioViewModel;
 
 public class DetalleUsuarioFragment extends Fragment {
@@ -31,7 +33,6 @@ public class DetalleUsuarioFragment extends Fragment {
     private DetalleUsuarioViewModel mViewModel;
     private TextView username, correo, tipouser, estadouser, fechacreacion, fechabloqueo;
     private TextView nombre, telefono, nacimiento;
-    private Button suspender, notificar, cambiarclave;
     private Usuario selectedUser = null;
 
     public static DetalleUsuarioFragment newInstance() {
@@ -80,16 +81,15 @@ public class DetalleUsuarioFragment extends Fragment {
                 navegarAtras();
             }
         }
-
         /// BOTON SUSPENDER / ACTIVAR
-        suspender = view.findViewById(R.id.btn_detalleuser_suspender);
+        Button suspender = view.findViewById(R.id.btn_detalleuser_suspender);
         boton_suspender(suspender);
         /// BOTON SUSPENDER / ACTIVAR
-        notificar = view.findViewById(R.id.btn_detalleuser_notificacion);
-
+        Button notificar = view.findViewById(R.id.btn_detalleuser_notificacion);
+        boton_notificar(notificar);
         /// BOTON SUSPENDER / ACTIVAR
-        cambiarclave = view.findViewById(R.id.btn_detalleuser_contraseña);
-
+        Button eliminar = view.findViewById(R.id.btn_detalleuser_eliminar);
+        boton_eliminar(eliminar);
     }
 
     @Override
@@ -150,6 +150,8 @@ public class DetalleUsuarioFragment extends Fragment {
             suspender.setText("Desbloquear");
         }
     }
+
+    /// COMPORTAMIENTO BOTONES
     private void boton_suspender(Button suspender){
         cambiar_boton(suspender);
         suspender.setOnClickListener(new View.OnClickListener() {
@@ -168,4 +170,28 @@ public class DetalleUsuarioFragment extends Fragment {
             }
         });
     }
+
+    private void boton_notificar(Button notificar){
+        notificar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void boton_eliminar(Button eliminar){
+        eliminar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(!selectedUser.getEstado().getEstado().equals("ELIMINADO")){
+                    selectedUser.setEstado(new EstadoUsuario(5,"ELIMINADO"));
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected_user", selectedUser);
+                    EliminarUsuarioDialogFragment dialogFragment = new EliminarUsuarioDialogFragment();
+                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                    dialogFragment.show(getFragmentManager(), "layout_eliminar_usuario");
+                }
+            }
+        });
+    }
+
 }
