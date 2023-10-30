@@ -100,7 +100,7 @@ public class CrearInformeModeradorFragment extends Fragment {
         }
 
 
-        return inflater.inflate(R.layout.fragment_crear_informe_admin, container, false);
+        return inflater.inflate(R.layout.fragment_crear_informe_moderador, container, false);
     }
 
     public String getFecha(DatePicker dp){
