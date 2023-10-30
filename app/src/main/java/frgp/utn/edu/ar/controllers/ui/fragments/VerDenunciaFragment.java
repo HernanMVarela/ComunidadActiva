@@ -8,6 +8,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -102,10 +104,28 @@ public class VerDenunciaFragment extends Fragment {
                 Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
             }
         }
-        /// BOTON SUSPENDER
-        boton_suspender_usuario(btnSuspenderUsuario);
-        boton_elimiar_publicacion(btnEliminarPublicacion);
-        boton_cerrar_denuncia(btnNotificarCerrar);
+        /// BOTONES
+        btnSuspenderUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navegarUsuarioSuspender();
+            }
+        });
+        btnEliminarPublicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navegarEliminarPublicacion();
+            }
+        });
+        btnNotificarCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navegarCerrarDenuncia();
+            }
+        });
+
+       // boton_elimiar_publicacion(btnEliminarPublicacion);
+       // boton_cerrar_denuncia(btnNotificarCerrar);
 
     }
     private void cargarDatosDenuncia(){
@@ -131,22 +151,37 @@ public class VerDenunciaFragment extends Fragment {
         DMAImagenDenuncia.execute();
     }
 
-
-    private void boton_suspender_usuario(Button suspender){
-        suspender.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                //Revisar el tipo de publicacion
-                if(!seleccionado.getPublicacion().getOwner().getEstado().getEstado().equals("ELIMINADO") ||!seleccionado.getPublicacion().getOwner().getEstado().getEstado().equals("SUSPENDIDO")){
-                    seleccionado.getPublicacion().getOwner().setEstado(new EstadoUsuario(5,"SUSPENDIDO"));
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("selected_userPublicacion", seleccionado.getPublicacion().getOwner());
-                    SuspenderUsuarioDialogFragment dialogFragment = new SuspenderUsuarioDialogFragment();
-                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-                    dialogFragment.show(getFragmentManager(), "layout_suspender_usuario");
-                }
-            }
-        });
+    public void navegarUsuarioSuspender(){
+        if(seleccionado != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selected_usuarioSuspender", seleccionado);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.nav_suspender_usuario, bundle);
+        }else {
+            Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
+        }
     }
+    public void navegarEliminarPublicacion(){
+        if(seleccionado != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selected_eliminarPublicacion", seleccionado);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.nav_eliminar_publicacion, bundle);
+        }else {
+            Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
+        }
+    }
+    public void navegarCerrarDenuncia(){
+        if(seleccionado != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selected_cerrarDenuncia", seleccionado);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.nav_notificar_denuncia, bundle);
+        }else {
+            Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void boton_elimiar_publicacion(Button eliminarPublicacion){
         eliminarPublicacion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
