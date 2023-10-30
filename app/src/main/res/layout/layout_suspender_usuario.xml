@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="15dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/dialog_corner_bg"
+    android:gravity="center_horizontal">
+
+    <TextView
+        android:id="@+id/dialog_titulo_suspender_usuario"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:text="¿Desea suspender el Usuario?"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="15dp"
+        android:textSize="14sp"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:text="Esta accion puede deshacerse"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnDialogConfirmarSuspenderUsuario"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/boton_suspender_usuario"
+            android:paddingHorizontal="10dp"
+            android:text="@string/confirmar" />
+
+        <Button
+            android:id="@+id/btnDialogCancelarSuspenderUsuario"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:background="@drawable/boton_eliminar_publicacion"
+            android:paddingHorizontal="10dp"
+            android:text="@string/cancelar" />
+    </LinearLayout>
+
+</LinearLayout>

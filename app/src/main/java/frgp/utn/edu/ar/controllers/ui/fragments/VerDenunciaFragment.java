@@ -2,13 +2,14 @@ package frgp.utn.edu.ar.controllers.ui.fragments;
 
 import androidx.lifecycle.ViewModelProvider;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +21,17 @@ import android.widget.Toast;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
+import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
-import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMACargarImagenDenuncia;
-import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
 import frgp.utn.edu.ar.controllers.data.repository.denuncia.DenunciaRepository;
 import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
-import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionProyectoDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionReporteDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.NotificarCerrarDenunciaDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.SuspenderUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.VerDenunciaViewModel;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
@@ -46,7 +49,7 @@ public class VerDenunciaFragment extends Fragment {
     private TextView idPublicacion;
     private ImageView imagenPublicacion;
     private Denuncia seleccionado;
-    Button btnSuspenderUsuario, btnEliminarPublicacion, btnNotificar;
+    Button btnSuspenderUsuario, btnEliminarPublicacion, btnNotificarCerrar;
     UsuarioRepository usuarioRepository;
 
     NotificacionService serviceNotificacion;
@@ -70,6 +73,12 @@ public class VerDenunciaFragment extends Fragment {
         if(getActivity() instanceof HomeActivity){
             ((HomeActivity) getActivity()).botonmensaje.hide();
         }
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
         titulo = view.findViewById(R.id.tvTituloDenuncia);
         fecha = view.findViewById(R.id.tvFechaPublicacion);
@@ -81,7 +90,7 @@ public class VerDenunciaFragment extends Fragment {
         idPublicacion = view.findViewById(R.id.tvIdPublicacion);
         btnSuspenderUsuario = view.findViewById(R.id.btnSuspenderUs);
         btnEliminarPublicacion = view.findViewById(R.id.btnEliminarPublicacionDenuncia);
-        btnNotificar = view.findViewById(R.id.btnNotificarDenuncia);
+        btnNotificarCerrar = view.findViewById(R.id.btnNotificarDenuncia);
 
         Bundle bundle = this.getArguments();
         /// OBTIENE LA DENUNCIA SELECCIONADA EN LA PANTALLA ANTERIOR
@@ -95,48 +104,29 @@ public class VerDenunciaFragment extends Fragment {
                 Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
             }
         }
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+        /// BOTONES
         btnSuspenderUsuario.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Usuario usuario = seleccionado.getPublicacion().getOwner();
-                // EJECUTAR DMA SUSPENDER USUARIO
-                if(usuario.getEstado().getEstado().equals("ACTIVO")) {
-
-                    usuario.setEstado(new EstadoUsuario(3,"SUSPENDIDO"));
-                    if(usuarioRepository.modificarUsuario(usuario)){
-                        Toast.makeText(getContext(), "Usuario SUSPENDIDO ", Toast.LENGTH_LONG).show();
-                    }else {
-                        Toast.makeText(getContext(), "NO SE LOGRO MODIFICAR EL USUARIO", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Toast.makeText(getContext(), "El Usuario ya se encuentra: "+usuario.getEstado().getEstado(), Toast.LENGTH_LONG).show();
-                }
+            @Override
+            public void onClick(View view) {
+                navegarUsuarioSuspender();
             }
         });
         btnEliminarPublicacion.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // EJECUTAR DMA EliminarPublicacion OBTENER EL ESTADO DE LA PUBLICACION si es reporte o proyecto por el tipo de denuncia y ejecutar el DMA que corresponda
+            @Override
+            public void onClick(View view) {
+                navegarEliminarPublicacion();
+            }
+        });
+        btnNotificarCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navegarCerrarDenuncia();
+            }
+        });
 
-                    if(seleccionado.getTipo().getTipo().equals("REPORTE")){
-                        Toast.makeText(getContext(), "ES UN REPORTE", Toast.LENGTH_LONG).show();
-                    }
-                    if(seleccionado.getTipo().getTipo().equals("PROYECTO")){
-                        Toast.makeText(getContext(), "ES UN PROYECTO", Toast.LENGTH_LONG).show();
-                    }
-            }
-        });
-        btnNotificar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // EJECUTAR DMA notificar
-                serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(),"Se notifica el cierre de la Denuncia.");
-            }
-        });
+       // boton_elimiar_publicacion(btnEliminarPublicacion);
+       // boton_cerrar_denuncia(btnNotificarCerrar);
+
     }
     private void cargarDatosDenuncia(){
         /// CONFIGURO DATOS DEL REPORTE
@@ -160,6 +150,78 @@ public class VerDenunciaFragment extends Fragment {
         DMACargarImagenDenuncia DMAImagenDenuncia = new DMACargarImagenDenuncia(imagenPublicacion, this.getContext(),seleccionado.getPublicacion().getId(),seleccionado.getTipo().getTipo());
         DMAImagenDenuncia.execute();
     }
+
+    public void navegarUsuarioSuspender(){
+        if(seleccionado != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selected_usuarioSuspender", seleccionado);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.nav_suspender_usuario, bundle);
+        }else {
+            Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
+        }
+    }
+    public void navegarEliminarPublicacion(){
+        if(seleccionado != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selected_eliminarPublicacion", seleccionado);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.nav_eliminar_publicacion, bundle);
+        }else {
+            Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
+        }
+    }
+    public void navegarCerrarDenuncia(){
+        if(seleccionado != null){
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("selected_cerrarDenuncia", seleccionado);
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.navigate(R.id.nav_notificar_denuncia, bundle);
+        }else {
+            Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void boton_elimiar_publicacion(Button eliminarPublicacion){
+        eliminarPublicacion.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                if(seleccionado.getTipo().getTipo().equals("REPORTE")){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected_publicacionDencia", seleccionado);
+                    EliminarPublicacionReporteDialogFragment dialogFragment = new EliminarPublicacionReporteDialogFragment();
+                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                    dialogFragment.show(getFragmentManager(), "layout_eliminar_publicacion");
+                }
+                if(seleccionado.getTipo().getTipo().equals("PROYECTO")){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected_publicacionDencia", seleccionado);
+                    EliminarPublicacionProyectoDialogFragment dialogFragment = new EliminarPublicacionProyectoDialogFragment();
+                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                    dialogFragment.show(getFragmentManager(), "layout_eliminar_publicacion");
+                }
+            }
+        });
+    }
+
+    private void boton_cerrar_denuncia(Button notificarCerrar){
+        notificarCerrar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(getContext(), seleccionado.getEstado().getEstado(), Toast.LENGTH_SHORT).show();
+                //Revisar el tipo de publicacion
+
+                if(!seleccionado.getEstado().getEstado().equals("CERRADA") || !seleccionado.getEstado().getEstado().equals("CANCELADA")){
+                    seleccionado.setEstado(new EstadoDenuncia(3,"CERRADA"));
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected_denuncia", seleccionado);
+                    NotificarCerrarDenunciaDialogFragment dialogFragment = new NotificarCerrarDenunciaDialogFragment();
+                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                    dialogFragment.show(getFragmentManager(), "layout_notificar_cerrar_denuncia");
+                }
+            }
+        });
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

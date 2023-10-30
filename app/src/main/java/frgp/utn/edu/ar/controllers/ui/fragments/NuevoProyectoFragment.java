@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -31,16 +32,21 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.TipoProyecto;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMANuevoProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerTiposProyectos;
+import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoProyectoViewModel;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class NuevoProyectoFragment extends Fragment {
 
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private SharedLocationViewModel sharedLocationViewModel;
     private NuevoProyectoViewModel mViewModel;
+    private Usuario loggedInUser = null;
     private EditText edTitulo, edDesc, edRequerimientos, edContacto, edCupos;
     private Spinner spTipoProyecto;
     public static NuevoProyectoFragment newInstance() {
@@ -51,7 +57,11 @@ public class NuevoProyectoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(layout.fragment_nuevo_proyecto, container, false);
-
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
+        if(loggedInUser == null){
+            Intent registro = new Intent(getContext(), HomeActivity.class);
+            startActivity(registro);
+        }
         edTitulo = view.findViewById(id.edTituloP);
         edDesc = view.findViewById(id.edDescP);
         edRequerimientos = view.findViewById(id.edRequerimientosP);
@@ -126,7 +136,7 @@ public class NuevoProyectoFragment extends Fragment {
         nuevoP.setTitulo(edTitulo.getText().toString());
         nuevoP.setLatitud(sharedLocationViewModel.getLatitude());
         nuevoP.setLongitud(sharedLocationViewModel.getLongitude());
-        nuevoP.setOwner(null);
+        nuevoP.setOwner(loggedInUser);
         nuevoP.setFecha(new Date(System.currentTimeMillis()));
         nuevoP.setEstado(new EstadoProyecto(1,"ABIERTO"));
         return nuevoP;

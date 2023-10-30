@@ -1,89 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/green_100"
     tools:context=".ui.fragments.SuspenderUsuarioFragment"
-    android:background="@color/green_100">
+    >
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/green_100"
+        android:layout_weight="1">
 
-    <LinearLayout
-        android:layout_width="378dp"
-        android:layout_height="68dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="618dp">
-
-        <Button
-            android:id="@+id/btnSU"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/boton_suspender_usuario"
-            android:text="Suspender Usuario" />
-
-    </LinearLayout>
-
-    <LinearLayout
+        <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:orientation="vertical"
-
-        app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="-132dp">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:gravity="start"
-            android:text="@string/titulo"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            tools:text="SUSPENDER USUARIO" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:text="SUSPENDER USUARIO"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                tools:text="SUSPENDER USUARIO" />
+
+
+            <TextView
+                android:id="@+id/tvNombreUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:background="@drawable/boton_notificar_denuncia"
+                android:text="@string/titulo"
+                android:textAlignment="center"
+                android:textColor="@color/image_placeholder_background"
+                android:textSize="20sp"
+                tools:text="Carlos Perez" />
+
+            <TextView
+                android:id="@+id/tvTipoUsuario"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:gravity="start"
+                android:text="@string/titulo"
+                android:textSize="20sp"
+                tools:text="Tipo: Vecino" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
             android:gravity="start"
-            android:text="@string/titulo"
-            android:textSize="20sp"
-            tools:text="Informacion Usuario:" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:background="@drawable/boton_notificar_denuncia"
-            android:gravity="start"
-            android:text="@string/titulo"
-            android:textAlignment="center"
-            android:textColor="@color/image_placeholder_background"
-            android:textSize="20sp"
-            tools:text="Carlos Perez" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:gravity="start"
-            android:text="@string/titulo"
-            android:textSize="20sp"
-            tools:text="Tipo: Vecino" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:gravity="start"
-            android:text="@string/titulo"
+            android:text="Incar Motivo:"
             android:textSize="20sp"
             tools:text="Incar Motivo:" />
 
         <EditText
-            android:id="@+id/edMotivoSU"
+            android:id="@+id/etMotivoSuspencion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
@@ -98,6 +78,23 @@
             android:textSize="18sp" />
 
 
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="15dp">
+
+        <Button
+            android:id="@+id/btnSuspenderUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/boton_suspender_usuario"
+            android:text="Suspender Usuario" />
+
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

@@ -81,7 +81,7 @@ public class ListarDenunciaFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                 if(spinTipoDenuncia.getSelectedItem().toString().equals("1 - REPORTE")){
-                    Toast.makeText(getContext(), "ENTRE A REPORTE", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(getContext(), "ENTRE A REPORTE", Toast.LENGTH_LONG).show();
                     DMAListarDenunciasReporte DMAListaDenuncias = new DMAListarDenunciasReporte(listaDenuncias,view.getContext());
                     DMAListaDenuncias.execute();
                 }
@@ -136,7 +136,6 @@ public class ListarDenunciaFragment extends Fragment {
         }else {
             Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
         }
-
     }
 
     @Override
