@@ -216,7 +216,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/boton_redondeado"
-            android:text="@string/editar_perfil"/>
+            android:text="@string/editar_usuario"/>
         <Button
             android:id="@+id/btn_detalleuser_eliminar"
             android:layout_width="0dp"

@@ -157,4 +157,8 @@
     <string name="usuarios_por_estado">USUARIOS POR ESTADO</string>
     <string name="reportes_por_categoria">REPORTES POR CATEGORIA</string>
     <string name="proyectos_por_categoria">PROYECTOS POR CATEGORIA</string>
+    <string name="editar_usuario">Editar Usuario</string>
+    <string name="nueva_contrase_a">Nueva Contraseña</string>
+    <string name="repita_la_contrase_a">Repita la Contraseña</string>
+    <string name="solo_se_modificaran_los_datos_completados">solo se modificaran los datos completados</string>
 </resources>
