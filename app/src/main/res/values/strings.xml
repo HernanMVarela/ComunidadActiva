@@ -148,4 +148,12 @@
     <string name="eliminar">Eliminar</string>
     <string name="desea_eliminar_el_usuario">¿Desea eliminar el usuario?</string>
     <string name="esta_acci_n_no_se_puede_deshacer">Esta acción no se puede deshacer!</string>
+    <string name="crear_informe_admin">CREAR INFORME</string>
+    <string name="fecha_inicio_informe_admin">Desde</string>
+    <string name="fecha_fin_informe_admin">Hasta</string>
+    <string name="usuarios_activos_por_rol">USUARIOS ACTIVOS POR ROL</string>
+    <string name="usuarios_nuevos">USUARIOS NUEVOS</string>
+    <string name="usuarios_por_estado">USUARIOS POR ESTADO</string>
+    <string name="reportes_por_categoria">REPORTES POR CATEGORIA</string>
+    <string name="proyectos_por_categoria">PROYECTOS POR CATEGORIA</string>
 </resources>

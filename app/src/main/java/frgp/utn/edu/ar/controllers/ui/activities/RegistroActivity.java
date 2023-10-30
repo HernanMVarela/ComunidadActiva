@@ -44,10 +44,10 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item,opciones);
         spinnerCategoriaUser.setAdapter(adapter);
 
-        nombre = findViewById(R.id.etCorreoRecupero);
-        apellido = findViewById(R.id.etCodigoRecupero);
-        userName = findViewById(R.id.etPassRecupero);
-        fechaNacimiento = findViewById(R.id.etPassConfirmarRecupero);
+        nombre = findViewById(R.id.etNombreRegistro);
+        apellido = findViewById(R.id.etApellidoRegistro);
+        userName = findViewById(R.id.etUserName);
+        fechaNacimiento = findViewById(R.id.etFechaNacimientoRegistro);
         telefono = findViewById(R.id.etTelefonoRegistro);
         correo = findViewById(R.id.etCorreoRegistro);
         password = findViewById(R.id.etPassUnoRegistro);
