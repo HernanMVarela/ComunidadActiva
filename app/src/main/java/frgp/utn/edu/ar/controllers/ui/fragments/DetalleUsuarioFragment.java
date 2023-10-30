@@ -25,6 +25,7 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMACambiarEstadoUsuario;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.EditarUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleUsuarioViewModel;
 
@@ -85,8 +86,8 @@ public class DetalleUsuarioFragment extends Fragment {
         Button suspender = view.findViewById(R.id.btn_detalleuser_suspender);
         boton_suspender(suspender);
         /// BOTON SUSPENDER / ACTIVAR
-        Button notificar = view.findViewById(R.id.btn_detalleuser_notificacion);
-        boton_notificar(notificar);
+        Button modificar = view.findViewById(R.id.btn_detalleuser_modificacion);
+        boton_modificar(modificar);
         /// BOTON SUSPENDER / ACTIVAR
         Button eliminar = view.findViewById(R.id.btn_detalleuser_eliminar);
         boton_eliminar(eliminar);
@@ -171,10 +172,18 @@ public class DetalleUsuarioFragment extends Fragment {
         });
     }
 
-    private void boton_notificar(Button notificar){
-        notificar.setOnClickListener(new View.OnClickListener() {
+    private void boton_modificar(Button modificar){
+        modificar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                if(selectedUser.getEstado().getEstado().equals("ACTIVO")){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected_user", selectedUser);
+                    EditarUsuarioDialogFragment dialogFragment = new EditarUsuarioDialogFragment();
+                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                    dialogFragment.show(getFragmentManager(), "layout_modificar_usuario");
+                }else{
+                    Toast.makeText(getContext(), "El usuario no está activo", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

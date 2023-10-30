@@ -149,4 +149,8 @@
     <string name="eliminar">Eliminar</string>
     <string name="desea_eliminar_el_usuario">¿Desea eliminar el usuario?</string>
     <string name="esta_acci_n_no_se_puede_deshacer">Esta acción no se puede deshacer!</string>
+    <string name="nueva_contrase_a">Nueva contraseña</string>
+    <string name="repita_la_contrase_a">Repita la contraseña</string>
+    <string name="solo_se_modificaran_los_datos_completados">Solo se modificaran los datos completados</string>
+    <string name="editar_perfil">Editar perfil</string>
 </resources>
