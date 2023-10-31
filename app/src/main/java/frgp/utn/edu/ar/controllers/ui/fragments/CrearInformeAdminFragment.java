@@ -46,7 +46,6 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         fechaHasta.setOnClickListener(this);
         fechaDesde.setShowSoftInputOnFocus(false);
         fechaHasta.setShowSoftInputOnFocus(false);
-
         return root;
     }
 
@@ -174,12 +173,18 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
     }
 
     public void usuariosNuevosRegistrados(View view) {
+        if(isFormValid())
+            System.out.println(informesAdminRepository.listarUsuariosNuevosRegistrados(dateDesde, dateHasta));
     }
 
     public void usuariosPorEstado(View view) {
+        if(isFormValid())
+            System.out.println(informesAdminRepository.listarUsuariosPorEstado(dateDesde, dateHasta));
     }
 
     public void reportesPorCategoria(View view) {
+        if(isFormValid())
+            System.out.println(informesAdminRepository.listarReportesPorCategoria(dateDesde, dateHasta));
     }
 
     public void proyectosPorCategoria(View view) {
