@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public class ActividadRecFragment extends Fragment {
             paint.setTextSize(8);
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
             canvas.drawText("Usuario: " + usuario.getNombre() + " " + usuario.getApellido(), pageInfo.getPageWidth() / 2, 100, paint);
-            canvas.drawText("Fecha: " + new Date(), pageInfo.getPageWidth() / 2, 110, paint);
+            canvas.drawText("Fecha: " + Calendar.getInstance().getTime(), pageInfo.getPageWidth() / 2, 110, paint);
             //WRITE LOGS
             paint.setTextSize(6);
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));

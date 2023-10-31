@@ -51,4 +51,14 @@ public class InformesAdminRepository {
             return null;
         }
     }
+
+    public JSONArray listarProyectosPorCategoria(Date fechaInicio, Date fechaFin) {
+        DMAListarReportesPorCategoria DMAUPE = new DMAListarReportesPorCategoria(fechaInicio, fechaFin);
+        DMAUPE.execute();
+        try {
+            return DMAUPE.get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }
