@@ -1,11 +1,5 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,13 +7,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +16,17 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -52,7 +50,6 @@ import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAListviewReportes;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAListviewReportesPorTexto;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.BuscarReporteViewModel;
-import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class BuscarReporteFragment extends Fragment {
@@ -60,7 +57,6 @@ public class BuscarReporteFragment extends Fragment {
     private BuscarReporteViewModel mViewModel;
     private ListView listaReportes;
     private GoogleMap googlemaplocal;
-    private SearchView barraBusqueda;
     private SwitchCompat switch_abiertos;
     private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private Usuario loggedInUser = null;
@@ -165,7 +161,7 @@ public class BuscarReporteFragment extends Fragment {
         Button bVerReporte = view.findViewById(R.id.btnVerDetalle);
 
         listaReportes = view.findViewById(R.id.listReportes);
-        barraBusqueda = view.findViewById(R.id.busquedaReporte);
+        SearchView barraBusqueda = view.findViewById(R.id.busquedaReporte);
         switch_abiertos = view.findViewById(R.id.switchFiltrarAbiertos);
 
         SupportMapFragment mapFragment =

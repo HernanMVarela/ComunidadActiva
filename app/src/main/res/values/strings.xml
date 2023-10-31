@@ -57,6 +57,7 @@
 
     <string name="seleccionar_ubicaci_n">Seleccionar Ubicación</string>
     <string name="descripcion_prueba">Lorem ipsum dolor sit amet. Hic voluptate incidunt aut perferendis internos ab tenetur necessitatibus ea voluptatibus eaque! Et quia voluptate quo reprehenderit dolorem qui assumenda molestiae aut iure ipsam hic illum rerum et quisquam tenetur.</string>
+    <string name="descripcion_prueba2">Lorem ipsum dolor sit amet. Hic voluptate incidunt aut perferendis internos ab tenetur necessitatibus ea voluptatibus eaque!</string>
     <string name="cerrar_reporte">Solicitar Cierre</string>
     <string name="valorar_reporte">Valorar</string>
     <string name="denunciar_reporte">Denunciar</string>
@@ -161,4 +162,6 @@
     <string name="nueva_contrase_a">Nueva Contraseña</string>
     <string name="repita_la_contrase_a">Repita la Contraseña</string>
     <string name="solo_se_modificaran_los_datos_completados">solo se modificaran los datos completados</string>
+    <string name="datos_del_publicante">Datos del publicante</string>
+    <string name="lista_de_participantes">Lista de participantes</string>
 </resources>

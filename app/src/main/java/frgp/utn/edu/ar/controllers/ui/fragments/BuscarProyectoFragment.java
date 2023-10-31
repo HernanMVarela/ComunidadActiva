@@ -23,7 +23,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
-import android.widget.Switch;
+import androidx.appcompat.widget.SwitchCompat;
 import android.widget.Toast;
 
 import frgp.utn.edu.ar.controllers.R;
@@ -43,7 +43,7 @@ public class BuscarProyectoFragment extends Fragment {
     private Spinner spEstadoP, spTipoProyecto;
     private int buscadorE=1, buscadorT=1, usarE=0, usarT=0;
     private EditText nombreProyectoBuscado;
-    private Switch swTipo, swEstado;
+    private SwitchCompat swTipo, swEstado;
     private Button verDetalle;
 
     public static BuscarProyectoFragment newInstance() {
