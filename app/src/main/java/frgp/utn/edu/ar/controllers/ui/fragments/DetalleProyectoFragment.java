@@ -16,9 +16,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
+import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
@@ -34,23 +44,42 @@ public class DetalleProyectoFragment extends Fragment {
 
     SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private DetalleReporteViewModel mViewModel;
+    private GoogleMap googlemaplocal;
     private TextView titulo, descripcion, estado, tipo, requerimiento, contacto, cupo;
     private Button btnUnirseP;
     private boolean control=false;
     Usuario loggedInUser = null;
     private Proyecto seleccionado;
-    public static DetalleProyectoFragment newInstance() {
-            return new DetalleProyectoFragment();}
+    public static DetalleProyectoFragment newInstance() {return new DetalleProyectoFragment();}
 
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+        public void onMapReady(GoogleMap googleMap) {
+            // Verifica si tiene permisos de ubicación
+            if (googleMap != null) {
+                googlemaplocal = googleMap;
+
+                if (seleccionado != null) {
+                    // Agrega un marcador en la ubicación del reporte por defecto
+                    LatLng ubicacionReporte = new LatLng(seleccionado.getLatitud(), seleccionado.getLongitud());
+                    googlemaplocal.addMarker(new MarkerOptions().position(ubicacionReporte).title(seleccionado.getTitulo()));
+                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionReporte, 15));
+                }
+            } else {
+                Toast.makeText(getContext(), "ERROR AL CARGAR EL MAPA", Toast.LENGTH_SHORT).show();
+            }
+        }
+    };
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_detalle_proyectos, container, false);
+
         loggedInUser = sharedPreferences.getUsuarioData(getContext());
         if(loggedInUser == null){
             Intent registro = new Intent(getContext(), HomeActivity.class);
             startActivity(registro);
         }
-        View view = inflater.inflate(R.layout.fragment_detalle_proyectos, container, false);
+
         titulo = view.findViewById(R.id.txt_detalle_proyecto_titulo);
         descripcion = view.findViewById(R.id.txt_detalle_proyecto_descripcion);
         estado = view.findViewById(R.id.txt_detalle_proyecto_estado);
@@ -59,17 +88,30 @@ public class DetalleProyectoFragment extends Fragment {
         contacto = view.findViewById(R.id.txt_detalle_proyecto_contacto);
         cupo = view.findViewById(R.id.txt_detalle_proyecto_cupo);
         btnUnirseP = view.findViewById(R.id.btnUnirseDP);
+
+        Bundle bundle = this.getArguments();
+        /// OBTIENE EL REPORTE SELECCIONADO EN LA PANTALLA ANTERIOR
+        if (bundle != null) {
+            seleccionado = (Proyecto) bundle.getSerializable("proyectoactual");
+            /// VALIDA QUE EL REPORTE EXISTA
+            if (seleccionado != null) {
+                cargarDatos();
+            }else {
+                /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
+                Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.popBackStack();
+            }
+        }
         return view;
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        seleccionado = (Proyecto) getArguments().getSerializable("proyectoactual");
-        if (seleccionado != null) {
-            cargarDatos();
-        }
-        else {
-            Toast.makeText(this.getContext(), "Nulo", Toast.LENGTH_LONG).show();
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_proyecto);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
         }
         btnUnirseP.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,7 +143,7 @@ public class DetalleProyectoFragment extends Fragment {
         tipo.setText(seleccionado.getTipo().getTipo());
         requerimiento.setText(seleccionado.getRequerimientos());
         contacto.setText(seleccionado.getContacto());
-        cupo.setText(Integer.toString(seleccionado.getCupo()));
+        cupo.setText(String.valueOf(seleccionado.getCupo()));
         int idEstado = seleccionado.getEstado().getId();
         if(loggedInUser.getId()==seleccionado.getOwner().getId()&&idEstado!=5){
             /*

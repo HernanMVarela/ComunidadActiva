@@ -92,66 +92,17 @@ public class NuevoReporteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // INICIAIZA BOTONES DEL FRAGMENTO
-        Button bCamara = view.findViewById(R.id.btnCamara);
+        /// COMPORTAMIENTO DE LOS CONTROLES
+        comportamiento_spinner_tipo();
+
         Button bUbicacion = view.findViewById(R.id.btnUbicacion);
+        comportamiento_boton_ubicacion(bUbicacion);
+
+        Button bCamara = view.findViewById(R.id.btnCamara);
+        comportamiento_boton_camara(bCamara);
+
         Button bCrearReporte = view.findViewById(R.id.btnCrearReporte);
-
-        bCamara.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Verificar si tiene permiso de la cámara
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                    // SI TIENE PERMISOS, REDIRIGE A LA VISTA DE LA CÁMARA
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
-                } else {
-                    // Si no tiene el permiso, se pide al usuario
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PIC_REQUEST);
-                }
-            }
-        });
-        spinTipoReporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Guarda la posición seleccionada en la variable
-                selectedSpinnerPosition = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {
-                // No es necesario hacer nada aquí en este caso
-            }
-        });
-        bUbicacion.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // Verificar si se tiene permiso de ubicación
-                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                    // Navega al fragmento de ubicación
-                    navigateToLocationFragment();
-                } else {
-                    // Si no tiene el permiso, se pide al usuario
-                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST);
-                }
-            }
-        });
-        bCrearReporte.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-
-                try {
-                    // INICIALIZA EL sharedLocationViewModel, QUE PERMITE COMPARTIR LA UBICACION SELECCIONADA ENTRE FRAGMENTOS
-                    sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
-                    if(checkFormValid()){ // VALIDA CAMPOS ANTES DE GUARDAR REPORTE
-                        Reporte nuevo = cargarDatos(); // CARGA LOS DATOS EN EL NUEVO REPORTE
-                        DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo,v.getContext());
-                        DMAGuardar.execute(); // GUARDA EL REPORTE EN DB
-                        limpiarCampos(); // LIMPIA CAMPOS DE PANTALLA
-                        navigateToBuscarReporte(); // REGRESA A BUSCARREPORTES
-                    }
-                }catch (Exception e){
-                    Log.e("Error", e.toString());
-                }
-            }
-        });
+        comportamiento_boton_crear_reporte(bCrearReporte);
     }
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -195,6 +146,74 @@ public class NuevoReporteFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(NuevoReporteViewModel.class);
         // TODO: Use the ViewModel
+    }
+
+    /// CONTROLES
+    private void comportamiento_boton_crear_reporte(Button bCrearReporte){
+        bCrearReporte.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+
+                try {
+                    // INICIALIZA EL sharedLocationViewModel, QUE PERMITE COMPARTIR LA UBICACION SELECCIONADA ENTRE FRAGMENTOS
+                    sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
+                    if(checkFormValid()){ // VALIDA CAMPOS ANTES DE GUARDAR REPORTE
+                        Reporte nuevo = cargarDatos(); // CARGA LOS DATOS EN EL NUEVO REPORTE
+                        DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo,v.getContext());
+                        DMAGuardar.execute(); // GUARDA EL REPORTE EN DB
+                        limpiarCampos(); // LIMPIA CAMPOS DE PANTALLA
+                        navigateToBuscarReporte(); // REGRESA A BUSCARREPORTES
+                    }
+                }catch (Exception e){
+                    Log.e("Error", e.toString());
+                }
+            }
+        });
+    }
+
+    private void comportamiento_boton_ubicacion(Button bUbicacion){
+        bUbicacion.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Verificar si se tiene permiso de ubicación
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                    // Navega al fragmento de ubicación
+                    navigateToLocationFragment();
+                } else {
+                    // Si no tiene el permiso, se pide al usuario
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST);
+                }
+            }
+        });
+    }
+
+    private void comportamiento_boton_camara(Button bCamara){
+        bCamara.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // Verificar si tiene permiso de la cámara
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                    // SI TIENE PERMISOS, REDIRIGE A LA VISTA DE LA CÁMARA
+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
+                } else {
+                    // Si no tiene el permiso, se pide al usuario
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PIC_REQUEST);
+                }
+            }
+        });
+    }
+
+    private void comportamiento_spinner_tipo(){
+        spinTipoReporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Guarda la posición seleccionada en la variable
+                selectedSpinnerPosition = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // No es necesario hacer nada aquí en este caso
+            }
+        });
     }
 
     /// VALIDACIONES DE CAMPOS

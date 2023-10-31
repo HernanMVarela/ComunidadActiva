@@ -52,7 +52,7 @@ public class DetalleReporteFragment extends Fragment {
     Usuario loggedInUser = null;
 
     private Reporte seleccionado;
-        public static DetalleReporteFragment newInstance() {
+    public static DetalleReporteFragment newInstance() {
         return new DetalleReporteFragment();
     }
 
@@ -83,6 +83,7 @@ public class DetalleReporteFragment extends Fragment {
         if(getActivity() instanceof HomeActivity){
             ((HomeActivity) getActivity()).botonmensaje.hide();
         }
+
         titulo = view.findViewById(R.id.titulo_ver_reporte);
         descripcion = view.findViewById(R.id.descripcion_reporte);
         estado = view.findViewById(R.id.estado_ver_reporte);
