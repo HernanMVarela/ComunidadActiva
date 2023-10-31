@@ -2,7 +2,9 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -12,17 +14,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarUsuario;
 
 public class EditarUsuarioDialogFragment extends DialogFragment {
-    TextView titulo;
-    EditText pass1, pass2, correo, telefono;
-    Usuario selectedUser = null;
-    Spinner spinTipo;
+    private TextView titulo;
+    private EditText pass1, pass2, correo, telefono;
+    private Usuario selectedUser = null;
+    private Spinner spinTipo;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class EditarUsuarioDialogFragment extends DialogFragment {
         titulo.setText("Editar perfil de " + selectedUser.getUsername());
         correo.setText(selectedUser.getCorreo());
         telefono.setText(selectedUser.getTelefono());
-
+        spinTipo.setSelection(selectedUser.getTipo().getId()-1);
 
         /// BOTONES
         Button confirmar = dialogView.findViewById(R.id.btnConfirmarModificarUsuario);
@@ -76,7 +81,22 @@ public class EditarUsuarioDialogFragment extends DialogFragment {
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+
+                if(validar_campos()) {
+                    modificar_datos_usuario();
+                    try {
+                        DMAModificarUsuario DMAModifUser = new DMAModificarUsuario(selectedUser);
+                        DMAModifUser.execute();
+                        if(DMAModifUser.get()){
+                            Toast.makeText(getContext(), "Usuario modificado!", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getContext(), "No se pudo editar el perfil.", Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                    dismiss();
+                }
             }
         });
     }
@@ -88,6 +108,46 @@ public class EditarUsuarioDialogFragment extends DialogFragment {
                 dismiss();
             }
         });
+    }
+
+    private boolean validar_campos(){
+
+        if(!pass1.getText().toString().isEmpty() && !pass2.getText().toString().isEmpty()){
+            if(!pass1.getText().toString().equals(pass2.getText().toString())){
+                Toast.makeText(getContext(), "Las contraseñas no coinciden", Toast.LENGTH_LONG).show();
+                return false;
+            }else if (pass1.getText().toString().length() > 20 || pass1.getText().toString().length() < 6){
+                Toast.makeText(getContext(), "La clave de tener entre 6 y 20 caracterés", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        }else if (!pass1.getText().toString().isEmpty()){
+            Toast.makeText(getContext(), "Debe confirmar la contraseña", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(correo.getText().toString().length() > 100){
+            Toast.makeText(getContext(), "El correo debe tener menos de 100 caracteres", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(telefono.getText().toString().length() < 8 || telefono.getText().toString().length() > 15){
+            Toast.makeText(getContext(), "Ingrese un teléfono válido.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void modificar_datos_usuario(){
+        if(!pass1.getText().toString().isEmpty()){
+            selectedUser.setPassword(pass1.getText().toString());
+        }
+        if(!correo.getText().toString().isEmpty()){
+            selectedUser.setCorreo(correo.getText().toString());
+        }
+        if(!telefono.getText().toString().isEmpty()){
+            selectedUser.setTelefono(telefono.getText().toString());
+        }
+        selectedUser.setTipo(new TipoUsuario(spinTipo.getSelectedItemPosition()+1,spinTipo.getSelectedItem().toString()));
+
+        Log.i("usuario modif", selectedUser.getCorreo()+ " - "+selectedUser.getTipo().getId()+ " | "+ selectedUser.getTipo().getTipo());
     }
 
 }
