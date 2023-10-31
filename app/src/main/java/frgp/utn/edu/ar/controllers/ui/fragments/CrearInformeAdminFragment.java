@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,65 +16,160 @@ import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.repository.informesAdmin.InformesAdminRepository;
 import frgp.utn.edu.ar.controllers.databinding.FragmentCrearInformeAdminBinding;
 
 
-public class CrearInformeAdminFragment extends Fragment {
+public class CrearInformeAdminFragment extends Fragment  implements View.OnFocusChangeListener, View.OnClickListener,  DatePickerDialog.OnDateSetListener {
 
     private FragmentCrearInformeAdminBinding binding;
     private EditText fechaDesde, fechaHasta;
-    Calendar myCalendar = Calendar.getInstance(); //global
+    private Date dateDesde, dateHasta;
+    private Calendar mCalendar;
+    private SimpleDateFormat mFormat;
+    InformesAdminRepository informesAdminRepository = new InformesAdminRepository();
 
-    @SuppressLint("MissingInflatedId")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentCrearInformeAdminBinding.inflate(inflater, container, false);
+        View root = binding.getRoot();
+        mFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        fechaDesde = root.findViewById(R.id.etFechaInicioInformeAdmin);
+        fechaHasta = root.findViewById(R.id.etFechaFinInformeAdmin);
+        fechaDesde.setOnFocusChangeListener(this);
+        fechaHasta.setOnFocusChangeListener(this);
+        fechaDesde.setOnClickListener(this);
+        fechaHasta.setOnClickListener(this);
+        fechaDesde.setShowSoftInputOnFocus(false);
+        fechaHasta.setShowSoftInputOnFocus(false);
 
-        View view = inflater.inflate(R.layout.fragment_crear_informe_admin, container, false);
-
-        fechaDesde = (EditText) view.findViewById(R.id.etFechaInicioInformeAdmin);
-        fechaHasta = (EditText) view.findViewById(R.id.etFechaFinInformeAdmin);
-        return inflater.inflate(R.layout.fragment_crear_informe_admin, container, false);
+        return root;
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        binding = FragmentCrearInformeAdminBinding.bind(view);
-        fechaDesde.setOnClickListener(new View.OnClickListener() {
+
+        binding.btnUsuariosActivosPorRol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
-                showDatePickerDialog();
+                usuariosActivosPorRol(v);
+            }
+        });
+
+        binding.btnUsuariosNuevosRegistrados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usuariosNuevosRegistrados(v);
+            }
+        });
+
+        binding.btnUsuariosPorEstado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                usuariosPorEstado(v);
+            }
+        });
+
+        binding.btnReportesPorCategoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reportesPorCategoria(v);
+            }
+        });
+
+        binding.btnProyectosPorCategoria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                proyectosPorCategoria(v);
             }
         });
     }
 
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if (hasFocus) {
+            showPicker(v);
+        }
+    }
 
-    public void showDatePickerDialog(){
+    @Override
+    public void onClick(View view) {
+        showPicker(view);
+    }
 
-        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
+    private void showPicker(View view) {
+        if (mCalendar == null)
+            mCalendar = Calendar.getInstance();
+
+        int day = mCalendar.get(Calendar.DAY_OF_MONTH);
+        int month = mCalendar.get(Calendar.MONTH);
+        int year = mCalendar.get(Calendar.YEAR);
+
+        new DatePickerDialog(view.getContext(), this, year, month, day).show();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        mCalendar.set(Calendar.YEAR, year);
+        mCalendar.set(Calendar.MONTH, month);
+        mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+        if(fechaDesde.hasFocus())
+            fechaDesde.setText(mFormat.format(mCalendar.getTime()));
+        if(fechaHasta.hasFocus())
+            fechaHasta.setText(mFormat.format(mCalendar.getTime()));
+    }
+
+    public boolean isFormValid() {
+        //CHECK FORM VACIO
+        if (fechaDesde.getText().toString().isEmpty() ||
+            fechaHasta.getText().toString().isEmpty()) {
+            Toast.makeText(getContext(), "Debe completar todos los campos", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        //CHECK FECHA NO FUTURA
+        if(mCalendar.getTime().after(Calendar.getInstance().getTime())){
+            Toast.makeText(getContext(), "Las fechas no puede mayores a la fecha de hoy", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        //CHECK FECHA DESDE NO PUEDE SER MAYOR A HASTA
+        if(fechaDesde.getText().toString().compareTo(fechaHasta.getText().toString()) > 0){
+            Toast.makeText(getContext(), "La fecha de inicio no puede ser mayor a la fecha de fin", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        //CHECH FECHA VALID
+        try {
+            String date = fechaDesde.getText().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            dateDesde = sdf.parse(date);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Ingrese una fecha de inicio valida", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        //CHECH FECHA VALID
+        try {
+            String date = fechaHasta.getText().toString();
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+            dateHasta = sdf.parse(date);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Ingrese una fecha de fin valida", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 
 
-    DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            myCalendar.set(Calendar.YEAR, year);
-            myCalendar.set(Calendar.MONTH, monthOfYear);
-            myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        }
-    };
-
-
-
-
-
-
     public void usuariosActivosPorRol(View view) {
+        if(isFormValid())
+            System.out.println(informesAdminRepository.listarUsuariosActivosPorRol(dateDesde, dateHasta));
 
     }
 
@@ -88,7 +184,6 @@ public class CrearInformeAdminFragment extends Fragment {
 
     public void proyectosPorCategoria(View view) {
     }
-
 
 
 
