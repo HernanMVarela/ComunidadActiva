@@ -1,8 +1,14 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
-import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.DatePickerDialog;
+import android.content.pm.PackageManager;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Typeface;
+import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +18,15 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -32,6 +45,8 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
     private Calendar mCalendar;
     private SimpleDateFormat mFormat;
     InformesAdminRepository informesAdminRepository = new InformesAdminRepository();
+
+    JSONArray pdfData = new JSONArray();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -56,35 +71,74 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         binding.btnUsuariosActivosPorRol.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usuariosActivosPorRol(v);
+                if (isFormValid()) {
+                    pdfData = informesAdminRepository.listarUsuariosActivosPorRol(dateDesde, dateHasta);
+                    try {
+                        System.out.println(pdfData);
+                        crearInformeUsuariosActivosPorRol(pdfData, "usuariosActivosPorRol");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
 
         binding.btnUsuariosNuevosRegistrados.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usuariosNuevosRegistrados(v);
+                if (isFormValid()) {
+                    pdfData = informesAdminRepository.listarUsuariosNuevosRegistrados(dateDesde, dateHasta);
+                    try {
+                        crearInformeUsuariosActivosPorRol(pdfData, "usuariosNuevosRegistrados");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
 
         binding.btnUsuariosPorEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                usuariosPorEstado(v);
+                if (isFormValid()) {
+                    pdfData = informesAdminRepository.listarUsuariosPorEstado(dateDesde, dateHasta);
+                    try {
+                        crearInformeUsuariosActivosPorRol(pdfData, "usuariosPorEstado");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
 
         binding.btnReportesPorCategoria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                reportesPorCategoria(v);
+                if (isFormValid()) {
+                    pdfData = informesAdminRepository.listarReportesPorCategoria(dateDesde, dateHasta);
+                    try {
+                        crearInformeUsuariosActivosPorRol(pdfData, "reportesPorCategoria");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
             }
         });
 
         binding.btnProyectosPorCategoria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                proyectosPorCategoria(v);
+                Toast.makeText(getContext(), "Funcionalidad a la espera de fix BD y codigo", Toast.LENGTH_LONG).show();
+                /*
+                if(isFormValid()) {
+                    pdfData = informesAdminRepository.listarProyectosPorCategoria(dateDesde, dateHasta);
+                    try {
+                        crearInformeUsuariosActivosPorRol(pdfData, "proyectosPorCategoria");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                 */
             }
         });
     }
@@ -118,27 +172,27 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         mCalendar.set(Calendar.MONTH, month);
         mCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        if(fechaDesde.hasFocus())
+        if (fechaDesde.hasFocus())
             fechaDesde.setText(mFormat.format(mCalendar.getTime()));
-        if(fechaHasta.hasFocus())
+        if (fechaHasta.hasFocus())
             fechaHasta.setText(mFormat.format(mCalendar.getTime()));
     }
 
     public boolean isFormValid() {
         //CHECK FORM VACIO
         if (fechaDesde.getText().toString().isEmpty() ||
-            fechaHasta.getText().toString().isEmpty()) {
+                fechaHasta.getText().toString().isEmpty()) {
             Toast.makeText(getContext(), "Debe completar todos los campos", Toast.LENGTH_LONG).show();
             return false;
         }
 
         //CHECK FECHA NO FUTURA
-        if(mCalendar.getTime().after(Calendar.getInstance().getTime())){
+        if (mCalendar.getTime().after(Calendar.getInstance().getTime())) {
             Toast.makeText(getContext(), "Las fechas no puede mayores a la fecha de hoy", Toast.LENGTH_LONG).show();
             return false;
         }
         //CHECK FECHA DESDE NO PUEDE SER MAYOR A HASTA
-        if(fechaDesde.getText().toString().compareTo(fechaHasta.getText().toString()) > 0){
+        if (fechaDesde.getText().toString().compareTo(fechaHasta.getText().toString()) > 0) {
             Toast.makeText(getContext(), "La fecha de inicio no puede ser mayor a la fecha de fin", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -165,31 +219,115 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         return true;
     }
 
+    public void crearInformeUsuariosActivosPorRol(JSONArray pdfData, String reporte)  throws IOException {
+        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // Si no tiene permisos, se solicitan al usuario
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        } else {
+            // Si tiene permisos, se crea el PDF
+            PdfDocument pdfDocument = new PdfDocument();
+            PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(300, 600, 1).create();
+            PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+            Canvas canvas = page.getCanvas();
+            //WRITE TITLE
+            Paint paint = new Paint();
+            paint.setTextAlign(Paint.Align.CENTER);
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+            paint.setTextSize(12);
+            switch(reporte) {
+                case("usuariosActivosPorRol"):
+                    canvas.drawText("USUARIOS ACTIVOS POR ROL", pageInfo.getPageWidth() / 2, 80, paint);
+                    break;
+                case("usuariosNuevosRegistrados"):
+                    canvas.drawText("USUARIOS NUEVOS REGISTRADOS", pageInfo.getPageWidth() / 2, 80, paint);
+                    break;
+                case("usuariosPorEstado"):
+                    canvas.drawText("USUARIOS POR ESTADO", pageInfo.getPageWidth() / 2, 80, paint);
+                    break;
+                case("reportesPorCategoria"):
+                    canvas.drawText("REPORTES POR CATEGORIA", pageInfo.getPageWidth() / 2, 80, paint);
+                    break;
+                case("proyectosPorCategoria"):
+                    canvas.drawText("PROYECTOS POR CATEGORIA", pageInfo.getPageWidth() / 2, 80, paint);
+                    break;
+            }
+            //WRITE INFO AS SUBTITLE
+            paint.setTextSize(8);
+            paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+            canvas.drawText("Desde " + fechaDesde.getText() + " hasta " + fechaHasta.getText(), pageInfo.getPageWidth() / 2, 100, paint);
+            canvas.drawText("Fecha Creacion: " + Calendar.getInstance().getTime(), pageInfo.getPageWidth() / 2, 110, paint);
+            //WRITE INFO
+            Paint paintText = new Paint();
+            paint.setTextAlign(Paint.Align.LEFT);
+            paintText.setTextSize(6);
+            paintText.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+            int y = 150;
+            paintText.setStrokeWidth(1);
+            canvas.drawLine(50, y, pageInfo.getPageWidth() - 100, y, paintText);
+            y += 10;
+            for (int i = 0; i < pdfData.length(); i++) {
+                try {
+                    switch(reporte) {
+                        case("usuariosActivosPorRol"):
+                            canvas.drawText("ROL: " + pdfData.getJSONObject(i).getString("rol") + "  ---  " + "CANTIDAD: " + pdfData.getJSONObject(i).getString("cantidad"), 50, y, paintText);
+                            break;
+                        case("usuariosNuevosRegistrados"):
+                            canvas.drawText("FECHA: " + pdfData.getJSONObject(i).getString("fecha_registro") + "  ---  " + "CANTIDAD: " + pdfData.getJSONObject(i).getString("cantidad"), 50, y, paintText);
+                            break;
+                        case("usuariosPorEstado"):
+                            canvas.drawText("ESTADO: " + pdfData.getJSONObject(i).getString("estado") + "  ---  " + "CANTIDAD: " + pdfData.getJSONObject(i).getString("cantidad"), 50, y, paintText);
+                            break;
+                        case("reportesPorCategoria"):
+                            canvas.drawText("CATEGORIA: " + pdfData.getJSONObject(i).getString("tipo_reporte") + "  ---  " + "CANTIDAD: " + pdfData.getJSONObject(i).getString("cantidad"), 50, y, paintText);
+                            break;
+                        case("proyectosPorCategoria"):
+                            canvas.drawText("CATEGORIA: " + pdfData.getJSONObject(i).getString("tipo_proyecto") + "  ---  " + "CANTIDAD: " + pdfData.getJSONObject(i).getString("cantidad"), 50, y, paintText);
+                            break;
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                y += 10;
+                paintText.setStrokeWidth(1);
+                canvas.drawLine(50, y, pageInfo.getPageWidth() - 100, y, paintText);
+                y += 10;
+            }
+            pdfDocument.finishPage(page);
 
-    public void usuariosActivosPorRol(View view) {
-        if(isFormValid())
-            System.out.println(informesAdminRepository.listarUsuariosActivosPorRol(dateDesde, dateHasta));
-
+            File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+            String fileName = "";
+            switch(reporte) {
+                case("usuariosActivosPorRol"):
+                    fileName = "Reporte Usuarios Activos Por Rol.pdf";
+                    break;
+                case("usuariosNuevosRegistrados"):
+                    fileName = "Reporte Usuarios Nuevos Registrados.pdf";
+                    break;
+                case("usuariosPorEstado"):
+                    fileName = "Reporte Usuarios Por Estado.pdf";
+                    break;
+                case("reportesPorCategoria"):
+                    fileName = "Reporte Reportes Por Categoria.pdf";
+                    break;
+                case("proyectosPorCategoria"):
+                    fileName = "Reporte Proyectos Por Categoria.pdf";
+                    break;
+            }
+            File file = new File(downloadsDir, fileName);
+            try {
+                FileOutputStream fos = new FileOutputStream(file);
+                pdfDocument.writeTo(fos);
+                pdfDocument.close();
+                fos.close();
+                Toast.makeText(getContext(), "Se ha creado el reporte.", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                Toast.makeText(getContext(), "Error al crear el reporte.", Toast.LENGTH_LONG).show();
+                throw new RuntimeException(e);
+            }
+        }
     }
-
-    public void usuariosNuevosRegistrados(View view) {
-        if(isFormValid())
-            System.out.println(informesAdminRepository.listarUsuariosNuevosRegistrados(dateDesde, dateHasta));
-    }
-
-    public void usuariosPorEstado(View view) {
-        if(isFormValid())
-            System.out.println(informesAdminRepository.listarUsuariosPorEstado(dateDesde, dateHasta));
-    }
-
-    public void reportesPorCategoria(View view) {
-        if(isFormValid())
-            System.out.println(informesAdminRepository.listarReportesPorCategoria(dateDesde, dateHasta));
-    }
-
-    public void proyectosPorCategoria(View view) {
-    }
-
-
-
 }
+
+
+
+
