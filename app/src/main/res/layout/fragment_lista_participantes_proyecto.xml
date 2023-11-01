@@ -30,4 +30,28 @@
         android:id="@+id/lv_listado_participantes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/btn_listado_participantes_detalle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:background="@drawable/boton_redondeado"
+        android:text="@string/detalles_del_usuario"/>
+
+    <Button
+        android:id="@+id/btn_listado_participantes_eliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginHorizontal="30dp"
+        android:layout_marginVertical="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:background="@drawable/boton_redondeado_danger"
+        android:text="@string/remover_participante"/>
 </LinearLayout>

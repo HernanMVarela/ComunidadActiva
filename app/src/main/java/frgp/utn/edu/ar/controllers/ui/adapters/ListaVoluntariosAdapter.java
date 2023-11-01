@@ -39,7 +39,7 @@ public class ListaVoluntariosAdapter extends ArrayAdapter<Voluntario> {
         nombreUsuario.setText(user.getNombre() + " " + user.getApellido());
         fechaUnion.setText("Se unió el " + user.getFecha_union().toString());
         if(user.getFecha_salida()!=null){
-            fechaSalida.setText("Salió el " + user.getFecha_union().toString());
+            fechaSalida.setText("Salió el " + user.getFecha_salida().toString());
         }else{
             fechaSalida.setText("Hasta la fecha");
         }
