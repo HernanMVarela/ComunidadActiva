@@ -165,4 +165,5 @@
     <string name="datos_del_publicante">Datos del publicante</string>
     <string name="lista_de_participantes">Lista de participantes</string>
     <string name="remover_participante">Remover participante</string>
+    <string name="finalizar">Finalizar</string>
 </resources>

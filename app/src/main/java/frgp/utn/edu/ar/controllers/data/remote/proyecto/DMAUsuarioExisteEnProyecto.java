@@ -1,24 +1,23 @@
 package frgp.utn.edu.ar.controllers.data.remote.proyecto;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Statement;
-import java.sql.Date;
 
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAUnirseAProyecto extends AsyncTask<String, Void, Boolean> {
+public class DMAUsuarioExisteEnProyecto extends AsyncTask<String, Void, Boolean> {
 
     private int idUserN, idProyectoN;
     private int filasafectadas;
 
-    public DMAUnirseAProyecto(int idUser, int idProyecto)
+    public DMAUsuarioExisteEnProyecto(int idUser, int idProyecto)
     {
         idUserN=idUser;
         idProyectoN=idProyecto;
@@ -32,20 +31,20 @@ public class DMAUnirseAProyecto extends AsyncTask<String, Void, Boolean> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-            String insert = "INSERT INTO USERS_PROYECTO (ID_USER, ID_PROYECTO, FECHA_UNION) VALUES (?, ?, ?)";
+            String query = "SELECT * FROM USERS_PROYECTO WHERE ID_USER = ? AND ID_PROYECTO = ?";
 
-            PreparedStatement preparedStatement = con.prepareStatement(insert);
+            PreparedStatement preparedStatement = con.prepareStatement(query);
 
             preparedStatement.setInt(1,idUserN);
-            preparedStatement.setInt(2, idProyectoN);
-            preparedStatement.setDate(3, new Date(System.currentTimeMillis()));
-
-            filasafectadas = preparedStatement.executeUpdate();
-            preparedStatement.close();
-            con.close();
-            if(filasafectadas!=0){
+            preparedStatement.setInt(2,idProyectoN);
+            ResultSet rs = preparedStatement.executeQuery();
+            if (rs.next()) {
+                preparedStatement.close();
+                con.close();
                 return true;
             }else{
+                preparedStatement.close();
+                con.close();
                 return false;
             }
         } catch (Exception e) {

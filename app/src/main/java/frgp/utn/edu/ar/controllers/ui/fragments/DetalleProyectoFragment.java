@@ -1,7 +1,9 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,12 +32,14 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectos;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectosSinDenuncia;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUnirseAProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUpdateProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUsuarioExisteEnProyecto;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
@@ -43,13 +47,11 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class DetalleProyectoFragment extends Fragment {
 
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private DetalleReporteViewModel mViewModel;
     private GoogleMap googlemaplocal;
     private TextView titulo, descripcion, estado, tipo, requerimiento, contacto, cupo;
-    private Button btnUnirseP;
-    private boolean control=false;
-    Usuario loggedInUser = null;
+    private Usuario loggedInUser = null;
     private Proyecto seleccionado;
     public static DetalleProyectoFragment newInstance() {return new DetalleProyectoFragment();}
 
@@ -88,7 +90,6 @@ public class DetalleProyectoFragment extends Fragment {
         requerimiento = view.findViewById(R.id.txt_detalle_proyecto_requisitos);
         contacto = view.findViewById(R.id.txt_detalle_proyecto_contacto);
         cupo = view.findViewById(R.id.txt_detalle_proyecto_cupo);
-        btnUnirseP = view.findViewById(R.id.btnUnirseDP);
 
         Bundle bundle = this.getArguments();
         /// OBTIENE EL REPORTE SELECCIONADO EN LA PANTALLA ANTERIOR
@@ -114,32 +115,37 @@ public class DetalleProyectoFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-        btnUnirseP.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(loggedInUser.getId()==seleccionado.getOwner().getId() && seleccionado.getEstado().getEstado().equals("ABIERTO")){
-                    DMAUpdateProyecto updatear = new DMAUpdateProyecto(seleccionado.getId(),1, getContext());
-                    updatear.execute();
-                }
-                else{
-                    controladorDeSituacion();
-                        if(control)
-                        {
-                        DMAUnirseAProyecto unirse = new DMAUnirseAProyecto(loggedInUser.getId(), seleccionado.getId(), btnUnirseP, getContext());
-                        unirse.execute();
-                        }
-                        else {
-                        DMAAbandonarProyecto abandonar = new DMAAbandonarProyecto(loggedInUser.getId(), seleccionado.getId(), btnUnirseP, getContext());
-                        abandonar.execute();
-                    }
-                }
-            }
-        });
+
+        Button bUnirse = view.findViewById(R.id.btn_detalle_proyecto_unirse);
+        Button bFinalizar = view.findViewById(R.id.btn_detalle_proyecto_finalizar);
         Button bUsuario = view.findViewById(R.id.btn_detalle_proyecto_owner);
         comportamiento_boton_usuario(bUsuario);
         Button bListado = view.findViewById(R.id.btn_detalle_proyecto_participantes);
         comportamiento_boton_participantes(bListado);
 
+        if(loggedInUser.getId()==seleccionado.getOwner().getId()) {
+            bUnirse.setVisibility(View.GONE);
+            bFinalizar.setVisibility(View.VISIBLE);
+            comportamiento_boton_finalizar(bFinalizar);
+        }else
+        {
+            bFinalizar.setVisibility(View.GONE);
+            bUnirse.setVisibility(View.VISIBLE);
+            bUnirse.setEnabled(true);
+            try {
+                DMAUsuarioExisteEnProyecto DMAExisteUsuario = new DMAUsuarioExisteEnProyecto(loggedInUser.getId(),seleccionado.getId());
+                DMAExisteUsuario.execute();
+                if(DMAExisteUsuario.get()){
+                    bUnirse.setEnabled(false);
+                    Drawable drawable = getResources().getDrawable(R.drawable.border_text);
+                    bUnirse.setBackground(drawable);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            comportamiento_boton_unirse(bUnirse);
+        }
     }
 
     private void cargarDatos(){
@@ -149,22 +155,7 @@ public class DetalleProyectoFragment extends Fragment {
         tipo.setText(seleccionado.getTipo().getTipo());
         requerimiento.setText(seleccionado.getRequerimientos());
         contacto.setText(seleccionado.getContacto());
-        cupo.setText(String.valueOf(seleccionado.getCupo()));
-        int idEstado = seleccionado.getEstado().getId();
-        if(loggedInUser.getId()==seleccionado.getOwner().getId()&&idEstado!=5){
-            /*
-            idEstado-=1;
-            spEstadoDP.setSelection(idEstado);
-            btnUnirseP.setText("Actualizar");
-            spEstadoDP.setVisibility(View.VISIBLE);
-            estado.setVisibility(View.GONE);
-            */
-        }
-        else{
-            //spEstadoDP.setVisibility(View.GONE);
-            //estado.setVisibility(View.VISIBLE);
-            controladorDeSituacion();
-        }
+        cupo.setText(String.valueOf(seleccionado.getCupo()-1));
     }
 
     @Override
@@ -172,19 +163,6 @@ public class DetalleProyectoFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(DetalleReporteViewModel.class);
         // TODO: Use the ViewModel
-    }
-    public void controladorDeSituacion(){
-        /*
-        spEstadoDP.setVisibility(View.GONE);
-        estado.setVisibility(View.VISIBLE);
-        DMABuscarUsuarioEnProyecto buscar = new DMABuscarUsuarioEnProyecto(loggedInUser.getId(),seleccionado.getId(),btnUnirseP,getContext());
-        buscar.execute();
-        if (btnUnirseP.getText().toString().equals("Unirse")) {
-            control = true;
-        } else {
-            control = false;
-        }
-         */
     }
 
     /// COMPORTAMIENTO CONTROLES
@@ -206,6 +184,40 @@ public class DetalleProyectoFragment extends Fragment {
                 bundle.putSerializable("proyectoactual", seleccionado);
                 NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                 navController.navigate(R.id.action_nav_detalle_proyecto_to_lista_participantes, bundle);
+            }
+        });
+    }
+
+    private void comportamiento_boton_unirse(Button bUnirse){
+        bUnirse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+                    DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),seleccionado.getId());
+                    DMAUnirseProyecto.execute();
+                    try {
+                        if(DMAUnirseProyecto.get()){
+                            Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        Log.e("Error", "No se pudo registrar la operación");
+                    }
+
+                }else{
+                    Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+    }
+
+    private void comportamiento_boton_finalizar(Button bFinalizar){
+        bFinalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
     }

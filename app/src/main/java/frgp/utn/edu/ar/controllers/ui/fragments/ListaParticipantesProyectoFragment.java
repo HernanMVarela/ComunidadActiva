@@ -3,6 +3,8 @@ package frgp.utn.edu.ar.controllers.ui.fragments;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -25,18 +27,21 @@ import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMABuscarUsuarioPorProyecto;
+import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.ListaParticipantesProyectoViewModel;
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class ListaParticipantesProyectoFragment extends Fragment {
-
+    private final SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private ListaParticipantesProyectoViewModel mViewModel;
     private static final String ARG_PROYECTO_ID = "proyecto_id";
     private ListView listado;
     private Proyecto seleccionado = null;
     private Voluntario voluntario = null;
     private View viewSeleccionado = null;
+    private Usuario loggedInUser = null;
     public static ListaParticipantesProyectoFragment newInstance(int proyectoId) {
         ListaParticipantesProyectoFragment fragment = new ListaParticipantesProyectoFragment();
         Bundle args = new Bundle();
@@ -53,6 +58,11 @@ public class ListaParticipantesProyectoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lista_participantes_proyecto, container, false);
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
+        if(loggedInUser == null){
+            Intent registro = new Intent(getContext(), HomeActivity.class);
+            startActivity(registro);
+        }
         Bundle bundle = this.getArguments();
         /// OBTIENE EL REPORTE SELECCIONADO EN LA PANTALLA ANTERIOR
         if (bundle != null) {
@@ -65,6 +75,12 @@ public class ListaParticipantesProyectoFragment extends Fragment {
                 comportamiento_listado(listado);
                 Button bDetalleUser = view.findViewById(R.id.btn_listado_participantes_detalle);
                 comportamiento_boton_usuario(bDetalleUser);
+                Button bEliminarSelected = view.findViewById(R.id.btn_listado_participantes_eliminar);
+                if(seleccionado.getOwner().getId()==loggedInUser.getId()){
+                    Drawable drawable = getResources().getDrawable(R.drawable.border_text);
+                    bEliminarSelected.setBackground(drawable);
+                }
+                comportamiento_boton_eliminar(bEliminarSelected);
             }else {
                 /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
                 Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
@@ -125,6 +141,19 @@ public class ListaParticipantesProyectoFragment extends Fragment {
                 view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_700));
                 // Almacena la vista del elemento seleccionado actualmente
                 viewSeleccionado = view;
+            }
+        });
+    }
+
+    private void comportamiento_boton_eliminar(Button bEliminar){
+        bEliminar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(seleccionado.getOwner().getId()==loggedInUser.getId()){
+                    Toast.makeText(getContext(),"No puedes eliminarte del tu proyecto",Toast.LENGTH_LONG).show();
+                }else{
+                    /// TERMINAR FUNCIONALIDAD
+                    Toast.makeText(getContext(),"Hagamos de cuenta que lo borraste",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
