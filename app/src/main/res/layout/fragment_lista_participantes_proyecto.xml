@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/green_100"
+    android:padding="15dp"
+    android:orientation="vertical"
+    tools:context=".ui.fragments.ListaParticipantesProyectoFragment">
+    <TextView
+        android:id="@+id/txt_lista_participantes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="@string/proyecto"
+        android:textSize="22sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:text="@string/lista_de_participantes"
+        android:textSize="20sp"/>
+
+    <ListView
+        android:id="@+id/lv_listado_participantes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

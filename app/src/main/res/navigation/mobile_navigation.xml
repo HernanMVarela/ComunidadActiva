@@ -135,7 +135,18 @@
         android:id="@+id/detalleProyectoFragment"
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.DetalleProyectoFragment"
         android:label="Detalles del Proyecto"
-        tools:layout="@layout/fragment_detalle_proyectos" />
+        tools:layout="@layout/fragment_detalle_proyectos">
+        <action
+            android:id="@+id/action_nav_detalle_proyecto_to_lista_participantes"
+            app:destination="@id/listaParticipantesProyecto"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/listaParticipantesProyecto"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.ListaParticipantesProyectoFragment"
+        android:label="Lista de participantes"
+        tools:layout="@layout/fragment_lista_participantes_proyecto" />
 
     <!-- FRAGMENTOS MODERADOR -->
     <fragment

@@ -137,6 +137,8 @@ public class DetalleProyectoFragment extends Fragment {
         });
         Button bUsuario = view.findViewById(R.id.btn_detalle_proyecto_owner);
         comportamiento_boton_usuario(bUsuario);
+        Button bListado = view.findViewById(R.id.btn_detalle_proyecto_participantes);
+        comportamiento_boton_participantes(bListado);
 
     }
 
@@ -192,6 +194,18 @@ public class DetalleProyectoFragment extends Fragment {
                 // BOTON DETALLE DE USUARIO REPORTE
                 UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(seleccionado.getOwner());
                 dialogFragment.show(getFragmentManager(), "user_detail");
+            }
+        });
+    }
+
+    private void comportamiento_boton_participantes(Button bParticipantes){
+        bParticipantes.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON LISTADO DE PARTICIPANTES
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("proyectoactual", seleccionado);
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.navigate(R.id.action_nav_detalle_proyecto_to_lista_participantes, bundle);
             }
         });
     }

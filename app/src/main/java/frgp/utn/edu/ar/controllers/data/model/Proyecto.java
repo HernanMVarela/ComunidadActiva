@@ -7,13 +7,13 @@ import java.util.List;
 public class Proyecto extends Publicacion implements Serializable {
     private String descripcion;
     private int cupo;
-    private List<Usuario> voluntarios;
+    private List<Voluntario> voluntarios;
     private TipoProyecto tipo;
     private String requerimientos;
     private String contacto;
     private EstadoProyecto estado;
 
-    public Proyecto(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, int cupo, List<Usuario> voluntarios, TipoProyecto tipo, String requerimientos, String contacto, EstadoProyecto estado) {
+    public Proyecto(int id, String titulo, String descripcion, double latitud, double longitud, Date fecha, Usuario owner, int cupo, List<Voluntario> voluntarios, TipoProyecto tipo, String requerimientos, String contacto, EstadoProyecto estado) {
         super(id, titulo, descripcion, latitud,longitud, fecha, owner);
         this.descripcion = descripcion;
         this.cupo = cupo;
@@ -56,11 +56,11 @@ public class Proyecto extends Publicacion implements Serializable {
         this.cupo = cupo;
     }
 
-    public List<Usuario> getVoluntarios() {
+    public List<Voluntario> getVoluntarios() {
         return voluntarios;
     }
 
-    public void setVoluntarios(List<Usuario> voluntarios) {
+    public void setVoluntarios(List<Voluntario> voluntarios) {
         this.voluntarios = voluntarios;
     }
 
