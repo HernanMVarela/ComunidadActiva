@@ -123,7 +123,7 @@ public class DetalleReporteFragment extends Fragment {
             public void onClick(View v) {
                 // BOTON DETALLE DE USUARIO REPORTE
                 UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(seleccionado.getOwner());
-                dialogFragment.show(getFragmentManager(), "user_detail_reporte");
+                dialogFragment.show(getFragmentManager(), "user_detail");
             }
         });
 

@@ -37,6 +37,7 @@ import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyect
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUnirseAProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUpdateProyecto;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
@@ -134,6 +135,9 @@ public class DetalleProyectoFragment extends Fragment {
                 }
             }
         });
+        Button bUsuario = view.findViewById(R.id.btn_detalle_proyecto_owner);
+        comportamiento_boton_usuario(bUsuario);
+
     }
 
     private void cargarDatos(){
@@ -180,4 +184,16 @@ public class DetalleProyectoFragment extends Fragment {
         }
          */
     }
+
+    /// COMPORTAMIENTO CONTROLES
+    private void comportamiento_boton_usuario(Button bUsuario){
+        bUsuario.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON DETALLE DE USUARIO REPORTE
+                UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(seleccionado.getOwner());
+                dialogFragment.show(getFragmentManager(), "user_detail");
+            }
+        });
+    }
+
 }
