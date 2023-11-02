@@ -100,6 +100,9 @@
     <string name="estado_proyecto">Estado de Proyecto</string>
     <string name="rellenar_antes_de_mostrar">Rellenar antes de Mostrar</string>
     <string name="ver_detalle">Ver Detalle</string>
+    <string name="ingresar_titulo_denuncia_proyecto">Ingrese un titulo para su denuncia.</string>
+    <string name="ingresar_descripcion_denuncia_proyecto">Ingrese una descripción para su denuncia.</string>
+    <string name="boton_denunciar">Denunciar</string>
 
     <string name="usuario_creador">Creador</string>
 
