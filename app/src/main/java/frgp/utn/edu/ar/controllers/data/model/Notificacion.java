@@ -1,21 +1,26 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class Notificacion {
     private int ID;
     private int IdUser;
     private String descripcion;
-    private Date fecha;
-
+    private Timestamp fecha;
     private boolean lectura;
 
-    public Notificacion(int ID, int idUser, String descripcion, Date fecha, boolean lectura) {
+
+    public Notificacion(int ID, int idUser, String descripcion, Timestamp fecha, boolean lectura) {
         this.ID = ID;
         IdUser = idUser;
         this.descripcion = descripcion;
         this.fecha = fecha;
         this.lectura = lectura;
+    }
+
+    public Notificacion() {
+
     }
 
     @Override
@@ -27,9 +32,6 @@ public class Notificacion {
         sb.append("Fecha: ").append(fecha).append("\n");
         sb.append("Lectura: ").append(lectura).append("\n");
         return sb.toString();
-    }
-
-    public Notificacion() {
     }
 
     public int getID() {
@@ -60,7 +62,7 @@ public class Notificacion {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
     }
 

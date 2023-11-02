@@ -105,7 +105,7 @@ public class RegistroActivity extends AppCompatActivity implements View.OnFocusC
             Toast.makeText(this, "Usuario creado correctamente", Toast.LENGTH_LONG).show();
             Usuario usuario = usuarioRepository.getUserByUserName(userName.getText().toString());
             logger.log(usuario.getId(), LogsEnum.REGISTRO_USUARIO, "Se registro el usuario " + usuario.getUsername());
-            mailService.sendMail(usuario.getCorreo(), "BIENVENIDO A COMUNIDAD ACTIVA", String.format("Hola %s, tu usuario fue creado correctamente", usuario.getUsername()));
+            mailService.sendMail(usuario.getCorreo(), "BIENVENIDO A COMUNIDAD ACTIVA", String.format("Hola %s, tu usuario con el rol %s fue creado correctamente, C", usuario.getUsername(), usuario.getTipo().getTipo()));
             startActivity(intent);
         }else{
             Toast.makeText(this, "Error al crear el usuario", Toast.LENGTH_LONG).show();

@@ -22,6 +22,9 @@ import androidx.fragment.app.Fragment;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -108,7 +111,18 @@ public class ActividadRecFragment extends Fragment {
             canvas.drawLine(20, y, pageInfo.getPageWidth() - 100, y, paint);
             y += 10;
             for (Logs log : listaLogs) {
-                canvas.drawText(log.getFecha() + " | " + log.getDescripcion(), 100, y, paint);
+
+                String timeStamp = new Timestamp(log.getFecha().getTime()).toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date date = null;
+                try {
+                    date = sdf.parse(timeStamp);
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+                sdf = new SimpleDateFormat("d/MM/yyyy h:m a");
+
+                canvas.drawText(sdf.format(date) + " | " + log.getDescripcion(), 100, y, paint);
                 y += 10;
                 paint.setStrokeWidth(1);
                 canvas.drawLine(20, y, pageInfo.getPageWidth() - 100, y, paint);

@@ -31,7 +31,7 @@ public class DMANuevaNotificacion extends AsyncTask<String, Void, Boolean> {
             PreparedStatement preparedStatement = con.prepareStatement("INSERT INTO NOTIFICACIONES (id_user, descripcion, fecha, lectura) VALUES (?, ?, ?, ?)");
             preparedStatement.setInt(1, nuevo.getIdUser());
             preparedStatement.setString(2, nuevo.getDescripcion());
-            preparedStatement.setDate(3, new Date(nuevo.getFecha().getTime()));
+            preparedStatement.setTimestamp(3, new java.sql.Timestamp(nuevo.getFecha().getTime()));
             preparedStatement.setBoolean(4, nuevo.getLectura());
 
             int rowsAffected = preparedStatement.executeUpdate();

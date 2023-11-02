@@ -41,7 +41,7 @@ public class DMAListarNotificacionesNoLeidasPorUsuario extends AsyncTask<String,
                 notificacion.setID(rs.getInt("ID"));
                 notificacion.setIdUser(rs.getInt("ID_USER"));
                 notificacion.setDescripcion(rs.getString("DESCRIPCION"));
-                notificacion.setFecha(rs.getDate("FECHA"));
+                notificacion.setFecha(rs.getTimestamp("FECHA"));
                 notificacion.setLectura(rs.getBoolean("LECTURA"));
                 notificaciones.add(notificacion);
             }

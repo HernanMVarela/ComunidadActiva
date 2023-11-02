@@ -40,6 +40,8 @@ import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class NuevoReporteFragment extends Fragment {
@@ -53,6 +55,7 @@ public class NuevoReporteFragment extends Fragment {
     private Spinner spinTipoReporte;
     private int selectedSpinnerPosition = 0;
     private EditText titulo, descripcion;
+    LogService logService = new LogService();
     public static NuevoReporteFragment newInstance() {
         return new NuevoReporteFragment();
     }
@@ -161,6 +164,7 @@ public class NuevoReporteFragment extends Fragment {
                         DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo,v.getContext());
                         DMAGuardar.execute(); // GUARDA EL REPORTE EN DB
                         limpiarCampos(); // LIMPIA CAMPOS DE PANTALLA
+                        logService.log(loggedInUser.getId(), LogsEnum.CREACION_REPORTE, String.format("Se creó el reporte %s", nuevo.getTitulo()));
                         navigateToBuscarReporte(); // REGRESA A BUSCARREPORTES
                     }
                 }catch (Exception e){

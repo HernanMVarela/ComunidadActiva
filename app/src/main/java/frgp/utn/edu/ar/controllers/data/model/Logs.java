@@ -1,5 +1,6 @@
 package frgp.utn.edu.ar.controllers.data.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
@@ -9,9 +10,9 @@ public class Logs {
     private int IdUser;
     private LogsEnum accion;
     private String descripcion;
-    private Date fecha;
+    private Timestamp fecha;
 
-    public Logs(int ID, int idUser, LogsEnum accion, String descripcion, Date fecha) {
+    public Logs(int ID, int idUser, LogsEnum accion, String descripcion, Timestamp fecha) {
         this.ID = ID;
         IdUser = idUser;
         this.accion = accion;
@@ -65,11 +66,11 @@ public class Logs {
         this.descripcion = descripcion;
     }
 
-    public Date getFecha() {
+    public Timestamp getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Timestamp fecha) {
         this.fecha = fecha;
     }
 }

@@ -33,7 +33,7 @@ public class DMANuevoLog extends AsyncTask<String, Void, Boolean> {
             preparedStatement.setInt(1, nuevo.getIdUser());
             preparedStatement.setString(2, nuevo.getAccion().name());
             preparedStatement.setString(3, nuevo.getDescripcion());
-            preparedStatement.setDate(4, new java.sql.Date(nuevo.getFecha().getTime()));
+            preparedStatement.setTimestamp(4, new java.sql.Timestamp(nuevo.getFecha().getTime()));
 
             int rowsAffected = preparedStatement.executeUpdate();
             preparedStatement.close();
