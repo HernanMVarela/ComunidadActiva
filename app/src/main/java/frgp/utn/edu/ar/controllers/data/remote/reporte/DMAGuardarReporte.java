@@ -14,23 +14,19 @@ import java.sql.Statement;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAGuardarReporte extends AsyncTask<String, Void, String> {
+public class DMAGuardarReporte extends AsyncTask<String, Void, Boolean> {
 
-    private Context context;
     private Reporte nuevo;
-    private static String result2;
     private int dataRowModif;
 
     //Constructor
-    public DMAGuardarReporte(Reporte nuevo, Context ct)
+    public DMAGuardarReporte(Reporte nuevo)
     {
         this.nuevo = nuevo;
-        this.context = ct;
     }
 
     @Override
-    protected String doInBackground(String... urls) {
-        String response = "";
+    protected Boolean doInBackground(String... urls) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -58,22 +54,14 @@ public class DMAGuardarReporte extends AsyncTask<String, Void, String> {
             ps.setInt(11, nuevo.getEstado().getId());
 
             dataRowModif = ps.executeUpdate();
-            result2 = " ";
-
+            if(dataRowModif!=0){
+                return true;
+            }
+            return false;
         }
         catch(Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
-        }
-        return response;
-
-    }
-    @Override
-    protected void onPostExecute(String response) {
-        if(dataRowModif!=0){
-            Toast.makeText(context, "Reporte creado exitosamente", Toast.LENGTH_SHORT).show();
-        }else{
-            Toast.makeText(context, "No se pudo guardar el reporte", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

@@ -42,14 +42,13 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 public class DetalleReporteFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private GoogleMap googlemaplocal;
     SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private DetalleReporteViewModel mViewModel;
     private TextView titulo, descripcion, estado, fecha, tipo;
     private RatingBar puntaje;
     private ImageView imagen;
-    Button bUsuario;
-    Usuario loggedInUser = null;
+    private Button bUsuario;
+    private Usuario loggedInUser = null;
 
     private Reporte seleccionado;
     public static DetalleReporteFragment newInstance() {
@@ -60,13 +59,11 @@ public class DetalleReporteFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             // Verifica si tiene permisos de ubicación
             if (googleMap != null) {
-                googlemaplocal = googleMap;
-
                 if (seleccionado != null) {
                     // Agrega un marcador en la ubicación del reporte por defecto
                     LatLng ubicacionReporte = new LatLng(seleccionado.getLatitud(), seleccionado.getLongitud());
-                    googlemaplocal.addMarker(new MarkerOptions().position(ubicacionReporte).title(seleccionado.getTitulo()));
-                    googlemaplocal.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionReporte, 15));
+                    googleMap.addMarker(new MarkerOptions().position(ubicacionReporte).title(seleccionado.getTitulo()));
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionReporte, 15));
                 }
             } else {
                 Toast.makeText(getContext(), "ERROR AL CARGAR EL MAPA", Toast.LENGTH_SHORT).show();
@@ -119,6 +116,19 @@ public class DetalleReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+        comportamiento_boton_usuario(bUsuario);
+
+        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
+        comportamiento_boton_solicitar_cierre(bSolicitarCierre);
+
+        Button bValorar = view.findViewById(R.id.btnValorarReporte);
+        comportamiento_boton_valorar(bValorar);
+
+        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
+        comportamiento_boton_denunciar(bDenunciar);
+    }
+
+    private void comportamiento_boton_usuario(Button bUsuario){
         bUsuario.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON DETALLE DE USUARIO REPORTE
@@ -126,8 +136,9 @@ public class DetalleReporteFragment extends Fragment {
                 dialogFragment.show(getFragmentManager(), "user_detail");
             }
         });
+    }
 
-        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
+    private void comportamiento_boton_solicitar_cierre(Button bSolicitarCierre){
         bSolicitarCierre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Bundle bundle = new Bundle();
@@ -160,7 +171,9 @@ public class DetalleReporteFragment extends Fragment {
                 }
             }
         });
-        Button bValorar = view.findViewById(R.id.btnValorarReporte);
+    }
+
+    private void comportamiento_boton_valorar(Button bValorar){
         bValorar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON VALORAR REPORTE
@@ -168,19 +181,21 @@ public class DetalleReporteFragment extends Fragment {
                 args.putSerializable("selected_report", seleccionado);
                 args.putSerializable("logged_in_user", loggedInUser);
                 ValorarReporteDialogFragment dialogFragment = new ValorarReporteDialogFragment();
-
                 dialogFragment.setArguments(args); // Establece el Bundle como argumento
                 dialogFragment.show(getFragmentManager(), "layout_rating_reporte");
             }
         });
+    }
 
-        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
+    private void comportamiento_boton_denunciar(Button bDenunciar){
         bDenunciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON DENUNCIAR REPORTE
                 Bundle args = new Bundle();
+                /// AGREGO REPORTE Y USUARIO
                 args.putSerializable("selected_report", seleccionado);
                 args.putSerializable("logged_in_user", loggedInUser);
+                /// INICIO DIALOG CON LOS ATRIBUTOS DEL BUNDLE
                 DenunciaReporteDialogFragment dialogFragment = new DenunciaReporteDialogFragment();
                 dialogFragment.setArguments(args); // Establece el Bundle como argumento
                 dialogFragment.show(getFragmentManager(), "layout_denuciar_reporte");
@@ -207,6 +222,7 @@ public class DetalleReporteFragment extends Fragment {
         }else{
             puntaje.setRating(0);
         }
+
         DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
         DMAImagen.execute();
     }

@@ -35,6 +35,7 @@ import frgp.utn.edu.ar.controllers.data.model.TipoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMASpinnerTiposReporte;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarPuntajeUsuario;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoReporteViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
@@ -88,7 +89,6 @@ public class NuevoReporteFragment extends Fragment {
             DMASpinnerTiposReporte dataActivityTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext(),selectedSpinnerPosition);
             dataActivityTiposReporte.execute();
         }
-
         return view;
     }
     @Override
@@ -123,7 +123,7 @@ public class NuevoReporteFragment extends Fragment {
             // Referencia al ImageView - prueba de imagen
             ImageView imgViewFotoTomada = getView().findViewById(R.id.imgViewFotoTomada);
             // Modificación de tamaño - prueba de imagen
-            Bitmap imagenRedimensionada = Bitmap.createScaledBitmap(imagenCapturada, imagenCapturada.getWidth()*2, imagenCapturada.getHeight()*2, true);
+            Bitmap imagenRedimensionada = Bitmap.createScaledBitmap(imagenCapturada, imagenCapturada.getWidth()*3, imagenCapturada.getHeight()*3, true);
             // Configura la imagen capturada en el ImageView
             imgViewFotoTomada.setImageBitmap(imagenRedimensionada);
         }
@@ -161,11 +161,16 @@ public class NuevoReporteFragment extends Fragment {
                     sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
                     if(checkFormValid()){ // VALIDA CAMPOS ANTES DE GUARDAR REPORTE
                         Reporte nuevo = cargarDatos(); // CARGA LOS DATOS EN EL NUEVO REPORTE
-                        DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo,v.getContext());
+                        DMAGuardarReporte DMAGuardar = new DMAGuardarReporte(nuevo);
                         DMAGuardar.execute(); // GUARDA EL REPORTE EN DB
-                        limpiarCampos(); // LIMPIA CAMPOS DE PANTALLA
-                        logService.log(loggedInUser.getId(), LogsEnum.CREACION_REPORTE, String.format("Se creó el reporte %s", nuevo.getTitulo()));
-                        navigateToBuscarReporte(); // REGRESA A BUSCARREPORTES
+                        if(DMAGuardar.get()){
+                            limpiarCampos(); // LIMPIA CAMPOS DE PANTALLA
+                            logService.log(loggedInUser.getId(), LogsEnum.CREACION_REPORTE, String.format("Se creó el reporte %s", nuevo.getTitulo()));
+                            modificar_puntaje_usuario();
+                            navigateToBuscarReporte(); // REGRESA A BUSCARREPORTES
+                        } else {
+                            Toast.makeText(v.getContext(),"No se pudo crear el reporte", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }catch (Exception e){
                     Log.e("Error", e.toString());
@@ -174,6 +179,21 @@ public class NuevoReporteFragment extends Fragment {
         });
     }
 
+    private void modificar_puntaje_usuario(){
+        try {
+            DMAModificarPuntajeUsuario DMAPuntaje = new DMAModificarPuntajeUsuario(loggedInUser);
+            DMAPuntaje.execute();
+            if(DMAPuntaje.get()){
+                sharedPreferences.saveUsuarioData(getContext(), loggedInUser);
+                Toast.makeText(getContext(),"Reporte creado", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(),"Reporte creado con errores", Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
     private void comportamiento_boton_ubicacion(Button bUbicacion){
         bUbicacion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -198,7 +218,7 @@ public class NuevoReporteFragment extends Fragment {
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST);
                 } else {
-                    // Si no tiene el permiso, se pide al usuario
+                    // Si no tiene el permiso, se lo pide al usuario
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PIC_REQUEST);
                 }
             }
@@ -215,7 +235,7 @@ public class NuevoReporteFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> parentView) {
-                // No es necesario hacer nada aquí en este caso
+                // No es necesario hacer nada
             }
         });
     }
@@ -254,6 +274,8 @@ public class NuevoReporteFragment extends Fragment {
         // Toma las coordenadas desde el ViewModel compartido con el UbicacionFragment
         double latitude = sharedLocationViewModel.getLatitude();
         double longitude = sharedLocationViewModel.getLongitude();
+        int puntaje = loggedInUser.getPuntuacion() + 5;
+        loggedInUser.setPuntuacion(puntaje);
         // Crea el objeto Reporte y carga los datos
         Reporte nuevoReporte = new Reporte();
         nuevoReporte.setLatitud(latitude);

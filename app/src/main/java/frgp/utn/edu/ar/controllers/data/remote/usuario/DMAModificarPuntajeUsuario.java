@@ -14,11 +14,9 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 public class DMAModificarPuntajeUsuario extends AsyncTask<String, Void, Boolean> {
 
     private Usuario usuario;
-    private Context context;
 
-    public DMAModificarPuntajeUsuario(Usuario usuario, Context context) {
+    public DMAModificarPuntajeUsuario(Usuario usuario) {
         this.usuario = usuario;
-        this.context = context;
     }
 
     @Override
@@ -26,7 +24,7 @@ public class DMAModificarPuntajeUsuario extends AsyncTask<String, Void, Boolean>
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("UPDATE USUARIOS SET PUNTAJE = ? WHERE id = ?");
+            PreparedStatement preparedStatement = con.prepareStatement("UPDATE USUARIOS SET PUNTUACION = ? WHERE id = ?");
 
             preparedStatement.setInt(1, usuario.getPuntuacion());
             preparedStatement.setInt(2, usuario.getId());

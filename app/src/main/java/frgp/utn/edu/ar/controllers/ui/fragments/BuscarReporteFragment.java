@@ -244,6 +244,27 @@ public class BuscarReporteFragment extends Fragment {
             Toast.makeText(this.getContext(), "Debes seleccionar un reporte", Toast.LENGTH_LONG).show();
         }
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Recupera los datos del Shared
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
+
+        if(loggedInUser == null){ /// VALIDA QUE EXISTA USUARIO
+            Intent registro = new Intent(getContext(), HomeActivity.class);
+            startActivity(registro);
+        }
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapListaReportes);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }else{
+            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, switch_abiertos.isChecked());
+            DMAListaReportes.execute();
+        }
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
