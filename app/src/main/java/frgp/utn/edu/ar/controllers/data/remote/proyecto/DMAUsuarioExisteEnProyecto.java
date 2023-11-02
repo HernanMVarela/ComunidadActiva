@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMAUsuarioExisteEnProyecto extends AsyncTask<String, Void, Boolean> {
@@ -41,7 +42,7 @@ public class DMAUsuarioExisteEnProyecto extends AsyncTask<String, Void, Boolean>
             if (rs.next()) {
                 preparedStatement.close();
                 con.close();
-                return true;
+                return rs.getDate("FECHA_SALIDA") != null;
             }else{
                 preparedStatement.close();
                 con.close();

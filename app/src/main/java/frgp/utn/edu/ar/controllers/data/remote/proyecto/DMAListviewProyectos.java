@@ -51,7 +51,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
             String query = "SELECT P.ID, P.TITULO, P.DESCRIPCION, P.LATITUD, P.LONGITUD, P.CUPO, P.ID_USER, P.ID_TIPO AS PROYECTO_ID_TIPO, P.ID_ESTADO AS PROYECTO_ID_ESTADO, P.CONTACTO, P.AYUDA_ESPECIFICA, " +
-                    "U.USERNAME, U.PASSWORD, U.COD_RECUPERACION, U.PUNTUACION, U.NOMBRE, U.APELLIDO, U.TELEFONO, U.CORREO, U.FECHA_NAC, U.CREACION, U.ID_ESTADO AS USUARIO_ID_ESTADO, U.ID_TIPO AS USUARIO_ID_TIPO, " +
+                    "U.USERNAME, U.PUNTUACION, U.NOMBRE, U.APELLIDO, U.TELEFONO, U.CORREO, U.FECHA_NAC, U.CREACION, U.ID_ESTADO AS USUARIO_ID_ESTADO, U.ID_TIPO AS USUARIO_ID_TIPO, " +
                     "TP.TIPO AS TIPO_PROYECTO, EP.ESTADO AS ESTADO_PROYECTO, " +
                     "UT.TIPO AS TIPO_USUARIO, EU.ESTADO AS ESTADO_USUARIO " +
                     "FROM PROYECTOS AS P " +
@@ -119,8 +119,6 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 Usuario usuario = new Usuario();
                 usuario.setId(rs.getInt("ID_USER"));
                 usuario.setUsername(rs.getString("USERNAME"));
-                usuario.setPassword(rs.getString("PASSWORD"));
-                usuario.setCodigo_recuperacion(rs.getString("COD_RECUPERACION"));
                 usuario.setPuntuacion(rs.getInt("PUNTUACION"));
                 usuario.setNombre(rs.getString("NOMBRE"));
                 usuario.setApellido(rs.getString("APELLIDO"));

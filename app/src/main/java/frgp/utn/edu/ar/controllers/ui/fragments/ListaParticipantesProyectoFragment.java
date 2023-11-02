@@ -23,10 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
-import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
-import frgp.utn.edu.ar.controllers.data.remote.usuario.DMABuscarUsuarioPorProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioPorProyecto;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.ListaParticipantesProyectoViewModel;

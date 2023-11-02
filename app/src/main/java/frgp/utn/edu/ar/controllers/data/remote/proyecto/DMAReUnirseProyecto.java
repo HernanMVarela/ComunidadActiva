@@ -1,10 +1,6 @@
 package frgp.utn.edu.ar.controllers.data.remote.proyecto;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,16 +10,14 @@ import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAAbandonarProyecto extends AsyncTask<String, Void, Boolean> {
+public class DMAReUnirseProyecto extends AsyncTask<String, Void, Boolean> {
 
     private int idUserN, idProyectoN;
-
-    public DMAAbandonarProyecto(int idUser, int idProyecto)
+    public DMAReUnirseProyecto(int idUser, int idProyecto)
     {
         idUserN=idUser;
         idProyectoN=idProyecto;
     }
-
     @Override
     protected Boolean doInBackground(String... urls) {
 
@@ -32,13 +26,14 @@ public class DMAAbandonarProyecto extends AsyncTask<String, Void, Boolean> {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
-            String insert = "UPDATE USERS_PROYECTO SET FECHA_SALIDA = ? WHERE ID_USER = ? AND ID_PROYECTO = ? ;";
+            String insert = "UPDATE USERS_PROYECTO SET FECHA_UNION = ?, FECHA_SALIDA = ? WHERE ID_USER = ? AND ID_PROYECTO = ? ;";
 
             PreparedStatement preparedStatement = con.prepareStatement(insert);
 
             preparedStatement.setDate(1, new Date(System.currentTimeMillis()));
-            preparedStatement.setInt(2,idUserN);
-            preparedStatement.setInt(3, idProyectoN);
+            preparedStatement.setDate(2,null);
+            preparedStatement.setInt(3,idUserN);
+            preparedStatement.setInt(4, idProyectoN);
 
             filasafectadas = preparedStatement.executeUpdate();
             preparedStatement.close();

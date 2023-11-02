@@ -32,23 +32,26 @@
             android:name=".ui.activities.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:theme="@style/Theme.ComunidadActiva.NoActionBar" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.activities.RecuperoPassActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false" />
 
         <activity
             android:name=".ui.activities.HomeActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false" />
         <activity
             android:name=".ui.activities.RegistroActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:exported="false" />
 
     </application>

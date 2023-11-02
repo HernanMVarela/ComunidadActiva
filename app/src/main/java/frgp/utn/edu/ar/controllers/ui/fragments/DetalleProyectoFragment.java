@@ -35,6 +35,8 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACargarVoluntario;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAReUnirseProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectos;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectosSinDenuncia;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUnirseAProyecto;
@@ -53,6 +55,7 @@ public class DetalleProyectoFragment extends Fragment {
     private TextView titulo, descripcion, estado, tipo, requerimiento, contacto, cupo;
     private Usuario loggedInUser = null;
     private Proyecto seleccionado;
+    private Voluntario existe = null;
     public static DetalleProyectoFragment newInstance() {return new DetalleProyectoFragment();}
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -132,18 +135,6 @@ public class DetalleProyectoFragment extends Fragment {
             bFinalizar.setVisibility(View.GONE);
             bUnirse.setVisibility(View.VISIBLE);
             bUnirse.setEnabled(true);
-            try {
-                DMAUsuarioExisteEnProyecto DMAExisteUsuario = new DMAUsuarioExisteEnProyecto(loggedInUser.getId(),seleccionado.getId());
-                DMAExisteUsuario.execute();
-                if(DMAExisteUsuario.get()){
-                    bUnirse.setEnabled(false);
-                    Drawable drawable = getResources().getDrawable(R.drawable.border_text);
-                    bUnirse.setBackground(drawable);
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
             comportamiento_boton_unirse(bUnirse);
         }
     }
@@ -176,6 +167,30 @@ public class DetalleProyectoFragment extends Fragment {
         });
     }
 
+    private void comportamiento_boton_unirse(Button bUnirse){
+        bUnirse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    DMACargarVoluntario DMAExisteUsuario = new DMACargarVoluntario(loggedInUser.getId(),seleccionado.getId());
+                    DMAExisteUsuario.execute();
+                    existe = DMAExisteUsuario.get();
+                    if(existe!=null){
+                        if(existe.isActivo()){
+                            bUnirse.setText("ABANDONAR PROYECTO");
+                            comportamiento_abandonar(bUnirse);
+                        }else{
+                            comportamiento_reunirse(bUnirse);
+                        }
+                    }else{
+                        comportamiento_unirse(bUnirse);
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     private void comportamiento_boton_participantes(Button bParticipantes){
         bParticipantes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -188,29 +203,63 @@ public class DetalleProyectoFragment extends Fragment {
         });
     }
 
-    private void comportamiento_boton_unirse(Button bUnirse){
-        bUnirse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
-                    DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),seleccionado.getId());
-                    DMAUnirseProyecto.execute();
-                    try {
-                        if(DMAUnirseProyecto.get()){
-                            Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
-                        }
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        Log.e("Error", "No se pudo registrar la operación");
-                    }
-
-                }else{
-                    Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
-                }
+    private void comportamiento_abandonar(Button bAbandonar){
+        try {
+            DMAAbandonarProyecto DMAAbandonar = new DMAAbandonarProyecto(loggedInUser.getId(),seleccionado.getId());
+            DMAAbandonar.execute();
+            if(DMAAbandonar.get()){
+                bAbandonar.setText("UNIRSE");
+                existe.setActivo(false);
+                Toast.makeText(getContext(),"Has abandonado el proyecto!", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(getContext(),"Ha ocurrido un error", Toast.LENGTH_LONG).show();
             }
-        });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    private void comportamiento_unirse(Button bUnirse){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+            DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),seleccionado.getId());
+            DMAUnirseProyecto.execute();
+            try {
+                if(DMAUnirseProyecto.get()){
+                    bUnirse.setText("ABANDONAR PROYECTO");
+                    existe.setActivo(true);
+                    Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e("Error", "No se pudo registrar la operación");
+            }
+
+        }else{
+            Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    private void comportamiento_reunirse(Button bUnirse){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+            DMAReUnirseProyecto DMAREUnirse = new DMAReUnirseProyecto(loggedInUser.getId(),seleccionado.getId());
+            DMAREUnirse.execute();
+            try {
+                if(DMAREUnirse.get()){
+                    existe.setActivo(true);
+                    bUnirse.setText("ABANDONAR PROYECTO");
+                    Toast.makeText(getContext(),"Voluntario reingresado!", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+                Log.e("Error", "No se pudo registrar la operación");
+            }
+        }else{
+            Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void comportamiento_boton_finalizar(Button bFinalizar){
