@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompatSideChannelService;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -43,6 +44,8 @@ import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUnirseAProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUpdateProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUsuarioExisteEnProyecto;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaProyectoDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
@@ -125,15 +128,19 @@ public class DetalleProyectoFragment extends Fragment {
         comportamiento_boton_usuario(bUsuario);
         Button bListado = view.findViewById(R.id.btn_detalle_proyecto_participantes);
         comportamiento_boton_participantes(bListado);
+        Button bDenunciar = view.findViewById(R.id.btn_detalle_proyecto_denunciar);
+        comportamiento_boton_denunciar(bDenunciar);
 
         if(loggedInUser.getId()==seleccionado.getOwner().getId()) {
             bUnirse.setVisibility(View.GONE);
+            bDenunciar.setVisibility(View.GONE);
             bFinalizar.setVisibility(View.VISIBLE);
             comportamiento_boton_finalizar(bFinalizar);
         }else
         {
             bFinalizar.setVisibility(View.GONE);
             bUnirse.setVisibility(View.VISIBLE);
+            bDenunciar.setVisibility(View.VISIBLE);
             bUnirse.setEnabled(true);
             comportamiento_boton_unirse(bUnirse);
         }
@@ -266,6 +273,24 @@ public class DetalleProyectoFragment extends Fragment {
         bFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+            }
+        });
+    }
+    private void comportamiento_boton_denunciar(Button bDenunciar){
+        bDenunciar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
+                    Toast.makeText(getContext(),"El proyecto ya se encuentra denunciado, gracias por tu interes.", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Bundle args = new Bundle();
+                    args.putInt("DidProyecto",seleccionado.getId());
+                    args.putInt("DidUsuario",loggedInUser.getId());
+                    DenunciaProyectoDialogFragment dialogFragment = new DenunciaProyectoDialogFragment();
+                    dialogFragment.setArguments(args);
+                    dialogFragment.show(getFragmentManager(), "layout_denuciar_proyecto");
+                }
 
             }
         });
