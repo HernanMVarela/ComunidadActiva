@@ -19,6 +19,9 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarVotosReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarResenia;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAVerificarUsuarioVoto;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class ValorarReporteDialogFragment extends DialogFragment {
     Button btnAceptar;
@@ -26,6 +29,8 @@ public class ValorarReporteDialogFragment extends DialogFragment {
     RatingBar rtbValoracion;
     Reporte selectedReport = null;
     Usuario loggedInUser = null;
+    LogService logService = new LogService();
+    NotificacionService notificacionService = new NotificacionService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,6 +71,9 @@ public class ValorarReporteDialogFragment extends DialogFragment {
 
                     DMAVerificarUsuarioVoto DMAUserVoto = new DMAVerificarUsuarioVoto(getContext(),resenia);
                     DMAUserVoto.execute();
+
+                    logService.log(loggedInUser.getId(), LogsEnum.VALORAR_REPORTE, String.format("Solicitaste el cierre del reporte %s", selectedReport.getTitulo()));
+                    notificacionService.notificacion(selectedReport.getOwner().getId(), String.format("El %s %s solicito el cierre del reporte %s", loggedInUser.getTipo().getTipo(), loggedInUser.getUsername(), selectedReport.getTitulo()));
 
                 }else{
                     Toast.makeText(getContext(), "Debes elegir un valor", Toast.LENGTH_LONG).show();

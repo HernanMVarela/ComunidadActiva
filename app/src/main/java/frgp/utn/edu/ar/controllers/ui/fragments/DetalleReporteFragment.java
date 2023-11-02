@@ -48,6 +48,9 @@ public class DetalleReporteFragment extends Fragment {
     private RatingBar puntaje;
     private ImageView imagen;
     private Button bUsuario;
+    Button bSolicitarCierre;
+    Button bValorar;
+    Button bDenunciar;
     private Usuario loggedInUser = null;
 
     private Reporte seleccionado;
@@ -87,6 +90,9 @@ public class DetalleReporteFragment extends Fragment {
         fecha = view.findViewById(R.id.reporte_detalle_fecha);
         tipo = view.findViewById(R.id.reporte_det_tipo);
         bUsuario = view.findViewById(R.id.btnUsernameDetalle);
+        bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
+        bValorar = view.findViewById(R.id.btnValorarReporte);
+        bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
         puntaje = view.findViewById(R.id.detalle_rep_rating);
         imagen = view.findViewById(R.id.imagen_ver_reporte);
         loggedInUser = sharedPreferences.getUsuarioData(getContext());
@@ -116,6 +122,25 @@ public class DetalleReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+        if (!seleccionado.getEstado().getEstado().equals("ABIERTO")) {
+            bSolicitarCierre.setVisibility(View.GONE);
+        }
+
+        if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")) {
+            bDenunciar.setVisibility(View.VISIBLE);
+        }
+
+        if(seleccionado.getOwner().getUsername().equals(loggedInUser.getUsername())){
+            bSolicitarCierre.setText("CERRAR REPORTE");
+            bSolicitarCierre.setVisibility(View.VISIBLE);
+            bValorar.setVisibility(View.GONE);
+            bDenunciar.setVisibility(View.GONE);
+            if(!seleccionado.getEstado().getEstado().equals("PENDIENTE")){
+                bSolicitarCierre.setVisibility(View.GONE);
+            }
+        }
+
         comportamiento_boton_usuario(bUsuario);
 
         Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);

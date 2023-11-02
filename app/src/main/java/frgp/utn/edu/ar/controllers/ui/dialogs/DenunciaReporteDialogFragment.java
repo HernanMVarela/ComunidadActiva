@@ -22,12 +22,17 @@ import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenunciaReporte;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class DenunciaReporteDialogFragment extends DialogFragment {
     private EditText etxTituloDenuncia;
     private EditText etxMotivoDenuncia;
     private Reporte selectedReport = null;
     private Usuario loggedInUser = null;
+    LogService logService = new LogService();
+    NotificacionService notificacionService = new NotificacionService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +71,9 @@ public class DenunciaReporteDialogFragment extends DialogFragment {
                     /// ITENTA GUARDAR LA DENUNCIA Y CAMBIAR EL ESTADO DEL REPORTE
                     DMAGuardarDenunciaReporte DMAGuardarDen = new DMAGuardarDenunciaReporte(nueva,getContext());
                     DMAGuardarDen.execute();
-                }
+
+                    logService.log(loggedInUser.getId(), LogsEnum.DENUNCIA_REPORTE, String.format("Denunciaste el reporte %s", selectedReport.getTitulo()));
+                    notificacionService.notificacion(selectedReport.getOwner().getId(), String.format("El %s %s denuncio el reporte %s", loggedInUser.getTipo().getTipo(), loggedInUser.getUsername(), selectedReport.getTitulo()));                }
                 // Cierra el diálogo.
                 dismiss();
             }

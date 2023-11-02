@@ -8,11 +8,12 @@ import frgp.utn.edu.ar.controllers.data.repository.notificacion.NotificacionRepo
 
 public class NotificacionService {
     NotificacionRepository notificacionesRepository = new NotificacionRepository();
-    public void notificacion(int idUser, String descripcion, int idRemitente) {
+    public void notificacion(int idUser, String descripcion) {
         Notificacion notificacion = new Notificacion();
         notificacion.setIdUser(idUser);
         notificacion.setDescripcion(descripcion);
         notificacion.setFecha(new Timestamp(Calendar.getInstance().getTime().getTime()));
+        notificacion.setLectura(false);
         notificacionesRepository.agregarNotificacion(notificacion);
     }
 }

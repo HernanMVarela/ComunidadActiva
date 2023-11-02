@@ -39,6 +39,10 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarEstadoReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAGuardarCierreReporte;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SolicitarCierreViewModel;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.NotificacionService;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class SolicitarCierreFragment extends Fragment {
     private static final int CAMERA_PIC_REQUEST = 1337;
@@ -50,11 +54,12 @@ public class SolicitarCierreFragment extends Fragment {
     private Button btnCamara, btnCerrar;
     private Bitmap imagenCapturada;
     private ImageView imagenCierre = null;
+    LogService logService = new LogService();
+    NotificacionService notificacionService = new NotificacionService();
 
     public static SolicitarCierreFragment newInstance() {
         return new SolicitarCierreFragment();
     }
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -128,7 +133,9 @@ public class SolicitarCierreFragment extends Fragment {
 
                     DMAGuardarCierreReporte dmaCierreRep = new DMAGuardarCierreReporte(cerrarRep,v.getContext());
                     dmaCierreRep.execute();
-
+                    Toast.makeText(getContext(), "Solitud de cierre enviada!", Toast.LENGTH_SHORT).show();
+                    logService.log(loggedInUser.getId(), LogsEnum.SOLICITUD_CIERRE_REPORTE, String.format("Valoraste el reporte %s", selectedReport.getTitulo()));
+                    notificacionService.notificacion(selectedReport.getOwner().getId(), String.format("El %s %s valoro el reporte %s", loggedInUser.getTipo().getTipo(), loggedInUser.getUsername(), selectedReport.getTitulo()));
                     NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
                     navController.popBackStack();
                 }

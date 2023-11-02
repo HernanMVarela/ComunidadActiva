@@ -30,6 +30,10 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenunciaReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarCierreReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACerrarReporte;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.NotificacionService;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class CerrarReporteDialogFragment extends DialogFragment {
     private TextView titulo, atendido, descripcion;
@@ -37,7 +41,8 @@ public class CerrarReporteDialogFragment extends DialogFragment {
     private Reporte selectedReport = null;
     private Usuario loggedInUser = null;
     private CierreReporte cierreReporte = null;
-
+    LogService logService = new LogService();
+    NotificacionService notificacionService = new NotificacionService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class CerrarReporteDialogFragment extends DialogFragment {
             selectedReport = (Reporte) args.getSerializable("selected_report");
             loggedInUser = (Usuario) args.getSerializable("logged_in_user");
         }
+
+
     }
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogTheme_transparent);
@@ -85,6 +92,7 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                     cierreReporte.setEstado(new EstadoReporte(4,"CERRADO"));
                     cierreReporte.getReporte().setEstado(new EstadoReporte(3,"ATENDIDO"));
                     modificarEstadoReporte();
+                    logService.log(loggedInUser.getId(), LogsEnum.CIERRE_REPORTE, "Se cerró el reporte " + selectedReport.getId());
                     Toast.makeText(getContext(), "Reporte cerrado!", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
@@ -107,6 +115,7 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 cierreReporte.setEstado(new EstadoReporte(5,"CANCELADO"));
                 cierreReporte.getReporte().setEstado(new EstadoReporte(1,"ABIERTO"));
                 modificarEstadoReporte();
+                logService.log(loggedInUser.getId(), LogsEnum.REAPERTURA_REPORTE, "Se reabrio el reporte " + selectedReport.getId());
                 Toast.makeText(getContext(), "Solicitud rechazada!", Toast.LENGTH_SHORT).show();
                 dismiss();
             }
