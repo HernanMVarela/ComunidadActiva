@@ -134,7 +134,12 @@ public class DetalleProyectoFragment extends Fragment {
         if(loggedInUser.getId()==seleccionado.getOwner().getId()) {
             bUnirse.setVisibility(View.GONE);
             bDenunciar.setVisibility(View.GONE);
-            bFinalizar.setVisibility(View.VISIBLE);
+            if(seleccionado.getEstado().getEstado().equals("FINALIZADO")){
+                bFinalizar.setVisibility(View.GONE);
+            }
+            else {
+                bFinalizar.setVisibility(View.VISIBLE);
+            }
             comportamiento_boton_finalizar(bFinalizar);
         }else
         {
@@ -273,7 +278,17 @@ public class DetalleProyectoFragment extends Fragment {
         bFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+                    try {
+                        DMAUpdateProyecto Finalizar = new DMAUpdateProyecto(seleccionado.getId(),2, getContext());
+                        Finalizar.execute();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        Log.e("Error", "No se pudo realizar la operación");
+                    }
+                }else{
+                    Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
