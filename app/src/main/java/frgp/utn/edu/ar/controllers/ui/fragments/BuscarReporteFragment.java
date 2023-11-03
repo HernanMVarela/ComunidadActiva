@@ -91,7 +91,7 @@ public class BuscarReporteFragment extends Fragment {
                             /// VALIDA SI EXISTE UN FILTO DE BUSQUEDA ACTIVO
                             if (!textoBusqueda.isEmpty()) {
                                 googlemaplocal.clear(); /// LIMPIA LOS MARCADORES DEL MAPA
-                                DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes, getContext(), currentLatLng, googlemaplocal, textoBusqueda);
+                                DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes, getContext(), currentLatLng, googlemaplocal, textoBusqueda,switch_abiertos.isChecked());
                                 DMAListaReportes.execute();
                             } else {
                                 DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes, getContext(), currentLatLng, googlemaplocal,loggedInUser,switch_abiertos.isChecked());
@@ -169,7 +169,7 @@ public class BuscarReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }else{
-            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, switch_abiertos.isChecked());
+            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, true);
             DMAListaReportes.execute();
         }
         switch_abiertos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -190,7 +190,7 @@ public class BuscarReporteFragment extends Fragment {
                 if (mapFragment != null) {
                     mapFragment.getMapAsync(callback);
                 }else{
-                    DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),new LatLng(0,0), googlemaplocal,textoBusqueda);
+                    DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),new LatLng(0,0), googlemaplocal,textoBusqueda,switch_abiertos.isChecked());
                     DMAListaReportes.execute();
                 }
                 return true;
@@ -204,9 +204,12 @@ public class BuscarReporteFragment extends Fragment {
                     if (mapFragment != null) {
                         mapFragment.getMapAsync(callback);
                     }else{
-                        DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),new LatLng(0,0), googlemaplocal,textoBusqueda);
+                        DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes,getContext(),new LatLng(0,0), googlemaplocal,textoBusqueda,switch_abiertos.isChecked());
                         DMAListaReportes.execute();
                     }
+                }
+                if (newText.length() > 25) {
+                    barraBusqueda.setQuery(newText.substring(0, 25), false);
                 }
                 return false;
             }

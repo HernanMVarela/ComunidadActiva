@@ -70,8 +70,11 @@ public class ListarUsuariosFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 if (newText.isEmpty()) {
-                    DMAListarUsuariosCompleto DMAListado = new DMAListarUsuariosCompleto(getContext(), listado);
-                    DMAListado.execute();
+                    DMAListarUsuariosConFiltros DMAListadoFiltrado = new DMAListarUsuariosConFiltros(getContext(), listado, tipoUser.getSelectedItem().toString(), "");
+                    DMAListadoFiltrado.execute();
+                }
+                if (newText.length() > 20) {
+                    searchView.setQuery(newText.substring(0, 20), false);
                 }
                 return false;
             }

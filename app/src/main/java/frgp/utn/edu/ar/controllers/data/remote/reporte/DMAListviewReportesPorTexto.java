@@ -40,19 +40,20 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
 
     private Context context;
     private ListView listado;
-    private LatLng ubicacion;
-    private GoogleMap mapa;
-    private static String result2;
-    private String texto;
+    private final LatLng ubicacion;
+    private final GoogleMap mapa;
+    private final String texto;
     private static List<Reporte> listaReporte;
+    private final boolean abiertos;
 
     //Constructor
-    public DMAListviewReportesPorTexto(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa, String texto) {
+    public DMAListviewReportesPorTexto(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa, String texto, boolean abiertos) {
         listado = listview;
         context = ct;
         this.mapa = mapa;
         this.texto = texto;
         this.ubicacion = ubicacion;
+        this.abiertos = abiertos;
     }
 
     @Override
@@ -66,40 +67,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
             double dispositivoLatitud = ubicacion.latitude;
             double dispositivoLongitud = ubicacion.longitude;
 
-            String query = "SELECT " +
-                    "R.ID AS ReporteID, " +
-                    "R.TITULO AS TituloReporte, " +
-                    "R.DESCRIPCION AS DescripcionReporte, " +
-                    "R.LATITUD AS LatitudReporte, " +
-                    "R.LONGITUD AS LongitudReporte, " +
-                    "R.FECHA AS FechaReporte, " +
-                    "R.CANT_VOTOS AS CantidadVotos, " +
-                    "R.PUNTAJE AS PuntajeReporte, " +
-                    "R.ID_USER AS IDUsuarioReporte, " +
-                    "R.ID_TIPO AS IDTipoReporte, " +
-                    "R.ID_ESTADO AS IDEstadoReporte, " +
-                    "U.USERNAME AS UsernameUsuario, " +
-                    "U.NOMBRE AS NombreUsuario, " +
-                    "U.APELLIDO AS ApellidoUsuario, " +
-                    "U.TELEFONO AS TelefonoUsuario, " +
-                    "U.CORREO AS CorreoUsuario, " +
-                    "U.FECHA_NAC AS FechaNacimientoUsuario, " +
-                    "U.CREACION AS FechaCreacionUsuario, " +
-                    "TR.TIPO AS TipoReporte, " +
-                    "ER.ESTADO AS EstadoReporte, " +
-                    "6371 * 2 * ASIN(SQRT(" +
-                    "POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
-                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * " +
-                    "POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
-                    ")) AS Distancia " +
-                    "FROM REPORTES AS R " +
-                    "INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
-                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID " +
-                    "INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "WHERE U.USERNAME LIKE ? OR R.TITULO LIKE ? OR TR.TIPO LIKE ?" +
-                    "ORDER BY Distancia;";
-
-            PreparedStatement preparedStatement = con.prepareStatement(query);
+            PreparedStatement preparedStatement = generadorConsulta(con,abiertos);
             preparedStatement.setDouble(1, dispositivoLatitud); // Nueva ubicación del dispositivo
             preparedStatement.setDouble(2, dispositivoLatitud); // Nueva ubicación del dispositivo (repetir para el cálculo)
             preparedStatement.setDouble(3, dispositivoLongitud); // Nueva ubicación del dispositivo
@@ -108,7 +76,6 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
             preparedStatement.setString(6, "%"+texto+"%");
 
             ResultSet rs = preparedStatement.executeQuery();
-            result2 = " ";
             listaReporte = new ArrayList<Reporte>();
             while (rs.next()) {
                 Reporte reporte = new Reporte();
@@ -144,7 +111,6 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
             response = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
         }
         return response;
     }
@@ -168,9 +134,11 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
                 iconResource = R.drawable.broken_bulb;
             } else if (item.getTipo().getTipo().equals("BACHE")) {
                 iconResource = R.drawable.pothole;
+            } else if (item.getTipo().getTipo().equals("VEREDA EN MAL ESTADO")) {
+                iconResource = R.drawable.pothole_man;
             } else if (item.getTipo().getTipo().equals("ARBOL CAIDO")) {
                 iconResource = R.drawable.tree;
-            }else if (item.getTipo().getTipo().equals("ANIMALES SUELTOS")) {
+            } else if (item.getTipo().getTipo().equals("ANIMALES SUELTOS")) {
                 iconResource = R.drawable.animales;
             } else if (item.getTipo().getTipo().equals("FUGA DE AGUA")) {
                 iconResource = R.drawable.fuga_agua;
@@ -180,8 +148,8 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
                 iconResource = R.drawable.parque;
             } else if (item.getTipo().getTipo().equals("CONTAMINACION")) {
                 iconResource = R.drawable.contaminacion;
-            }  else {
-                iconResource = 0;
+            } else {
+                iconResource = R.drawable.otros;
             }
 
             if (iconResource != 0) {
@@ -221,7 +189,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
         } else if (reportType.equals("FUGA DE AGUA")) {
             return Color.CYAN;
         } else if (reportType.equals("CABLES CAIDOS")) {
-            return Color.DKGRAY;
+            return Color.GRAY;
         } else if (reportType.equals("PARQUE DESCUIDADO")) {
             return Color.GREEN;
         } else if (reportType.equals("CONTAMINACION")) {
@@ -239,6 +207,50 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
         drawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
+    private PreparedStatement generadorConsulta(Connection con, boolean todo) {
+        double dispositivoLatitud = ubicacion.latitude;
+        double dispositivoLongitud = ubicacion.longitude;
+        String query = "";
+        if (todo) {
+            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * " +
+                    "POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2))) AS Distancia " +
+                    "FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "WHERE (U.USERNAME LIKE ? OR R.TITULO LIKE ? OR TR.TIPO LIKE ?) AND R.ID_ESTADO = 1 " +
+                    "AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) ORDER BY Distancia LIMIT 15;";
+        } else {
+            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * " +
+                    "POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2))) AS Distancia " +
+                    "FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "WHERE (U.USERNAME LIKE ? OR R.TITULO LIKE ? OR TR.TIPO LIKE ?) " +
+                    "AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 6 MONTH) ORDER BY Distancia LIMIT 15;";
+        }
+        try {
+            PreparedStatement preparedStatement = con.prepareStatement(query);
+            preparedStatement.setDouble(1, dispositivoLatitud); // Nueva ubicación del dispositivo
+            preparedStatement.setDouble(2, dispositivoLatitud); // Nueva ubicación del dispositivo (repetir para el cálculo)
+            preparedStatement.setDouble(3, dispositivoLongitud); // Nueva ubicación del dispositivo
+            return preparedStatement;
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 
+    }
 
 }

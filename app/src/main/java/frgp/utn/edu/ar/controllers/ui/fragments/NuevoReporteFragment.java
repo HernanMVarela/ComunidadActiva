@@ -246,8 +246,16 @@ public class NuevoReporteFragment extends Fragment {
             Toast.makeText(this.getContext(), "Debes poner un título al reporte.", Toast.LENGTH_LONG).show();
             return false;
         }
+        if(titulo.getText().toString().length()>50){
+            Toast.makeText(this.getContext(), "El título es muy largo!", Toast.LENGTH_LONG).show();
+            return false;
+        }
         if (descripcion.getText().toString().trim().isEmpty()) {
             Toast.makeText(this.getContext(), "Debes dar una descripcion del problema.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(descripcion.getText().toString().length()>250){
+            Toast.makeText(this.getContext(), "La descripción es muy larga!", Toast.LENGTH_LONG).show();
             return false;
         }
         if (spinTipoReporte.getSelectedItemPosition()+1 == 0) {

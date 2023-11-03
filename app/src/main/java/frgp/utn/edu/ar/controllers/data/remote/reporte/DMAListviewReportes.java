@@ -146,9 +146,11 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
                 iconResource = R.drawable.broken_bulb;
             } else if (item.getTipo().getTipo().equals("BACHE")) {
                 iconResource = R.drawable.pothole;
+            } else if (item.getTipo().getTipo().equals("VEREDA EN MAL ESTADO")) {
+                iconResource = R.drawable.pothole_man;
             } else if (item.getTipo().getTipo().equals("ARBOL CAIDO")) {
                 iconResource = R.drawable.tree;
-            }else if (item.getTipo().getTipo().equals("ANIMALES SUELTOS")) {
+            } else if (item.getTipo().getTipo().equals("ANIMALES SUELTOS")) {
                 iconResource = R.drawable.animales;
             } else if (item.getTipo().getTipo().equals("FUGA DE AGUA")) {
                 iconResource = R.drawable.fuga_agua;
@@ -159,7 +161,7 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
             } else if (item.getTipo().getTipo().equals("CONTAMINACION")) {
                 iconResource = R.drawable.contaminacion;
             }  else {
-                iconResource = 0;
+                iconResource = R.drawable.otros;
             }
 
             if (iconResource != 0) {
@@ -197,11 +199,11 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
         } else if (reportType.equals("ANIMALES SUELTOS")) {
             return Color.rgb(255, 165, 0);
         } else if (reportType.equals("FUGA DE AGUA")) {
-            return Color.CYAN;
+            return Color.rgb(0, 128, 128);
         } else if (reportType.equals("CABLES CAIDOS")) {
-            return Color.DKGRAY;
+            return Color.GRAY;
         } else if (reportType.equals("PARQUE DESCUIDADO")) {
-            return Color.GREEN;
+            return Color.rgb(0, 192, 0);
         } else if (reportType.equals("CONTAMINACION")) {
             return Color.MAGENTA;
         } else {

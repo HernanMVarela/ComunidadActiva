@@ -153,7 +153,6 @@ public class SolicitarCierreFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         // VALIDA QUE LA ACCION SE HAYA COMPLETADO CORRECTAMENTE
         if (requestCode == CAMERA_PIC_REQUEST && resultCode == Activity.RESULT_OK) {
             // La imagen se capturó exitosamente
@@ -172,6 +171,10 @@ public class SolicitarCierreFragment extends Fragment {
             Toast.makeText(getContext(), "Debe indicar el motivo.", Toast.LENGTH_LONG).show();
             return false;
         }
+        if(motivo.getText().toString().length()>250){
+            Toast.makeText(this.getContext(), "La descripción es muy larga!", Toast.LENGTH_LONG).show();
+            return false;
+        }
         if(imagenCierre == null){
             Bitmap imagenPredeterminada = BitmapFactory.decodeResource(getResources(), R.mipmap.image_placeholder);
             int nuevoAncho = 50;
@@ -180,12 +183,10 @@ public class SolicitarCierreFragment extends Fragment {
             imagenCierre.setImageBitmap(imagenRedimensionada);
             Toast.makeText(getContext(), "Está por cerrar un reporte sin evidencia, para continuar vuelva a presionar Cerrar Repote", Toast.LENGTH_LONG).show();
         }
-
         if(selectedReport == null){
             Toast.makeText(getContext(), "Error al obtener el reporte", Toast.LENGTH_LONG).show();
             return false;
         }
-
         return true;
     }
 
