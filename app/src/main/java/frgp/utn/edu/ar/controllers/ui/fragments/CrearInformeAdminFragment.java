@@ -49,11 +49,10 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
     private Calendar mCalendar;
     private SimpleDateFormat mFormat;
     private Usuario usuario = new Usuario();
-    InformesAdminRepository informesAdminRepository = new InformesAdminRepository();
-    LogService logger = new LogService();
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
-
-    JSONArray pdfData = new JSONArray();
+    private InformesAdminRepository informesAdminRepository = new InformesAdminRepository();
+    private LogService logger = new LogService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private JSONArray pdfData = new JSONArray();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

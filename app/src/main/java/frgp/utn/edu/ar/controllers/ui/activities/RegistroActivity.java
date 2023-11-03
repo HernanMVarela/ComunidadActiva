@@ -26,9 +26,9 @@ import frgp.utn.edu.ar.controllers.utils.MailService;
 
 public class RegistroActivity extends AppCompatActivity implements View.OnFocusChangeListener, DatePickerDialog.OnDateSetListener, View.OnClickListener {
 
-    LogService logger = new LogService();
-    MailService mailService = new MailService();
-    UsuarioRepository usuarioRepository = new UsuarioRepository();
+    private LogService logger = new LogService();
+    private MailService mailService = new MailService();
+    private UsuarioRepository usuarioRepository = new UsuarioRepository();
     private EditText nombre, apellido, userName, fechaNacimiento, telefono, correo, password, password2;
     private Calendar mCalendar;
     private SimpleDateFormat mFormat;

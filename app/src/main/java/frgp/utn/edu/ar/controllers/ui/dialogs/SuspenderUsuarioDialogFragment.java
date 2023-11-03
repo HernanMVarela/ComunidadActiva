@@ -18,9 +18,9 @@ import frgp.utn.edu.ar.controllers.data.remote.usuario.DMACambiarEstadoUsuario;
 
 public class SuspenderUsuarioDialogFragment extends DialogFragment {
 
-    Button btnConfirmar;
-    Button btnCancelar;
-    Usuario selectedUser = null;
+    private Button btnConfirmar;
+    private Button btnCancelar;
+    private Usuario selectedUser = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

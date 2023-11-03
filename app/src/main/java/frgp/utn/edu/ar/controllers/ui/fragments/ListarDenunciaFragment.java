@@ -44,7 +44,7 @@ public class ListarDenunciaFragment extends Fragment {
     private ListView listaDenuncias;
     private Denuncia seleccionado = null;
     private View viewSeleccionado = null;
-    List<Denuncia> denunciaList = new ArrayList<>();
+    private List<Denuncia> denunciaList = new ArrayList<>();
     private Spinner spinTipoDenuncia;
 
     public static ListarDenunciaFragment newInstance() {

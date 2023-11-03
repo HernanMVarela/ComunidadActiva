@@ -40,8 +40,8 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 public class ActividadRecFragment extends Fragment {
 
     private FragmentActividadRecienteBinding binding;
-    LogRepository logRepository = new LogRepository();
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private LogRepository logRepository = new LogRepository();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private List<Logs> listaLogs;
     private Usuario usuario;
     private ListView listaActividadReciente;

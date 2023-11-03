@@ -29,8 +29,8 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 public class NotificacionesFragment extends Fragment {
 
     private FragmentNotificacionesBinding binding;
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
-    NotificacionRepository notificacionesRepository = new NotificacionRepository();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private NotificacionRepository notificacionesRepository = new NotificacionRepository();
     private List<Notificacion> listaNotificaciones;
     private Usuario usuario;
     private ListView listaNotificacionesNoLeidas;

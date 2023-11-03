@@ -18,9 +18,9 @@ import frgp.utn.edu.ar.controllers.utils.Utils;
 
 public class RecuperoPassActivity extends AppCompatActivity {
 
-    LogService logger = new LogService();
-    MailService mailService = new MailService();
-    UsuarioRepository usuarioRepository = new UsuarioRepository();
+    private LogService logger = new LogService();
+    private MailService mailService = new MailService();
+    private UsuarioRepository usuarioRepository = new UsuarioRepository();
     private Usuario usuario;
 
     private EditText correo, codigo, pass, pass2;

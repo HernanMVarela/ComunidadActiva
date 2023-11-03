@@ -18,9 +18,9 @@ import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 
 
 public class EliminarPublicacionReporteDialogFragment extends DialogFragment {
-    Button btnConfirmar;
-    Button btnCancelar;
-    Denuncia selectedDenuncia = null;
+    private Button btnConfirmar;
+    private Button btnCancelar;
+    private Denuncia selectedDenuncia = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

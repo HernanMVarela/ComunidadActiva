@@ -25,15 +25,14 @@ import frgp.utn.edu.ar.controllers.utils.MailService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class EliminarUsuarioDialogFragment extends DialogFragment {
-    Button btnAceptar;
-    Button btnCancelar;
-    RatingBar rtbValoracion;
-    Usuario selectedUser = null;
-    Usuario loggedInUser = null;
-    LogService logService = new LogService();
-    MailService mailService = new MailService();
-
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private Button btnAceptar;
+    private Button btnCancelar;
+    private RatingBar rtbValoracion;
+    private Usuario selectedUser = null;
+    private Usuario loggedInUser = null;
+    private LogService logService = new LogService();
+    private MailService mailService = new MailService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

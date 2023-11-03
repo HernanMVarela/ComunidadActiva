@@ -17,10 +17,10 @@ import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class NotificarCerrarDenunciaDialogFragment extends DialogFragment {
-    Button btnConfirmar;
-    Button btnCancelar;
-    Denuncia selectedDenuncia = null;
-    NotificacionService serviceNotificacion= new NotificacionService();
+    private Button btnConfirmar;
+    private Button btnCancelar;
+    private Denuncia selectedDenuncia = null;
+    private NotificacionService serviceNotificacion= new NotificacionService();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

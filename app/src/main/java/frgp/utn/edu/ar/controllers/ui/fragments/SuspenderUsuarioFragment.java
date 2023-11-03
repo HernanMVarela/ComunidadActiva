@@ -28,9 +28,9 @@ import frgp.utn.edu.ar.controllers.ui.viewmodels.SuspenderUsuarioViewModel;
 public class SuspenderUsuarioFragment extends Fragment {
 
     private SuspenderUsuarioViewModel mViewModel;
-    TextView nombreUsuario, tipoUsuario;
-    EditText motivo;
-    Button btnSuspender;
+    private TextView nombreUsuario, tipoUsuario;
+    private EditText motivo;
+    private Button btnSuspender;
     private Denuncia seleccionado;
 
     public static SuspenderUsuarioFragment newInstance() {
