@@ -56,7 +56,7 @@ public class NuevoReporteFragment extends Fragment {
     private Spinner spinTipoReporte;
     private int selectedSpinnerPosition = 0;
     private EditText titulo, descripcion;
-    LogService logService = new LogService();
+    private LogService logService = new LogService();
     public static NuevoReporteFragment newInstance() {
         return new NuevoReporteFragment();
     }

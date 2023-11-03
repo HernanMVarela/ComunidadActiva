@@ -3,11 +3,9 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,19 +19,15 @@ import java.util.concurrent.ExecutionException;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
-import frgp.utn.edu.ar.controllers.data.model.Denuncia;
-import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
-import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenunciaReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarCierreReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACerrarReporte;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarPuntajeUsuario;
 import frgp.utn.edu.ar.controllers.utils.LogService;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
-import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class CerrarReporteDialogFragment extends DialogFragment {
     private TextView titulo, atendido, descripcion;
@@ -41,8 +35,8 @@ public class CerrarReporteDialogFragment extends DialogFragment {
     private Reporte selectedReport = null;
     private Usuario loggedInUser = null;
     private CierreReporte cierreReporte = null;
-    LogService logService = new LogService();
-    NotificacionService notificacionService = new NotificacionService();
+    private final LogService logService = new LogService();
+    private final NotificacionService notificacionService = new NotificacionService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,8 +47,6 @@ public class CerrarReporteDialogFragment extends DialogFragment {
             selectedReport = (Reporte) args.getSerializable("selected_report");
             loggedInUser = (Usuario) args.getSerializable("logged_in_user");
         }
-
-
     }
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.DialogTheme_transparent);
@@ -78,9 +70,7 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 if(cierreReporte!=null){
                     cargarControles(cierreReporte);
                 }
-            } catch (ExecutionException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
+            } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -117,6 +107,16 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 modificarEstadoReporte();
                 logService.log(loggedInUser.getId(), LogsEnum.REAPERTURA_REPORTE, "Se reabrio el reporte " + selectedReport.getId());
                 Toast.makeText(getContext(), "Solicitud rechazada!", Toast.LENGTH_SHORT).show();
+
+                /// PUNTAJE - USUARIO ATENDEDOR
+                int puntaje = cierreReporte.getUser().getPuntuacion() + 3;
+                cierreReporte.getUser().setPuntuacion(puntaje);
+                modificar_puntaje_usuario(cierreReporte.getUser());
+
+                /// PUNTAJE - CREADOR DEL PROYECTO
+                puntaje = selectedReport.getOwner().getPuntuacion() + 1;
+                selectedReport.getOwner().setPuntuacion(puntaje);
+                modificar_puntaje_usuario(selectedReport.getOwner());
                 dismiss();
             }
         });
@@ -136,5 +136,10 @@ public class CerrarReporteDialogFragment extends DialogFragment {
     private void modificarEstadoReporte(){
         DMACerrarReporte dmaCerrarReporte = new DMACerrarReporte(cierreReporte,getContext());
         dmaCerrarReporte.execute();
+    }
+
+    private void modificar_puntaje_usuario(Usuario user){
+        DMAModificarPuntajeUsuario DMAPuntaje = new DMAModificarPuntajeUsuario(user);
+        DMAPuntaje.execute();
     }
 }

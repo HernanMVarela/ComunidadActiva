@@ -2,7 +2,6 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
@@ -33,10 +31,9 @@ public class EditarUsuarioDialogFragment extends DialogFragment {
     private Usuario selectedUser = null;
     private Usuario loggedInUser = null;
     private Spinner spinTipo;
-    LogService logService = new LogService();
-    MailService mailService = new MailService();
-
-    SharedPreferencesService sharedPreferencesService = new SharedPreferencesService();
+    private LogService logService = new LogService();
+    private MailService mailService = new MailService();
+    private SharedPreferencesService sharedPreferencesService = new SharedPreferencesService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

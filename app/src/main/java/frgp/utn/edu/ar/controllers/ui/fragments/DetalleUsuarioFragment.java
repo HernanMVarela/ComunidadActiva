@@ -39,14 +39,12 @@ public class DetalleUsuarioFragment extends Fragment {
     private DetalleUsuarioViewModel mViewModel;
     private TextView username, correo, tipouser, estadouser, fechacreacion, fechabloqueo;
     private TextView nombre, telefono, nacimiento;
-    Button suspender;
-    Button modificar;
-    Button eliminar;
+    private Button suspender, modificar, eliminar;
     private Usuario loggedInUser = null;
     private Usuario selectedUser = null;
-    SharedPreferencesService preferencesService = new SharedPreferencesService();
-    LogService logService = new LogService();
-    MailService mailService = new MailService();
+    private SharedPreferencesService preferencesService = new SharedPreferencesService();
+    private LogService logService = new LogService();
+    private MailService mailService = new MailService();
 
     public static DetalleUsuarioFragment newInstance() {
         return new DetalleUsuarioFragment();

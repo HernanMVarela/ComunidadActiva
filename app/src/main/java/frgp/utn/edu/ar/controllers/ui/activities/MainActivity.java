@@ -19,11 +19,10 @@ import frgp.utn.edu.ar.controllers.utils.MailService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class MainActivity extends AppCompatActivity {
-    LogService logger = new LogService();
-    MailService mailService = new MailService();
-    UsuarioRepository usuarioRepository = new UsuarioRepository();
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
-
+    private LogService logger = new LogService();
+    private MailService mailService = new MailService();
+    private UsuarioRepository usuarioRepository = new UsuarioRepository();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     public Usuario usuario;
     public int loginAttemps = 0;
     public EditText etNombre, etPassword;

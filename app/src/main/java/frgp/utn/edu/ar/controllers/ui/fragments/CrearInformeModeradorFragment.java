@@ -26,7 +26,6 @@ public class CrearInformeModeradorFragment extends Fragment {
     private CrearInformeViewModel mViewModel;
     private EditText etFechaInicio, etFechaFin;
     private ImageButton btnFechaInicio, btnFechaFin;
-
     private DatePicker dpFechaInicio, dpFechaFin;
     private Spinner spTipoInforme;
     private TextView tvTipoInformeModerador;

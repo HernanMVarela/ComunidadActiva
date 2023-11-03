@@ -42,17 +42,13 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 public class DetalleReporteFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private DetalleReporteViewModel mViewModel;
     private TextView titulo, descripcion, estado, fecha, tipo;
     private RatingBar puntaje;
     private ImageView imagen;
-    private Button bUsuario;
-    Button bSolicitarCierre;
-    Button bValorar;
-    Button bDenunciar;
+    private Button bUsuario, bSolicitarCierre, bValorar, bDenunciar;
     private Usuario loggedInUser = null;
-
     private Reporte seleccionado;
     public static DetalleReporteFragment newInstance() {
         return new DetalleReporteFragment();
