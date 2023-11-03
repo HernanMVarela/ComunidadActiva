@@ -124,9 +124,6 @@ public class VerDenunciaFragment extends Fragment {
             }
         });
 
-       // boton_elimiar_publicacion(btnEliminarPublicacion);
-       // boton_cerrar_denuncia(btnNotificarCerrar);
-
     }
     private void cargarDatosDenuncia(){
         /// CONFIGURO DATOS DEL REPORTE
@@ -182,45 +179,9 @@ public class VerDenunciaFragment extends Fragment {
         }
     }
 
-    private void boton_elimiar_publicacion(Button eliminarPublicacion){
-        eliminarPublicacion.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
 
-                if(seleccionado.getTipo().getTipo().equals("REPORTE")){
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("selected_publicacionDencia", seleccionado);
-                    EliminarPublicacionReporteDialogFragment dialogFragment = new EliminarPublicacionReporteDialogFragment();
-                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-                    dialogFragment.show(getFragmentManager(), "layout_eliminar_publicacion");
-                }
-                if(seleccionado.getTipo().getTipo().equals("PROYECTO")){
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("selected_publicacionDencia", seleccionado);
-                    EliminarPublicacionProyectoDialogFragment dialogFragment = new EliminarPublicacionProyectoDialogFragment();
-                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-                    dialogFragment.show(getFragmentManager(), "layout_eliminar_publicacion");
-                }
-            }
-        });
-    }
 
-    private void boton_cerrar_denuncia(Button notificarCerrar){
-        notificarCerrar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Toast.makeText(getContext(), seleccionado.getEstado().getEstado(), Toast.LENGTH_SHORT).show();
-                //Revisar el tipo de publicacion
 
-                if(!seleccionado.getEstado().getEstado().equals("CERRADA") || !seleccionado.getEstado().getEstado().equals("CANCELADA")){
-                    seleccionado.setEstado(new EstadoDenuncia(3,"CERRADA"));
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("selected_denuncia", seleccionado);
-                    NotificarCerrarDenunciaDialogFragment dialogFragment = new NotificarCerrarDenunciaDialogFragment();
-                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-                    dialogFragment.show(getFragmentManager(), "layout_notificar_cerrar_denuncia");
-                }
-            }
-        });
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

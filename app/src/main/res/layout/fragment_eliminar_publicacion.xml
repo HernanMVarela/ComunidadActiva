@@ -1,20 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/green_100"
     tools:context=".ui.fragments.EliminarPublicacionFragment"
-    android:background="@color/green_100">
+    >
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/green_100"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="-132dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:text="ELIMINAR PUBLICACIÓN"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                tools:text="ELIMINAR PUBLICACION" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginVertical="5dp"
+                android:gravity="start"
+                android:text="Indicar Motivo:"
+                android:textSize="20sp"
+                tools:text="Incar Motivo:" />
+
+            <EditText
+                android:id="@+id/etMotivoEliminarPublicacion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/edittext_white_rounded"
+                android:gravity="top"
+                android:hint="Ingrese el motivo aquí..."
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:minHeight="120dp"
+                android:padding="4dp"
+                android:textAlignment="gravity"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
-        android:layout_width="378dp"
-        android:layout_height="68dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="15dp"
-        tools:layout_editor_absoluteY="618dp"
-        tools:ignore="MissingConstraints">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="15dp">
 
         <Button
             android:id="@+id/btnEliminarPublicacion"
@@ -25,45 +73,5 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:orientation="vertical"
 
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="-132dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:text="@string/titulo"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            tools:text="ELIMINAR PUBLICACION" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:gravity="start"
-            android:text="@string/titulo"
-            android:textSize="20sp"
-            tools:text="Motivo:" />
-
-        <EditText
-            android:id="@+id/edDesc2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/edittext_white_rounded"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="Ingrese el motivo aquí..."
-            android:inputType="textMultiLine"
-            android:lines="5" />
-
-
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

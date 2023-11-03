@@ -2,6 +2,7 @@ package frgp.utn.edu.ar.controllers.data.remote.denuncia;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
@@ -112,8 +114,6 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                 userPublicacion.setEstado(estadoUsuarioPublicacion);
                 userPublicacion.setTipo(tipoUsuarioPublicacion);
 
-
-
                 publicacion.setId(rs.getInt("IDReporte"));
                 publicacion.setDescripcion(rs.getString("DescripcionPublicacion"));
                 publicacion.setTitulo(rs.getString("TituloPublicacion"));
@@ -142,31 +142,6 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                 listaDenuncias.add(denuncia);
             }
 
-            /*while (rs.next()) {
-                DenunciaNuevo denuncia = new DenunciaNuevo();
-                denuncia.setDescripcion(rs.getString("Descripcion"));
-                denuncia.setTitulo(rs.getString("Titulo"));
-
-                denuncia.setId(rs.getInt("IDReporte"));
-                denuncia.setFecha_creacion(rs.getDate("FechaCreacion"));
-
-                Usuario user = new Usuario();
-                user.setId(rs.getInt("IDUser"));
-                user.setUsername(rs.getString("UsernameUsuario"));
-                user.setNombre(rs.getString("NombreUsuario"));
-                user.setApellido(rs.getString("ApellidoUsuario"));
-                user.setTelefono(rs.getString("TelefonoUsuario"));
-                user.setCorreo(rs.getString("CorreoUsuario"));
-                user.setFecha_nac(rs.getDate("FechaNacimientoUsuario"));
-                user.setFecha_alta(rs.getDate("FechaCreacionUsuario"));
-
-                EstadoDenuncia estadoDenuncia = new EstadoDenuncia(rs.getInt("IDEstado"), rs.getString("EstadoReporte"));
-
-                denuncia.setEstado(estadoDenuncia);
-                denuncia.setDenunciante(user);
-
-                listaDenuncias.add(denuncia);
-            }*/
             response = "Conexion exitosa";
 
         }catch (Exception e){
@@ -182,7 +157,13 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
         ListarDenunciaAdapter adapter = new ListarDenunciaAdapter(context, listaDenuncias);
         assert listaDenuncias != null;
 
-        listado.setAdapter(adapter);
+        if (listaDenuncias.size() == 0){
+            String [] tipoInforme = {"No hay datos disponibles"};
+            ArrayAdapter<String> vacio = new ArrayAdapter<String>(this.context, R.layout.spinner_generico, tipoInforme);
+            listado.setAdapter(vacio);
+        }else{
+            listado.setAdapter(adapter);
+        }
     }
 
 

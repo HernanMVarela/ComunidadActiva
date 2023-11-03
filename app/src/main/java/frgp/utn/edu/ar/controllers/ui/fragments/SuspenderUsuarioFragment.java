@@ -20,10 +20,12 @@ import android.widget.Toast;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMACargarImagenDenuncia;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.SuspenderUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SuspenderUsuarioViewModel;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class SuspenderUsuarioFragment extends Fragment {
 
@@ -32,6 +34,8 @@ public class SuspenderUsuarioFragment extends Fragment {
     EditText motivo;
     Button btnSuspender;
     private Denuncia seleccionado;
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private Usuario loggedInUser = null;
 
     public static SuspenderUsuarioFragment newInstance() {
         return new SuspenderUsuarioFragment();
@@ -57,6 +61,7 @@ public class SuspenderUsuarioFragment extends Fragment {
         tipoUsuario = view.findViewById(R.id.tvTipoUsuario);
         motivo = view.findViewById(R.id.etMotivoSuspencion);
         btnSuspender = view.findViewById(R.id.btnSuspenderUsuario);
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
 
         Bundle bundle = this.getArguments();
         /// OBTIENE LA DENUNCIA SELECCIONADA EN LA PANTALLA ANTERIOR
@@ -88,6 +93,8 @@ public class SuspenderUsuarioFragment extends Fragment {
                     seleccionado.getPublicacion().getOwner().setEstado(new EstadoUsuario(5,"SUSPENDIDO"));
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("selected_userPublicacion", seleccionado.getPublicacion().getOwner());
+                    bundle.putSerializable("logged_in_user", loggedInUser);
+                    bundle.putString("mi_string", motivo.getText().toString());
                     SuspenderUsuarioDialogFragment dialogFragment = new SuspenderUsuarioDialogFragment();
                     dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
                     dialogFragment.show(getFragmentManager(), "layout_suspender_usuario");

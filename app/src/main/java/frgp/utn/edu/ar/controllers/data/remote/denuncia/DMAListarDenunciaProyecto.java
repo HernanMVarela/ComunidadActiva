@@ -17,8 +17,10 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
+import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Publicacion;
 import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
+import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListarDenunciaAdapter;
@@ -71,12 +73,18 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
                     "UP.TELEFONO AS TelefonoUsuarioPublicacion, " +
                     "UP.CORREO AS CorreoUsuarioPublicacion, " +
                     "UP.FECHA_NAC AS FechaNacimientoUsuarioPublicacion, " +
-                    "UP.CREACION AS FechaCreacionUsuarioPublicacion " +
+                    "UP.CREACION AS FechaCreacionUsuarioPublicacion, " +
+                    "UP.ID_TIPO AS IDTipoUsuarioPublicacion, " +
+                    "UP.ID_ESTADO AS IDEstadoUserPublicacion, " +
+                    "EUP.ESTADO AS EstadoUsuarioPublicacion, " +
+                    "TUP.TIPO AS TipoUsuarioPublicacion " +
                     "FROM DENUNCIAS_PROYECTOS AS D " +
                     "INNER JOIN REPORTES AS R ON D.ID_PROYECTO = R.ID " +
                     "INNER JOIN USUARIOS AS U ON D.ID_USER = U.ID " +
                     "INNER JOIN ESTADOS_DENUNCIA AS ED ON D.ID_ESTADO = ED.ID " +
                     "INNER JOIN USUARIOS AS UP ON R.ID_USER = UP.ID " +
+                    "INNER JOIN ESTADOS_USUARIO AS EUP ON UP.ID_ESTADO = EUP.ID " +
+                    "INNER JOIN TIPOS_USUARIO AS TUP ON UP.ID_TIPO = TUP.ID " +
                     "ORDER BY FECHA_CREACION;";
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
@@ -90,6 +98,8 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
                 Publicacion publicacion = new Publicacion();
                 Usuario user = new Usuario();
                 EstadoDenuncia estadoDenuncia = new EstadoDenuncia(rs.getInt("IDEstado"), rs.getString("EstadoDenuncia"));
+                EstadoUsuario estadoUsuarioPublicacion = new EstadoUsuario(rs.getInt("IDEstadoUserPublicacion"), rs.getString("EstadoUsuarioPublicacion"));
+                TipoUsuario tipoUsuarioPublicacion = new TipoUsuario(rs.getInt("IDTipoUsuarioPublicacion"),rs.getString("TipoUsuarioPublicacion"));
                 TipoDenuncia tipoDenuncia = new TipoDenuncia(2,"PROYECTO");
 
                 userPublicacion.setId(rs.getInt("IDUserPublicacion"));
@@ -100,6 +110,8 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
                 userPublicacion.setCorreo(rs.getString("CorreoUsuarioPublicacion"));
                 userPublicacion.setFecha_nac(rs.getDate("FechaNacimientoUsuarioPublicacion"));
                 userPublicacion.setFecha_alta(rs.getDate("FechaCreacionUsuarioPublicacion"));
+                userPublicacion.setEstado(estadoUsuarioPublicacion);
+                userPublicacion.setTipo(tipoUsuarioPublicacion);
 
                 publicacion.setId(rs.getInt("IDProyecto"));
                 publicacion.setDescripcion(rs.getString("DescripcionPublicacion"));
@@ -128,31 +140,7 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
 
                 listaDenuncias.add(denuncia);
             }
-          /*  while (rs.next()) {
-                DenunciaNuevo denuncia = new DenunciaNuevo();
-                denuncia.setDescripcion(rs.getString("Descripcion"));
-                denuncia.setTitulo(rs.getString("Titulo"));
 
-                denuncia.setId(rs.getInt("IDReporte"));
-                denuncia.setFecha_creacion(rs.getDate("FechaCreacion"));
-
-                Usuario user = new Usuario();
-                user.setId(rs.getInt("IDUser"));
-                user.setUsername(rs.getString("UsernameUsuario"));
-                user.setNombre(rs.getString("NombreUsuario"));
-                user.setApellido(rs.getString("ApellidoUsuario"));
-                user.setTelefono(rs.getString("TelefonoUsuario"));
-                user.setCorreo(rs.getString("CorreoUsuario"));
-                user.setFecha_nac(rs.getDate("FechaNacimientoUsuario"));
-                user.setFecha_alta(rs.getDate("FechaCreacionUsuario"));
-
-                EstadoDenuncia estadoDenuncia = new EstadoDenuncia(rs.getInt("IDEstado"), rs.getString("EstadoReporte"));
-
-                denuncia.setEstado(estadoDenuncia);
-                denuncia.setDenunciante(user);
-
-                listaDenuncias.add(denuncia);
-            }*/
             response = "Conexion exitosa";
 
         }catch (Exception e){
@@ -175,7 +163,6 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
         }else{
             listado.setAdapter(adapter);
         }
-
     }
 
 

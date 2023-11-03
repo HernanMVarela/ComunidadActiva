@@ -58,7 +58,7 @@
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
             android:gravity="start"
-            android:text="Incar Motivo:"
+            android:text="Indicar Motivo:"
             android:textSize="20sp"
             tools:text="Incar Motivo:" />
 

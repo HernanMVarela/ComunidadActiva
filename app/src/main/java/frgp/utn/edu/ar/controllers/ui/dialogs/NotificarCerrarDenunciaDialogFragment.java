@@ -14,13 +14,20 @@ import androidx.fragment.app.DialogFragment;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMACerrarDenuncia;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class NotificarCerrarDenunciaDialogFragment extends DialogFragment {
     Button btnConfirmar;
     Button btnCancelar;
     Denuncia selectedDenuncia = null;
+    String motivo;
+    private Usuario loggedInUser = null;
     NotificacionService serviceNotificacion= new NotificacionService();
+    LogService logService = new LogService();
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +35,8 @@ public class NotificarCerrarDenunciaDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null) {
             selectedDenuncia = (Denuncia) args.getSerializable("selected_denuncia");
+            loggedInUser = (Usuario) args.getSerializable("logged_in_user");
+            motivo = args.getString("mi_string");
         }
     }
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -50,10 +59,11 @@ public class NotificarCerrarDenunciaDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 /*AGREGAR DMA PARA CERRAR DENUNCIA */
 
-                //DMACambiarEstadoUsuario DMAEstadoUser = new DMACambiarEstadoUsuario(selectedUser,getContext());
-                //DMAEstadoUser.execute();
+                DMACerrarDenuncia DMADenuncia = new DMACerrarDenuncia(getContext(),selectedDenuncia,selectedDenuncia.getTipo().getTipo());
+                DMADenuncia.execute();
 
-                //serviceNotificacion.notificacion(selectedDenuncia.getDenunciante().getId(),"Se notifica el cierre de la Denuncia.");
+                logService.log(loggedInUser.getId(), LogsEnum.CERRAR_DENUNCIA_Y_NOTIFICAR, String.format("CERRASTE la Denuncia %s", selectedDenuncia.getTitulo()));
+                serviceNotificacion.notificacion(selectedDenuncia.getDenunciante().getId(),"Se notifica el cierre de la Denuncia sobre la publicacion: " + selectedDenuncia.getPublicacion().getId() +" por los motivos: "+ motivo);
 
                 dismiss();
             }
