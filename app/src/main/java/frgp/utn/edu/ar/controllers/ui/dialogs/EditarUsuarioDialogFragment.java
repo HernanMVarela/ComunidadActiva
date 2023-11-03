@@ -22,12 +22,21 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarUsuario;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.MailService;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class EditarUsuarioDialogFragment extends DialogFragment {
     private TextView titulo;
     private EditText pass1, pass2, correo, telefono;
     private Usuario selectedUser = null;
+    private Usuario loggedInUser = null;
     private Spinner spinTipo;
+    LogService logService = new LogService();
+    MailService mailService = new MailService();
+
+    SharedPreferencesService sharedPreferencesService = new SharedPreferencesService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,7 +45,10 @@ public class EditarUsuarioDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null) {
             selectedUser = (Usuario) args.getSerializable("selected_user");
-        }
+       }
+        loggedInUser = sharedPreferencesService.getUsuarioData(getContext());
+        System.out.println("selectedUser: "+selectedUser);
+        System.out.println("loggedInUser: "+loggedInUser);
     }
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.DialogTheme_transparent);
@@ -89,6 +101,8 @@ public class EditarUsuarioDialogFragment extends DialogFragment {
                         DMAModifUser.execute();
                         if(DMAModifUser.get()){
                             Toast.makeText(getContext(), "Usuario modificado!", Toast.LENGTH_LONG).show();
+                            logService.log(loggedInUser.getId(), LogsEnum.MODIFICACION_USUARIO, String.format("Modificaste al usuario %s", selectedUser.getUsername()));
+                            mailService.sendMail(selectedUser.getCorreo(), "COMUNIDAD ACTIVA - Modificacion de usuario", "Sus datos han sido modificados por un administrador.");
                         } else {
                             Toast.makeText(getContext(), "No se pudo editar el perfil.", Toast.LENGTH_LONG).show();
                         }

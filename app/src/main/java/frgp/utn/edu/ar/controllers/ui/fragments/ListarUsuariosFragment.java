@@ -35,7 +35,6 @@ public class ListarUsuariosFragment extends Fragment {
     private ListView listado;
     private SearchView searchView;
     private Spinner tipoUser;
-    private Button btnDetalle;
     private Usuario selectedUser = null;
     private View viewSeleccionado = null;
 
@@ -58,7 +57,6 @@ public class ListarUsuariosFragment extends Fragment {
         listado = view.findViewById(R.id.lstUsuarios);
         searchView = view.findViewById(R.id.svBusquedaUser);
         tipoUser = view.findViewById(R.id.spTipoUser);
-        btnDetalle = view.findViewById(R.id.btnVerDetalleUser);
         tipoUser.setAdapter(adapter);
 
         /// COMPORTAMIENTO DE LA BARRA DE BUSQUEDA
@@ -104,11 +102,6 @@ public class ListarUsuariosFragment extends Fragment {
                 view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_700));
                 // Almacena la vista del elemento seleccionado actualmente
                 viewSeleccionado = view;
-            }
-        });
-        /// COMPORTAMIENTO DEL BOTÓN - IR A VER DETALLE DE USUARIO
-        btnDetalle.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
                 navegarDetalle();
             }
         });

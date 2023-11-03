@@ -37,7 +37,7 @@ public class DMAModificarUsuario extends AsyncTask<String, Void, Boolean> {
                                                                                                "id_tipo = ?, " +
                                                                                                "cod_recuperacion = ?, " +
                                                                                                "fecha_bloqueo = ? " +
-                                                                                            "WHERE id = ?");
+                                                                                                "WHERE id = ?");
             preparedStatement.setString(1, usuario.getUsername());
             preparedStatement.setString(2, usuario.getPassword());
             preparedStatement.setInt(3, usuario.getPuntuacion());

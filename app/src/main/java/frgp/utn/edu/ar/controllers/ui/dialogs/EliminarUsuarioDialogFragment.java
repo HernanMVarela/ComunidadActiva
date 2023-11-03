@@ -19,6 +19,10 @@ import frgp.utn.edu.ar.controllers.data.model.ReseniaReporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAVerificarUsuarioVoto;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMACambiarEstadoUsuario;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.MailService;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class EliminarUsuarioDialogFragment extends DialogFragment {
     Button btnAceptar;
@@ -26,6 +30,10 @@ public class EliminarUsuarioDialogFragment extends DialogFragment {
     RatingBar rtbValoracion;
     Usuario selectedUser = null;
     Usuario loggedInUser = null;
+    LogService logService = new LogService();
+    MailService mailService = new MailService();
+
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,8 +42,8 @@ public class EliminarUsuarioDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null) {
             selectedUser = (Usuario) args.getSerializable("selected_user");
-            loggedInUser = (Usuario) args.getSerializable("logged_in_user");
         }
+        loggedInUser = sharedPreferences.getUsuarioData(getContext());
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -61,7 +69,9 @@ public class EliminarUsuarioDialogFragment extends DialogFragment {
                 DMACambiarEstadoUsuario DMAEstadoUser = new DMACambiarEstadoUsuario(selectedUser,getContext());
                 DMAEstadoUser.execute();
                 /// REGISTRAR LOG SI ES NECESARIO
-
+                logService.log(loggedInUser.getId(), LogsEnum.ELIMINACION_USUARIO, String.format("Eliminaste al usuario %s", selectedUser.getUsername()));
+                mailService.sendMail(selectedUser.getCorreo(), "COMUNIDAD ACTIVA - Eliminación de cuenta", "Su cuenta ha sido eliminada por un administrador.");
+                //RETURN TO LISTADO USERS
                 dismiss();
             }
         });

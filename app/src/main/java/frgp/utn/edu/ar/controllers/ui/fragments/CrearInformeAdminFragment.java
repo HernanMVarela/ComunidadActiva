@@ -33,8 +33,12 @@ import java.util.Date;
 import java.util.Locale;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.repository.informesAdmin.InformesAdminRepository;
 import frgp.utn.edu.ar.controllers.databinding.FragmentCrearInformeAdminBinding;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 
 public class CrearInformeAdminFragment extends Fragment  implements View.OnFocusChangeListener, View.OnClickListener,  DatePickerDialog.OnDateSetListener {
@@ -44,7 +48,10 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
     private Date dateDesde, dateHasta;
     private Calendar mCalendar;
     private SimpleDateFormat mFormat;
+    private Usuario usuario = new Usuario();
     InformesAdminRepository informesAdminRepository = new InformesAdminRepository();
+    LogService logger = new LogService();
+    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     JSONArray pdfData = new JSONArray();
 
@@ -61,6 +68,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         fechaHasta.setOnClickListener(this);
         fechaDesde.setShowSoftInputOnFocus(false);
         fechaHasta.setShowSoftInputOnFocus(false);
+        usuario = sharedPreferences.getUsuarioData(getContext());
         return root;
     }
 
@@ -75,7 +83,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
                     pdfData = informesAdminRepository.listarUsuariosActivosPorRol(dateDesde, dateHasta);
                     try {
                         System.out.println(pdfData);
-                        crearInformeUsuariosActivosPorRol(pdfData, "usuariosActivosPorRol");
+                        crearInforme(pdfData, "usuariosActivosPorRol");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -89,7 +97,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
                 if (isFormValid()) {
                     pdfData = informesAdminRepository.listarUsuariosNuevosRegistrados(dateDesde, dateHasta);
                     try {
-                        crearInformeUsuariosActivosPorRol(pdfData, "usuariosNuevosRegistrados");
+                        crearInforme(pdfData, "usuariosNuevosRegistrados");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -103,7 +111,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
                 if (isFormValid()) {
                     pdfData = informesAdminRepository.listarUsuariosPorEstado(dateDesde, dateHasta);
                     try {
-                        crearInformeUsuariosActivosPorRol(pdfData, "usuariosPorEstado");
+                        crearInforme(pdfData, "usuariosPorEstado");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -117,7 +125,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
                 if (isFormValid()) {
                     pdfData = informesAdminRepository.listarReportesPorCategoria(dateDesde, dateHasta);
                     try {
-                        crearInformeUsuariosActivosPorRol(pdfData, "reportesPorCategoria");
+                        crearInforme(pdfData, "reportesPorCategoria");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
@@ -219,7 +227,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         return true;
     }
 
-    public void crearInformeUsuariosActivosPorRol(JSONArray pdfData, String reporte)  throws IOException {
+    public void crearInforme(JSONArray pdfData, String reporte)  throws IOException {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // Si no tiene permisos, se solicitan al usuario
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -298,19 +306,19 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
             String fileName = "";
             switch(reporte) {
                 case("usuariosActivosPorRol"):
-                    fileName = "Reporte Usuarios Activos Por Rol.pdf";
+                    fileName = "Informe Usuarios Activos Por Rol.pdf";
                     break;
                 case("usuariosNuevosRegistrados"):
-                    fileName = "Reporte Usuarios Nuevos Registrados.pdf";
+                    fileName = "Informe Usuarios Nuevos Registrados.pdf";
                     break;
                 case("usuariosPorEstado"):
-                    fileName = "Reporte Usuarios Por Estado.pdf";
+                    fileName = "Informe Usuarios Por Estado.pdf";
                     break;
                 case("reportesPorCategoria"):
-                    fileName = "Reporte Reportes Por Categoria.pdf";
+                    fileName = "Informe Reportes Por Categoria.pdf";
                     break;
                 case("proyectosPorCategoria"):
-                    fileName = "Reporte Proyectos Por Categoria.pdf";
+                    fileName = "Informe Proyectos Por Categoria.pdf";
                     break;
             }
             File file = new File(downloadsDir, fileName);
@@ -319,6 +327,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
                 pdfDocument.writeTo(fos);
                 pdfDocument.close();
                 fos.close();
+                logger.log(usuario.getId(), LogsEnum.CREACION_INFORME, String.format("Se creo el %s", fileName));
                 Toast.makeText(getContext(), "Se ha creado el reporte.", Toast.LENGTH_LONG).show();
             } catch (IOException e) {
                 Toast.makeText(getContext(), "Error al crear el reporte.", Toast.LENGTH_LONG).show();

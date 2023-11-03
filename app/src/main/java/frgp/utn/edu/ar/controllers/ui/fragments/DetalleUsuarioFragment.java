@@ -28,13 +28,25 @@ import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.EditarUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleUsuarioViewModel;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.MailService;
+import frgp.utn.edu.ar.controllers.utils.NotificacionService;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class DetalleUsuarioFragment extends Fragment {
 
     private DetalleUsuarioViewModel mViewModel;
     private TextView username, correo, tipouser, estadouser, fechacreacion, fechabloqueo;
     private TextView nombre, telefono, nacimiento;
+    Button suspender;
+    Button modificar;
+    Button eliminar;
+    private Usuario loggedInUser = null;
     private Usuario selectedUser = null;
+    SharedPreferencesService preferencesService = new SharedPreferencesService();
+    LogService logService = new LogService();
+    MailService mailService = new MailService();
 
     public static DetalleUsuarioFragment newInstance() {
         return new DetalleUsuarioFragment();
@@ -48,6 +60,10 @@ public class DetalleUsuarioFragment extends Fragment {
         if(getActivity() instanceof HomeActivity){
             ((HomeActivity) getActivity()).botonmensaje.hide();
         }
+        suspender = view.findViewById(R.id.btn_detalleuser_suspender);
+        modificar = view.findViewById(R.id.btn_detalleuser_modificacion);
+        eliminar = view.findViewById(R.id.btn_detalleuser_eliminar);
+        loggedInUser = preferencesService.getUsuarioData(getContext());
         return view;
     }
 
@@ -82,14 +98,20 @@ public class DetalleUsuarioFragment extends Fragment {
                 navegarAtras();
             }
         }
-        /// BOTON SUSPENDER / ACTIVAR
-        Button suspender = view.findViewById(R.id.btn_detalleuser_suspender);
+
+        if(selectedUser.getId() == loggedInUser.getId()){
+            suspender.setVisibility(View.GONE);
+            eliminar.setVisibility(View.GONE);
+        }
+
+        if (selectedUser.getEstado().getEstado().equals("ELIMINADO")){
+            suspender.setVisibility(View.GONE);
+            modificar.setVisibility(View.GONE);
+            eliminar.setVisibility(View.GONE);
+        }
+
         boton_suspender(suspender);
-        /// BOTON SUSPENDER / ACTIVAR
-        Button modificar = view.findViewById(R.id.btn_detalleuser_modificacion);
         boton_modificar(modificar);
-        /// BOTON SUSPENDER / ACTIVAR
-        Button eliminar = view.findViewById(R.id.btn_detalleuser_eliminar);
         boton_eliminar(eliminar);
     }
 
@@ -160,9 +182,13 @@ public class DetalleUsuarioFragment extends Fragment {
                 if(selectedUser.getEstado().getEstado().equals("ACTIVO")){
                     /// SI ESTA ACTIVO, SE SUSPENDE AL USUARIO
                     selectedUser.setEstado(new EstadoUsuario(3,"SUSPENDIDO"));
+                    logService.log(loggedInUser.getId(), LogsEnum.SUSPENSION_USUARIO, String.format("Suspendiste al usuario %s", selectedUser.getUsername()));
+                    mailService.sendMail(selectedUser.getCorreo(), "COMUNIDAD ACTIVA - SUSPENSION DE USUARIO", "Su usuario ha sido suspendido por un administrador.");
                 } else if (selectedUser.getEstado().getEstado().equals("INACTIVO") || selectedUser.getEstado().getEstado().equals("SUSPENDIDO") || selectedUser.getEstado().getEstado().equals("BLOQUEADO")){
                     /// SI ESTA INACTIVO, SUSPENDIDO O BLOQUEADO: SE ACTIVA USAURIO
                     selectedUser.setEstado(new EstadoUsuario(1,"ACTIVO"));
+                    logService.log(loggedInUser.getId(), LogsEnum.ACTIVACION_USUARIO, String.format("Activaste al usuario %s", selectedUser.getUsername()));
+                    mailService.sendMail(selectedUser.getCorreo(), "COMUNIDAD ACTIVA - ACTIVACION DE USUARIO", "Su usuario ha sido activado por un administrador.");
                 }
                 cargarDatosUsuario();
                 cambiar_boton(suspender);
