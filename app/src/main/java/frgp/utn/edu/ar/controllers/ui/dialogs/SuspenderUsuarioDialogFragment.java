@@ -32,6 +32,7 @@ public class SuspenderUsuarioDialogFragment extends DialogFragment {
     private Usuario loggedInUser = null;
     NotificacionService serviceNotificacion= new NotificacionService();
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -44,7 +44,7 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class NuevoProyectoFragment extends Fragment {
 
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private static final int LOCATION_PERMISSION_REQUEST = 123;
     private SharedLocationViewModel sharedLocationViewModel;
     private NuevoProyectoViewModel mViewModel;

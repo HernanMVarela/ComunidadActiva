@@ -38,7 +38,7 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class VerDenunciaFragment extends Fragment {
 
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private VerDenunciaViewModel mViewModel;
     private TextView titulo;
     private TextView descripcion;
@@ -49,12 +49,10 @@ public class VerDenunciaFragment extends Fragment {
     private TextView idPublicacion;
     private ImageView imagenPublicacion;
     private Denuncia seleccionado;
-    Button btnSuspenderUsuario, btnEliminarPublicacion, btnNotificarCerrar;
-    UsuarioRepository usuarioRepository;
-
-    NotificacionService serviceNotificacion;
-
-    DenunciaRepository denunciaRepository = new DenunciaRepository();
+    private Button btnSuspenderUsuario, btnEliminarPublicacion, btnNotificarCerrar;
+    private UsuarioRepository usuarioRepository;
+    private NotificacionService serviceNotificacion;
+    private DenunciaRepository denunciaRepository = new DenunciaRepository();
 
     public static VerDenunciaFragment newInstance() {
         return new VerDenunciaFragment();

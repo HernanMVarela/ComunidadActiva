@@ -35,8 +35,8 @@ public class HomeActivity extends AppCompatActivity {
     private NavController navController;
     private TextView tvNavUsername,tvNavUserMail;
     private Usuario usuario;
-    LogService logger = new LogService();
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private LogService logger = new LogService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

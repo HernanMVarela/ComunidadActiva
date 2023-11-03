@@ -12,23 +12,18 @@ import java.sql.PreparedStatement;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAActualizarVotosReporte extends AsyncTask<String, Void, String> {
+public class DMAActualizarVotosReporte extends AsyncTask<String, Void, Boolean> {
 
-    private Context context;
     private Reporte modificar;
-    private static String result2;
-    private int dataRowModif;
 
     //Constructor
-    public DMAActualizarVotosReporte(Reporte modificar, Context ct)
+    public DMAActualizarVotosReporte(Reporte modificar)
     {
         this.modificar = modificar;
-        this.context = ct;
     }
 
     @Override
-    protected String doInBackground(String... urls) {
-        String response = "";
+    protected Boolean doInBackground(String... urls) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -40,13 +35,15 @@ public class DMAActualizarVotosReporte extends AsyncTask<String, Void, String> {
             ps.setFloat(1, modificar.getPuntaje());
             ps.setInt(2, modificar.getCant_votos());
             ps.setInt(3, modificar.getId());
-            dataRowModif = ps.executeUpdate();
+            int dataRowModif = ps.executeUpdate();
 
+            ps.close();
             con.close();
+
+            return dataRowModif!=0;
         } catch (Exception e) {
             e.printStackTrace();
-            response = "ERROR";
+            return false;
         }
-        return response;
     }
 }

@@ -36,6 +36,7 @@ import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 
 public class EliminarPublicacionReporteDialogFragment extends DialogFragment {
+
     Button btnConfirmar;
     Button btnCancelar;
     String motivo;
@@ -45,6 +46,7 @@ public class EliminarPublicacionReporteDialogFragment extends DialogFragment {
     private Usuario loggedInUser = null;
     private Reporte reporte;
     NotificacionService serviceNotificacion= new NotificacionService();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

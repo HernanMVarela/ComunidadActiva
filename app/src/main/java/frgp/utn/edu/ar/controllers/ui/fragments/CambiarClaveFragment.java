@@ -23,10 +23,10 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class CambiarClaveFragment extends Fragment {
     private FragmentCambiarClaveBinding binding;
-    MailService mailService = new MailService();
-    LogService logger = new LogService();
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
-    UsuarioRepository usuarioRepository = new UsuarioRepository();
+    private MailService mailService = new MailService();
+    private LogService logger = new LogService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private UsuarioRepository usuarioRepository = new UsuarioRepository();
     private Usuario usuario;
     private TextView tvCurrentPass, tvNewPass, tvNewPassRepeat;
 

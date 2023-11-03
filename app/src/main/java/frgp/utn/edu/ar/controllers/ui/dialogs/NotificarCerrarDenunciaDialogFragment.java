@@ -21,6 +21,7 @@ import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class NotificarCerrarDenunciaDialogFragment extends DialogFragment {
+
     Button btnConfirmar;
     Button btnCancelar;
     Denuncia selectedDenuncia = null;
@@ -28,6 +29,7 @@ public class NotificarCerrarDenunciaDialogFragment extends DialogFragment {
     private Usuario loggedInUser = null;
     NotificacionService serviceNotificacion= new NotificacionService();
     LogService logService = new LogService();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

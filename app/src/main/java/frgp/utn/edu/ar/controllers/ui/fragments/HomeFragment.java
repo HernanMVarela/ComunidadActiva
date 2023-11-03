@@ -27,7 +27,7 @@ import frgp.utn.edu.ar.controllers.data.repository.CustomMenuItem ;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

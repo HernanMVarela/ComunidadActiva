@@ -15,25 +15,19 @@ import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.ReseniaReporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAGuardarResenia extends AsyncTask<String, Void, String> {
+public class DMAGuardarResenia extends AsyncTask<String, Void, Boolean> {
 
-    private Context context;
-    private ReseniaReporte nuevo;
-    private static String result2;
-    private int dataRowModif;
+    private final ReseniaReporte nuevo;
 
     //Constructor
-    public DMAGuardarResenia(ReseniaReporte nuevo, Context ct)
+    public DMAGuardarResenia(ReseniaReporte nuevo)
     {
         this.nuevo = nuevo;
-        this.context = ct;
     }
 
     @Override
-    protected String doInBackground(String... urls) {
-        String response = "";
-
-        try {
+    protected Boolean doInBackground(String... urls) {
+         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
@@ -46,23 +40,11 @@ public class DMAGuardarResenia extends AsyncTask<String, Void, String> {
             ps.setInt(2,nuevo.getVotante().getId());
             ps.setFloat(3,nuevo.getPuntaje());
 
-            dataRowModif = ps.executeUpdate();
-            result2 = " ";
-
-        }
-        catch(Exception e) {
+            int dataRowModif = ps.executeUpdate();
+            return dataRowModif != 0;
+         }catch(Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
-        }
-        return response;
-
-    }
-    @Override
-    protected void onPostExecute(String response) {
-        if(dataRowModif!=0){
-            Toast.makeText(context, "Voto registrado!", Toast.LENGTH_LONG).show();
-        }else{
-            Toast.makeText(context, "Ha ocurrido un error!", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

@@ -16,8 +16,7 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 public class DMAVerificarUsuarioVoto extends AsyncTask<String, Void, Boolean> {
     private Context context;
     private ReseniaReporte resenia;
-    public DMAVerificarUsuarioVoto(Context context, ReseniaReporte resenia){
-        this.context = context;
+    public DMAVerificarUsuarioVoto(ReseniaReporte resenia){
         this.resenia = resenia;
     }
 
@@ -34,29 +33,17 @@ public class DMAVerificarUsuarioVoto extends AsyncTask<String, Void, Boolean> {
             ps.setInt(1, resenia.getReporte().getId());
             ps.setInt(2, resenia.getVotante().getId());
             ResultSet rs = ps.executeQuery();
-
             if (rs.next()) {
                 int count = rs.getInt(1);
                 return count > 0; // Si count es mayor que 0, significa que el usuario ya votó - Devuelve TRUE
             }
-
+            ps.close();
             con.close();
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
-            response = false;
+            return false;
         }
-        return response;
-    }
-    @Override
-    protected void onPostExecute(Boolean response) {
-        if(!response){
-            DMAGuardarResenia GuardarResenia = new DMAGuardarResenia(resenia,context);
-            GuardarResenia.execute();
-            DMAActualizarVotosReporte ActualizarVotos = new DMAActualizarVotosReporte(resenia.getReporte(), context);
-            ActualizarVotos.execute();
-        }else{
-            Toast.makeText(context, " Ya has votado en este reporte", Toast.LENGTH_LONG).show();
-        }
-    }
 
+    }
 }

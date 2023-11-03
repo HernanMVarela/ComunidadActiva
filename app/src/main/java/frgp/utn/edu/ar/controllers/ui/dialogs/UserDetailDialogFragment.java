@@ -20,7 +20,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 
 public class UserDetailDialogFragment extends DialogFragment {
-    TextView username, nombre, puntaje, nacimiento, creacion;
+    private TextView username, nombre, puntaje, nacimiento, creacion;
 
     // Método estático para crear una instancia del fragmento con argumentos
     public static UserDetailDialogFragment newInstance(Usuario user) {

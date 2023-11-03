@@ -54,8 +54,8 @@ public class SolicitarCierreFragment extends Fragment {
     private Button btnCamara, btnCerrar;
     private Bitmap imagenCapturada;
     private ImageView imagenCierre = null;
-    LogService logService = new LogService();
-    NotificacionService notificacionService = new NotificacionService();
+    private LogService logService = new LogService();
+    private NotificacionService notificacionService = new NotificacionService();
 
     public static SolicitarCierreFragment newInstance() {
         return new SolicitarCierreFragment();
