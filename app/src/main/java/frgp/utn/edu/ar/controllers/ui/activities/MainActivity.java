@@ -88,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
+        if(usuario.getEstado().getEstado().equals("ELIMINADO")) {
+            Toast.makeText(this, "Cuenta de usuario eliminada", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
         if(usuario.getEstado().getEstado().equals("BLOQUEADO")) {
             //Check if bloqueo date is more than two days old
             if(!(usuario.getFecha_bloqueo().getTime() + 172800000 < System.currentTimeMillis())) {

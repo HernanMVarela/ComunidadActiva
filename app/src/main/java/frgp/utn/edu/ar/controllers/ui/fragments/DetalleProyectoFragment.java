@@ -37,6 +37,7 @@ import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACargarVoluntario;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACuposDisponibles;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAReUnirseProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectos;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectosSinDenuncia;
@@ -184,17 +185,22 @@ public class DetalleProyectoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
+                    /// DMA PARA VALIDAR SI EL USUARIO YA FORMA PARTE DEL PROYECTO
                     DMACargarVoluntario DMAExisteUsuario = new DMACargarVoluntario(loggedInUser.getId(),seleccionado.getId());
                     DMAExisteUsuario.execute();
+                    /// SI EXISTE DEVUELVE EL USUARIO COMO VOLUNTARIO - SINO DEVUELVE NULL
                     existe = DMAExisteUsuario.get();
                     if(existe!=null){
                         if(existe.isActivo()){
+                            /// SI ESTA EN EL PROYECTO, HABILITA BOTÓN PARA ABANDONAR
                             bUnirse.setText("ABANDONAR PROYECTO");
                             comportamiento_abandonar(bUnirse);
                         }else{
+                            /// SI EXISTE PERO ESTÁ INACTIVO (SALIO DEL PROYECTO EN ALGUN MOMENTO), PERMITE EL REINGRESO
                             comportamiento_reunirse(bUnirse);
                         }
                     }else{
+                        /// SI NUNCA FUE PARTE DEL PROYECTO, PERMITE UNIRSE NUEVAMENTE
                         comportamiento_unirse(bUnirse);
                     }
                 }catch (Exception e){
@@ -232,16 +238,26 @@ public class DetalleProyectoFragment extends Fragment {
     }
     private void comportamiento_unirse(Button bUnirse){
         if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
-            DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),seleccionado.getId());
-            DMAUnirseProyecto.execute();
             try {
-                if(DMAUnirseProyecto.get()){
-                    bUnirse.setText("ABANDONAR PROYECTO");
-                    existe.setActivo(true);
-                    Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
+                /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
+                DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
+                DMAValidarCupos.execute();
+                /// CONDICION CON EL RESULTADO DE LA CONSULTA
+                if(DMAValidarCupos.get()){
+                    /// SI TIENE CUPOS DISPONIBLES, SE INTENTA REINGRESAR AL USAURIO
+                    DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),seleccionado.getId());
+                    DMAUnirseProyecto.execute();
+                    if(DMAUnirseProyecto.get()){
+                        /// SI SE INTEGRA CON ÉXITO, CAMBIA EL BOTON Y ACTUALIZA EL ESTADO DEL USUARIO
+                        bUnirse.setText("ABANDONAR PROYECTO");
+                        Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
+                    }else{
+                        Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                    }
                 }else{
-                    Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"No quedan cupos disponibles!", Toast.LENGTH_LONG).show();
                 }
+
             }catch (Exception e){
                 e.printStackTrace();
                 Log.e("Error", "No se pudo registrar la operación");
@@ -255,15 +271,25 @@ public class DetalleProyectoFragment extends Fragment {
 
     private void comportamiento_reunirse(Button bUnirse){
         if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
-            DMAReUnirseProyecto DMAREUnirse = new DMAReUnirseProyecto(loggedInUser.getId(),seleccionado.getId());
-            DMAREUnirse.execute();
             try {
-                if(DMAREUnirse.get()){
-                    existe.setActivo(true);
-                    bUnirse.setText("ABANDONAR PROYECTO");
-                    Toast.makeText(getContext(),"Voluntario reingresado!", Toast.LENGTH_LONG).show();
+                /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
+                DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
+                DMAValidarCupos.execute();
+                /// CONDICION CON EL RESULTADO DE LA CONSULTA
+                if(DMAValidarCupos.get()) {
+                    /// SI TIENE CUPOS DISPONIBLES, SE INTENTA REINGRESAR AL USAURIO
+                    DMAReUnirseProyecto DMAREUnirse = new DMAReUnirseProyecto(loggedInUser.getId(), seleccionado.getId());
+                    DMAREUnirse.execute();
+                    if (DMAREUnirse.get()) {
+                        /// SI SE REINTEGRA CON ÉXITO, CAMBIA EL BOTON Y ACTUALIZA EL ESTADO DEL USUARIO
+                        existe.setActivo(true);
+                        bUnirse.setText("ABANDONAR PROYECTO");
+                        Toast.makeText(getContext(), "Voluntario reingresado!", Toast.LENGTH_LONG).show();
+                    } else {
+                        Toast.makeText(getContext(), "No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                    }
                 }else{
-                    Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(),"No quedan cupos disponibles!", Toast.LENGTH_LONG).show();
                 }
             }catch (Exception e){
                 e.printStackTrace();
