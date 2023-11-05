@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUpdateProyecto;
@@ -36,7 +35,6 @@ public class DMAGuardarDenunciaProyecto extends AsyncTask<String, Void, String> 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
 
             String query = "INSERT INTO DENUNCIAS_PROYECTOS (ID_PROYECTO ,ID_USER ,ID_ESTADO ,TITULO ,DESCRIPCION, FECHA_CREACION) VALUES (?,?,?,?,?,?);";
 
@@ -50,7 +48,8 @@ public class DMAGuardarDenunciaProyecto extends AsyncTask<String, Void, String> 
             ps.setDate(6, new Date(System.currentTimeMillis()));
             dataRowModif = ps.executeUpdate();
             result2 = " ";
-
+            ps.close();
+            con.close();
         }
         catch(Exception e) {
             e.printStackTrace();

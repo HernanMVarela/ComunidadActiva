@@ -1,5 +1,6 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.graphics.Color;
@@ -230,9 +231,7 @@ public class DetalleReporteFragment extends Fragment {
         descripcion.setText(seleccionado.getTitulo());
         String status_rep = "Estado: " + seleccionado.getEstado().getEstado();
         estado.setText(status_rep);
-        if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
-            estado.setBackgroundColor(Color.RED);
-        }
+        color_estado();
         String tipo_rep = "Tipo: " + seleccionado.getTipo().getTipo();
         tipo.setText(tipo_rep);
         fecha.setText(seleccionado.getFecha().toString());
@@ -246,6 +245,25 @@ public class DetalleReporteFragment extends Fragment {
 
         DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
         DMAImagen.execute();
+    }
+    private void color_estado(){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorVerdeSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("ATENDIDO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAzulSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("PENDIENTE")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorNaranjaSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorRojoSuave));
+            return;
+        }
+        estado.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
     }
 
     @Override

@@ -5,8 +5,6 @@ import android.os.AsyncTask;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.Objects;
 
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompatSideChannelService;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -156,10 +157,31 @@ public class DetalleProyectoFragment extends Fragment {
         titulo.setText(seleccionado.getTitulo());
         descripcion.setText(seleccionado.getDescripcion());
         estado.setText(seleccionado.getEstado().getEstado());
+        color_estado();
         tipo.setText(seleccionado.getTipo().getTipo());
         requerimiento.setText(seleccionado.getRequerimientos());
         contacto.setText(seleccionado.getContacto());
         cupo.setText(String.valueOf(seleccionado.getCupo()-1));
+    }
+
+    private void color_estado(){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorVerdeSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("FINALIZADO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAzulSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("EN PROCESO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorNaranjaSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorRojoSuave));
+            return;
+        }
+        estado.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
     }
 
     @Override
@@ -237,7 +259,7 @@ public class DetalleProyectoFragment extends Fragment {
         }
     }
     private void comportamiento_unirse(Button bUnirse){
-        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
             try {
                 /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
                 DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
@@ -257,20 +279,17 @@ public class DetalleProyectoFragment extends Fragment {
                 }else{
                     Toast.makeText(getContext(),"No quedan cupos disponibles!", Toast.LENGTH_LONG).show();
                 }
-
             }catch (Exception e){
                 e.printStackTrace();
                 Log.e("Error", "No se pudo registrar la operación");
             }
-
         }else{
             Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
         }
-
     }
 
     private void comportamiento_reunirse(Button bUnirse){
-        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
             try {
                 /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
                 DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
@@ -304,7 +323,7 @@ public class DetalleProyectoFragment extends Fragment {
         bFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+                if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
                     try {
                         DMAUpdateProyecto Finalizar = new DMAUpdateProyecto(seleccionado.getId(),2, getContext());
                         Finalizar.execute();
@@ -332,9 +351,7 @@ public class DetalleProyectoFragment extends Fragment {
                     dialogFragment.setArguments(args);
                     dialogFragment.show(getFragmentManager(), "layout_denuciar_proyecto");
                 }
-
             }
         });
     }
-
 }

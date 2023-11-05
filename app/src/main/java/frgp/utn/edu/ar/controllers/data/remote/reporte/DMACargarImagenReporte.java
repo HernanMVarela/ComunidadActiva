@@ -51,6 +51,8 @@ public class DMACargarImagenReporte extends AsyncTask<String, Void, String> {
                 Log.i("DB-ACCESS","TOMA IMAGEN DE LA DB");
                 bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
             }
+            preparedStatement.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -47,6 +47,9 @@ public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
 
                 listaTiposProyectos.add(categoria);
             }
+            rs.close();
+            st.close();
+            con.close();
             response = "Conexion exitosa";
         }
         catch(Exception e) {

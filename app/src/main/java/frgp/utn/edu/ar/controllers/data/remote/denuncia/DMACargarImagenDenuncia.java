@@ -18,7 +18,7 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
     private Context context;
-    ImageView imagen;
+    private ImageView imagen;
     private Bitmap bitmap;
     private static String result2;
     private int ID;
@@ -60,6 +60,8 @@ public class DMACargarImagenDenuncia extends AsyncTask<String, Void, String> {
                 Log.i("DB-ACCESS","TOMA IMAGEN DE LA DB");
                 bitmap = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
             }
+            rs.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

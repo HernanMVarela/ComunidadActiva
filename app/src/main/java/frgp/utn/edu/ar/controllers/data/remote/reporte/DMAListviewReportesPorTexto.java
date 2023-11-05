@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ListView;
 
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -22,7 +21,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +61,6 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             double dispositivoLatitud = ubicacion.latitude;
             double dispositivoLongitud = ubicacion.longitude;
 
@@ -108,6 +105,8 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
 
                 listaReporte.add(reporte);
             }
+            preparedStatement.close();
+            con.close();
             response = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();

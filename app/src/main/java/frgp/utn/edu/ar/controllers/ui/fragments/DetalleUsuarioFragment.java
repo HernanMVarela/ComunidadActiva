@@ -125,6 +125,7 @@ public class DetalleUsuarioFragment extends Fragment {
         correo.setText(selectedUser.getCorreo());
         tipouser.setText("Tipo de usuario: " + selectedUser.getTipo().getTipo());
         estadouser.setText("Estado: " + selectedUser.getEstado().getEstado());
+        color_estado();
         fechacreacion.setText(selectedUser.getFecha_alta().toString());
         if(selectedUser.getFecha_bloqueo()==null){
             fechabloqueo.setText("Nunca");
@@ -146,15 +147,23 @@ public class DetalleUsuarioFragment extends Fragment {
         } else {
             nacimiento.setText("Nacimiento: " + selectedUser.getFecha_nac().toString());
         }
-        if (selectedUser.getEstado().getEstado().equals("SUSPENDIDO")){
-            estadouser.setTextColor(ContextCompat.getColor(getContext(), R.color.danger));
-        } else if (selectedUser.getEstado().getEstado().equals("BLOQUEADO")){
-            estadouser.setTextColor(ContextCompat.getColor(getContext(), R.color.warning));
-        } else if (selectedUser.getEstado().getEstado().equals("ACTIVO")){
-            estadouser.setTextColor(ContextCompat.getColor(getContext(), R.color.teal_700));
-        } else {
-            estadouser.setTextColor(ContextCompat.getColor(getContext(), R.color.black));
+
+    }
+
+    private void color_estado(){
+        if(selectedUser.getEstado().getEstado().equals("ACTIVO")){
+            estadouser.setTextColor(ContextCompat.getColor(getContext(),R.color.colorVerdeSuave));
+            return;
         }
+        if(selectedUser.getEstado().getEstado().equals("INACTIVO")){
+            estadouser.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAzulSuave));
+            return;
+        }
+        if(selectedUser.getEstado().getEstado().equals("BLOQUEADO")){
+            estadouser.setTextColor(ContextCompat.getColor(getContext(),R.color.colorNaranjaSuave));
+            return;
+        }
+        estadouser.setTextColor(ContextCompat.getColor(getContext(),R.color.colorRojoSuave));
     }
 
     private void navegarAtras(){

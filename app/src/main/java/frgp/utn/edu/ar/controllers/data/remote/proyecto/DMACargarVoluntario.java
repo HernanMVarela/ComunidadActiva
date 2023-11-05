@@ -31,7 +31,6 @@ public class DMACargarVoluntario extends AsyncTask<String, Void, Voluntario> {
             filasafectadas = 0;
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             String query = "SELECT U.ID, U.USERNAME, U.PUNTUACION, U.NOMBRE, U.APELLIDO, U.TELEFONO, U.CORREO, U.FECHA_NAC, " +
                     "U.CREACION, E.ID AS ID_ESTADO, E.ESTADO, T.ID AS ID_TIPO, T.TIPO, UP.FECHA_UNION, UP.FECHA_SALIDA " +
                     "FROM USUARIOS U INNER JOIN USERS_PROYECTO UP ON U.ID = UP.ID_USER " +

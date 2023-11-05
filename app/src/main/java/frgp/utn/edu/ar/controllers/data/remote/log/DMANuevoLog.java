@@ -1,13 +1,11 @@
 package frgp.utn.edu.ar.controllers.data.remote.log;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 

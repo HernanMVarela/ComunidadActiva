@@ -9,11 +9,9 @@ import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
-import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMAGuardarCierreReporte extends AsyncTask<String, Void, String> {
@@ -37,7 +35,6 @@ public class DMAGuardarCierreReporte extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             nuevo.getImagen().compress(Bitmap.CompressFormat.PNG, 100, stream);
@@ -56,7 +53,8 @@ public class DMAGuardarCierreReporte extends AsyncTask<String, Void, String> {
 
             dataRowModif = ps.executeUpdate();
             result2 = " ";
-
+            ps.close();
+            con.close();
         }
         catch(Exception e) {
             e.printStackTrace();

@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +48,6 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             String query = "SELECT P.ID, P.TITULO, P.DESCRIPCION, P.LATITUD, P.LONGITUD, P.CUPO, P.ID_USER, P.ID_TIPO AS PROYECTO_ID_TIPO, P.ID_ESTADO AS PROYECTO_ID_ESTADO, P.CONTACTO, P.AYUDA_ESPECIFICA, " +
                     "U.USERNAME, U.PUNTUACION, U.NOMBRE, U.APELLIDO, U.TELEFONO, U.CORREO, U.FECHA_NAC, U.CREACION, U.ID_ESTADO AS USUARIO_ID_ESTADO, U.ID_TIPO AS USUARIO_ID_TIPO, " +
                     "TP.TIPO AS TIPO_PROYECTO, EP.ESTADO AS ESTADO_PROYECTO, " +
@@ -64,7 +62,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 contador+=1;
                 ordenT=contador;
                 if(!filtrado){
-                    query = query + "WHERE P.ID_TIPO = ?";
+                    query = query + " WHERE P.ID_TIPO = ?";
                     filtrado=true;
                 }
                 else{
@@ -75,7 +73,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 contador+=1;
                 ordenE=contador;
                 if(!filtrado){
-                    query = query + "WHERE P.ID_ESTADO = ?";
+                    query = query + " WHERE P.ID_ESTADO = ?";
                     filtrado=true;
                 }
                 else{
@@ -86,7 +84,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 contador+=1;
                 ordenN=contador;
                 if(!filtrado){
-                    query = query + "WHERE P.TITULO LIKE ?";
+                    query = query + " WHERE P.TITULO LIKE ?";
                     filtrado=true;
                 }
                 else{
@@ -145,6 +143,8 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
 
                 listaDeProyectos.add(proyecto);
             }
+            rs.close();
+            con.close();
             resultado = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();

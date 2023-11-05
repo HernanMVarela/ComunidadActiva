@@ -15,8 +15,8 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMAListarUsuariosPorEstado extends AsyncTask<String, Void, JSONArray> {
 
-    Date fechaInicio;
-    Date fechaFin;
+    private Date fechaInicio;
+    private Date fechaFin;
     public DMAListarUsuariosPorEstado(Date fechaInicio, Date fechaFin) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;

@@ -47,6 +47,9 @@ public class DMASpinnerEstadosProyectosSinDenuncia extends AsyncTask<String, Voi
 
                 listaEstadosProyectos.add(categoria);
             }
+            rs.close();
+            st.close();
+            con.close();
             response = "Conexion exitosa";
         }
         catch(Exception e) {

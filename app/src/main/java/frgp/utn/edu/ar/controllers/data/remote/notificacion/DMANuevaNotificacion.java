@@ -6,7 +6,6 @@ import android.util.Log;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 

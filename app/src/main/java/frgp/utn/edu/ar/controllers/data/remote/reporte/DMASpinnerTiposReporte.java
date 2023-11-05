@@ -50,6 +50,9 @@ public class DMASpinnerTiposReporte extends AsyncTask<String, Void, String> {
                 listaTiposReporte.add(categoria);
             }
             response = "Conexion exitosa";
+            rs.close();
+            st.close();
+            con.close();
         }
         catch(Exception e) {
             e.printStackTrace();

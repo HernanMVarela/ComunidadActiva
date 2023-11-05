@@ -38,6 +38,7 @@ public class DMAActualizarEstadoProyecto extends AsyncTask<String, Void, String>
             ps.setInt(2, modificar.getId());
             dataRowModif = ps.executeUpdate();
 
+            ps.close();
             con.close();
         } catch (Exception e) {
             e.printStackTrace();

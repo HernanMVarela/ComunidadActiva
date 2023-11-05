@@ -1,16 +1,11 @@
 package frgp.utn.edu.ar.controllers.data.remote.proyecto;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.Button;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
@@ -31,7 +26,6 @@ public class DMAAbandonarProyecto extends AsyncTask<String, Void, Boolean> {
             int filasafectadas = 0;
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             String insert = "UPDATE USERS_PROYECTO SET FECHA_SALIDA = ? WHERE ID_USER = ? AND ID_PROYECTO = ? ;";
 
             PreparedStatement preparedStatement = con.prepareStatement(insert);

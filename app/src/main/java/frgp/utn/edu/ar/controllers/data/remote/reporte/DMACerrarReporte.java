@@ -1,18 +1,14 @@
 package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
-import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
@@ -48,6 +44,8 @@ public class DMACerrarReporte extends AsyncTask<String, Void, String> {
 
             dataRowModif = ps.executeUpdate();
             result2 = " ";
+            ps.close();
+            con.close();
         }
         catch(Exception e) {
             e.printStackTrace();

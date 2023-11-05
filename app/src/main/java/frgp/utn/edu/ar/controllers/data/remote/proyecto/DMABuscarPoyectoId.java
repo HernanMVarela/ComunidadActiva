@@ -3,7 +3,6 @@ package frgp.utn.edu.ar.controllers.data.remote.proyecto;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +17,6 @@ import frgp.utn.edu.ar.controllers.data.model.TipoProyecto;
 import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
-import frgp.utn.edu.ar.controllers.ui.adapters.ListaProyectosAdapter;
 
 public class DMABuscarPoyectoId extends AsyncTask<Integer, Void, Proyecto> {
     private Context context;
@@ -95,6 +93,8 @@ public class DMABuscarPoyectoId extends AsyncTask<Integer, Void, Proyecto> {
                 proyectoEncontrado.setContacto(rs.getString("CONTACTO"));
                 proyectoEncontrado.setRequerimientos(rs.getString("AYUDA_ESPECIFICA"));
             }
+            rs.close();
+            con.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

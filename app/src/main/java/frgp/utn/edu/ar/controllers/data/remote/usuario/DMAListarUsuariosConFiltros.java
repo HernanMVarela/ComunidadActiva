@@ -2,7 +2,6 @@ package frgp.utn.edu.ar.controllers.data.remote.usuario;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ListView;
 
 import java.sql.Connection;

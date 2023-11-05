@@ -3,14 +3,10 @@ package frgp.utn.edu.ar.controllers.data.remote.proyecto;
 import android.os.AsyncTask;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
-import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMAUsuarioExisteEnProyecto extends AsyncTask<String, Void, Boolean> {
@@ -31,7 +27,6 @@ public class DMAUsuarioExisteEnProyecto extends AsyncTask<String, Void, Boolean>
             filasafectadas = 0;
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             String query = "SELECT * FROM USERS_PROYECTO WHERE ID_USER = ? AND ID_PROYECTO = ?";
 
             PreparedStatement preparedStatement = con.prepareStatement(query);

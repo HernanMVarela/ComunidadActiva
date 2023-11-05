@@ -9,14 +9,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
-import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Publicacion;
@@ -30,7 +27,6 @@ import frgp.utn.edu.ar.controllers.ui.adapters.ListarDenunciaAdapter;
 public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
     private Context context;
     private ListView listado;
-    private static String result2;
     private static List<Denuncia> listaDenuncias;
 
     public DMAListarDenunciasReporte(ListView listview, Context ct){
@@ -45,7 +41,6 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
 
             String query = "SELECT " +
                     "D.ID_REPORTE AS IDReporte, " +
@@ -90,7 +85,6 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
-            result2 = " ";
             listaDenuncias = new ArrayList<Denuncia>();
 
             while (rs.next()) {
@@ -141,12 +135,13 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
 
                 listaDenuncias.add(denuncia);
             }
-
+            preparedStatement.close();
+            con.close();
             response = "Conexion exitosa";
 
         }catch (Exception e){
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
+            response = "Conexion no exitosa";
         }
 
         return response;

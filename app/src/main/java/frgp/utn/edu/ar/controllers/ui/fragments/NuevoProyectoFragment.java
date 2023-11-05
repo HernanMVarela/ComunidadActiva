@@ -163,19 +163,31 @@ public class NuevoProyectoFragment extends Fragment {
         if(edTitulo.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa un titulo para tu proyecto", Toast.LENGTH_LONG).show();
             return false;}
+        if(edTitulo.getText().toString().length()>50){
+            Toast.makeText(this.getContext(), "El titulo es muy largo!", Toast.LENGTH_LONG).show();
+            return false;}
         if(edDesc.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa una descripción para tu proyecto", Toast.LENGTH_LONG).show();
+            return false;}
+        if(edDesc.getText().toString().length()>250){
+            Toast.makeText(this.getContext(), "La descripción es muy larga!", Toast.LENGTH_LONG).show();
             return false;}
         if(edRequerimientos.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa un requerimiento o más para tu proyecto", Toast.LENGTH_LONG).show();
             return false;}
+        if(edRequerimientos.getText().toString().length()>150){
+            Toast.makeText(this.getContext(), "Los requerimientos son muy largos!", Toast.LENGTH_LONG).show();
+            return false;}
         if(edContacto.getText().toString().trim().isEmpty()){
             Toast.makeText(this.getContext(), "Ingresa un telefono de contacto para tu proyecto", Toast.LENGTH_LONG).show();
             return false;}
+        if(edContacto.getText().toString().length()>50){
+            Toast.makeText(this.getContext(), "El texto de contacto es muy largo!", Toast.LENGTH_LONG).show();
+            return false;}
         if(edCupos.getText().toString().trim().isEmpty()) {
             Toast.makeText(this.getContext(), "Ingresa un valor para indicar la cantidad máxima de participantes", Toast.LENGTH_LONG).show();
-        }else if (Integer.parseInt(edCupos.getText().toString()) <= 0) {
-            Toast.makeText(this.getContext(), "Ingresa un cupo mayor a 0 para tu proyecto", Toast.LENGTH_LONG).show();
+        }else if (Integer.parseInt(edCupos.getText().toString()) <= 0 || Integer.parseInt(edCupos.getText().toString()) >= 51) {
+            Toast.makeText(this.getContext(), "El cupo debe ser un número entre 1 y 50", Toast.LENGTH_LONG).show();
             return false;
         }
         if (sharedLocationViewModel.getLatitude() == 0 || sharedLocationViewModel.getLongitude() == 0) {

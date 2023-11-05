@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
@@ -25,7 +24,6 @@ public class DMAReUnirseProyecto extends AsyncTask<String, Void, Boolean> {
             int filasafectadas = 0;
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             String insert = "UPDATE USERS_PROYECTO SET FECHA_UNION = ?, FECHA_SALIDA = ? WHERE ID_USER = ? AND ID_PROYECTO = ? ;";
 
             PreparedStatement preparedStatement = con.prepareStatement(insert);

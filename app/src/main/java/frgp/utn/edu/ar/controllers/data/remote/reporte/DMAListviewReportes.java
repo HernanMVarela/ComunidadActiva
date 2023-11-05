@@ -1,43 +1,26 @@
 package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ListView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +33,6 @@ import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaReportesAdapter;
-import frgp.utn.edu.ar.controllers.ui.adapters.TipoReporteAdapter;
 
 public class DMAListviewReportes extends AsyncTask<String, Void, String> {
 
@@ -80,7 +62,6 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
 
             PreparedStatement preparedStatement = generadorConsulta(con,loggedUser.getTipo().getTipo(),todo);
             assert preparedStatement != null;
@@ -119,6 +100,8 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
 
                 listaReporte.add(reporte);
             }
+            preparedStatement.close();
+            con.close();
             response = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();

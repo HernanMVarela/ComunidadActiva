@@ -7,7 +7,6 @@ import android.widget.Toast;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
@@ -41,6 +40,7 @@ public class DMAActualizarEstadoReporte extends AsyncTask<String, Void, String> 
             ps.setInt(2, modificar.getId());
             dataRowModif = ps.executeUpdate();
 
+            ps.close();
             con.close();
         } catch (Exception e) {
             e.printStackTrace();

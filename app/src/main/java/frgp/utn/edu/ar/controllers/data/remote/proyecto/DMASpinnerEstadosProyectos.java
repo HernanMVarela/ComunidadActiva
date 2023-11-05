@@ -48,11 +48,15 @@ public class DMASpinnerEstadosProyectos extends AsyncTask<String, Void, String> 
                 listaEstadosProyectos.add(categoria);
             }
             response = "Conexion exitosa";
+            rs.close();
+            st.close();
+            con.close();
         }
         catch(Exception e) {
             e.printStackTrace();
             result2 = "Conexion no exitosa";
         }
+
         return response;
 
     }

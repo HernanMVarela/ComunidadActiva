@@ -1,8 +1,6 @@
 package frgp.utn.edu.ar.controllers.data.remote.usuario;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

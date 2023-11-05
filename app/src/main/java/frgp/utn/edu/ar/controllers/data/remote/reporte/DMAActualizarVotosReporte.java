@@ -1,9 +1,6 @@
 package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

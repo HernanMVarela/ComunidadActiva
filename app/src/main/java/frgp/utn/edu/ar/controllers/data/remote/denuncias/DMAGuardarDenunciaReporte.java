@@ -36,7 +36,6 @@ public class DMAGuardarDenunciaReporte extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
 
             String query = "INSERT INTO DENUNCIAS_REPORTES (ID_REPORTE ,ID_USER ,ID_ESTADO ,TITULO ,DESCRIPCION, FECHA_CREACION) VALUES (?,?,?,?,?,?);";
 
@@ -51,7 +50,8 @@ public class DMAGuardarDenunciaReporte extends AsyncTask<String, Void, String> {
 
             dataRowModif = ps.executeUpdate();
             result2 = " ";
-
+            ps.close();
+            con.close();
         }
         catch(Exception e) {
             e.printStackTrace();
