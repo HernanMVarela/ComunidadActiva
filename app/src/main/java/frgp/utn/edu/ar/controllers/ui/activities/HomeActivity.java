@@ -71,19 +71,17 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         ///RECUPERO SHARED PREFERENCES
-       View headerView = navigationView.getHeaderView(0);
-       tvNavUsername = headerView.findViewById(R.id.tvNavBarUserName);
-       tvNavUserMail = headerView.findViewById(R.id.tvNavBarMail);
-       usuario = sharedPreferences.getUsuarioData(this);
-       tvNavUsername.setText(usuario.getUsername());
-       tvNavUserMail.setText(usuario.getCorreo());
-        if(usuario!=null){
-            Log.i("User", usuario.toString());
-        }else{
+        View headerView = navigationView.getHeaderView(0);
+        tvNavUsername = headerView.findViewById(R.id.tvNavBarUserName);
+        tvNavUserMail = headerView.findViewById(R.id.tvNavBarMail);
+        usuario = sharedPreferences.getUsuarioData(this);
+        tvNavUsername.setText(usuario.getUsername());
+        tvNavUserMail.setText(usuario.getCorreo());
+        if(usuario==null){
             Log.e("ERROR USER", "NO HAY USAURIO");
         }
-       UsuarioViewModel userViewModel = new ViewModelProvider(this).get(UsuarioViewModel.class);
-       userViewModel.setUsuario(usuario);
+        UsuarioViewModel userViewModel = new ViewModelProvider(this).get(UsuarioViewModel.class);
+        userViewModel.setUsuario(usuario);
     }
 
     @Override

@@ -98,9 +98,15 @@ public class EliminarPublicacionReporteDialogFragment extends DialogFragment {
 
                         reporte.setEstado(new EstadoReporte(5,"CANCELADO"));
                        // Toast.makeText(getContext(),  reporte.getEstado().getEstado(), Toast.LENGTH_LONG).show();
-                        DMAActualizarEstadoReporte DMAEliminarPublicacion = new DMAActualizarEstadoReporte(reporte,getContext());
-                        DMAEliminarPublicacion.execute();
-                        serviceNotificacion.notificacion(selectedDenuncia.getPublicacion().getOwner().getId(),"Se notifica Su Publicacion: " + selectedDenuncia.getPublicacion().getId() +"ha sido Eliminada, por los motivos: "+ motivo);
+                        try {
+                            DMAActualizarEstadoReporte DMAEliminarPublicacion = new DMAActualizarEstadoReporte(reporte);
+                            DMAEliminarPublicacion.execute();
+                            if(DMAEliminarPublicacion.get()){
+                                serviceNotificacion.notificacion(selectedDenuncia.getPublicacion().getOwner().getId(),"Se notifica Su Publicacion: " + selectedDenuncia.getPublicacion().getId() +"ha sido Eliminada, por los motivos: "+ motivo);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
                     }
                     if(selectedDenuncia.getTipo().getTipo().equals("PROYECTO")){
                         Proyecto proyecto = new Proyecto();

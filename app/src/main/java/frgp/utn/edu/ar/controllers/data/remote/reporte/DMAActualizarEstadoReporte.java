@@ -11,22 +11,18 @@ import java.sql.PreparedStatement;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAActualizarEstadoReporte extends AsyncTask<String, Void, String> {
+public class DMAActualizarEstadoReporte extends AsyncTask<String, Void, Boolean> {
 
-    private Context context;
     private Reporte modificar;
-    private static String result2;
-    private int dataRowModif;
 
     //Constructor
-    public DMAActualizarEstadoReporte(Reporte modificar, Context ct)
+    public DMAActualizarEstadoReporte(Reporte modificar)
     {
         this.modificar = modificar;
-        this.context = ct;
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected Boolean doInBackground(String... urls) {
         String response = "";
 
         try {
@@ -38,20 +34,17 @@ public class DMAActualizarEstadoReporte extends AsyncTask<String, Void, String> 
             PreparedStatement ps = con.prepareStatement(query);
             ps.setInt(1, modificar.getEstado().getId());
             ps.setInt(2, modificar.getId());
-            dataRowModif = ps.executeUpdate();
+            int dataRowModif = ps.executeUpdate();
 
             ps.close();
             con.close();
+            if(dataRowModif !=0){
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             e.printStackTrace();
-            response = "ERROR";
-        }
-        return response;
-    }
-    @Override
-    protected void onPostExecute(String response) {
-        if(dataRowModif==0){
-            Toast.makeText(context, "No se pudo modificar el reporte", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

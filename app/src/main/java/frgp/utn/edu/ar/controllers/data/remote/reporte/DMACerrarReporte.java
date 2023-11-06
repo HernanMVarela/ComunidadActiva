@@ -12,22 +12,19 @@ import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMACerrarReporte extends AsyncTask<String, Void, String> {
+public class DMACerrarReporte extends AsyncTask<String, Void, Boolean> {
 
-    private Context context;
     CierreReporte cierreReporte;
-    private static String result2;
     private int dataRowModif;
 
     //Constructor
-    public DMACerrarReporte(CierreReporte cierreReporte, Context ct)
+    public DMACerrarReporte(CierreReporte cierreReporte)
     {
         this.cierreReporte = cierreReporte;
-        this.context = ct;
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected Boolean doInBackground(String... urls) {
         String response = "";
 
         try {
@@ -43,24 +40,16 @@ public class DMACerrarReporte extends AsyncTask<String, Void, String> {
             ps.setInt(3,cierreReporte.getUser().getId());
 
             dataRowModif = ps.executeUpdate();
-            result2 = " ";
             ps.close();
             con.close();
+            if(dataRowModif!=0){
+                return true;
+            }
+            return false;
         }
         catch(Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
-        }
-        return response;
-    }
-    @Override
-    protected void onPostExecute(String response) {
-        if(dataRowModif!=0){
-            Reporte modifcar = cierreReporte.getReporte();
-            DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(modifcar,context);
-            dmaActualizar.execute();
-        }else{
-            Toast.makeText(context, "No se pudo crear la solicitud", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

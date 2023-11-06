@@ -17,10 +17,12 @@ import java.util.Date;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
+import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenunciaReporte;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarEstadoReporte;
 import frgp.utn.edu.ar.controllers.utils.LogService;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
@@ -56,24 +58,41 @@ public class DenunciaReporteDialogFragment extends DialogFragment {
         btnAceptar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(validarCampos() && !selectedReport.getEstado().getEstado().equals("DENUNCIADO")){
+                if(validarCampos() && !selectedReport.getEstado().getEstado().equals("DENUNCIADO")) {
                     /// CARGA DATOS EN LA DENUNCIA
                     Denuncia nueva = new Denuncia();
                     nueva.setPublicacion(selectedReport);
-                    nueva.setTipo(new TipoDenuncia(1,"REPORTE"));
+                    nueva.setTipo(new TipoDenuncia(1, "REPORTE"));
                     nueva.setDenunciante(loggedInUser);
                     nueva.setDescripcion(etxMotivoDenuncia.getText().toString());
                     nueva.setTitulo(etxTituloDenuncia.getText().toString());
-                    nueva.setEstado(new EstadoDenuncia(1,"PENDIENTE"));
+                    nueva.setEstado(new EstadoDenuncia(1, "PENDIENTE"));
                     nueva.setFecha_creacion(new Date(System.currentTimeMillis()));
 
-                    /// ITENTA GUARDAR LA DENUNCIA Y CAMBIAR EL ESTADO DEL REPORTE
-                    DMAGuardarDenunciaReporte DMAGuardarDen = new DMAGuardarDenunciaReporte(nueva,getContext());
-                    DMAGuardarDen.execute();
-
-                    logService.log(loggedInUser.getId(), LogsEnum.DENUNCIA_REPORTE, String.format("Denunciaste el reporte %s", selectedReport.getTitulo()));
-                    notificacionService.notificacion(selectedReport.getOwner().getId(), String.format("El %s %s denuncio el reporte %s", loggedInUser.getTipo().getTipo(), loggedInUser.getUsername(), selectedReport.getTitulo()));                }
-                // Cierra el diálogo.
+                    try {
+                        /// ITENTA GUARDAR LA DENUNCIA Y CAMBIAR EL ESTADO DEL REPORTE
+                        DMAGuardarDenunciaReporte DMAGuardarDen = new DMAGuardarDenunciaReporte(nueva);
+                        DMAGuardarDen.execute();
+                        if (DMAGuardarDen.get()) {
+                            Toast.makeText(getContext(), "Denuncia guardada", Toast.LENGTH_SHORT).show();
+                            Reporte modificar = (Reporte) nueva.getPublicacion();
+                            modificar.setEstado(new EstadoReporte(6, "DENUNCIADO"));
+                            DMAActualizarEstadoReporte DMAEstadoReporte = new DMAActualizarEstadoReporte(modificar);
+                            DMAEstadoReporte.execute();
+                            if (DMAEstadoReporte.get()) {
+                                logService.log(loggedInUser.getId(), LogsEnum.DENUNCIA_REPORTE, String.format("Denunciaste el reporte %s", selectedReport.getTitulo()));
+                                notificacionService.notificacion(selectedReport.getOwner().getId(), String.format("El %s %s denuncio el reporte %s", loggedInUser.getTipo().getTipo(), loggedInUser.getUsername(), selectedReport.getTitulo()));
+                            }else{
+                                Toast.makeText(getContext(), "Error al cambiar el estado", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(getContext(), "No se pudo crear la denuncia", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                   // Cierra el diálogo.
                 dismiss();
             }
         });
