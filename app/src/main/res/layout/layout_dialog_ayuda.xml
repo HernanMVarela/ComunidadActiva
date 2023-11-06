@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="15dp"
+    android:paddingVertical="10dp"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/dialog_corner_bg"
+    android:gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/ayuda_titulo"
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|start"
+            android:textAlignment="textStart"
+            android:textSize="20sp"
+            android:text="pregunta"/>
+
+        <Button
+            android:id="@+id/btn_cerrar_ayuda_dialog"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="15dp"
+            android:background="@color/green_100"
+            android:text="@string/cerrar_x" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ayuda_subtitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:textSize="14sp"
+        android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
+        android:text="subtitulo"/>
+    <TextView
+        android:id="@+id/ayuda_paso_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp"
+        android:textSize="14sp"
+        android:layout_gravity="start"
+        android:textAlignment="textStart"
+        android:text="subtitulo"/>
+    <TextView
+        android:id="@+id/ayuda_paso_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp"
+        android:textSize="14sp"
+        android:layout_gravity="start"
+        android:textAlignment="textStart"
+        android:text="subtitulo"/>
+    <TextView
+        android:id="@+id/ayuda_paso_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp"
+        android:textSize="14sp"
+        android:layout_gravity="start"
+        android:textAlignment="textStart"
+        android:text="subtitulo"/>
+    <TextView
+        android:id="@+id/ayuda_paso_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="10dp"
+        android:textSize="14sp"
+        android:layout_gravity="start"
+        android:textAlignment="textStart"
+        android:text="subtitulo"/>
+
+
+</LinearLayout>

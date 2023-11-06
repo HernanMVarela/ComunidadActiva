@@ -95,7 +95,6 @@ public class ValorarReporteDialogFragment extends DialogFragment {
 
                     DMAVerificarUsuarioVoto DMAUserVoto = new DMAVerificarUsuarioVoto(resenia);
                     DMAUserVoto.execute();
-                    Log.e("LOG-CHECK","HIZO CLICK EL BOTON Y NO EXPLOTO");
                     try {
                         if(!DMAUserVoto.get()){
                             DMAGuardarResenia GuardarResenia = new DMAGuardarResenia(resenia);

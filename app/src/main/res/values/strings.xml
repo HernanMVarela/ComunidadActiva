@@ -169,4 +169,14 @@
     <string name="lista_de_participantes">Lista de participantes</string>
     <string name="remover_participante">Remover participante</string>
     <string name="finalizar">Finalizar</string>
+    <string name="preg_nueve">+ ¿Cómo denunciar una publicación?</string>
+    <string name="preg_ocho">+ ¿Cómo funciona el sistema de puntos?</string>
+    <string name="preg_siete">+ ¿Cómo finalizar un proyecto?</string>
+    <string name="preg_seis">+ ¿Cómo unirse a un proyecto?</string>
+    <string name="preg_cinco">+ ¿Cómo crear un proyecto?</string>
+    <string name="preg_cuatro">+ ¿Cómo cerrar un reporte?</string>
+    <string name="preg_tres">+ ¿Cómo atender un reporte?</string>
+    <string name="preg_dos">+ ¿Cómo valorar un reporte?</string>
+    <string name="preg_uno">+ ¿Cómo hacer un reporte?</string>
+    <string name="cerrar_x">X</string>
 </resources>
