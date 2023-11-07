@@ -22,13 +22,13 @@ import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class NotificarCerrarDenunciaDialogFragment extends DialogFragment {
 
-    Button btnConfirmar;
-    Button btnCancelar;
-    Denuncia selectedDenuncia = null;
-    String motivo;
+    private Button btnConfirmar;
+    private Button btnCancelar;
+    private Denuncia selectedDenuncia = null;
+    private String motivo;
     private Usuario loggedInUser = null;
-    NotificacionService serviceNotificacion= new NotificacionService();
-    LogService logService = new LogService();
+    private NotificacionService serviceNotificacion= new NotificacionService();
+    private LogService logService = new LogService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

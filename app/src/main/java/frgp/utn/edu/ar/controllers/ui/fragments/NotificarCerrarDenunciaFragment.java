@@ -28,10 +28,10 @@ public class NotificarCerrarDenunciaFragment extends Fragment {
 
     private NotificarCerrarDenunciaViewModel mViewModel;
 
-    EditText motivo;
-    Button btnNotificarCerrar;
+    private EditText motivo;
+    private Button btnNotificarCerrar;
     private Denuncia seleccionado;
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private Usuario loggedInUser = null;
 
     public static NotificarCerrarDenunciaFragment newInstance() {
@@ -55,8 +55,9 @@ public class NotificarCerrarDenunciaFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         motivo = view.findViewById(R.id.etResolucionDenuncia);
-        btnNotificarCerrar = view.findViewById(R.id.btnNotidicarYCerrarDenuncia);
-        loggedInUser = sharedPreferences.getUsuarioData(getContext());
+        btnNotificarCerrar = view.findViewById(R.id.btnCerrarDenuncia);
+        btnNotificarCerrar = view.findViewById(R.id.btnDesestimarDenuncia);
+
 
         Bundle bundle = this.getArguments();
         /// OBTIENE LA DENUNCIA SELECCIONADA EN LA PANTALLA ANTERIOR
@@ -70,7 +71,6 @@ public class NotificarCerrarDenunciaFragment extends Fragment {
                 Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
             }
         }
-
         boton_cerrar_denuncia(btnNotificarCerrar);
     }
 

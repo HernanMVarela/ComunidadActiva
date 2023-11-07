@@ -76,7 +76,6 @@ public class SuspenderUsuarioFragment extends Fragment {
             }
         }
          boton_suspender_usuario(btnSuspender);
-
     }
 
     private void cargarDatosUsuario(){

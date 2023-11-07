@@ -23,9 +23,10 @@
         tools:ignore="MissingConstraints">
 
         <TextView
+            android:id="@+id/txtTituloDenuncia"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
+            android:layout_marginVertical="10dp"
             android:text="@string/ver_denuncia"
             android:textAlignment="center"
             android:textSize="20sp"
@@ -36,16 +37,16 @@
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
             <TextView
-                android:id="@+id/tvTituloDenuncia"
+                android:id="@+id/txtTituloPublicacion"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:layout_marginStart="10dp"
+                android:layout_gravity="start|center_vertical"
                 android:textAlignment="textStart"
                 android:layout_marginEnd="10dp"
                 android:paddingVertical="5dp"
-                android:text="@string/titulo"
-                tools:text="Titulo Denuncia"
+                android:text="Titulo Publicacion"
                 android:layout_weight="1"/>
 
             <TextView
@@ -56,44 +57,46 @@
                 android:layout_marginEnd="10dp"
                 android:layout_weight="1"
                 android:paddingVertical="5dp"
-                android:textAlignment="textStart"
+                android:layout_gravity="end|center_vertical"
+                android:textAlignment="textEnd"
                 android:textSize="14sp"
                 tools:text="Fecha" />
         </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/tvDenunciante"
+        <Button
+            android:id="@+id/btnDenunciadoUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
-            android:gravity="start"
-            android:text="@string/titulo"
-            android:textSize="20sp"
-            tools:text="Denunciante: " />
+            android:gravity="center"
+            android:text="Nombre"
+            android:background="@color/green_100"
+            android:textSize="18sp"/>
 
-        <TextView
-            android:id="@+id/tvDenunciado"
+        <Button
+            android:id="@+id/btnDenuncianteUser"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
-            android:gravity="start"
-            android:text="@string/titulo"
-            android:textSize="20sp"
-            tools:text="Denunciado: " />
+            android:gravity="center"
+            android:text="Nombre"
+            android:background="@color/green_100"
+            android:textSize="18sp"/>
 
         <TextView
-            android:id="@+id/tvIdPublicacion"
+            android:id="@+id/txtTipoPublicacion"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginVertical="5dp"
-            android:contentDescription="Publicacion:"
-            android:gravity="start"
-            android:text="Publicación: "
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginStart="15dp"
+            android:gravity="center"
+            android:text=""
+            tools:text="Publicación: "
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/tvEstadoPublicacionDenuncia"
+            android:id="@+id/txtEstadoDenuncia"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
@@ -110,34 +113,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
+            android:layout_marginStart="15dp"
             android:gravity="start"
-            android:text="Descripción:"
+            android:text=""
             android:textSize="20sp"
             tools:text="Descripción:" />
 
-
         <TextView
-            android:id="@+id/tvDescripcionDenuncia"
+            android:id="@+id/txtDescripcionDenuncia"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginVertical="5dp"
-            android:text="@string/titulo"
+            android:text=""
+            android:padding="5dp"
+            android:lines="5"
+            android:background="@drawable/edittext_white_rounded"
             android:textAlignment="textEnd"
-            android:textSize="20sp"
-            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    eiusmod tempor incidunt ut labore et dolore magna aliqua. Ut
-                    enim ad minim veniam, quis nostrud exercitation ullamco" />
-        <ImageView
-            android:id="@+id/imgPublicacion"
+            android:textSize="20sp"/>
+
+        <fragment
+            android:id="@+id/mapListaDenuncias"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginHorizontal="10dp"
-            android:layout_marginVertical="15dp"
-            android:background="@drawable/dialog_corner_bgd"
-            android:paddingVertical="5dp"
-            android:scaleType="fitCenter"
-            android:src="@mipmap/image_placeholder_foreground" />
-
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="25dp"/>
 
     </LinearLayout>
     </ScrollView>

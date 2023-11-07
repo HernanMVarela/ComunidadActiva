@@ -28,10 +28,13 @@ import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMACargarImagenDenuncia;
 import frgp.utn.edu.ar.controllers.data.repository.denuncia.DenunciaRepository;
 import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.ui.dialogs.AtenderDenunciaDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionProyectoDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.NotificarCerrarDenunciaDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.SuspenderUsuarioDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.VerDenunciaViewModel;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
@@ -40,24 +43,23 @@ public class VerDenunciaFragment extends Fragment {
 
     private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private VerDenunciaViewModel mViewModel;
-    private TextView titulo;
-    private TextView descripcion;
-    private TextView denunciante;
-    private TextView denunciado;
-    private TextView estadoPublicacion;
-    private TextView fecha;
-    private TextView idPublicacion;
-    private ImageView imagenPublicacion;
+    private TextView tvTituloPublicacion, tvTituloDenuncia, tvDescripcion, tvEstadoDenuncia, tvFecha, tvTipoPublic;
     private Denuncia seleccionado;
-    private Button btnSuspenderUsuario, btnEliminarPublicacion, btnNotificarCerrar;
-    private UsuarioRepository usuarioRepository;
     private NotificacionService serviceNotificacion;
     private DenunciaRepository denunciaRepository = new DenunciaRepository();
-
     public static VerDenunciaFragment newInstance() {
         return new VerDenunciaFragment();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle = this.getArguments();
+        /// OBTIENE LA DENUNCIA SELECCIONADA EN LA PANTALLA ANTERIOR
+        if (bundle != null) {
+            seleccionado = (Denuncia) bundle.getSerializable("selected_denuncia");
+        }
+    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -65,7 +67,13 @@ public class VerDenunciaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ver_denuncia, container, false);
 
         serviceNotificacion = new NotificacionService();
-        usuarioRepository = new UsuarioRepository();
+
+        tvTituloDenuncia = view.findViewById(R.id.txtTituloDenuncia);
+        tvTituloPublicacion = view.findViewById(R.id.txtTituloPublicacion);
+        tvFecha = view.findViewById(R.id.tvFechaPublicacion);
+        tvDescripcion = view.findViewById(R.id.txtDescripcionDenuncia);
+        tvEstadoDenuncia = view.findViewById(R.id.txtEstadoDenuncia);
+        tvTipoPublic = view.findViewById(R.id.txtTipoPublicacion);
 
         // ESCONDE EL BOTON DEL SOBRE
         if(getActivity() instanceof HomeActivity){
@@ -78,30 +86,21 @@ public class VerDenunciaFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        titulo = view.findViewById(R.id.tvTituloDenuncia);
-        fecha = view.findViewById(R.id.tvFechaPublicacion);
-        descripcion = view.findViewById(R.id.tvDescripcionDenuncia);
-        denunciante = view.findViewById(R.id.tvDenunciante);
-        denunciado = view.findViewById(R.id.tvDenunciado);
-        estadoPublicacion = view.findViewById(R.id.tvEstadoPublicacionDenuncia);
-        imagenPublicacion = view.findViewById(R.id.imgPublicacion);
-        idPublicacion = view.findViewById(R.id.tvIdPublicacion);
-        btnSuspenderUsuario = view.findViewById(R.id.btnSuspenderUs);
-        btnEliminarPublicacion = view.findViewById(R.id.btnEliminarPublicacionDenuncia);
-        btnNotificarCerrar = view.findViewById(R.id.btnNotificarDenuncia);
+        Button btnSuspenderUsuario = view.findViewById(R.id.btnSuspenderUs);
+        Button btnEliminarPublicacion = view.findViewById(R.id.btnEliminarPublicacionDenuncia);
+        Button btnNotificarCerrar = view.findViewById(R.id.btnNotificarDenuncia);
+        Button btnDenunciante = view.findViewById(R.id.btnDenuncianteUser);
+        Button btnDenunciado = view.findViewById(R.id.btnDenunciadoUser);
 
-        Bundle bundle = this.getArguments();
-        /// OBTIENE LA DENUNCIA SELECCIONADA EN LA PANTALLA ANTERIOR
-        if (bundle != null) {
-            seleccionado = (Denuncia) bundle.getSerializable("selected_denuncia");
-            /// VALIDA QUE EL REPORTE EXISTA
-            if (seleccionado != null) {
-                cargarDatosDenuncia();
-            }else {
-                /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
-                Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
-            }
+        if (seleccionado != null) {
+            cargarDatosDenuncia();
+        }else {
+            /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
+            Toast.makeText(this.getContext(), "ERROR AL CARGAR", Toast.LENGTH_LONG).show();
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+            navController.popBackStack();
         }
+
         /// BOTONES
         btnSuspenderUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,32 +117,38 @@ public class VerDenunciaFragment extends Fragment {
         btnNotificarCerrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navegarCerrarDenuncia();
+                navegarAtenderDenuncia();
+            }
+        });
+
+        btnDenunciante.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navegarDetalleUsuario(seleccionado.getDenunciante());
+            }
+        });
+
+        btnDenunciado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navegarDetalleUsuario(seleccionado.getPublicacion().getOwner());
             }
         });
 
     }
     private void cargarDatosDenuncia(){
         /// CONFIGURO DATOS DEL REPORTE
-        titulo.setText(seleccionado.getTitulo());
-        descripcion.setText(seleccionado.getDescripcion());
-        denunciante.setText("Denunciante: "+seleccionado.getDenunciante().getUsername());
-        denunciado.setText("Denunciado: "+seleccionado.getPublicacion().getOwner().getUsername());
-        estadoPublicacion.setText("Estado: " + seleccionado.getEstado().getEstado());
+        tvTituloDenuncia.setText(seleccionado.getTitulo());
+        tvTituloPublicacion.setText(seleccionado.getPublicacion().getTitulo());
+        tvDescripcion.setText(seleccionado.getDescripcion());
+
+        tvEstadoDenuncia.setText("Estado: " + seleccionado.getEstado().getEstado());
         if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
-           estadoPublicacion.setBackgroundColor(Color.RED);
+            tvEstadoDenuncia.setBackgroundColor(Color.RED);
         }
-        idPublicacion.setText("N°: " +seleccionado.getPublicacion().getId());
-        fecha.setText(seleccionado.getFecha_creacion().toString());
+        tvTipoPublic.setText("Tipo de publicación: " +seleccionado.getTipo().getTipo());
+        tvFecha.setText(seleccionado.getFecha_creacion().toString());
 
-        /*String res = denunciaRepository.CargarImagenDenuncia(imagenPublicacion, this.getContext(),seleccionado.getPublicacion().getId(),seleccionado.getTipo().getTipo());
-
-        if(res.equals("")){
-            Toast.makeText(this.getContext(), "LA IMAGEN NO SE PUDO CARGAR", Toast.LENGTH_SHORT).show();
-        }*/
-
-        DMACargarImagenDenuncia DMAImagenDenuncia = new DMACargarImagenDenuncia(imagenPublicacion, this.getContext(),seleccionado.getPublicacion().getId(),seleccionado.getTipo().getTipo());
-        DMAImagenDenuncia.execute();
     }
 
     public void navegarUsuarioSuspender(){
@@ -166,19 +171,22 @@ public class VerDenunciaFragment extends Fragment {
             Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
         }
     }
-    public void navegarCerrarDenuncia(){
+    public void navegarAtenderDenuncia(){
         if(seleccionado != null){
             Bundle bundle = new Bundle();
-            bundle.putSerializable("selected_cerrarDenuncia", seleccionado);
-            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.nav_notificar_denuncia, bundle);
+            bundle.putSerializable("selected_denuncia", seleccionado);
+            AtenderDenunciaDialogFragment dialogFragment = new AtenderDenunciaDialogFragment();
+            dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+            dialogFragment.show(getFragmentManager(), "layout_atender_denuncia");
         }else {
             Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
         }
     }
 
-
-
+    public void navegarDetalleUsuario(Usuario user){
+        UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(user);
+        dialogFragment.show(getFragmentManager(), "user_detail");
+    }
 
 
     @Override
@@ -187,5 +195,4 @@ public class VerDenunciaFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(VerDenunciaViewModel.class);
         // TODO: Use the ViewModel
     }
-
 }

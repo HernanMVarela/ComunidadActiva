@@ -37,15 +37,15 @@ import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class EliminarPublicacionReporteDialogFragment extends DialogFragment {
 
-    Button btnConfirmar;
-    Button btnCancelar;
-    String motivo;
-    Denuncia selectedDenuncia = null;
-    LogService logService = new LogService();
-    MailService mailService = new MailService();
+    private Button btnConfirmar;
+    private Button btnCancelar;
+    private String motivo;
+    private Denuncia selectedDenuncia = null;
+    private LogService logService = new LogService();
+    private MailService mailService = new MailService();
     private Usuario loggedInUser = null;
     private Reporte reporte;
-    NotificacionService serviceNotificacion= new NotificacionService();
+    private NotificacionService serviceNotificacion= new NotificacionService();
 
 
     @Override
@@ -114,7 +114,7 @@ public class EliminarPublicacionReporteDialogFragment extends DialogFragment {
 
                         proyecto.setEstado(new EstadoProyecto(5,"CANCELADO"));
                        // Toast.makeText(getContext(),  reporte.getEstado().getEstado(), Toast.LENGTH_LONG).show();
-                        DMAActualizarEstadoProyecto DMAEliminarPublicacion = new DMAActualizarEstadoProyecto(getContext(),proyecto);
+                        DMAActualizarEstadoProyecto DMAEliminarPublicacion = new DMAActualizarEstadoProyecto(proyecto);
                         DMAEliminarPublicacion.execute();
                         serviceNotificacion.notificacion(selectedDenuncia.getPublicacion().getOwner().getId(),"Se notifica Su Publicacion: " + selectedDenuncia.getPublicacion().getId() +"ha sido Eliminada, por los motivos: "+ motivo);
                     }
