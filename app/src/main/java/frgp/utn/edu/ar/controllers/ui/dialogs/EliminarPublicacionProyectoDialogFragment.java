@@ -47,11 +47,7 @@ public class EliminarPublicacionProyectoDialogFragment extends DialogFragment {
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*AGREGAR DMA PARA ELIMINAR UNA PUBLICACION PROYECTO */
-
-                //DMACambiarEstadoUsuario DMAEstadoUser = new DMACambiarEstadoUsuario(selectedUser,getContext());
-                //DMAEstadoUser.execute();
-
+                
 
                 dismiss();
             }

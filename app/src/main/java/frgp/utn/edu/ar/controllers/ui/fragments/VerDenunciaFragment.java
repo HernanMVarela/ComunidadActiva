@@ -1,7 +1,10 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -15,41 +18,59 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
-import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
-import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMACargarImagenDenuncia;
-import frgp.utn.edu.ar.controllers.data.repository.denuncia.DenunciaRepository;
-import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.AtenderDenunciaDialogFragment;
-import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionProyectoDialogFragment;
-import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionReporteDialogFragment;
-import frgp.utn.edu.ar.controllers.ui.dialogs.NotificarCerrarDenunciaDialogFragment;
-import frgp.utn.edu.ar.controllers.ui.dialogs.SuspenderUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
-import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.VerDenunciaViewModel;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class VerDenunciaFragment extends Fragment {
 
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private VerDenunciaViewModel mViewModel;
     private TextView tvTituloPublicacion, tvTituloDenuncia, tvDescripcion, tvEstadoDenuncia, tvFecha, tvTipoPublic;
     private Denuncia seleccionado;
     private NotificacionService serviceNotificacion;
-    private DenunciaRepository denunciaRepository = new DenunciaRepository();
     public static VerDenunciaFragment newInstance() {
         return new VerDenunciaFragment();
     }
+
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+        public void onMapReady(GoogleMap googleMap) {
+            // Verifica si tiene permisos de ubicación
+            if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // Si no tiene permisos, se solicitan al usuario
+                ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+            } else {
+                if (googleMap != null) {
+                    if (seleccionado != null) {
+                        // Agrega un marcador en la ubicación del reporte por defecto
+                        LatLng ubicacionReporte = new LatLng(seleccionado.getPublicacion().getLatitud(), seleccionado.getPublicacion().getLongitud());
+                        googleMap.addMarker(new MarkerOptions().position(ubicacionReporte).title(seleccionado.getTitulo()));
+                        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ubicacionReporte, 15));
+                    }
+                } else {
+                    Toast.makeText(getContext(), "ERROR AL CARGAR EL MAPA", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    };
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,6 +106,12 @@ public class VerDenunciaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        SupportMapFragment mapFragment =
+                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapListaDenuncias);
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(callback);
+        }
 
         Button btnSuspenderUsuario = view.findViewById(R.id.btnSuspenderUs);
         Button btnEliminarPublicacion = view.findViewById(R.id.btnEliminarPublicacionDenuncia);
