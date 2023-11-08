@@ -5,17 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -38,7 +35,6 @@ public class BuscarProyectoFragment extends Fragment {
     private Spinner spEstadoP, spTipoProyecto;
     private int buscadorE=1, buscadorT=1, usarE=0, usarT=0;
     private SwitchCompat swTipo, swEstado;
-    private Button verDetalle;
 
     public static BuscarProyectoFragment newInstance() {
         return new BuscarProyectoFragment();
@@ -48,7 +44,6 @@ public class BuscarProyectoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_buscar_proyecto, container, false);
-        verDetalle = view.findViewById(R.id.btnVerDetalleP);
         spTipoProyecto = view.findViewById(R.id.spFiltroA);
         spEstadoP = view.findViewById(R.id.spFiltroB);
         barraBusqueda = view.findViewById(R.id.busquedaProyecto);
@@ -130,16 +125,8 @@ public class BuscarProyectoFragment extends Fragment {
         listaDeProyectos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (viewSeleccionada != null) {
-                    viewSeleccionada.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_500));
-                }
                 proyectoSeleccionado = (Proyecto) parent.getItemAtPosition(position);
-                view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_700));
                 viewSeleccionada = view;
-            }
-        });
-        verDetalle.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
                 iraDetalles();
             }
         });
@@ -152,14 +139,11 @@ public class BuscarProyectoFragment extends Fragment {
     }
 
     public void iraDetalles(){
-        if(proyectoSeleccionado != null){
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("proyectoactual", proyectoSeleccionado);
-            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.detalleProyectoFragment, bundle);
-        }else {
-            Toast.makeText(this.getContext(), "Debes seleccionar un proyecto.", Toast.LENGTH_LONG).show();
-        }
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("proyectoactual", proyectoSeleccionado);
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+        navController.navigate(R.id.detalleProyectoFragment, bundle);
+
     }
     public void cargarProyectos(View view){
         buscadorT = spTipoProyecto.getSelectedItemPosition()+1;

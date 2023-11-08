@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import frgp.utn.edu.ar.controllers.R;
@@ -41,6 +42,8 @@ import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarPuntajeUsuari
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoProyectoViewModel;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class NuevoProyectoFragment extends Fragment {
@@ -52,6 +55,7 @@ public class NuevoProyectoFragment extends Fragment {
     private Usuario loggedInUser = null;
     private EditText edTitulo, edDesc, edRequerimientos, edContacto, edCupos;
     private Spinner spTipoProyecto;
+    private LogService logService = new LogService();
     public static NuevoProyectoFragment newInstance() {
         return new NuevoProyectoFragment();
     }
@@ -101,6 +105,7 @@ public class NuevoProyectoFragment extends Fragment {
                     if(validarDatosProyecto()){
                         // CARGA DATOS DE LOS CONTROLES AL NUEVO PROYECTO
                         Proyecto nuevoP = cargarDatos();
+                        nuevoP.setFecha(Calendar.getInstance().getTime());
                         DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP);    // LLAMA AL DMA PARA EL GUARDADO EN DB
                         DMANuevoP.execute();
                         /// SI EL PROYECTO SE GUARDA - BUSCA EL ULTIMO ID REGISTRADO (NO FUNCIONA getGeneratedKeys() CON FREESQL)
@@ -118,7 +123,9 @@ public class NuevoProyectoFragment extends Fragment {
                                 /// SI SE UNE EL OWNER AL PROYECTO - SE AGREGA EL PUNTAJE
                                 modificar_puntaje_usuario();
                             }
+                            logService.log(loggedInUser.getId(), LogsEnum.CREACION_PROYECTO, String.format("Se creó el proyecto %s", nuevoP.getTitulo()));
                             limpiarCampos();    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
+                            navigateToBuscarProyecto(); // REGRESA A BUSCAR PROYECTO
                         }else{
                             Toast.makeText(getContext(), "No se pudo crear el proyecto", Toast.LENGTH_LONG).show();
                         }
@@ -225,5 +232,10 @@ public class NuevoProyectoFragment extends Fragment {
     private void navigateToLocationFragment() {
         NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment_content_main);
         navController.navigate(id.action_nav_nuevo_proyecto_to_nav_ubicacion);
+    }
+
+    private void navigateToBuscarProyecto(){
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+        navController.navigate(R.id.action_nuevoProyecto_to_buscarProyectos);
     }
 }

@@ -116,6 +116,11 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:destination="@id/elegir_ubicacion" />
+        <action
+            android:id="@+id/action_nuevoProyecto_to_buscarProyectos"
+            app:destination="@id/nav_buscar_proyecto"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/nav_buscar_proyecto"
