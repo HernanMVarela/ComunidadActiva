@@ -2,7 +2,9 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -38,6 +42,14 @@ public class CerrarReporteDialogFragment extends DialogFragment {
     private CierreReporte cierreReporte = null;
     private final LogService logService = new LogService();
     private final NotificacionService notificacionService = new NotificacionService();
+    private DismissListener listener = null;
+
+    public interface DismissListener {
+        void onDismiss();
+    }
+    public void setDismissListener(DismissListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -115,6 +127,7 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 }else{
                     Toast.makeText(getContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                 }
+
                 dismiss();
             }
         });
@@ -153,6 +166,14 @@ public class CerrarReporteDialogFragment extends DialogFragment {
         return builder.create();
     }
 
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(listener!=null){
+            listener.onDismiss();
+        }
+    }
+
     private void cargarControles(CierreReporte cierreReporte){
         descripcion.setText(cierreReporte.getMotivo());
         Date fechaCierre = cierreReporte.getFechaCierreAsDate();
@@ -171,7 +192,6 @@ public class CerrarReporteDialogFragment extends DialogFragment {
             e.printStackTrace();
             return false;
         }
-
     }
 
     private void modificar_puntaje_usuario(Usuario user){

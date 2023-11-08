@@ -3,6 +3,8 @@ package frgp.utn.edu.ar.controllers.ui.fragments;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +35,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarReporte;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
@@ -43,7 +47,7 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 public class DetalleReporteFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private final SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private DetalleReporteViewModel mViewModel;
     private TextView titulo, descripcion, estado, fecha, tipo;
     private RatingBar puntaje;
@@ -55,7 +59,7 @@ public class DetalleReporteFragment extends Fragment {
         return new DetalleReporteFragment();
     }
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
         public void onMapReady(GoogleMap googleMap) {
             // Verifica si tiene permisos de ubicación
             if (googleMap != null) {
@@ -114,15 +118,12 @@ public class DetalleReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-
         if (!seleccionado.getEstado().getEstado().equals("ABIERTO")) {
             bSolicitarCierre.setVisibility(View.GONE);
         }
-
         if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")) {
             bDenunciar.setVisibility(View.VISIBLE);
         }
-
         if(seleccionado.getOwner().getUsername().equals(loggedInUser.getUsername())){
             bSolicitarCierre.setText("CERRAR REPORTE");
             bSolicitarCierre.setVisibility(View.VISIBLE);
@@ -134,15 +135,30 @@ public class DetalleReporteFragment extends Fragment {
         }
 
         comportamiento_boton_usuario(bUsuario);
-
         Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
         comportamiento_boton_solicitar_cierre(bSolicitarCierre);
-
         Button bValorar = view.findViewById(R.id.btnValorarReporte);
         comportamiento_boton_valorar(bValorar);
-
         Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
         comportamiento_boton_denunciar(bDenunciar);
+    }
+
+
+    public void actualizar_campos(){
+        if(seleccionado!=null){
+            try {
+                DMACargarReporte DMAReporte = new DMACargarReporte(seleccionado.getId());
+                DMAReporte.execute();
+                seleccionado = DMAReporte.get();
+                if(seleccionado!=null){
+                    cargarDatosReporte();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            regresar();
+        }
     }
 
     private void comportamiento_boton_usuario(Button bUsuario){
@@ -167,7 +183,14 @@ public class DetalleReporteFragment extends Fragment {
                         /// SI EL USUARIO LOGUEADO ES EL DUEÑO DEL REPORTE
                         CerrarReporteDialogFragment dialogFragment = new CerrarReporteDialogFragment();
                         dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                        // Configura DetalleReporteFragment como el fragmento de destino
                         dialogFragment.show(getFragmentManager(), "layout_cerrar_reporte");
+                        dialogFragment.setDismissListener(new CerrarReporteDialogFragment.DismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                actualizar_campos();
+                            }
+                        });
                     }else{
                         Toast.makeText(getContext(), "No puedes atender tu propio reporte", Toast.LENGTH_LONG).show();
                     }
@@ -268,4 +291,8 @@ public class DetalleReporteFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    private void regresar(){
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+        navController.popBackStack();
+    }
 }
