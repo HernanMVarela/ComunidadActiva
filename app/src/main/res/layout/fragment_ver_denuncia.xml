@@ -128,7 +128,7 @@
             android:padding="5dp"
             android:lines="5"
             android:background="@drawable/edittext_white_rounded"
-            android:textAlignment="textEnd"
+            android:textAlignment="textStart"
             android:textSize="20sp"/>
 
         <fragment
@@ -183,7 +183,7 @@
             android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
             android:background="@drawable/boton_notificar_denuncia"
-            android:text="Notificar y Cerrar Denuncia" />
+            android:text="Atender Denuncia" />
     </LinearLayout>
 
 

@@ -112,8 +112,8 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
                 publicacion.setDescripcion(rs.getString("DescripcionPublicacion"));
                 publicacion.setTitulo(rs.getString("TituloPublicacion"));
                 publicacion.setFecha(rs.getDate("FechaPublicacion"));
-                publicacion.setLatitud(rs.getDouble("LongitudPublicacion"));
-                publicacion.setLongitud(rs.getDouble("LatitudPublicacion"));
+                publicacion.setLatitud(rs.getDouble("LatitudPublicacion"));
+                publicacion.setLongitud(rs.getDouble("LongitudPublicacion"));
                 publicacion.setOwner(userPublicacion);
 
                 user.setId(rs.getInt("IDUser"));

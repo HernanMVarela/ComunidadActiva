@@ -98,7 +98,6 @@ public class ListarDenunciaFragment extends Fragment {
 
             }
         });
-
         listaDenuncias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("ResourceType")
             @Override
@@ -108,7 +107,6 @@ public class ListarDenunciaFragment extends Fragment {
                 if (viewSeleccionado != null) {
                     viewSeleccionado.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_500));
                 }
-
                 // Almacena el informe seleccionado en una variable
                 seleccionado = (Denuncia) adapterView.getItemAtPosition(i);
                 // Cambia el fondo del elemento seleccionado

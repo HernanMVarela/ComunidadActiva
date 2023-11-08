@@ -170,9 +170,6 @@
         <action
             android:id="@+id/action_listar_denunicas_to_nav_suspender_usuario"
             app:destination="@id/nav_suspender_usuario" />
-        <action
-            android:id="@+id/action_listar_denunicas_to_nav_notificar_denuncia"
-            app:destination="@id/nav_notificar_denuncia" />
     </fragment>
 
     <fragment
@@ -186,12 +183,6 @@
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.SuspenderUsuarioFragment"
         android:label="fragment_suspender_usuario"
         tools:layout="@layout/fragment_suspender_usuario" />
-
-    <fragment
-        android:id="@+id/nav_notificar_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.NotificarCerrarDenunciaFragment"
-        android:label="fragment_notificar_cerrar_denuncia"
-        tools:layout="@layout/fragment_notificar_cerrar_denuncia" />
 
     <fragment
         android:id="@+id/nav_crear_informe_moderador"

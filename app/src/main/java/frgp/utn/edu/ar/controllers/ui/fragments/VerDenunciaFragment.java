@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,6 +120,8 @@ public class VerDenunciaFragment extends Fragment {
         Button btnDenunciante = view.findViewById(R.id.btnDenuncianteUser);
         Button btnDenunciado = view.findViewById(R.id.btnDenunciadoUser);
 
+        btnDenunciado.setText("Denunciado: " + seleccionado.getPublicacion().getOwner().getUsername());
+        btnDenunciante.setText("Denunciante: "+seleccionado.getDenunciante().getUsername());
         if (seleccionado != null) {
             cargarDatosDenuncia();
         }else {

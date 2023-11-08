@@ -1,27 +1,23 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
-import frgp.utn.edu.ar.controllers.data.model.Proyecto;
-import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionProyectoDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.EliminarPublicacionDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.EliminarPublicacionViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
@@ -29,7 +25,7 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 public class EliminarPublicacionFragment extends Fragment {
 
     private EliminarPublicacionViewModel mViewModel;
-    private EditText motivo;
+    private EditText resolucion;
     private Button btnEliminarPublicacion;
     private Denuncia seleccionado;
     private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
@@ -53,6 +49,7 @@ public class EliminarPublicacionFragment extends Fragment {
         }else{
             regresar();
         }
+        /// CARGA DATOS DEL USUARIO
         loggedInUser = sharedPreferences.getUsuarioData(getContext());
     }
     @Override
@@ -60,7 +57,7 @@ public class EliminarPublicacionFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_eliminar_publicacion, container, false);
 
-        motivo = view.findViewById(R.id.etMotivoEliminarPublicacion);
+        resolucion = view.findViewById(R.id.etMotivoEliminarPublicacion);
 
         return view;
     }
@@ -68,7 +65,7 @@ public class EliminarPublicacionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        /// BOTON ELIMINAR PUBLICACION Y COMPORTAMIENTO
         btnEliminarPublicacion = view.findViewById(R.id.btnEliminarPublicacion);
         boton_elimiar_publicacion(btnEliminarPublicacion);
     }
@@ -76,14 +73,16 @@ public class EliminarPublicacionFragment extends Fragment {
     private void boton_elimiar_publicacion(Button eliminarPublicacion){
         eliminarPublicacion.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("selected_publicacionDencia", seleccionado);
-                bundle.putSerializable("logged_in_user", loggedInUser);
-                bundle.putString("motivo_eliminado", motivo.getText().toString());
+                if(validarCampos()){
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("selected_publicacionDencia", seleccionado);
+                    bundle.putSerializable("logged_in_user", loggedInUser);
+                    bundle.putString("motivo_eliminado", resolucion.getText().toString());
 
-                EliminarPublicacionDialogFragment dialogFragment = new EliminarPublicacionDialogFragment();
-                dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-                dialogFragment.show(getFragmentManager(), "layout_eliminar_publicacion");
+                    EliminarPublicacionDialogFragment dialogFragment = new EliminarPublicacionDialogFragment();
+                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                    dialogFragment.show(getFragmentManager(), "layout_eliminar_publicacion");
+                }
             }
         });
     }
@@ -98,5 +97,17 @@ public class EliminarPublicacionFragment extends Fragment {
     private void regresar(){
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
         navController.popBackStack();
+    }
+
+    private boolean validarCampos(){
+        if(resolucion.getText().toString().trim().isEmpty() || resolucion.getText().toString().trim().length()<5){
+            Toast.makeText(getContext(), "Debes ingresar una resolución de al menos 4 carácteres", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        if(resolucion.getText().toString().trim().length()>201){
+            Toast.makeText(getContext(), "La resolución debe tener como máximo 200 caractéres", Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 }
