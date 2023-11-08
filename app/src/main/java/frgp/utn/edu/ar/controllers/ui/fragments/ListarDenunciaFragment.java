@@ -56,11 +56,6 @@ public class ListarDenunciaFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_listar_denuncia, container, false);
 
-        // ESCONDE EL BOTON DEL SOBRE
-        if(getActivity() instanceof HomeActivity){
-            ((HomeActivity) getActivity()).botonmensaje.hide();
-        }
-
         spinTipoDenuncia = view.findViewById(R.id.spnTipoDenuncia);
 
         DMASpinnerTiposDenuncia dataActivityTiposDenuncia = new DMASpinnerTiposDenuncia(spinTipoDenuncia, getContext());

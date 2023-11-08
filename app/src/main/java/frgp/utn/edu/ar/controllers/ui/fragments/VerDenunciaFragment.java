@@ -97,10 +97,6 @@ public class VerDenunciaFragment extends Fragment {
         tvEstadoDenuncia = view.findViewById(R.id.txtEstadoDenuncia);
         tvTipoPublic = view.findViewById(R.id.txtTipoPublicacion);
 
-        // ESCONDE EL BOTON DEL SOBRE
-        if(getActivity() instanceof HomeActivity){
-            ((HomeActivity) getActivity()).botonmensaje.hide();
-        }
         return view;
     }
 

@@ -37,6 +37,7 @@ import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMANuevoProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerTiposProyectos;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUltimoProyectoID;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUnirseAProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarPuntajeUsuario;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SharedLocationViewModel;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.NuevoProyectoViewModel;
@@ -87,7 +88,6 @@ public class NuevoProyectoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         //Iniciaza textos, botones, spinner y proyecto.
-
         Button btnUbicacion = view.findViewById(id.btnUbicacionP);
         Button btnCrearProyecto = view.findViewById(id.btnCrearInformeModerador);
 
@@ -98,35 +98,35 @@ public class NuevoProyectoFragment extends Fragment {
                 // INICIALIZA EL sharedLocationViewModel, QUE PERMITE COMPARTIR LA UBICACION SELECCIONADA ENTRE FRAGMENTOS
                 sharedLocationViewModel = new ViewModelProvider(requireActivity()).get(SharedLocationViewModel.class);
                 // VALIDA CAMPOS EN PANTALLA
-                if(validarDatosProyecto()){
-                    // CARGA DATOS DE LOS CONTROLES AL NUEVO PROYECTO
-                    Proyecto nuevoP = cargarDatos();
-                    DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP);    // LLAMA AL DMA PARA EL GUARDADO EN DB
-                    DMANuevoP.execute();
-                    /// SI EL PROYECTO SE GUARDA - BUSCA EL ULTIMO ID REGISTRADO (NO FUNCIONA getGeneratedKeys() CON FREESQL)
-                    if(DMANuevoP.get()){
-                        DMAUltimoProyectoID LastProyectoID = new DMAUltimoProyectoID();
-                        LastProyectoID.execute();
-                        /// ASIGNA EL ID ENCONTRADO AL PROYECTO (O -1 SI NO LO ENCUENTRA).
-                        nuevoP.setId(LastProyectoID.get());
-                    }
-                    /// SI EL NUMERO ES VALIDO, ASIGNA AL OWNER COMO PRIMER PARTICIPANTE Y CIERRA EL PROCESO
-                    if (nuevoP.getId()!=-1){
-                        DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),nuevoP.getId());
-                        DMAUnirseProyecto.execute();
-                        limpiarCampos();    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
-                        if(DMAUnirseProyecto.get()){
-                            Toast.makeText(getContext(), "Proyecto Creado!", Toast.LENGTH_LONG).show();
-                        }else{
-                            Toast.makeText(getContext(), "El proyecto se creó con errores", Toast.LENGTH_LONG).show();
+                    if(validarDatosProyecto()){
+                        // CARGA DATOS DE LOS CONTROLES AL NUEVO PROYECTO
+                        Proyecto nuevoP = cargarDatos();
+                        DMANuevoProyecto DMANuevoP = new DMANuevoProyecto(nuevoP);    // LLAMA AL DMA PARA EL GUARDADO EN DB
+                        DMANuevoP.execute();
+                        /// SI EL PROYECTO SE GUARDA - BUSCA EL ULTIMO ID REGISTRADO (NO FUNCIONA getGeneratedKeys() CON FREESQL)
+                        if(DMANuevoP.get()){
+                            DMAUltimoProyectoID LastProyectoID = new DMAUltimoProyectoID();
+                            LastProyectoID.execute();
+                            /// ASIGNA EL ID ENCONTRADO AL PROYECTO (O -1 SI NO LO ENCUENTRA).
+                            nuevoP.setId(LastProyectoID.get());
                         }
-                    }else{
-                        Toast.makeText(getContext(), "No se pudo crear el proyecto", Toast.LENGTH_LONG).show();
+                        /// SI EL NUMERO ES VALIDO, ASIGNA AL OWNER COMO PRIMER PARTICIPANTE Y CIERRA EL PROCESO
+                        if (nuevoP.getId()!=-1){
+                            DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),nuevoP.getId());
+                            DMAUnirseProyecto.execute();
+                            if(DMAUnirseProyecto.get()){
+                                /// SI SE UNE EL OWNER AL PROYECTO - SE AGREGA EL PUNTAJE
+                                modificar_puntaje_usuario();
+                            }
+                            limpiarCampos();    // LIMPIA CAMPOS DE LOS CONTROLES PARA UN NUEVO INGRESO
+                        }else{
+                            Toast.makeText(getContext(), "No se pudo crear el proyecto", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }
-            }
-            catch (Exception e) {
-                Log.e("Error", e.toString());}
+                catch (Exception e) {
+                   e.printStackTrace();
+                }
             }
         });
         btnUbicacion.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +143,24 @@ public class NuevoProyectoFragment extends Fragment {
         });
     }
 
+    private void modificar_puntaje_usuario(){
+        try {
+            DMAModificarPuntajeUsuario DMAPuntaje = new DMAModificarPuntajeUsuario(loggedInUser);
+            DMAPuntaje.execute();
+            if(DMAPuntaje.get()){
+                sharedPreferences.saveUsuarioData(getContext(), loggedInUser);
+                Toast.makeText(getContext(),"Proyecto creado", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getContext(),"Proyecto creado con errores", Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private Proyecto cargarDatos(){
+        int puntaje = loggedInUser.getPuntuacion() + 15;
+        loggedInUser.setPuntuacion(puntaje);
         Proyecto nuevoP = new Proyecto();
         nuevoP.setContacto(edContacto.getText().toString());
         nuevoP.setCupo(Integer.parseInt(edCupos.getText().toString()));

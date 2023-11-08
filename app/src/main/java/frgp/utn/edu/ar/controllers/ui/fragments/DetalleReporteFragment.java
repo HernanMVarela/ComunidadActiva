@@ -76,11 +76,6 @@ public class DetalleReporteFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detalle_reporte, container, false);
 
-        // ESCONDE EL BOTON DEL SOBRE
-        if(getActivity() instanceof HomeActivity){
-            ((HomeActivity) getActivity()).botonmensaje.hide();
-        }
-
         titulo = view.findViewById(R.id.titulo_ver_reporte);
         descripcion = view.findViewById(R.id.descripcion_reporte);
         estado = view.findViewById(R.id.estado_ver_reporte);

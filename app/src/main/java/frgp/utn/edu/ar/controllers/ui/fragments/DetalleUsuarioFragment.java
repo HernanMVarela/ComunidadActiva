@@ -54,10 +54,7 @@ public class DetalleUsuarioFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detalle_usuario, container, false);
-        // ESCONDE EL BOTON DEL SOBRE
-        if(getActivity() instanceof HomeActivity){
-            ((HomeActivity) getActivity()).botonmensaje.hide();
-        }
+
         suspender = view.findViewById(R.id.btn_detalleuser_suspender);
         modificar = view.findViewById(R.id.btn_detalleuser_modificacion);
         eliminar = view.findViewById(R.id.btn_detalleuser_eliminar);

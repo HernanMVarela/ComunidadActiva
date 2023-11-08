@@ -47,6 +47,9 @@ public class CerrarReporteDialogFragment extends DialogFragment {
         if (args != null) {
             selectedReport = (Reporte) args.getSerializable("selected_report");
             loggedInUser = (Usuario) args.getSerializable("logged_in_user");
+        }else{
+            Toast.makeText(getContext(), "No se pudo cargar el reporte!", Toast.LENGTH_SHORT).show();
+            dismiss();
         }
     }
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -70,6 +73,9 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 cierreReporte = dmaCierreReporte.get();
                 if(cierreReporte!=null){
                     cargarControles(cierreReporte);
+                }else{
+                    Toast.makeText(getContext(), "No se pudo cargar el reporte!", Toast.LENGTH_SHORT).show();
+                    dismiss();
                 }
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
@@ -89,8 +95,8 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                             DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(cierreReporte.getReporte());
                             dmaActualizar.execute();
                             if(dmaActualizar.get()){
-                                logService.log(loggedInUser.getId(), LogsEnum.REAPERTURA_REPORTE, "Se reabrio el reporte " + selectedReport.getId());
-                                Toast.makeText(getContext(), "Solicitud rechazada!", Toast.LENGTH_SHORT).show();
+                                logService.log(loggedInUser.getId(), LogsEnum.CIERRE_REPORTE, "Se cerró el reporte " + selectedReport.getId());
+                                Toast.makeText(getContext(), "Reporte cerrado!", Toast.LENGTH_SHORT).show();
 
                                 /// PUNTAJE - USUARIO ATENDEDOR
                                 int puntaje = cierreReporte.getUser().getPuntuacion() + 3;
@@ -106,8 +112,6 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                             e.printStackTrace();
                         }
                     }
-                    logService.log(loggedInUser.getId(), LogsEnum.CIERRE_REPORTE, "Se cerró el reporte " + selectedReport.getId());
-                    Toast.makeText(getContext(), "Reporte cerrado!", Toast.LENGTH_SHORT).show();
                 }else{
                     Toast.makeText(getContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                 }

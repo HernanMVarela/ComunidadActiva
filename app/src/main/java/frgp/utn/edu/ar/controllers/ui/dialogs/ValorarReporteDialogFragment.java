@@ -42,7 +42,6 @@ public class ValorarReporteDialogFragment extends DialogFragment {
         if (args != null) {
             selectedReport = (Reporte) args.getSerializable("selected_report");
             loggedInUser = (Usuario) args.getSerializable("logged_in_user");
-
         }
     }
 
@@ -138,6 +137,5 @@ public class ValorarReporteDialogFragment extends DialogFragment {
             e.printStackTrace();
             return false;
         }
-
     }
 }

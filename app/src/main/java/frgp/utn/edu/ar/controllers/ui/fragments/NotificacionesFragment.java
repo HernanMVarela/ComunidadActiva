@@ -35,7 +35,6 @@ public class NotificacionesFragment extends Fragment {
     private Usuario usuario;
     private ListView listaNotificacionesNoLeidas;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 

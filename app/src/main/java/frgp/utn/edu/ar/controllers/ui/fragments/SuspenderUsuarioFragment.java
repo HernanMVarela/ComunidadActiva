@@ -46,10 +46,6 @@ public class SuspenderUsuarioFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_suspender_usuario, container, false);
 
-        // ESCONDE EL BOTON DEL SOBRE
-        if(getActivity() instanceof HomeActivity){
-            ((HomeActivity) getActivity()).botonmensaje.hide();
-        }
         return view;
     }
 
