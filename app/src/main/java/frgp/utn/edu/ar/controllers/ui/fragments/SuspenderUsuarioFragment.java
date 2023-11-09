@@ -25,6 +25,8 @@ import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMACargarImagenDenuncia;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.SuspenderUsuarioDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.SuspenderUsuarioViewModel;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.MailService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class SuspenderUsuarioFragment extends Fragment {
@@ -82,18 +84,20 @@ public class SuspenderUsuarioFragment extends Fragment {
 
     private void boton_suspender_usuario(Button suspender){
         suspender.setOnClickListener(new View.OnClickListener() {
+
             public void onClick(View v) {
-                //Revisar el tipo de publicacion
-                if(!seleccionado.getPublicacion().getOwner().getEstado().getEstado().equals("ELIMINADO") ||!seleccionado.getPublicacion().getOwner().getEstado().getEstado().equals("SUSPENDIDO")){
-                    seleccionado.getPublicacion().getOwner().setEstado(new EstadoUsuario(5,"SUSPENDIDO"));
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("selected_userPublicacion", seleccionado.getPublicacion().getOwner());
-                    bundle.putSerializable("logged_in_user", loggedInUser);
-                    bundle.putString("mi_string", motivo.getText().toString());
-                    SuspenderUsuarioDialogFragment dialogFragment = new SuspenderUsuarioDialogFragment();
-                    dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-                    dialogFragment.show(getFragmentManager(), "layout_suspender_usuario");
+                if(motivo.getText().toString().isEmpty()){
+                    Toast.makeText(getContext(), "Debe ingresar un motivo", Toast.LENGTH_LONG).show();
+                    return;
                 }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("selected_userPublicacion", seleccionado.getPublicacion().getOwner());
+                bundle.putSerializable("selected_denuncia", seleccionado);
+                bundle.putSerializable("logged_in_user", loggedInUser);
+                bundle.putString("mi_string", motivo.getText().toString());
+                SuspenderUsuarioDialogFragment dialogFragment = new SuspenderUsuarioDialogFragment();
+                dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                dialogFragment.show(getFragmentManager(), "layout_suspender_usuario");
             }
         });
     }

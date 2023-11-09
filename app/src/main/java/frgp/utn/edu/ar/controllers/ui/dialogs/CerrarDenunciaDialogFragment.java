@@ -23,7 +23,6 @@ import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAActualizarEstadoDenunciaProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAActualizarEstadoDenunciaReporte;
-import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenunciaProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAActualizarEstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarEstadoReporte;
 import frgp.utn.edu.ar.controllers.utils.LogService;
@@ -31,7 +30,7 @@ import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
-public class AtenderDenunciaDialogFragment extends DialogFragment {
+public class CerrarDenunciaDialogFragment extends DialogFragment {
     private EditText resolucion;
     private Denuncia seleccionado;
     private Usuario loggedInUser = null;

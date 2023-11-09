@@ -1,9 +1,6 @@
 package frgp.utn.edu.ar.controllers.data.remote.denuncia;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,7 +9,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
@@ -21,23 +17,15 @@ import frgp.utn.edu.ar.controllers.data.model.TipoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
-import frgp.utn.edu.ar.controllers.ui.adapters.ListarDenunciaAdapter;
 
-public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
+public class DMAListarDenunciasProyecto extends AsyncTask<String, Void, List<Denuncia>> {
 
-    private Context context;
-    private ListView listado;
-    private static List<Denuncia> listaDenuncias;
-
-    public DMAListarDenunciaProyecto(ListView listview, Context ct){
-        listado = listview;
-        context = ct;
-    }
+    public DMAListarDenunciasProyecto() { }
 
     @Override
-    protected String doInBackground(String... strings) {
-        String response = "";
+    protected List<Denuncia> doInBackground(String... strings) {
 
+        List <Denuncia> listaDenuncias = null;
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
@@ -75,7 +63,7 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
                     "EUP.ESTADO AS EstadoUsuarioPublicacion, " +
                     "TUP.TIPO AS TipoUsuarioPublicacion " +
                     "FROM DENUNCIAS_PROYECTOS AS D " +
-                    "INNER JOIN REPORTES AS R ON D.ID_PROYECTO = R.ID " +
+                    "INNER JOIN PROYECTOS AS R ON D.ID_PROYECTO = R.ID " +
                     "INNER JOIN USUARIOS AS U ON D.ID_USER = U.ID " +
                     "INNER JOIN ESTADOS_DENUNCIA AS ED ON D.ID_ESTADO = ED.ID " +
                     "INNER JOIN USUARIOS AS UP ON R.ID_USER = UP.ID " +
@@ -85,7 +73,7 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
-            listaDenuncias = new ArrayList<Denuncia>();
+            listaDenuncias = new ArrayList<>();
 
             while (rs.next()) {
                 Denuncia denuncia = new Denuncia();
@@ -137,30 +125,10 @@ public class DMAListarDenunciaProyecto extends AsyncTask<String, Void, String> {
             }
             preparedStatement.close();
             con.close();
-
-            response = "Conexion exitosa";
-
         }catch (Exception e){
             e.printStackTrace();
-            response = "Conexion no exitosa";
         }
 
-        return response;
+        return listaDenuncias;
     }
-
-    @Override
-    protected void onPostExecute(String response) {
-        ListarDenunciaAdapter adapter = new ListarDenunciaAdapter(context, listaDenuncias);
-        assert listaDenuncias != null;
-
-        if (listaDenuncias.size() == 0){
-            String [] tipoInforme = {"No hay datos disponibles"};
-            ArrayAdapter<String> vacio = new ArrayAdapter<String>(this.context, R.layout.spinner_generico, tipoInforme);
-            listado.setAdapter(vacio);
-        }else{
-            listado.setAdapter(adapter);
-        }
-    }
-
-
 }

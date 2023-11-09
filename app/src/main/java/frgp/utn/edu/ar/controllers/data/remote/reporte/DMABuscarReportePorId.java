@@ -1,17 +1,12 @@
 package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
@@ -20,12 +15,12 @@ import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMACargarReporte extends AsyncTask<String, Void, Reporte> {
+public class DMABuscarReportePorId extends AsyncTask<String, Void, Reporte> {
 
     private Reporte cargado = null;
     private int id_reporte;
     //Constructor
-    public DMACargarReporte(int id_reporte)
+    public DMABuscarReportePorId(int id_reporte)
     {
         this.id_reporte = id_reporte;
     }

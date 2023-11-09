@@ -166,7 +166,7 @@
 
     <fragment
         android:id="@+id/nav_ver_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.VerDenunciaFragment"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.DetalleDenunciaFragment"
         android:label="fragment_ver_denuncia"
         tools:layout="@layout/fragment_ver_denuncia" >
         <action

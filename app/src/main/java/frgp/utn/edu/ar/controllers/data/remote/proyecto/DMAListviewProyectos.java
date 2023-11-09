@@ -48,7 +48,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            String query = "SELECT P.ID, P.TITULO, P.DESCRIPCION, P.LATITUD, P.LONGITUD, P.CUPO, P.ID_USER, P.ID_TIPO AS PROYECTO_ID_TIPO, P.ID_ESTADO AS PROYECTO_ID_ESTADO, P.CONTACTO, P.AYUDA_ESPECIFICA, P.FECHA_CREACION, " +
+            String query = "SELECT P.ID, P.TITULO, P.DESCRIPCION, P.LATITUD, P.LONGITUD, P.CUPO, P.ID_USER, P.ID_TIPO AS PROYECTO_ID_TIPO, P.ID_ESTADO AS PROYECTO_ID_ESTADO, P.CONTACTO, P.AYUDA_ESPECIFICA, P.FECHA, " +
                             "U.USERNAME, U.PUNTUACION, U.NOMBRE, U.APELLIDO, U.TELEFONO, U.CORREO, U.FECHA_NAC, U.CREACION, U.ID_ESTADO AS USUARIO_ID_ESTADO, U.ID_TIPO AS USUARIO_ID_TIPO, " +
                             "TP.TIPO AS TIPO_PROYECTO, EP.ESTADO AS ESTADO_PROYECTO, " +
                             "UT.TIPO AS TIPO_USUARIO, EU.ESTADO AS ESTADO_USUARIO " +
@@ -140,7 +140,7 @@ public class DMAListviewProyectos extends AsyncTask<String, Void, String> {
                 proyecto.setEstado(estadoProyecto);
                 proyecto.setContacto(rs.getString("CONTACTO"));
                 proyecto.setRequerimientos(rs.getString("AYUDA_ESPECIFICA"));
-                proyecto.setFecha(rs.getDate("FECHA_CREACION"));
+                proyecto.setFecha(rs.getDate("FECHA"));
 
                 listaDeProyectos.add(proyecto);
             }

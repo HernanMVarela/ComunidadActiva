@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote.denuncias;
+package frgp.utn.edu.ar.controllers.data.remote.denuncia;
 
 import android.content.Context;
 import android.os.AsyncTask;

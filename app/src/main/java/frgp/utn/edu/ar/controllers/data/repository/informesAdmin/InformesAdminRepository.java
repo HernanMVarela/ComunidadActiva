@@ -5,10 +5,10 @@ import org.json.JSONArray;
 
 import java.util.Date;
 
-import frgp.utn.edu.ar.controllers.data.remote.informesAdmin.DMAListarReportesPorCategoria;
-import frgp.utn.edu.ar.controllers.data.remote.informesAdmin.DMAListarUsuariosActivosPorRol;
-import frgp.utn.edu.ar.controllers.data.remote.informesAdmin.DMAListarUsuariosNuevosRegistrados;
-import frgp.utn.edu.ar.controllers.data.remote.informesAdmin.DMAListarUsuariosPorEstado;
+import frgp.utn.edu.ar.controllers.data.remote.informeAdmin.DMAListarReportesPorCategoria;
+import frgp.utn.edu.ar.controllers.data.remote.informeAdmin.DMAListarUsuariosActivosPorRol;
+import frgp.utn.edu.ar.controllers.data.remote.informeAdmin.DMAListarUsuariosNuevosRegistrados;
+import frgp.utn.edu.ar.controllers.data.remote.informeAdmin.DMAListarUsuariosPorEstado;
 
 public class InformesAdminRepository {
 

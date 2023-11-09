@@ -11,11 +11,17 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.Denuncia;
+import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMACambiarEstadoUsuario;
+import frgp.utn.edu.ar.controllers.data.repository.denuncia.DenunciaRepository;
+import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
 import frgp.utn.edu.ar.controllers.utils.LogService;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.MailService;
@@ -23,14 +29,17 @@ import frgp.utn.edu.ar.controllers.utils.NotificacionService;
 
 public class SuspenderUsuarioDialogFragment extends DialogFragment {
 
-    Button btnConfirmar;
-    Button btnCancelar;
-    String motivo;
-    Usuario selectedUser = null;
-    LogService logService = new LogService();
-    MailService mailService = new MailService();
+    private Button btnConfirmar;
+    private Button btnCancelar;
+    private String motivo;
+    private Usuario selectedUser = null;
     private Usuario loggedInUser = null;
-    NotificacionService serviceNotificacion= new NotificacionService();
+    private Denuncia denuncia = null;
+    private LogService logService = new LogService();
+    private MailService mailService = new MailService();
+    private NotificacionService serviceNotificacion= new NotificacionService();
+    private UsuarioRepository usuarioRepository = new UsuarioRepository();
+    private DenunciaRepository denunciaRepository = new DenunciaRepository();
 
 
     @Override
@@ -41,6 +50,7 @@ public class SuspenderUsuarioDialogFragment extends DialogFragment {
         if (args != null) {
             selectedUser = (Usuario) args.getSerializable("selected_userPublicacion");
             loggedInUser = (Usuario) args.getSerializable("logged_in_user");
+            denuncia = (Denuncia) args.getSerializable("selected_denuncia");
             motivo = args.getString("mi_string");
         }
     }
@@ -63,20 +73,29 @@ public class SuspenderUsuarioDialogFragment extends DialogFragment {
         btnConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(selectedUser.getEstado().getEstado().equals("ACTIVO")){
-                    /// SI ESTA ACTIVO, SE SUSPENDE AL USUARIO
-                    selectedUser.setEstado(new EstadoUsuario(3,"SUSPENDIDO"));
+                EstadoUsuario estado = new EstadoUsuario();
+                estado.setId(selectedUser.getEstado().getId());
+                estado.setEstado(selectedUser.getEstado().getEstado());
+                selectedUser.setEstado(new EstadoUsuario(3,"SUSPENDIDO"));
+
+                EstadoDenuncia estadoDenuncia = new EstadoDenuncia();
+                estadoDenuncia.setId(denuncia.getEstado().getId());
+                estadoDenuncia.setEstado(denuncia.getEstado().getEstado());
+                denuncia.setEstado(new EstadoDenuncia(2,"ATENDIDA"));
+
+                if(usuarioRepository.cambiarEstadoUsuario(selectedUser) && cambiarEstadoDenuncia(denuncia)){
                     logService.log(loggedInUser.getId(), LogsEnum.SUSPENSION_USUARIO, String.format("Suspendiste al usuario %s", selectedUser.getUsername()));
-                    mailService.sendMail(selectedUser.getCorreo(), "COMUNIDAD ACTIVA - SUSPENSION DE USUARIO", "Su usuario ha sido suspendido por un MODERADOR.");
-                    serviceNotificacion.notificacion(selectedUser.getId(),"Se notifica la suspencion: " + selectedUser.getId() +" por los motivos: "+ motivo);
-
-                    DMACambiarEstadoUsuario DMACambiarEstadoUser = new DMACambiarEstadoUsuario(selectedUser,getContext());
-                    DMACambiarEstadoUser.execute();
+                    mailService.sendMail(selectedUser.getCorreo(), "COMUNIDAD ACTIVA - SUSPENSION DE USUARIO", String.format("Su usuario ha sido suspendido por un MODERADOR. Motivo: %s", motivo));
+                    serviceNotificacion.notificacion(selectedUser.getId(),String.format("A sido suspendido por %s por los motivos: %s", loggedInUser.getUsername(), motivo));
+                    Toast.makeText(getContext(), "Se suspendio al usuario: "+ selectedUser.getUsername(), Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(getContext(), "No se pudo realializar la accion, usuario: "+ selectedUser.getEstado().getEstado(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), String.format("No se pudo suspender al usuario: %s", selectedUser.getUsername()), Toast.LENGTH_LONG).show();
+                    selectedUser.setEstado(estado);
+                    denuncia.setEstado(estadoDenuncia);
                 }
-
                 dismiss();
+                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                navController.popBackStack();
             }
         });
 
@@ -90,5 +109,16 @@ public class SuspenderUsuarioDialogFragment extends DialogFragment {
 
         builder.setView(dialogView);
         return builder.create();
+    }
+
+    public boolean cambiarEstadoDenuncia(Denuncia denuncia){
+        switch(denuncia.getTipo().getTipo()){
+            case "REPORTE":
+                return denunciaRepository.cambiarEstadoDenunciaReporte(denuncia);
+            case "PROYECTO":
+                return denunciaRepository.cambiarEstadoDenunciaProyecto(denuncia);
+            default:
+                return false;
+        }
     }
 }

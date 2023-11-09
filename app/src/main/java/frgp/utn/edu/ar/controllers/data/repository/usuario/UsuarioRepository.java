@@ -9,6 +9,7 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMABuscarUsuarioPorMail;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMABuscarUsuarioPorUsernameYPass;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMABuscarUsuarioPorUsername;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMACambiarEstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarUsuario;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMANuevoUsuario;
 
@@ -65,6 +66,17 @@ public class UsuarioRepository {
         } catch (Exception e) {
             Log.d("Error", Objects.requireNonNull(e.getMessage()));
             return null;
+        }
+    }
+
+    public boolean cambiarEstadoUsuario(Usuario usuario) {
+        DMACambiarEstadoUsuario cambiarEstadoUsuario = new DMACambiarEstadoUsuario(usuario);
+        cambiarEstadoUsuario.execute();
+        try {
+            return cambiarEstadoUsuario.get();
+        } catch (Exception e) {
+            Log.d("Error", Objects.requireNonNull(e.getMessage()));
+            return false;
         }
     }
 }

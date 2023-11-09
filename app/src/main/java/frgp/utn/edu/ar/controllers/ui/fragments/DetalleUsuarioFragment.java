@@ -196,7 +196,7 @@ public class DetalleUsuarioFragment extends Fragment {
                 }
                 cargarDatosUsuario();
                 cambiar_boton(suspender);
-                DMACambiarEstadoUsuario DMACambiarEstadoUser = new DMACambiarEstadoUsuario(selectedUser,getContext());
+                DMACambiarEstadoUsuario DMACambiarEstadoUser = new DMACambiarEstadoUsuario(selectedUser);
                 DMACambiarEstadoUser.execute();
             }
         });

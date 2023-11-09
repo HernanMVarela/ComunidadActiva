@@ -101,8 +101,10 @@ public class EliminarPublicacionDialogFragment extends DialogFragment {
 
                 /// SI LA DENUNCIA SE PROCESA CON ÉXITO, SE GENERA EL LOG Y SE CIERRA EL DIALOG
                 if(exito){
-                    logService.log(loggedInUser.getId(), LogsEnum.CERRAR_DENUNCIA_Y_NOTIFICAR, String.format("DESESTIMASTE la Denuncia %s", seleccionado.getTitulo()));
-                    serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(), "Se notifica la cancelación de la Denuncia sobre la publicacion: " + seleccionado.getPublicacion().getId() + " por los motivos: " + motivo);
+                    logService.log(loggedInUser.getId(), LogsEnum.ELIMINAR_PUBLICACION, String.format("Eliminaste la publicacion %s", seleccionado.getTitulo()));
+                    serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(), String.format("Se notifica que la publicacion %s que denunciaste ha sido eliminada por los siguientes motivos: %s", seleccionado.getPublicacion().getTitulo() ,  motivo));
+                    serviceNotificacion.notificacion(seleccionado.getPublicacion().getOwner().getId(), String.format("Se notifica la eliminacion de la publicacion %s por los motivos: %s", seleccionado.getPublicacion().getTitulo() ,  motivo));
+
                     dismiss();
                 }else{
                     Toast.makeText(getContext(), "IMPOSIBLE COMPLETAR LA OPERACIÓN", Toast.LENGTH_LONG).show();

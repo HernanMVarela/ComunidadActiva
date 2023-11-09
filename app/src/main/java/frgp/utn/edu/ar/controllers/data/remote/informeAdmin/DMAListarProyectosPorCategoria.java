@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote.informesAdmin;
+package frgp.utn.edu.ar.controllers.data.remote.informeAdmin;
 
 import android.os.AsyncTask;
 
@@ -13,11 +13,11 @@ import java.util.Date;
 
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAListarUsuariosNuevosRegistrados extends AsyncTask<String, Void, JSONArray> {
+public class DMAListarProyectosPorCategoria extends AsyncTask<String, Void, JSONArray> {
 
     private Date fechaInicio;
     private Date fechaFin;
-    public DMAListarUsuariosNuevosRegistrados(Date fechaInicio, Date fechaFin) {
+    public DMAListarProyectosPorCategoria(Date fechaInicio, Date fechaFin) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
@@ -30,16 +30,16 @@ public class DMAListarUsuariosNuevosRegistrados extends AsyncTask<String, Void, 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT U.CREACION AS FECHA_REGISTRO, COUNT(U.ID) AS CANTIDAD " +
-                                                                           "FROM USUARIOS U " +
-                                                                           "WHERE U.CREACION BETWEEN ? AND ? " +
-                                                                           "GROUP BY U.CREACION;");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT TP.TIPO AS TIPO_PROYECTO, COUNT(P.ID) AS CANTIDAD " +
+                                                                           "FROM PROYECTOS P INNER JOIN TIPOS_PROYECTOS TP ON P.ID_TIPO = TP.ID " +
+                                                                           "WHERE P.FECHA BETWEEN ? AND ? " +
+                                                                           "GROUP BY TIPO_PROYECTO;");
             preparedStatement.setDate(1, new java.sql.Date(fechaInicio.getTime()));
             preparedStatement.setDate(2, new java.sql.Date(fechaFin.getTime()));
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 entry = new JSONObject();
-                entry.put("fecha_registro", resultSet.getString("FECHA_REGISTRO"));
+                entry.put("tipo_proyecto", resultSet.getString("TIPO_PROYECTO"));
                 entry.put("cantidad", resultSet.getInt("CANTIDAD"));
                 response.put(entry);
             }

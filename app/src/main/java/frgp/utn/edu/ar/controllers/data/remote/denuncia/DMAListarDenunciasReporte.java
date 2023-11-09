@@ -24,19 +24,14 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListarDenunciaAdapter;
 
 
-public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
-    private Context context;
-    private ListView listado;
-    private static List<Denuncia> listaDenuncias;
+public class DMAListarDenunciasReporte extends AsyncTask<String, Void, List<Denuncia>> {
 
-    public DMAListarDenunciasReporte(ListView listview, Context ct){
-        listado = listview;
-        context = ct;
-    }
+
+    public DMAListarDenunciasReporte(){ }
 
     @Override
-    protected String doInBackground(String... strings) {
-        String response = "";
+    protected List<Denuncia> doInBackground(String... strings) {
+        List <Denuncia> listaDenuncias = null;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -85,7 +80,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
-            listaDenuncias = new ArrayList<Denuncia>();
+            listaDenuncias = new ArrayList<>();
 
             while (rs.next()) {
                 Denuncia denuncia = new Denuncia();
@@ -137,29 +132,11 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
             }
             preparedStatement.close();
             con.close();
-            response = "Conexion exitosa";
 
         }catch (Exception e){
             e.printStackTrace();
-            response = "Conexion no exitosa";
         }
 
-        return response;
+        return listaDenuncias;
     }
-
-    @Override
-    protected void onPostExecute(String response) {
-        ListarDenunciaAdapter adapter = new ListarDenunciaAdapter(context, listaDenuncias);
-        assert listaDenuncias != null;
-
-        if (listaDenuncias.size() == 0){
-            String [] tipoInforme = {"No hay datos disponibles"};
-            ArrayAdapter<String> vacio = new ArrayAdapter<String>(this.context, R.layout.spinner_generico, tipoInforme);
-            listado.setAdapter(vacio);
-        }else{
-            listado.setAdapter(adapter);
-        }
-    }
-
-
 }

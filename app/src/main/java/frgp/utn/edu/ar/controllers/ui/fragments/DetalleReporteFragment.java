@@ -3,9 +3,6 @@ package frgp.utn.edu.ar.controllers.ui.fragments;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,7 +11,6 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +31,7 @@ import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
-import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarReporte;
-import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMABuscarReportePorId;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
@@ -147,7 +142,7 @@ public class DetalleReporteFragment extends Fragment {
     public void actualizar_campos(){
         if(seleccionado!=null){
             try {
-                DMACargarReporte DMAReporte = new DMACargarReporte(seleccionado.getId());
+                DMABuscarReportePorId DMAReporte = new DMABuscarReportePorId(seleccionado.getId());
                 DMAReporte.execute();
                 seleccionado = DMAReporte.get();
                 if(seleccionado!=null){
