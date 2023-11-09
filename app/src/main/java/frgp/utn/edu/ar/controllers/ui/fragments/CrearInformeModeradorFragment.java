@@ -83,9 +83,6 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
         etFechaFin.setOnClickListener(this);
         etFechaInicio.setShowSoftInputOnFocus(false);
         etFechaFin.setShowSoftInputOnFocus(false);
-
-
-
         usuario = sharedPreferences.getUsuarioData(getContext());
 
         return root;
