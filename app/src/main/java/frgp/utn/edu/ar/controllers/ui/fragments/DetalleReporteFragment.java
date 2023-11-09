@@ -1,24 +1,21 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,10 +27,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
-import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMABuscarReportePorId;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.ImagenReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
@@ -42,19 +39,17 @@ import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 public class DetalleReporteFragment extends Fragment {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
-    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private final SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private DetalleReporteViewModel mViewModel;
     private TextView titulo, descripcion, estado, fecha, tipo;
     private RatingBar puntaje;
-    private ImageView imagen;
-    private Button bUsuario, bSolicitarCierre, bValorar, bDenunciar;
     private Usuario loggedInUser = null;
     private Reporte seleccionado;
     public static DetalleReporteFragment newInstance() {
         return new DetalleReporteFragment();
     }
 
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+    private final OnMapReadyCallback callback = new OnMapReadyCallback() {
         public void onMapReady(GoogleMap googleMap) {
             // Verifica si tiene permisos de ubicación
             if (googleMap != null) {
@@ -75,22 +70,12 @@ public class DetalleReporteFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detalle_reporte, container, false);
 
-        // ESCONDE EL BOTON DEL SOBRE
-        if(getActivity() instanceof HomeActivity){
-            ((HomeActivity) getActivity()).botonmensaje.hide();
-        }
-
         titulo = view.findViewById(R.id.titulo_ver_reporte);
         descripcion = view.findViewById(R.id.descripcion_reporte);
         estado = view.findViewById(R.id.estado_ver_reporte);
         fecha = view.findViewById(R.id.reporte_detalle_fecha);
         tipo = view.findViewById(R.id.reporte_det_tipo);
-        bUsuario = view.findViewById(R.id.btnUsernameDetalle);
-        bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
-        bValorar = view.findViewById(R.id.btnValorarReporte);
-        bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
         puntaje = view.findViewById(R.id.detalle_rep_rating);
-        imagen = view.findViewById(R.id.imagen_ver_reporte);
         loggedInUser = sharedPreferences.getUsuarioData(getContext());
 
         Bundle bundle = this.getArguments();
@@ -119,14 +104,22 @@ public class DetalleReporteFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
 
+        Button bUsuario = view.findViewById(R.id.btnUsernameDetalle);
+        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
+        Button bValorar = view.findViewById(R.id.btnValorarReporte);
+        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
+        Button bImagen = view.findViewById(R.id.btnImagenReporte);
+
         if (!seleccionado.getEstado().getEstado().equals("ABIERTO")) {
             bSolicitarCierre.setVisibility(View.GONE);
         }
-
         if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")) {
             bDenunciar.setVisibility(View.VISIBLE);
         }
-
+        if(seleccionado.getEstado().getEstado().equals("ELIMINADO")){
+            Toast.makeText(getContext(), "Este reporte fue eliminado!", Toast.LENGTH_LONG).show();
+            regresar();
+        }
         if(seleccionado.getOwner().getUsername().equals(loggedInUser.getUsername())){
             bSolicitarCierre.setText("CERRAR REPORTE");
             bSolicitarCierre.setVisibility(View.VISIBLE);
@@ -137,16 +130,32 @@ public class DetalleReporteFragment extends Fragment {
             }
         }
 
+        String user_rep = "Detalle del usuario " + seleccionado.getOwner().getUsername();
+        bUsuario.setText(user_rep);
+
         comportamiento_boton_usuario(bUsuario);
-
-        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
         comportamiento_boton_solicitar_cierre(bSolicitarCierre);
-
-        Button bValorar = view.findViewById(R.id.btnValorarReporte);
         comportamiento_boton_valorar(bValorar);
-
-        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
         comportamiento_boton_denunciar(bDenunciar);
+        comportamiento_boton_imagen(bImagen);
+    }
+
+
+    public void actualizar_campos(){
+        if(seleccionado!=null){
+            try {
+                DMABuscarReportePorId DMAReporte = new DMABuscarReportePorId(seleccionado.getId());
+                DMAReporte.execute();
+                seleccionado = DMAReporte.get();
+                if(seleccionado!=null){
+                    cargarDatosReporte();
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            regresar();
+        }
     }
 
     private void comportamiento_boton_usuario(Button bUsuario){
@@ -155,6 +164,16 @@ public class DetalleReporteFragment extends Fragment {
                 // BOTON DETALLE DE USUARIO REPORTE
                 UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(seleccionado.getOwner());
                 dialogFragment.show(getFragmentManager(), "user_detail");
+            }
+        });
+    }
+
+    private void comportamiento_boton_imagen(Button bImagen){
+        bImagen.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON DETALLE DE USUARIO REPORTE
+                ImagenReporteDialogFragment dialogFragment = ImagenReporteDialogFragment.newInstance(seleccionado.getId());
+                dialogFragment.show(getFragmentManager(), "reporte_imagen");
             }
         });
     }
@@ -171,7 +190,14 @@ public class DetalleReporteFragment extends Fragment {
                         /// SI EL USUARIO LOGUEADO ES EL DUEÑO DEL REPORTE
                         CerrarReporteDialogFragment dialogFragment = new CerrarReporteDialogFragment();
                         dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+                        // Configura DetalleReporteFragment como el fragmento de destino
                         dialogFragment.show(getFragmentManager(), "layout_cerrar_reporte");
+                        dialogFragment.setDismissListener(new CerrarReporteDialogFragment.DismissListener() {
+                            @Override
+                            public void onDismiss() {
+                                actualizar_campos();
+                            }
+                        });
                     }else{
                         Toast.makeText(getContext(), "No puedes atender tu propio reporte", Toast.LENGTH_LONG).show();
                     }
@@ -230,22 +256,34 @@ public class DetalleReporteFragment extends Fragment {
         descripcion.setText(seleccionado.getTitulo());
         String status_rep = "Estado: " + seleccionado.getEstado().getEstado();
         estado.setText(status_rep);
-        if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
-            estado.setBackgroundColor(Color.RED);
-        }
+        color_estado();
         String tipo_rep = "Tipo: " + seleccionado.getTipo().getTipo();
         tipo.setText(tipo_rep);
         fecha.setText(seleccionado.getFecha().toString());
-        String user_rep = "Detalle del usuario " + seleccionado.getOwner().getUsername();
-        bUsuario.setText(user_rep);
         if(seleccionado.getCant_votos()!=0){
             puntaje.setRating((float) seleccionado.getPuntaje()/seleccionado.getCant_votos());
         }else{
             puntaje.setRating(0);
         }
-
-        DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
-        DMAImagen.execute();
+    }
+    private void color_estado(){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorVerdeSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("ATENDIDO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorAzulSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("PENDIENTE")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorNaranjaSuave));
+            return;
+        }
+        if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
+            estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorRojoSuave));
+            return;
+        }
+        estado.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
     }
 
     @Override
@@ -255,4 +293,8 @@ public class DetalleReporteFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
+    private void regresar(){
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+        navController.popBackStack();
+    }
 }

@@ -9,10 +9,8 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import frgp.utn.edu.ar.controllers.data.model.Logs;
 import frgp.utn.edu.ar.controllers.data.model.Notificacion;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
-import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 
 public class DMAListarNotificacionesNoLeidasPorUsuario extends AsyncTask<String, Void, List<Notificacion>> {
 

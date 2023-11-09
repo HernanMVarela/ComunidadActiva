@@ -5,13 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/green_100"
-    tools:context=".ui.fragments.SuspenderUsuarioFragment"
-    >
+    tools:context=".ui.fragments.SuspenderUsuarioFragment">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/green_100"
+        android:layout_margin="10dp"
         android:layout_weight="1">
 
         <LinearLayout
@@ -92,6 +92,7 @@
             android:id="@+id/btnSuspenderUsuario"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
             android:background="@drawable/boton_suspender_usuario"
             android:text="Suspender Usuario" />
 

@@ -12,20 +12,16 @@ import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 
-public class DMAActualizarEstadoProyecto extends AsyncTask<String, Void, String> {
-    private Context context;
+public class DMAActualizarEstadoProyecto extends AsyncTask<String, Void, Boolean> {
     private Proyecto modificar;
-    private static String result2;
     private int dataRowModif;
 
-    public DMAActualizarEstadoProyecto(Context context, Proyecto modificar) {
-        this.context = context;
+    public DMAActualizarEstadoProyecto(Proyecto modificar) {
         this.modificar = modificar;
     }
 
     @Override
-    protected String doInBackground(String... strings) {
-        String response = "";
+    protected Boolean doInBackground(String... strings) {
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -38,18 +34,13 @@ public class DMAActualizarEstadoProyecto extends AsyncTask<String, Void, String>
             ps.setInt(2, modificar.getId());
             dataRowModif = ps.executeUpdate();
 
+            ps.close();
             con.close();
+
+            return dataRowModif != 0;
         } catch (Exception e) {
             e.printStackTrace();
-            response = "ERROR";
-        }
-        return response;
-    }
-
-    @Override
-    protected void onPostExecute(String response) {
-        if(dataRowModif==0){
-            Toast.makeText(context, "No se pudo modificar el Proyecto", Toast.LENGTH_SHORT).show();
+            return false;
         }
     }
 }

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import frgp.utn.edu.ar.controllers.R;
-import frgp.utn.edu.ar.controllers.data.remote.denuncias.DMAGuardarDenunciaProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAGuardarDenunciaProyecto;
 
 public class DenunciaProyectoDialogFragment extends DialogFragment {
     private EditText Titulo, Descripcion;

@@ -7,9 +7,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
-
-import java.util.ArrayList;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import frgp.utn.edu.ar.controllers.R;
@@ -41,10 +42,23 @@ public class ListaProyectosAdapter extends ArrayAdapter<Proyecto> {
         if (convertView == null) {
             convertView = LayoutInflater.from(context).inflate(R.layout.layout_lista_proyecto_unidad, parent,false);
         }
-        TextView titulo = convertView.findViewById(R.id.txtTituloProyectoU);
-        TextView datos = convertView.findViewById(R.id.txtDatosCreadorU);
+        TextView titulo = convertView.findViewById(R.id.txtTituloProyecto);
+        TextView datos = convertView.findViewById(R.id.txDatosProyecto);
+        TextView telefono = convertView.findViewById(R.id.txTelefonoContacto);
+
+        String timeStamp = new Timestamp(proyecto.getFecha().getTime()).toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(timeStamp);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        sdf = new SimpleDateFormat("d/MM/yyyy");
+
         titulo.setText(proyecto.getTitulo());
-        datos.setText("Telefono: " + proyecto.getContacto());
+        datos.setText(String.format("Creado por %s el %s", proyecto.getOwner().getUsername(), sdf.format(date)));
+        telefono.setText("Telefono: " + proyecto.getContacto());
         return convertView;
     }
 

@@ -51,8 +51,7 @@ public class SolicitarCierreFragment extends Fragment {
     private Usuario loggedInUser = null;
     private TextView titulo;
     private EditText motivo;
-    private Button btnCamara, btnCerrar;
-    private Bitmap imagenCapturada;
+    private Bitmap imagenCapturada = null;
     private ImageView imagenCierre = null;
     private LogService logService = new LogService();
     private NotificacionService notificacionService = new NotificacionService();
@@ -77,8 +76,6 @@ public class SolicitarCierreFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_solicitar_cierre, container, false);
 
         titulo = view.findViewById(R.id.cerrar_rep_titulo);
-        btnCamara = view.findViewById(R.id.btn_cerrar_rep_camara);
-        btnCerrar = view.findViewById(R.id.btn_cerrar_rep_confirmar);
         imagenCierre = view.findViewById(R.id.cerrar_rep_imagen);
         motivo = view.findViewById(R.id.cerrar_rep_etdescripcion);
 
@@ -105,7 +102,57 @@ public class SolicitarCierreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Button btnCamara = view.findViewById(R.id.btn_cerrar_rep_camara);
+        Button btnCerrar = view.findViewById(R.id.btn_cerrar_rep_confirmar);
+        comportamiento_boton_camara(btnCamara);
+        comportamiento_boton_cierre(btnCerrar);
+    }
 
+    private void comportamiento_boton_cierre(Button btnCerrar){
+        btnCerrar.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                /// SE VALIDAN LOS CAMPOS
+                if(validarCampos()){
+                    /// SE CREA NUEVO CIERREREPORTE Y SE CARGAN SUS DATOS
+                    CierreReporte cerrarRep = new CierreReporte();
+                    cerrarRep.setUser(loggedInUser);
+                    cerrarRep.setReporte(selectedReport);
+                    cerrarRep.setImagen(imagenCapturada);
+                    cerrarRep.setMotivo(motivo.getText().toString());
+                    cerrarRep.setFechaCierreFromDate(new Date(System.currentTimeMillis()));
+                    cerrarRep.setEstado(new EstadoReporte(2,"PENDIENTE"));
+
+                    try {
+                        /// SE INTENTA GUARDAR EL NUEVO CIERRE EN LA DB
+                        DMAGuardarCierreReporte dmaCierreRep = new DMAGuardarCierreReporte(cerrarRep);
+                        dmaCierreRep.execute();
+                        if(dmaCierreRep.get()){
+                            /// SI SE GUARDA CORRECTAMENTE - SE INTENTA ACTUALIZAR EL ESTADO DEL REPORTE
+                            cerrarRep.getReporte().setEstado(new EstadoReporte(2,"PENDIENTE"));
+                            DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(cerrarRep.getReporte());
+                            dmaActualizar.execute();
+                            if(dmaActualizar.get()){
+                                /// SI SE ACTUALIZA EL ESTADO, SE GUARDA EL LOG Y SE GENERA LA NOTIFICACION
+                                Toast.makeText(getContext(), "Reporte cerrado!", Toast.LENGTH_SHORT).show();
+                                logService.log(loggedInUser.getId(), LogsEnum.SOLICITUD_CIERRE_REPORTE, String.format("Solicitaste el cierre del reporte %s", selectedReport.getTitulo()));
+                                notificacionService.notificacion(selectedReport.getOwner().getId(), String.format("EL %s %s solicito el cierre del reporte %s", loggedInUser.getTipo().getTipo(), loggedInUser.getUsername(), selectedReport.getTitulo()));
+                                NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                                navController.popBackStack();
+                            }else{
+                                Toast.makeText(getContext(), "No se pudo actualizar el estado!", Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(getContext(), "No se pudo cerrar el reporte!", Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    private void comportamiento_boton_camara(Button btnCamara){
         btnCamara.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // Verificar si tiene permiso de la cámara
@@ -116,28 +163,6 @@ public class SolicitarCierreFragment extends Fragment {
                 } else {
                     // Si no tiene el permiso, se pide al usuario
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PIC_REQUEST);
-                }
-            }
-        });
-
-        btnCerrar.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(validarCampos()){
-                    CierreReporte cerrarRep = new CierreReporte();
-                    cerrarRep.setUser(loggedInUser);
-                    cerrarRep.setReporte(selectedReport);
-                    cerrarRep.setImagen(imagenCapturada);
-                    cerrarRep.setMotivo(motivo.getText().toString());
-                    cerrarRep.setFechaCierreFromDate(new Date(System.currentTimeMillis()));
-                    cerrarRep.setEstado(new EstadoReporte(2,"PENDIENTE"));
-
-                    DMAGuardarCierreReporte dmaCierreRep = new DMAGuardarCierreReporte(cerrarRep,v.getContext());
-                    dmaCierreRep.execute();
-                    Toast.makeText(getContext(), "Solitud de cierre enviada!", Toast.LENGTH_SHORT).show();
-                    logService.log(loggedInUser.getId(), LogsEnum.SOLICITUD_CIERRE_REPORTE, String.format("Valoraste el reporte %s", selectedReport.getTitulo()));
-                    notificacionService.notificacion(selectedReport.getOwner().getId(), String.format("El %s %s valoro el reporte %s", loggedInUser.getTipo().getTipo(), loggedInUser.getUsername(), selectedReport.getTitulo()));
-                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-                    navController.popBackStack();
                 }
             }
         });
@@ -175,13 +200,15 @@ public class SolicitarCierreFragment extends Fragment {
             Toast.makeText(this.getContext(), "La descripción es muy larga!", Toast.LENGTH_LONG).show();
             return false;
         }
-        if(imagenCierre == null){
-            Bitmap imagenPredeterminada = BitmapFactory.decodeResource(getResources(), R.mipmap.image_placeholder);
+        if(imagenCapturada == null){
+            Log.i("IMAGEN","LLEGA AL VALIDAR UNA VEZ");
+            Bitmap imagenPredeterminada = BitmapFactory.decodeResource(getResources(), R.mipmap.image_placeholder_foreground);
             int nuevoAncho = 50;
             int nuevoAlto = 50;
-            Bitmap imagenRedimensionada = Bitmap.createScaledBitmap(imagenPredeterminada, nuevoAncho, nuevoAlto, true);
-            imagenCierre.setImageBitmap(imagenRedimensionada);
+            imagenCapturada = Bitmap.createScaledBitmap(imagenPredeterminada, nuevoAncho, nuevoAlto, true);
+            imagenCierre.setImageBitmap(imagenCapturada);
             Toast.makeText(getContext(), "Está por cerrar un reporte sin evidencia, para continuar vuelva a presionar Cerrar Repote", Toast.LENGTH_LONG).show();
+            return false;
         }
         if(selectedReport == null){
             Toast.makeText(getContext(), "Error al obtener el reporte", Toast.LENGTH_LONG).show();

@@ -15,7 +15,6 @@ import java.util.Objects;
 
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
-import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaVoluntariosAdapter;

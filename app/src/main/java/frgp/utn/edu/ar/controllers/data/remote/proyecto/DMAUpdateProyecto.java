@@ -7,9 +7,7 @@ import android.widget.Toast;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 
-import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMAUpdateProyecto extends AsyncTask<String, Void, String> {
@@ -34,7 +32,6 @@ public class DMAUpdateProyecto extends AsyncTask<String, Void, String> {
             filasafectadas = 0;
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             String insert = "UPDATE PROYECTOS SET ID_ESTADO = ? WHERE ID = ? ;";
 
             PreparedStatement preparedStatement = con.prepareStatement(insert);

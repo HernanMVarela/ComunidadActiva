@@ -50,7 +50,7 @@
                 android:layout_marginEnd="10dp"
                 android:paddingVertical="5dp"
                 android:text="@string/titulo"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
 
             <TextView
                 android:id="@+id/reporte_detalle_fecha"
@@ -69,7 +69,10 @@
             android:id="@+id/btnUsernameDetalle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/green_100"
+            android:background="@drawable/dialog_corner_bgd"
+            android:layout_marginVertical="10dp"
+            android:layout_marginHorizontal="50dp"
+            android:textSize="14sp"
             android:textStyle="italic"
             android:text="@string/username_detalle"/>
 
@@ -99,17 +102,16 @@
             android:background="@drawable/grid_item_corner"
             android:text="@string/descripcion_prueba"/>
 
-        <ImageView
-            android:id="@+id/imagen_ver_reporte"
+        <Button
+            android:id="@+id/btnImagenReporte"
             android:layout_width="match_parent"
-            android:paddingVertical="5dp"
-            android:layout_height="200dp"
-            android:scaleType="fitCenter"
-            android:layout_marginVertical="15dp"
-            android:layout_marginHorizontal="10dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/dialog_corner_bgd"
-            android:src="@mipmap/image_placeholder_foreground"
-            />
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginVertical="10dp"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:text="@string/ver_imagen"/>
 
         <fragment
             android:id="@+id/map_reporte"

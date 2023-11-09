@@ -94,7 +94,7 @@ public class BuscarReporteFragment extends Fragment {
                                 DMAListviewReportesPorTexto DMAListaReportes = new DMAListviewReportesPorTexto(listaReportes, getContext(), currentLatLng, googlemaplocal, textoBusqueda,switch_abiertos.isChecked());
                                 DMAListaReportes.execute();
                             } else {
-                                DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes, getContext(), currentLatLng, googlemaplocal,loggedInUser,switch_abiertos.isChecked());
+                                DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes, getContext(), currentLatLng, googlemaplocal,switch_abiertos.isChecked());
                                 DMAListaReportes.execute();
                             }
                             try {
@@ -169,7 +169,7 @@ public class BuscarReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }else{
-            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, true);
+            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, true);
             DMAListaReportes.execute();
         }
         switch_abiertos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -178,7 +178,7 @@ public class BuscarReporteFragment extends Fragment {
                 if (mapFragment != null) {
                     mapFragment.getMapAsync(callback);
                 }else{
-                    DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, switch_abiertos.isChecked());
+                    DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,view.getContext(),new LatLng(0,0), googlemaplocal, switch_abiertos.isChecked());
                     DMAListaReportes.execute();
                 }
             }
@@ -263,7 +263,7 @@ public class BuscarReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }else{
-            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),new LatLng(0,0), googlemaplocal, loggedInUser, switch_abiertos.isChecked());
+            DMAListviewReportes DMAListaReportes = new DMAListviewReportes(listaReportes,getContext(),new LatLng(0,0), googlemaplocal, switch_abiertos.isChecked());
             DMAListaReportes.execute();
         }
     }

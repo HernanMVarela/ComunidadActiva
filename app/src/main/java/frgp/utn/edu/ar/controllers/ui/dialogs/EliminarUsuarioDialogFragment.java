@@ -65,7 +65,7 @@ public class EliminarUsuarioDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 // CAMBIAR ESTADO DEL USUARIO EN DB
 
-                DMACambiarEstadoUsuario DMAEstadoUser = new DMACambiarEstadoUsuario(selectedUser,getContext());
+                DMACambiarEstadoUsuario DMAEstadoUser = new DMACambiarEstadoUsuario(selectedUser);
                 DMAEstadoUser.execute();
                 /// REGISTRAR LOG SI ES NECESARIO
                 logService.log(loggedInUser.getId(), LogsEnum.ELIMINACION_USUARIO, String.format("Eliminaste al usuario %s", selectedUser.getUsername()));

@@ -50,6 +50,8 @@ public class DMACerrarDenuncia extends AsyncTask<String, Void, String> {
             ps.setInt(2, modificar.getPublicacion().getId()); // ID de la publicación a actualizar
             dataRowModif = ps.executeUpdate();
 
+            ps.close();
+            con.close();
             response = "Éxito"; // La actualización se realizó con éxito
 
         } catch (Exception e) {

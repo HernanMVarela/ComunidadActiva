@@ -36,6 +36,7 @@
                 android:layout_marginVertical="5dp"
                 android:gravity="start"
                 android:text="Indicar Motivo:"
+                android:layout_marginHorizontal="10dp"
                 android:textSize="20sp"
                 tools:text="Incar Motivo:" />
 
@@ -58,20 +59,13 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/btnEliminarPublicacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingVertical="15dp">
-
-        <Button
-            android:id="@+id/btnEliminarPublicacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/boton_eliminar_publicacion"
-            android:text="ELIMINAR PUBLICACION" />
-
-    </LinearLayout>
-
+        android:layout_marginBottom="30dp"
+        android:layout_marginHorizontal="30dp"
+        android:background="@drawable/boton_eliminar_publicacion"
+        android:text="ELIMINAR PUBLICACION" />
 
 </LinearLayout>

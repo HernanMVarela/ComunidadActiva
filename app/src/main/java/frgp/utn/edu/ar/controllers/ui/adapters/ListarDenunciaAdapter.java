@@ -46,16 +46,14 @@ public class ListarDenunciaAdapter extends ArrayAdapter<Denuncia> {
         usernamefecha.setText("Denunciado por " + denuncia.getDenunciante().getUsername() + " el " + denuncia.getFecha_creacion().toString());
 
         if(denuncia.getEstado().getEstado().equals("CERRADA") || denuncia.getEstado().getEstado().equals("CANCELADA")){
-            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.danger));
+            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.green_200));
         }
         if(denuncia.getEstado().getEstado().equals("PENDIENTE")){
-            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.warning));
+            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.danger));
         }
         if(denuncia.getEstado().getEstado().equals("ATENDIDA")){
-            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.green_100));
+            cardview.setCardBackgroundColor(ContextCompat.getColor(getContext(), R.color.warning));
         }
         return convertView;
     }
-
-
 }

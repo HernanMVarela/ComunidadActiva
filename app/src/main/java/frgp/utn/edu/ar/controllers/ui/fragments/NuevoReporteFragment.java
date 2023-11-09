@@ -78,16 +78,13 @@ public class NuevoReporteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_nuevo_reporte, container, false);
-        if(getActivity() instanceof HomeActivity){
-            ((HomeActivity) getActivity()).botonmensaje.hide();
-        }
         titulo = view.findViewById(R.id.edTituloReporte);
         descripcion = view.findViewById(R.id.edDescripcionReporte);
         spinTipoReporte = view.findViewById(R.id.spnTiposReporte);
 
         if (savedInstanceState == null) {
-            DMASpinnerTiposReporte dataActivityTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext(),selectedSpinnerPosition);
-            dataActivityTiposReporte.execute();
+            DMASpinnerTiposReporte DMASpinnerTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext(),selectedSpinnerPosition);
+            DMASpinnerTiposReporte.execute();
         }
         return view;
     }
@@ -135,7 +132,7 @@ public class NuevoReporteFragment extends Fragment {
         navController.navigate(R.id.action_nav_reporte_to_nav_ubicacion);
     }
 
-    private void returnToHome(){
+    private void regresar(){
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
         navController.popBackStack();
     }
@@ -192,7 +189,6 @@ public class NuevoReporteFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
     private void comportamiento_boton_ubicacion(Button bUbicacion){
         bUbicacion.setOnClickListener(new View.OnClickListener() {

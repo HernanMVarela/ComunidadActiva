@@ -1,4 +1,4 @@
-package frgp.utn.edu.ar.controllers.data.remote.informesAdmin;
+package frgp.utn.edu.ar.controllers.data.remote.informeAdmin;
 
 import android.os.AsyncTask;
 
@@ -11,14 +11,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
 
-
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAListarUsuariosActivosPorRol extends AsyncTask<String, Void, JSONArray> {
+public class DMAListarProyectosPorCategoria extends AsyncTask<String, Void, JSONArray> {
 
-    Date fechaInicio;
-    Date fechaFin;
-    public DMAListarUsuariosActivosPorRol(Date fechaInicio, Date fechaFin) {
+    private Date fechaInicio;
+    private Date fechaFin;
+    public DMAListarProyectosPorCategoria(Date fechaInicio, Date fechaFin) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
@@ -31,18 +30,16 @@ public class DMAListarUsuariosActivosPorRol extends AsyncTask<String, Void, JSON
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            PreparedStatement preparedStatement = con.prepareStatement("SELECT TU.TIPO AS ROL, COUNT(U.ID) AS CANTIDAD " +
-                                                                           "FROM USUARIOS U " +
-                                                                           "INNER JOIN TIPOS_USUARIO TU ON U.ID_TIPO  = TU.ID " +
-                                                                           "WHERE U.ID_ESTADO = 1 " +
-                                                                           "AND U.CREACION BETWEEN ? AND ? " +
-                                                                           "GROUP BY TU.TIPO;");
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT TP.TIPO AS TIPO_PROYECTO, COUNT(P.ID) AS CANTIDAD " +
+                                                                           "FROM PROYECTOS P INNER JOIN TIPOS_PROYECTOS TP ON P.ID_TIPO = TP.ID " +
+                                                                           "WHERE P.FECHA BETWEEN ? AND ? " +
+                                                                           "GROUP BY TIPO_PROYECTO;");
             preparedStatement.setDate(1, new java.sql.Date(fechaInicio.getTime()));
             preparedStatement.setDate(2, new java.sql.Date(fechaFin.getTime()));
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 entry = new JSONObject();
-                entry.put("rol", resultSet.getString("ROL"));
+                entry.put("tipo_proyecto", resultSet.getString("TIPO_PROYECTO"));
                 entry.put("cantidad", resultSet.getInt("CANTIDAD"));
                 response.put(entry);
             }

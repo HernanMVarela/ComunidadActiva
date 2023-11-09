@@ -9,14 +9,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
-import frgp.utn.edu.ar.controllers.data.model.DenunciaNuevo;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Publicacion;
@@ -27,25 +24,18 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListarDenunciaAdapter;
 
 
-public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
-    private Context context;
-    private ListView listado;
-    private static String result2;
-    private static List<Denuncia> listaDenuncias;
+public class DMAListarDenunciasReporte extends AsyncTask<String, Void, List<Denuncia>> {
 
-    public DMAListarDenunciasReporte(ListView listview, Context ct){
-        listado = listview;
-        context = ct;
-    }
+
+    public DMAListarDenunciasReporte(){ }
 
     @Override
-    protected String doInBackground(String... strings) {
-        String response = "";
+    protected List<Denuncia> doInBackground(String... strings) {
+        List <Denuncia> listaDenuncias = null;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
 
             String query = "SELECT " +
                     "D.ID_REPORTE AS IDReporte, " +
@@ -67,6 +57,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                     "U.CORREO AS CorreoUsuario, " +
                     "U.FECHA_NAC AS FechaNacimientoUsuario, " +
                     "U.CREACION AS FechaCreacionUsuario, " +
+                    "U.PUNTUACION AS PuntajeUsuario, " +
                     "UP.ID AS IDUserPublicacion, " +
                     "UP.USERNAME AS UsernameUsuarioPublicacion, " +
                     "UP.NOMBRE AS NombreUsuarioPublicacion, " +
@@ -75,6 +66,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                     "UP.CORREO AS CorreoUsuarioPublicacion, " +
                     "UP.FECHA_NAC AS FechaNacimientoUsuarioPublicacion, " +
                     "UP.CREACION AS FechaCreacionUsuarioPublicacion, " +
+                    "UP.PUNTUACION AS PuntajeUsuarioPublicacion, " +
                     "UP.ID_TIPO AS IDTipoUsuarioPublicacion, " +
                     "UP.ID_ESTADO AS IDEstadoUserPublicacion, " +
                     "EUP.ESTADO AS EstadoUsuarioPublicacion, " +
@@ -90,8 +82,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
 
             PreparedStatement preparedStatement = con.prepareStatement(query);
             ResultSet rs = preparedStatement.executeQuery();
-            result2 = " ";
-            listaDenuncias = new ArrayList<Denuncia>();
+            listaDenuncias = new ArrayList<>();
 
             while (rs.next()) {
                 Denuncia denuncia = new Denuncia();
@@ -111,6 +102,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                 userPublicacion.setCorreo(rs.getString("CorreoUsuarioPublicacion"));
                 userPublicacion.setFecha_nac(rs.getDate("FechaNacimientoUsuarioPublicacion"));
                 userPublicacion.setFecha_alta(rs.getDate("FechaCreacionUsuarioPublicacion"));
+                userPublicacion.setPuntuacion(rs.getInt("PuntajeUsuarioPublicacion"));
                 userPublicacion.setEstado(estadoUsuarioPublicacion);
                 userPublicacion.setTipo(tipoUsuarioPublicacion);
 
@@ -118,8 +110,8 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                 publicacion.setDescripcion(rs.getString("DescripcionPublicacion"));
                 publicacion.setTitulo(rs.getString("TituloPublicacion"));
                 publicacion.setFecha(rs.getDate("FechaPublicacion"));
-                publicacion.setLatitud(rs.getDouble("LongitudPublicacion"));
-                publicacion.setLongitud(rs.getDouble("LatitudPublicacion"));
+                publicacion.setLatitud(rs.getDouble("LatitudPublicacion"));
+                publicacion.setLongitud(rs.getDouble("LongitudPublicacion"));
                 publicacion.setOwner(userPublicacion);
 
                 user.setId(rs.getInt("IDUser"));
@@ -130,6 +122,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
                 user.setCorreo(rs.getString("CorreoUsuario"));
                 user.setFecha_nac(rs.getDate("FechaNacimientoUsuario"));
                 user.setFecha_alta(rs.getDate("FechaCreacionUsuario"));
+                user.setPuntuacion(rs.getInt("PuntajeUsuario"));
 
                 denuncia.setDescripcion(rs.getString("Descripcion"));
                 denuncia.setTitulo(rs.getString("Titulo"));
@@ -141,30 +134,13 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, String> {
 
                 listaDenuncias.add(denuncia);
             }
-
-            response = "Conexion exitosa";
+            preparedStatement.close();
+            con.close();
 
         }catch (Exception e){
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
         }
 
-        return response;
+        return listaDenuncias;
     }
-
-    @Override
-    protected void onPostExecute(String response) {
-        ListarDenunciaAdapter adapter = new ListarDenunciaAdapter(context, listaDenuncias);
-        assert listaDenuncias != null;
-
-        if (listaDenuncias.size() == 0){
-            String [] tipoInforme = {"No hay datos disponibles"};
-            ArrayAdapter<String> vacio = new ArrayAdapter<String>(this.context, R.layout.spinner_generico, tipoInforme);
-            listado.setAdapter(vacio);
-        }else{
-            listado.setAdapter(adapter);
-        }
-    }
-
-
 }

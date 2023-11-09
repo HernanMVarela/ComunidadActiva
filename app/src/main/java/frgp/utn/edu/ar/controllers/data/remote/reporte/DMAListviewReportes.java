@@ -1,43 +1,26 @@
 package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ListView;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +33,6 @@ import frgp.utn.edu.ar.controllers.data.model.TipoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaReportesAdapter;
-import frgp.utn.edu.ar.controllers.ui.adapters.TipoReporteAdapter;
 
 public class DMAListviewReportes extends AsyncTask<String, Void, String> {
 
@@ -58,18 +40,17 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
     private ListView listado;
     private LatLng ubicacion;
     private Usuario loggedUser;
-    private boolean todo;
+    private boolean soloAbiertos;
     private GoogleMap mapa;
     private static String result2;
     private static List<Reporte> listaReporte;
 
     //Constructor
-    public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa, Usuario loggedUser, boolean todo) {
+    public DMAListviewReportes(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa, boolean soloAbiertos) {
         listado = listview;
         context = ct;
         this.mapa = mapa;
-        this.loggedUser = loggedUser;
-        this.todo = todo;
+        this.soloAbiertos = soloAbiertos;
         this.ubicacion = ubicacion;
     }
 
@@ -80,9 +61,8 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
 
-            PreparedStatement preparedStatement = generadorConsulta(con,loggedUser.getTipo().getTipo(),todo);
+            PreparedStatement preparedStatement = generadorConsulta(con,soloAbiertos);
             assert preparedStatement != null;
             ResultSet rs = preparedStatement.executeQuery();
             result2 = " ";
@@ -119,6 +99,8 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
 
                 listaReporte.add(reporte);
             }
+            preparedStatement.close();
+            con.close();
             response = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();
@@ -220,11 +202,25 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
-    private PreparedStatement generadorConsulta(Connection con, String userType, boolean todo){
+    private PreparedStatement generadorConsulta(Connection con, boolean soloAbiertos){
         double dispositivoLatitud = ubicacion.latitude;
         double dispositivoLongitud = ubicacion.longitude;
         String query = "";
-        if(userType.equals("VECINO") && todo){
+        if(soloAbiertos){
+            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
+                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
+                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.PUNTUACION, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
+                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
+                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
+                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
+                    ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
+                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
+                    "WHERE ER.ESTADO = 1 AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
+                    "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
+        }else{
             query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
                     "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
                     "R.CANT_VOTOS AS CantidadVotos, R.Puntaje AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
@@ -238,55 +234,10 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
                     "INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
                     "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID " +
                     "INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "WHERE ER.ESTADO NOT IN ('CERRADO', 'DENUNCIADO') " +
+                    "WHERE ER.ESTADO NOT IN ('CERRADO','CANCELADO','ELIMINADO') " +
                     "AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
                     "HAVING Distancia <= 10 " +
                     "ORDER BY Distancia LIMIT 15;";
-        }
-        if(userType.equals("VECINO") && !todo ){
-            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
-                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
-                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
-                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
-                    "U.NOMBRE AS NombreUsuario, U.PUNTUACION, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
-                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
-                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
-                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
-                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
-                    ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
-                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "WHERE ER.ESTADO = 'ABIERTO' AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
-                    "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
-        }
-        if ((userType.equals("MODERADOR") || userType.equals("ADMINISTRADOR"))&& todo) {
-            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
-                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
-                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
-                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
-                    "U.NOMBRE AS NombreUsuario, U.PUNTUACION, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
-                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
-                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
-                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
-                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
-                    ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
-                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "WHERE ER.ESTADO = 'ABIERTO' AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
-                    "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
-        }
-        if ((userType.equals("MODERADOR") || userType.equals("ADMINISTRADOR"))&& !todo) {
-            query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
-                    "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
-                    "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
-                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
-                    "U.NOMBRE AS NombreUsuario, U.PUNTUACION, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
-                    "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
-                    "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
-                    "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + " +
-                    "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
-                    ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
-                    "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "WHERE R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
-                    "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
         }
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);

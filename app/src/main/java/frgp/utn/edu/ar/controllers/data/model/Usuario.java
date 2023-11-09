@@ -166,8 +166,8 @@ public class Usuario implements Serializable {
         sb.append("CORREO: " + this.correo + "\n");
         sb.append("FECHA_NAC: " + this.fecha_nac + "\n");
         sb.append("FECHA_ALTA: " + this.fecha_alta + "\n");
-        sb.append("ESTADO: " + this.estado.getEstado() + "\n");
-        sb.append("TIPO: " + this.tipo.getTipo() + "\n");
+        sb.append("ESTADO: " + this.estado + "\n");
+        sb.append("TIPO: " + this.tipo + "\n");
         sb.append("CODIGO_RECUPERACION: " + this.codigo_recuperacion + "\n");
         sb.append("FECHA_BLOQUEO: " + this.fecha_bloqueo + "\n");
         //Return the string builder as a string

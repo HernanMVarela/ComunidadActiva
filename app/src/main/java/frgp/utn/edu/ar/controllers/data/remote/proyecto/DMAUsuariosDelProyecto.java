@@ -9,16 +9,11 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
-import frgp.utn.edu.ar.controllers.data.model.Proyecto;
-import frgp.utn.edu.ar.controllers.data.model.TipoProyecto;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
-import frgp.utn.edu.ar.controllers.ui.adapters.ListaProyectosAdapter;
 
 public class DMAUsuariosDelProyecto extends AsyncTask<String, Void, String> {
     private Context context;
@@ -37,7 +32,6 @@ public class DMAUsuariosDelProyecto extends AsyncTask<String, Void, String> {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             String query = "SELECT P.ID_USER, P.ID_PROYECTO, U.ID, U.USERNAME, FROM USERS_PROYECTO AS P " +
                     "INNER JOIN USUARIOS AS U ON P.ID_USER = U.ID WHERE P.ID_PROYECTO = ? AND P.FECHA_SALIDA IS NULL";
             PreparedStatement preparedStatement = con.prepareStatement(query);
@@ -50,6 +44,8 @@ public class DMAUsuariosDelProyecto extends AsyncTask<String, Void, String> {
                 usuariobuscado.setUsername(rs.getString("P.U.Username"));
                 listaDeUsuarios.add(usuariobuscado);
             }
+            rs.close();
+            con.close();
             resultado = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();

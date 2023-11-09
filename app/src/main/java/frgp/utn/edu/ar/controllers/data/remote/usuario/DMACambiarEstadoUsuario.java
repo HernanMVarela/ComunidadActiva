@@ -14,11 +14,9 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 public class DMACambiarEstadoUsuario extends AsyncTask<String, Void, Boolean> {
 
     private Usuario usuario;
-    private Context context;
 
-    public DMACambiarEstadoUsuario(Usuario usuario, Context context) {
+    public DMACambiarEstadoUsuario(Usuario usuario) {
         this.usuario = usuario;
-        this.context = context;
     }
 
     @Override
@@ -44,20 +42,6 @@ public class DMACambiarEstadoUsuario extends AsyncTask<String, Void, Boolean> {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
-        if(aBoolean){
-            if(usuario.getEstado().getEstado().equals("ELIMINADO")){
-                Toast.makeText(context, "USUARIO ELIMINADO", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(context, "Usuario modificado", Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Toast.makeText(context, "Ha ocurrido un error", Toast.LENGTH_LONG).show();
         }
     }
 }

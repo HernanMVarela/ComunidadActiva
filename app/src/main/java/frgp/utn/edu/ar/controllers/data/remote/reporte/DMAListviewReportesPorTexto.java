@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ListView;
 
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -22,7 +21,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,7 +61,6 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            Statement st = con.createStatement();
             double dispositivoLatitud = ubicacion.latitude;
             double dispositivoLongitud = ubicacion.longitude;
 
@@ -108,6 +105,8 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
 
                 listaReporte.add(reporte);
             }
+            preparedStatement.close();
+            con.close();
             response = "Conexion exitosa";
         } catch (Exception e) {
             e.printStackTrace();
@@ -207,11 +206,11 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
         drawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
-    private PreparedStatement generadorConsulta(Connection con, boolean todo) {
+    private PreparedStatement generadorConsulta(Connection con, boolean abiertos) {
         double dispositivoLatitud = ubicacion.latitude;
         double dispositivoLongitud = ubicacion.longitude;
         String query = "";
-        if (todo) {
+        if (abiertos) {
             query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
                     "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
                     "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
@@ -238,7 +237,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
                     "FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
                     "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
                     "WHERE (U.USERNAME LIKE ? OR R.TITULO LIKE ? OR TR.TIPO LIKE ?) " +
-                    "AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 6 MONTH) ORDER BY Distancia LIMIT 15;";
+                    "AND ER.ESTADO NOT IN ('CERRADO','CANCELADO','ELIMINADO') AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 6 MONTH) ORDER BY Distancia LIMIT 15;";
         }
         try {
             PreparedStatement preparedStatement = con.prepareStatement(query);

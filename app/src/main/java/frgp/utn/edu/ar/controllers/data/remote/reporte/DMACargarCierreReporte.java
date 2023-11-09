@@ -1,21 +1,15 @@
 package frgp.utn.edu.ar.controllers.data.remote.reporte;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
@@ -91,6 +85,7 @@ public class DMACargarCierreReporte extends AsyncTask<String, Void, CierreReport
                 result2 = "No se encontraron datos para el ID de reporte especificado.";
             }
 
+            ps.close();
             con.close();
         }
         catch(Exception e) {

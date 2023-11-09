@@ -8,44 +8,31 @@
     android:background="@color/green_100"
     tools:context=".ui.activities.MainActivity">
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="189dp"
-        android:layout_height="124dp"
-        android:layout_marginTop="80dp"
-        android:backgroundTint="@color/green_100"
-        android:clickable="false"
-        android:scaleType="centerCrop"
+    <EditText
+        android:id="@+id/etNombre"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="43dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="21dp"
+        android:ems="10"
+        android:hint="@string/nombre_de_usuario"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_comunidad_logo_trans_foreground" />
-
-    <Button
-        android:id="@+id/btnIniciarSesion4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:backgroundTint="@color/green_700"
-        android:onClick="IrAdministrador"
-        android:text="ADMINISTRADOR"
-        android:textAllCaps="false"
-        android:textColor="#000000"
-        android:textColorHighlight="#9FA8DA"
-        android:textColorHint="#9FA8DA"
-        android:textColorLink="#9FA8DA"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnIniciarSesion3"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
     <Button
         android:id="@+id/btnRegistrarse"
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="124dp"
-        android:layout_height="45dp"
-        android:layout_marginTop="22dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="17dp"
         android:onClick="IrRegistro"
         android:text="@string/registrarse"
         android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/btnCambiarPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnIniciarSesion" />
@@ -54,73 +41,21 @@
         android:id="@+id/btnCambiarPass"
         style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="187dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="58dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="57dp"
         android:onClick="IrRecuperoPass"
         android:text="@string/cambiar_pass"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/btnIniciarSesion4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnRegistrarse"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/etNombre"
-        android:layout_width="0dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="43dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="43dp"
-        android:layout_marginBottom="59dp"
-        android:ems="10"
-        android:hint="@string/nombre_de_usuario"
-        android:inputType="text"
-        app:layout_constraintBottom_toBottomOf="@+id/textInputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
-
-    <Button
-        android:id="@+id/btnIniciarSesion2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:backgroundTint="@color/green_700"
-        android:onClick="IrVecino"
-        android:text="VECINO"
-        android:textAllCaps="false"
-        android:textColor="#000000"
-        android:textColorHighlight="#9FA8DA"
-        android:textColorHint="#9FA8DA"
-        android:textColorLink="#9FA8DA"
-        app:layout_constraintBaseline_toBaselineOf="@+id/btnIniciarSesion3"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btnIniciarSesion3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginBottom="100dp"
-        android:backgroundTint="@color/green_700"
-        android:onClick="IrModerador"
-        android:text="MODERADOR"
-        android:textAllCaps="false"
-        android:textColor="#000000"
-        android:textColorHighlight="#9FA8DA"
-        android:textColorHint="#9FA8DA"
-        android:textColorLink="#9FA8DA"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnIniciarSesion2" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegistrarse" />
 
     <Button
         android:id="@+id/btnIniciarSesion"
         android:layout_width="156dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="22dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="31dp"
         android:backgroundTint="@color/green_700"
         android:onClick="iniciarSesion"
         android:text="@string/iniciar_sesion"
@@ -129,20 +64,37 @@
         android:textColorHighlight="#9FA8DA"
         android:textColorHint="#9FA8DA"
         android:textColorLink="#9FA8DA"
+        app:layout_constraintBottom_toTopOf="@+id/btnRegistrarse"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="253dp"
+        android:layout_height="206dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="89dp"
+        android:backgroundTint="@color/green_100"
+        android:clickable="false"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/etNombre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_comunidad_logo_trans_foreground" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout"
         android:layout_width="0dp"
-        android:layout_height="59dp"
+        android:layout_height="0dp"
         android:layout_marginStart="43dp"
-        android:layout_marginTop="87dp"
         android:layout_marginEnd="43dp"
+        android:layout_marginBottom="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/btnIniciarSesion"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:layout_constraintTop_toBottomOf="@+id/etNombre"
         app:passwordToggleEnabled="true">
 
         <EditText

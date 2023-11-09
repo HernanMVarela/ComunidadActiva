@@ -15,7 +15,7 @@
         android:layout_marginVertical="5dp"
         android:background="@drawable/grid_item_corner"
         android:layout_gravity="center_horizontal"
-        android:text="+  Pregunta 1" />
+        android:text="@string/preg_uno" />
     <Button
         android:id="@+id/acc_preg_dos"
         android:layout_width="match_parent"
@@ -23,7 +23,7 @@
         android:layout_marginVertical="5dp"
         android:background="@drawable/grid_item_corner"
         android:layout_gravity="center_horizontal"
-        android:text="+  Pregunta 2" />
+        android:text="@string/preg_dos"/>
     <Button
         android:id="@+id/acc_preg_tres"
         android:layout_width="match_parent"
@@ -31,7 +31,7 @@
         android:layout_marginVertical="5dp"
         android:background="@drawable/grid_item_corner"
         android:layout_gravity="center_horizontal"
-        android:text="+  Pregunta 3" />
+        android:text="@string/preg_tres" />
     <Button
         android:id="@+id/acc_preg_cuatro"
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
         android:layout_marginVertical="5dp"
         android:background="@drawable/grid_item_corner"
         android:layout_gravity="center_horizontal"
-        android:text="+  Pregunta 4" />
+        android:text="@string/preg_cuatro" />
     <Button
         android:id="@+id/acc_preg_cinco"
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
         android:layout_marginVertical="5dp"
         android:background="@drawable/grid_item_corner"
         android:layout_gravity="center_horizontal"
-        android:text="+  Pregunta 5" />
+        android:text="@string/preg_cinco" />
     <Button
         android:id="@+id/acc_preg_seis"
         android:layout_width="match_parent"
@@ -55,5 +55,29 @@
         android:layout_marginVertical="5dp"
         android:background="@drawable/grid_item_corner"
         android:layout_gravity="center_horizontal"
-        android:text="+  Pregunta 6" />
+        android:text="@string/preg_seis" />
+    <Button
+        android:id="@+id/acc_preg_siete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/preg_siete" />
+    <Button
+        android:id="@+id/acc_preg_ocho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/preg_ocho" />
+    <Button
+        android:id="@+id/acc_preg_nueve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:background="@drawable/grid_item_corner"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/preg_nueve" />
 </LinearLayout>

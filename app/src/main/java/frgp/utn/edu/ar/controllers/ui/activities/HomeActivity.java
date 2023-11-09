@@ -31,7 +31,6 @@ public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
-    public FloatingActionButton botonmensaje;
     private NavController navController;
     private TextView tvNavUsername,tvNavUserMail;
     private Usuario usuario;
@@ -43,14 +42,8 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        botonmensaje = findViewById(R.id.fab);
         setSupportActionBar(binding.appBarMain.toolbar);
-        binding.appBarMain.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-            }
-        });
         DrawerLayout drawer = binding.drawerLayout;
         NavigationView navigationView = binding.navView;
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -71,19 +64,17 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         ///RECUPERO SHARED PREFERENCES
-       View headerView = navigationView.getHeaderView(0);
-       tvNavUsername = headerView.findViewById(R.id.tvNavBarUserName);
-       tvNavUserMail = headerView.findViewById(R.id.tvNavBarMail);
-       usuario = sharedPreferences.getUsuarioData(this);
-       tvNavUsername.setText(usuario.getUsername());
-       tvNavUserMail.setText(usuario.getCorreo());
-        if(usuario!=null){
-            Log.i("User", usuario.toString());
-        }else{
+        View headerView = navigationView.getHeaderView(0);
+        tvNavUsername = headerView.findViewById(R.id.tvNavBarUserName);
+        tvNavUserMail = headerView.findViewById(R.id.tvNavBarMail);
+        usuario = sharedPreferences.getUsuarioData(this);
+        tvNavUsername.setText(usuario.getUsername());
+        tvNavUserMail.setText(usuario.getCorreo());
+        if(usuario==null){
             Log.e("ERROR USER", "NO HAY USAURIO");
         }
-       UsuarioViewModel userViewModel = new ViewModelProvider(this).get(UsuarioViewModel.class);
-       userViewModel.setUsuario(usuario);
+        UsuarioViewModel userViewModel = new ViewModelProvider(this).get(UsuarioViewModel.class);
+        userViewModel.setUsuario(usuario);
     }
 
     @Override

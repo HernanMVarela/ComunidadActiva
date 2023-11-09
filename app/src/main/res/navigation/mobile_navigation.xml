@@ -116,6 +116,11 @@
             app:enterAnim="@anim/nav_default_enter_anim"
             app:exitAnim="@anim/nav_default_exit_anim"
             app:destination="@id/elegir_ubicacion" />
+        <action
+            android:id="@+id/action_nuevoProyecto_to_buscarProyectos"
+            app:destination="@id/nav_buscar_proyecto"
+            app:popUpTo="@id/nav_home"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/nav_buscar_proyecto"
@@ -161,8 +166,8 @@
 
     <fragment
         android:id="@+id/nav_ver_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.VerDenunciaFragment"
-        android:label="fragment_ver_denuncia"
+        android:name="frgp.utn.edu.ar.controllers.ui.fragments.DetalleDenunciaFragment"
+        android:label="Detalle de la denuncia"
         tools:layout="@layout/fragment_ver_denuncia" >
         <action
             android:id="@+id/action_listar_denunicas_to_nav_eliminar_publicacion"
@@ -171,8 +176,11 @@
             android:id="@+id/action_listar_denunicas_to_nav_suspender_usuario"
             app:destination="@id/nav_suspender_usuario" />
         <action
-            android:id="@+id/action_listar_denunicas_to_nav_notificar_denuncia"
-            app:destination="@id/nav_notificar_denuncia" />
+            android:id="@+id/action_nav_denuncia_to_nav_detalle_reporte"
+            app:destination="@id/detalle_reporte" />
+        <action
+            android:id="@+id/action_nav_denuncia_to_nav_detalle_proyecto"
+            app:destination="@id/detalleProyectoFragment" />
     </fragment>
 
     <fragment
@@ -186,12 +194,6 @@
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.SuspenderUsuarioFragment"
         android:label="fragment_suspender_usuario"
         tools:layout="@layout/fragment_suspender_usuario" />
-
-    <fragment
-        android:id="@+id/nav_notificar_denuncia"
-        android:name="frgp.utn.edu.ar.controllers.ui.fragments.NotificarCerrarDenunciaFragment"
-        android:label="fragment_notificar_cerrar_denuncia"
-        tools:layout="@layout/fragment_notificar_cerrar_denuncia" />
 
     <fragment
         android:id="@+id/nav_crear_informe_moderador"

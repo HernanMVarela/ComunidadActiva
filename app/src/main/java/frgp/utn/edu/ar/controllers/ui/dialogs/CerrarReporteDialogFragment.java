@@ -2,7 +2,9 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -10,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,6 +26,7 @@ import frgp.utn.edu.ar.controllers.data.model.CierreReporte;
 import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarEstadoReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarCierreReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACerrarReporte;
 import frgp.utn.edu.ar.controllers.data.remote.usuario.DMAModificarPuntajeUsuario;
@@ -37,6 +42,14 @@ public class CerrarReporteDialogFragment extends DialogFragment {
     private CierreReporte cierreReporte = null;
     private final LogService logService = new LogService();
     private final NotificacionService notificacionService = new NotificacionService();
+    private DismissListener listener = null;
+
+    public interface DismissListener {
+        void onDismiss();
+    }
+    public void setDismissListener(DismissListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +59,9 @@ public class CerrarReporteDialogFragment extends DialogFragment {
         if (args != null) {
             selectedReport = (Reporte) args.getSerializable("selected_report");
             loggedInUser = (Usuario) args.getSerializable("logged_in_user");
+        }else{
+            Toast.makeText(getContext(), "No se pudo cargar el reporte!", Toast.LENGTH_SHORT).show();
+            dismiss();
         }
     }
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -69,6 +85,9 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 cierreReporte = dmaCierreReporte.get();
                 if(cierreReporte!=null){
                     cargarControles(cierreReporte);
+                }else{
+                    Toast.makeText(getContext(), "No se pudo cargar el reporte!", Toast.LENGTH_SHORT).show();
+                    dismiss();
                 }
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
@@ -81,12 +100,34 @@ public class CerrarReporteDialogFragment extends DialogFragment {
                 if(cierreReporte!=null){
                     cierreReporte.setEstado(new EstadoReporte(4,"CERRADO"));
                     cierreReporte.getReporte().setEstado(new EstadoReporte(3,"ATENDIDO"));
-                    modificarEstadoReporte();
-                    logService.log(loggedInUser.getId(), LogsEnum.CIERRE_REPORTE, "Se cerró el reporte " + selectedReport.getId());
-                    Toast.makeText(getContext(), "Reporte cerrado!", Toast.LENGTH_SHORT).show();
+                    /// SE CIERRA EL REPORTE
+                    if(cerrarCierreReporte()) {
+                        try {
+                            /// SI SE CIERRA CORRECTAMENTE - SE ACTUALIZA EL ESTADO DEL REPORTE
+                            DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(cierreReporte.getReporte());
+                            dmaActualizar.execute();
+                            if(dmaActualizar.get()){
+                                logService.log(loggedInUser.getId(), LogsEnum.CIERRE_REPORTE, "Se cerró el reporte " + selectedReport.getId());
+                                Toast.makeText(getContext(), "Reporte cerrado!", Toast.LENGTH_SHORT).show();
+
+                                /// PUNTAJE - USUARIO ATENDEDOR
+                                int puntaje = cierreReporte.getUser().getPuntuacion() + 3;
+                                cierreReporte.getUser().setPuntuacion(puntaje);
+                                modificar_puntaje_usuario(cierreReporte.getUser());
+
+                                /// PUNTAJE - CREADOR DEL PROYECTO
+                                puntaje = selectedReport.getOwner().getPuntuacion() + 1;
+                                selectedReport.getOwner().setPuntuacion(puntaje);
+                                modificar_puntaje_usuario(selectedReport.getOwner());
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
                 }else{
                     Toast.makeText(getContext(), "Ha ocurrido un error", Toast.LENGTH_SHORT).show();
                 }
+
                 dismiss();
             }
         });
@@ -104,24 +145,33 @@ public class CerrarReporteDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 cierreReporte.setEstado(new EstadoReporte(5,"CANCELADO"));
                 cierreReporte.getReporte().setEstado(new EstadoReporte(1,"ABIERTO"));
-                modificarEstadoReporte();
-                logService.log(loggedInUser.getId(), LogsEnum.REAPERTURA_REPORTE, "Se reabrio el reporte " + selectedReport.getId());
-                Toast.makeText(getContext(), "Solicitud rechazada!", Toast.LENGTH_SHORT).show();
-
-                /// PUNTAJE - USUARIO ATENDEDOR
-                int puntaje = cierreReporte.getUser().getPuntuacion() + 3;
-                cierreReporte.getUser().setPuntuacion(puntaje);
-                modificar_puntaje_usuario(cierreReporte.getUser());
-
-                /// PUNTAJE - CREADOR DEL PROYECTO
-                puntaje = selectedReport.getOwner().getPuntuacion() + 1;
-                selectedReport.getOwner().setPuntuacion(puntaje);
-                modificar_puntaje_usuario(selectedReport.getOwner());
+                // SE RECHAZA LA SOLICITUD DE CIERRE
+                if(cerrarCierreReporte()) {
+                    try {
+                        /// SI SE REABRE CORRECTAMENTE - SE ACTUALIZA EL ESTADO DEL REPORTE
+                        DMAActualizarEstadoReporte dmaActualizar = new DMAActualizarEstadoReporte(cierreReporte.getReporte());
+                        dmaActualizar.execute();
+                        if(dmaActualizar.get()){
+                            logService.log(loggedInUser.getId(), LogsEnum.REAPERTURA_REPORTE, "Se reabrio el reporte " + selectedReport.getId());
+                            Toast.makeText(getContext(), "Solicitud rechazada!", Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
                 dismiss();
             }
         });
         builder.setView(dialogView);
         return builder.create();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        if(listener!=null){
+            listener.onDismiss();
+        }
     }
 
     private void cargarControles(CierreReporte cierreReporte){
@@ -133,9 +183,15 @@ public class CerrarReporteDialogFragment extends DialogFragment {
         imagen.setImageBitmap(cierreReporte.getImagen());
     }
 
-    private void modificarEstadoReporte(){
-        DMACerrarReporte dmaCerrarReporte = new DMACerrarReporte(cierreReporte,getContext());
-        dmaCerrarReporte.execute();
+    private boolean cerrarCierreReporte(){
+        try {
+            DMACerrarReporte dmaCerrarReporte = new DMACerrarReporte(cierreReporte);
+            dmaCerrarReporte.execute();
+            return dmaCerrarReporte.get();
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private void modificar_puntaje_usuario(Usuario user){
