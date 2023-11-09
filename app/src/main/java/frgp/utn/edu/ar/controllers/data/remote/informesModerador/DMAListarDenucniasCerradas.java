@@ -53,9 +53,8 @@ public class DMAListarDenucniasCerradas extends AsyncTask<String, Void, JSONArra
             while (resultSet.next()) {
                 entry = new JSONObject();
                 entry.put("TITULO", resultSet.getString("TITULO"));
-                entry.put("NOMBRE", resultSet.getInt("USERNAME"));
-                entry.put("ESTADO", resultSet.getInt("ESTADO"));
-                entry.put("Fecha_Creacion", resultSet.getInt("Fecha_Creacion"));
+                entry.put("USERNAME", resultSet.getString("USERNAME"));
+                entry.put("ESTADO", resultSet.getString("ESTADO"));
                 response.put(entry);
             }
             preparedStatement.close();
