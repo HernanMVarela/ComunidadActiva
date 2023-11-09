@@ -3,6 +3,7 @@ package frgp.utn.edu.ar.controllers.data.repository.log;
 import java.util.List;
 
 import frgp.utn.edu.ar.controllers.data.model.Logs;
+import frgp.utn.edu.ar.controllers.data.remote.log.DMAListarLogs;
 import frgp.utn.edu.ar.controllers.data.remote.log.DMAListarLogsModeracionPorUsuario;
 import frgp.utn.edu.ar.controllers.data.remote.log.DMAListarLogsPorUsuario;
 import frgp.utn.edu.ar.controllers.data.remote.log.DMANuevoLog;
@@ -32,6 +33,16 @@ public class LogRepository {
         DMALLMPU.execute();
         try {
             return DMALLMPU.get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public List<Logs> listarLogsModeracion() {
+        DMAListarLogs DMALL = new DMAListarLogs();
+        DMALL.execute();
+        try {
+            return DMALL.get();
         } catch (Exception e) {
             return null;
         }

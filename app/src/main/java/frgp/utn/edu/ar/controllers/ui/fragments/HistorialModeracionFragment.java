@@ -19,6 +19,7 @@ import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,11 +36,13 @@ import java.util.List;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Logs;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.usuario.DMABuscarUsuarioPorID;
 import frgp.utn.edu.ar.controllers.data.repository.log.LogRepository;
 import frgp.utn.edu.ar.controllers.databinding.FragmentActividadRecienteBinding;
 import frgp.utn.edu.ar.controllers.databinding.FragmentHistorialModeracionBinding;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaActividadRecienteAdapter;
 import frgp.utn.edu.ar.controllers.ui.adapters.ListaHistorialDeModeracionAdapter;
+import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.HistorialModeracionViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
@@ -50,7 +53,7 @@ public class HistorialModeracionFragment extends Fragment {
     private LogRepository logRepository = new LogRepository();
     private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private List<Logs> listaLogsModeracion;
-    private Usuario usuario;
+    private Usuario loggedUser ;
     private ListView listaActividadRecienteModeracion;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -58,8 +61,13 @@ public class HistorialModeracionFragment extends Fragment {
 
         binding = FragmentHistorialModeracionBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        usuario = sharedPreferences.getUsuarioData(this.getContext());
-        listaLogsModeracion = logRepository.listarLogsModeracionPorId(usuario.getId());
+        loggedUser  = sharedPreferences.getUsuarioData(this.getContext());
+        if(loggedUser.getTipo().getTipo().equals("ADMINISTRADOR")){
+            listaLogsModeracion = logRepository.listarLogsModeracion();
+        }else{
+            listaLogsModeracion = logRepository.listarLogsModeracionPorId(loggedUser.getId());
+        }
+
         return root;
     }
 
@@ -78,6 +86,30 @@ public class HistorialModeracionFragment extends Fragment {
                     createPdfReport();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
+                }
+            }
+        });
+
+        if(loggedUser.getTipo().getTipo().equals("ADMINISTRADOR")){
+            comportamiento_click_listado();
+        }
+    }
+
+    private void comportamiento_click_listado(){
+        listaActividadRecienteModeracion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Logs log = (Logs)listaActividadRecienteModeracion.getItemAtPosition(position);
+                try {
+                    DMABuscarUsuarioPorID DMAUserID = new DMABuscarUsuarioPorID(log.getIdUser());
+                    DMAUserID.execute();
+                    Usuario mod = DMAUserID.get();
+                    if(mod != null){
+                        UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(mod);
+                        dialogFragment.show(getFragmentManager(), "user_detail");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
@@ -108,7 +140,7 @@ public class HistorialModeracionFragment extends Fragment {
             //WRITE INFO AS SUBTITLE
             paint.setTextSize(8);
             paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
-            canvas.drawText("Usuario: " + usuario.getNombre() + " " + usuario.getApellido(), pageInfo.getPageWidth() / 2, 100, paint);
+            canvas.drawText("Usuario: " + loggedUser.getNombre() + " " + loggedUser.getApellido(), pageInfo.getPageWidth() / 2, 100, paint);
             canvas.drawText("Fecha: " + Calendar.getInstance().getTime(), pageInfo.getPageWidth() / 2, 110, paint);
             //WRITE LOGS
             paint.setTextSize(6);
