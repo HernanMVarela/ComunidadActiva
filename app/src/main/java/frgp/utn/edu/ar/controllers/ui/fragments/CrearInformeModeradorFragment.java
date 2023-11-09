@@ -147,7 +147,7 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
                 try {
                     switch(informe) {
                         case("denunciasCerradas"):
-                            canvas.drawText("TITULO: " + pdfData.getJSONObject(i).getString("TITULO") + "  ---  " + "NOMBRE: " + pdfData.getJSONObject(i).getString("NOMBRE") + "  ---  " + "ESTADO: " + pdfData.getJSONObject(i).getString("ESTADO") + "  ---  " + "Fecha_Creacion: " + pdfData.getJSONObject(i).getString("Fecha_Creacion") + "TotalDenuncias: " + pdfData.getJSONObject(i).getString("TotalDenuncias"), 50, y, paintText);
+                            canvas.drawText("TITULO: " + pdfData.getJSONObject(i).getString("TITULO") + "  ---  " + "NOMBRE: " + pdfData.getJSONObject(i).getString("NOMBRE") + "  ---  " + "ESTADO: " + pdfData.getJSONObject(i).getString("ESTADO") + "  ---  " + "Fecha_Creacion: " + pdfData.getJSONObject(i).getString("Fecha_Creacion"), 50, y, paintText);
                             break;
                     }
                 } catch (JSONException e) {
