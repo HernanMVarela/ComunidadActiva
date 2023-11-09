@@ -213,19 +213,6 @@
             android:textSize="20sp" />
 
         <Button
-            android:id="@+id/btn_detalle_proyecto_denunciar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/boton_redondeado_danger"
-            android:text="@string/boton_denunciar"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp" />
-
-        <Button
             android:id="@+id/btn_detalle_proyecto_finalizar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -234,6 +221,32 @@
             android:layout_marginBottom="20dp"
             android:background="@drawable/boton_redondeado_danger"
             android:text="@string/finalizar"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_detalle_proyecto_cancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/boton_redondeado_danger"
+            android:text="@string/cancelar"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_detalle_proyecto_denunciar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/boton_redondeado_danger"
+            android:text="@string/boton_denunciar"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />

@@ -31,11 +31,13 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAActualizarEstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACargarVoluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACuposDisponibles;
@@ -126,6 +128,7 @@ public class DetalleProyectoFragment extends Fragment {
 
         Button bUnirse = view.findViewById(R.id.btn_detalle_proyecto_unirse);
         Button bFinalizar = view.findViewById(R.id.btn_detalle_proyecto_finalizar);
+        Button bCancelar = view.findViewById(R.id.btn_detalle_proyecto_cancelar);
         Button bUsuario = view.findViewById(R.id.btn_detalle_proyecto_owner);
         comportamiento_boton_usuario(bUsuario);
         Button bListado = view.findViewById(R.id.btn_detalle_proyecto_participantes);
@@ -133,23 +136,60 @@ public class DetalleProyectoFragment extends Fragment {
         Button bDenunciar = view.findViewById(R.id.btn_detalle_proyecto_denunciar);
         comportamiento_boton_denunciar(bDenunciar);
 
-        if(loggedInUser.getId()==seleccionado.getOwner().getId()) {
+        bUnirse.setVisibility(View.GONE);
+        bDenunciar.setVisibility(View.GONE);
+        bFinalizar.setVisibility(View.GONE);
+        bCancelar.setVisibility(View.GONE);
+
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+            if(loggedInUser.getId()==seleccionado.getOwner().getId()){
+                /// SI EL ESTADO ESTA ABIERTO Y EL USUARIO ES EL OWNER
+                bFinalizar.setText("INICIAR PROYECTO");
+                Drawable boton_redondeado = ContextCompat.getDrawable(getContext(), R.drawable.boton_redondeado);
+                bFinalizar.setBackground(boton_redondeado);
+                bFinalizar.setVisibility(View.VISIBLE);
+                bFinalizar.setEnabled(true);
+                bCancelar.setVisibility(View.VISIBLE);
+                bCancelar.setEnabled(true);
+                comportamiento_boton_inicar(bFinalizar);
+                comportamiento_boton_cancelar(bCancelar);
+            }else{
+                /// SI EL ESTADO ESTA ABIERTO Y EL USUARIO NO ES EL OWNER
+                bUnirse.setVisibility(View.VISIBLE);
+                bDenunciar.setVisibility(View.VISIBLE);
+                bUnirse.setEnabled(true);
+                bDenunciar.setEnabled(true);
+                comportamiento_boton_unirse(bUnirse);
+                comportamiento_boton_denunciar(bDenunciar);
+            }
+        }
+        if(seleccionado.getEstado().getEstado().equals("EN PROCESO")){
+            if(loggedInUser.getId()==seleccionado.getOwner().getId()){
+                /// SI EL ESTADO ESTA EN PROCESO Y EL USUARIO NO ES EL OWNER
+                Drawable boton_redondeado = ContextCompat.getDrawable(getContext(), R.drawable.boton_redondeado_danger);
+                bFinalizar.setBackground(boton_redondeado);
+                bFinalizar.setVisibility(View.VISIBLE);
+                bFinalizar.setEnabled(true);
+                comportamiento_boton_finalizar(bFinalizar);
+            }else{
+                /// SI EL ESTADO ESTA EN PROCESO Y EL USUARIO NO ES EL OWNER
+                bUnirse.setVisibility(View.VISIBLE);
+                bDenunciar.setVisibility(View.VISIBLE);
+                bUnirse.setEnabled(true);
+                bDenunciar.setEnabled(true);
+                comportamiento_boton_unirse(bUnirse);
+                comportamiento_boton_denunciar(bDenunciar);
+            }
+        }
+        if(seleccionado.getEstado().getEstado().equals("CANCELADO")||seleccionado.getEstado().getEstado().equals("DENUNCIADO")||seleccionado.getEstado().getEstado().equals("ELIMINADO")){
+            bUnirse.setEnabled(false);
+            bDenunciar.setEnabled(false);
+            bFinalizar.setEnabled(false);
+            bCancelar.setEnabled(false);
             bUnirse.setVisibility(View.GONE);
             bDenunciar.setVisibility(View.GONE);
-            if(seleccionado.getEstado().getEstado().equals("FINALIZADO")){
-                bFinalizar.setVisibility(View.GONE);
-            }
-            else {
-                bFinalizar.setVisibility(View.VISIBLE);
-            }
-            comportamiento_boton_finalizar(bFinalizar);
-        }else
-        {
             bFinalizar.setVisibility(View.GONE);
-            bUnirse.setVisibility(View.VISIBLE);
-            bDenunciar.setVisibility(View.VISIBLE);
-            bUnirse.setEnabled(true);
-            comportamiento_boton_unirse(bUnirse);
+            bCancelar.setVisibility(View.GONE);
         }
     }
 
@@ -163,7 +203,6 @@ public class DetalleProyectoFragment extends Fragment {
         contacto.setText(seleccionado.getContacto());
         cupo.setText(String.valueOf(seleccionado.getCupo()-1));
     }
-
     private void color_estado(){
         if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
             estado.setTextColor(ContextCompat.getColor(getContext(),R.color.colorVerdeSuave));
@@ -183,7 +222,6 @@ public class DetalleProyectoFragment extends Fragment {
         }
         estado.setTextColor(ContextCompat.getColor(getContext(),R.color.black));
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -201,7 +239,6 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
-
     private void comportamiento_boton_unirse(Button bUnirse){
         bUnirse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -242,7 +279,6 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
-
     private void comportamiento_abandonar(Button bAbandonar){
         try {
             DMAAbandonarProyecto DMAAbandonar = new DMAAbandonarProyecto(loggedInUser.getId(),seleccionado.getId());
@@ -259,7 +295,7 @@ public class DetalleProyectoFragment extends Fragment {
         }
     }
     private void comportamiento_unirse(Button bUnirse){
-        if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
+        if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO") || seleccionado.getEstado().getEstado().equals("EN PROCESO")){
             try {
                 /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
                 DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
@@ -284,10 +320,9 @@ public class DetalleProyectoFragment extends Fragment {
                 Log.e("Error", "No se pudo registrar la operación");
             }
         }else{
-            Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),"El proyecto no está abierto o en proceso", Toast.LENGTH_LONG).show();
         }
     }
-
     private void comportamiento_reunirse(Button bUnirse){
         if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
             try {
@@ -323,20 +358,66 @@ public class DetalleProyectoFragment extends Fragment {
         bFinalizar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
-                    try {
-                        DMAUpdateProyecto Finalizar = new DMAUpdateProyecto(seleccionado.getId(),2, getContext());
-                        Finalizar.execute();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                        Log.e("Error", "No se pudo realizar la operación");
+
+                try {
+                    seleccionado.setEstado(new EstadoProyecto(2,"FINALIZADO"));
+                    DMAActualizarEstadoProyecto DMAFinalizar = new DMAActualizarEstadoProyecto(seleccionado);
+                    DMAFinalizar.execute();
+                    if(DMAFinalizar.get()){
+                        Toast.makeText(getContext(),"Proyecto finalizado!", Toast.LENGTH_LONG).show();
+                        regresar();
+                    }else{
+                        Toast.makeText(getContext(),"No se pudo finalizar el proyecto", Toast.LENGTH_LONG).show();
                     }
-                }else{
-                    Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
             }
         });
     }
+
+    private void comportamiento_boton_cancelar(Button bCancelar){
+        bCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    seleccionado.setEstado(new EstadoProyecto(4,"CANCELADO"));
+                    DMAActualizarEstadoProyecto DMACancelar = new DMAActualizarEstadoProyecto(seleccionado);
+                    DMACancelar.execute();
+                    if(DMACancelar.get()){
+                        Toast.makeText(getContext(),"Proyecto cancelado!", Toast.LENGTH_LONG).show();
+                        regresar();
+                    }else{
+                        Toast.makeText(getContext(),"No se pudo cancelar el proyecto", Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void comportamiento_boton_inicar(Button bIniciar){
+        bIniciar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    seleccionado.setEstado(new EstadoProyecto(3,"EN PROCESO"));
+                    DMAActualizarEstadoProyecto DMAIniciar = new DMAActualizarEstadoProyecto(seleccionado);
+                    DMAIniciar.execute();
+                    if(DMAIniciar.get()){
+                        Toast.makeText(getContext(),"Proyecto iniciado!!", Toast.LENGTH_LONG).show();
+                        regresar();
+                    }else{
+                        Toast.makeText(getContext(),"No se pudo iniciar el proyecto", Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void comportamiento_boton_denunciar(Button bDenunciar){
         bDenunciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -353,5 +434,10 @@ public class DetalleProyectoFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void regresar(){
+        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+        navController.popBackStack();
     }
 }

@@ -25,7 +25,7 @@ public class DMANuevoProyecto  extends AsyncTask<String, Void, Boolean> {
             int filasafectadas = 0;
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
-            String insert = "INSERT INTO PROYECTOS (TITULO, DESCRIPCION, LATITUD, LONGITUD, CUPO, ID_USER, ID_TIPO, ID_ESTADO, CONTACTO, AYUDA_ESPECIFICA, FECHA_CREACION) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
+            String insert = "INSERT INTO PROYECTOS (TITULO, DESCRIPCION, LATITUD, LONGITUD, CUPO, ID_USER, ID_TIPO, ID_ESTADO, CONTACTO, AYUDA_ESPECIFICA, FECHA) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
 
             PreparedStatement preparedStatement = con.prepareStatement(insert);
 

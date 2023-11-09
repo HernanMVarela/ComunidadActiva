@@ -83,8 +83,8 @@ public class NuevoReporteFragment extends Fragment {
         spinTipoReporte = view.findViewById(R.id.spnTiposReporte);
 
         if (savedInstanceState == null) {
-            DMASpinnerTiposReporte dataActivityTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext(),selectedSpinnerPosition);
-            dataActivityTiposReporte.execute();
+            DMASpinnerTiposReporte DMASpinnerTiposReporte = new DMASpinnerTiposReporte(spinTipoReporte, getContext(),selectedSpinnerPosition);
+            DMASpinnerTiposReporte.execute();
         }
         return view;
     }

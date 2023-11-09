@@ -19,13 +19,14 @@ public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
 
     private Context context;
     private Spinner spinTipoProyectos;
-    private static String result2;
+    private int selected;
     private static List<TipoProyecto> listaTiposProyectos;
 
     //Constructor
-    public DMASpinnerTiposProyectos(Spinner spin, Context ct)
+    public DMASpinnerTiposProyectos(Spinner spin, Context ct, int selected)
     {
         spinTipoProyectos = spin;
+        this.selected = selected;
         context = ct;
     }
 
@@ -38,7 +39,6 @@ public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM TIPOS_PROYECTO");
-            result2 = " ";
             listaTiposProyectos = new ArrayList<TipoProyecto>();
             while(rs.next()) {
                 TipoProyecto categoria = new TipoProyecto();
@@ -54,7 +54,6 @@ public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
         }
         catch(Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
         }
         return response;
 
@@ -63,5 +62,6 @@ public class DMASpinnerTiposProyectos extends AsyncTask<String, Void, String> {
     protected void onPostExecute(String response) {
         TipoProyectoAdapter adapter = new TipoProyectoAdapter(context, listaTiposProyectos);
         spinTipoProyectos.setAdapter(adapter);
+        spinTipoProyectos.setSelection(selected);
     }
 }

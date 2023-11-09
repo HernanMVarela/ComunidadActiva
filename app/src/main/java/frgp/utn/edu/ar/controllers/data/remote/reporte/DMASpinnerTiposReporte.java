@@ -20,7 +20,6 @@ public class DMASpinnerTiposReporte extends AsyncTask<String, Void, String> {
     private Context context;
     private Spinner spinTipoReporte;
     private int selected;
-    private static String result2;
     private static List<TipoReporte> listaTiposReporte;
 
     //Constructor
@@ -40,7 +39,6 @@ public class DMASpinnerTiposReporte extends AsyncTask<String, Void, String> {
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery("SELECT * FROM TIPOS_REPORTE");
-            result2 = " ";
             listaTiposReporte = new ArrayList<TipoReporte>();
             while(rs.next()) {
                 TipoReporte categoria = new TipoReporte();
@@ -56,7 +54,6 @@ public class DMASpinnerTiposReporte extends AsyncTask<String, Void, String> {
         }
         catch(Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
         }
         return response;
 

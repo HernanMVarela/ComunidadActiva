@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -55,29 +56,41 @@ public class NuevoProyectoFragment extends Fragment {
     private Usuario loggedInUser = null;
     private EditText edTitulo, edDesc, edRequerimientos, edContacto, edCupos;
     private Spinner spTipoProyecto;
+    private int selectedSpinnerPosition = 0;
     private LogService logService = new LogService();
     public static NuevoProyectoFragment newInstance() {
         return new NuevoProyectoFragment();
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(layout.fragment_nuevo_proyecto, container, false);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // Recupera los datos del Shared
         loggedInUser = sharedPreferences.getUsuarioData(getContext());
-        if(loggedInUser == null){
+        if(loggedInUser == null){ /// VALIDA QUE EXISTA USUARIO
             Intent registro = new Intent(getContext(), HomeActivity.class);
             startActivity(registro);
         }
+        if (savedInstanceState != null) {
+            selectedSpinnerPosition = savedInstanceState.getInt("selectedSpinnerPosition", 0);
+        }
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(layout.fragment_nuevo_proyecto, container, false);
+
         edTitulo = view.findViewById(id.edTituloP);
         edDesc = view.findViewById(id.edDescP);
         edRequerimientos = view.findViewById(id.edRequerimientosP);
         edContacto = view.findViewById(id.edContactoP2);
         edCupos = view.findViewById(id.edCupoP2);
-
         spTipoProyecto = view.findViewById(id.spTipoP);
-        DMASpinnerTiposProyectos tiposPro = new DMASpinnerTiposProyectos(spTipoProyecto, getContext());
-        tiposPro.execute();
+        if (savedInstanceState == null) {
+            DMASpinnerTiposProyectos DMASpinnerTiposProyectos = new DMASpinnerTiposProyectos(spTipoProyecto, getContext(), selectedSpinnerPosition);
+            DMASpinnerTiposProyectos.execute();
+        }
         return view;
     }
 
@@ -94,7 +107,7 @@ public class NuevoProyectoFragment extends Fragment {
         //Iniciaza textos, botones, spinner y proyecto.
         Button btnUbicacion = view.findViewById(id.btnUbicacionP);
         Button btnCrearProyecto = view.findViewById(id.btnCrearInformeModerador);
-
+        comportamiento_spinner_tipo();
         btnCrearProyecto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +176,21 @@ public class NuevoProyectoFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    private void comportamiento_spinner_tipo(){
+        spTipoProyecto.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // Guarda la posición seleccionada en la variable
+                selectedSpinnerPosition = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // No es necesario hacer nada
+            }
+        });
     }
 
     private Proyecto cargarDatos(){

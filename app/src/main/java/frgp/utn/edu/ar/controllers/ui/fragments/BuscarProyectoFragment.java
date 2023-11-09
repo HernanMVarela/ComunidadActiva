@@ -49,7 +49,7 @@ public class BuscarProyectoFragment extends Fragment {
         barraBusqueda = view.findViewById(R.id.busquedaProyecto);
         swEstado = view.findViewById(R.id.swEstado);
         swTipo = view.findViewById(R.id.swTipo);
-        DMASpinnerTiposProyectos tiposPro = new DMASpinnerTiposProyectos(spTipoProyecto, getContext());
+        DMASpinnerTiposProyectos tiposPro = new DMASpinnerTiposProyectos(spTipoProyecto, getContext(),1);
         tiposPro.execute();
         DMASpinnerEstadosProyectos estadosP = new DMASpinnerEstadosProyectos(spEstadoP, getContext());
         estadosP.execute();
