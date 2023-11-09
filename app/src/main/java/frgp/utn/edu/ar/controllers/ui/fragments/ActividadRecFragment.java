@@ -144,7 +144,5 @@ public class ActividadRecFragment extends Fragment {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
 }

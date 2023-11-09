@@ -1,13 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/green_100"
     tools:context=".ui.fragments.HistorialModeracionFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Hello" />
+    <Button
+        android:id="@+id/btnInformeModeracion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="14dp"
+        android:backgroundTint="@color/green_700"
+        android:text="@string/generar_informe"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:textColorHighlight="#9FA8DA"
+        android:textColorHint="#9FA8DA"
+        android:textColorLink="#9FA8DA"
+        app:layout_constraintBottom_toTopOf="@+id/listModeracionReciente"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvHistorialModeracion" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvHistorialModeracion"
+        android:layout_width="219dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="18dp"
+        android:text="@string/acciones_de_moderacion_recientes"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnInformeModeracion"
+        app:layout_constraintEnd_toEndOf="@+id/btnInformeModeracion"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:id="@+id/listModeracionReciente"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="27dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnInformeModeracion" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

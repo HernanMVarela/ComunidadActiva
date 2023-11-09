@@ -7,10 +7,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:context=".ui.fragments.ActividadRecFragment">
+            tools:context=".ui.fragments.HistorialModeracionFragment">
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardview_lista_actividad_reciente"
+        android:id="@+id/cardview_lista_historial_reciente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -31,7 +31,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvTituloActividad"
+                    android:id="@+id/tvTituloModeracion"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -48,7 +48,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvFechaActividadReciente"
+                    android:id="@+id/tvFechaModeracion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Fecha"
@@ -63,7 +63,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/tvDescripcionActividadReciente"
+                    android:id="@+id/tvDescripcionModeracion"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
