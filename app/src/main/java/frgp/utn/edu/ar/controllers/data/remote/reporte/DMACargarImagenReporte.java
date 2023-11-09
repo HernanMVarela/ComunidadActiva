@@ -16,22 +16,19 @@ import java.sql.ResultSet;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 
-public class DMACargarImagenReporte extends AsyncTask<String, Void, String> {
+public class DMACargarImagenReporte extends AsyncTask<String, Void, Bitmap> {
 
-    private Context context;
-    ImageView imagen;
     private Bitmap bitmap;
     private static String result2;
     private int ID;
 
     //Constructor
-    public DMACargarImagenReporte(ImageView imagen, Context ct, int ID) {
-        this.context = ct;
-        this.imagen = imagen;
+    public DMACargarImagenReporte(int ID) {
+
         this.ID = ID;
     }
     @Override
-    protected String doInBackground(String... urls) {
+    protected Bitmap doInBackground(String... urls) {
         bitmap = null;
 
         try {
@@ -53,20 +50,10 @@ public class DMACargarImagenReporte extends AsyncTask<String, Void, String> {
             }
             preparedStatement.close();
             con.close();
+            return bitmap;
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return result2;
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        if (bitmap != null) {
-            Log.i("IMG-LOAD","CARGA IMAGEN EN CONTROL");
-            imagen.setImageBitmap(bitmap);
-        } else {
-            Toast.makeText(context, "ERROR AL CARGAR IMAGEN", Toast.LENGTH_SHORT).show();
+            return null;
         }
     }
-
 }

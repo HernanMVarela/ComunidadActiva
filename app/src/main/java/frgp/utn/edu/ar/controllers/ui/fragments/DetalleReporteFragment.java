@@ -1,24 +1,21 @@
 package frgp.utn.edu.ar.controllers.ui.fragments;
 
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,10 +27,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.reporte.DMACargarImagenReporte;
 import frgp.utn.edu.ar.controllers.data.remote.reporte.DMABuscarReportePorId;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
+import frgp.utn.edu.ar.controllers.ui.dialogs.ImagenReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.ValorarReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
@@ -46,8 +43,6 @@ public class DetalleReporteFragment extends Fragment {
     private DetalleReporteViewModel mViewModel;
     private TextView titulo, descripcion, estado, fecha, tipo;
     private RatingBar puntaje;
-    private ImageView imagen;
-    private Button bUsuario, bSolicitarCierre, bValorar, bDenunciar;
     private Usuario loggedInUser = null;
     private Reporte seleccionado;
     public static DetalleReporteFragment newInstance() {
@@ -80,12 +75,7 @@ public class DetalleReporteFragment extends Fragment {
         estado = view.findViewById(R.id.estado_ver_reporte);
         fecha = view.findViewById(R.id.reporte_detalle_fecha);
         tipo = view.findViewById(R.id.reporte_det_tipo);
-        bUsuario = view.findViewById(R.id.btnUsernameDetalle);
-        bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
-        bValorar = view.findViewById(R.id.btnValorarReporte);
-        bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
         puntaje = view.findViewById(R.id.detalle_rep_rating);
-        imagen = view.findViewById(R.id.imagen_ver_reporte);
         loggedInUser = sharedPreferences.getUsuarioData(getContext());
 
         Bundle bundle = this.getArguments();
@@ -113,6 +103,13 @@ public class DetalleReporteFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+
+        Button bUsuario = view.findViewById(R.id.btnUsernameDetalle);
+        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
+        Button bValorar = view.findViewById(R.id.btnValorarReporte);
+        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
+        Button bImagen = view.findViewById(R.id.btnImagenReporte);
+
         if (!seleccionado.getEstado().getEstado().equals("ABIERTO")) {
             bSolicitarCierre.setVisibility(View.GONE);
         }
@@ -129,13 +126,14 @@ public class DetalleReporteFragment extends Fragment {
             }
         }
 
+        String user_rep = "Detalle del usuario " + seleccionado.getOwner().getUsername();
+        bUsuario.setText(user_rep);
+
         comportamiento_boton_usuario(bUsuario);
-        Button bSolicitarCierre = view.findViewById(R.id.btnCerrarReporte);
         comportamiento_boton_solicitar_cierre(bSolicitarCierre);
-        Button bValorar = view.findViewById(R.id.btnValorarReporte);
         comportamiento_boton_valorar(bValorar);
-        Button bDenunciar = view.findViewById(R.id.btnDenunciarReporte);
         comportamiento_boton_denunciar(bDenunciar);
+        comportamiento_boton_imagen(bImagen);
     }
 
 
@@ -162,6 +160,16 @@ public class DetalleReporteFragment extends Fragment {
                 // BOTON DETALLE DE USUARIO REPORTE
                 UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(seleccionado.getOwner());
                 dialogFragment.show(getFragmentManager(), "user_detail");
+            }
+        });
+    }
+
+    private void comportamiento_boton_imagen(Button bImagen){
+        bImagen.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // BOTON DETALLE DE USUARIO REPORTE
+                ImagenReporteDialogFragment dialogFragment = ImagenReporteDialogFragment.newInstance(seleccionado.getId());
+                dialogFragment.show(getFragmentManager(), "reporte_imagen");
             }
         });
     }
@@ -248,16 +256,11 @@ public class DetalleReporteFragment extends Fragment {
         String tipo_rep = "Tipo: " + seleccionado.getTipo().getTipo();
         tipo.setText(tipo_rep);
         fecha.setText(seleccionado.getFecha().toString());
-        String user_rep = "Detalle del usuario " + seleccionado.getOwner().getUsername();
-        bUsuario.setText(user_rep);
         if(seleccionado.getCant_votos()!=0){
             puntaje.setRating((float) seleccionado.getPuntaje()/seleccionado.getCant_votos());
         }else{
             puntaje.setRating(0);
         }
-
-        DMACargarImagenReporte DMAImagen = new DMACargarImagenReporte(imagen, this.getContext(),seleccionado.getId());
-        DMAImagen.execute();
     }
     private void color_estado(){
         if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
