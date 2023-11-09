@@ -9,27 +9,22 @@ import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
+import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUpdateProyecto;
 
-public class DMAGuardarDenunciaProyecto extends AsyncTask<String, Void, String> {
+public class DMAGuardarDenunciaProyecto extends AsyncTask<String, Void, Boolean> {
 
-    private Context context;
-    private static String result2, tituloDenuncia, descripcionDenuncia;
-    private int dataRowModif, idProyectoDenuncia, idUserDenuncia;
+    private Denuncia nuevo;
 
     //Constructor
-    public DMAGuardarDenunciaProyecto(int idProyecto, int idUser, String titulo, String descripcion, Context ct)
+    public DMAGuardarDenunciaProyecto(Denuncia nuevo)
     {
-        this.idProyectoDenuncia = idProyecto;
-        this.idUserDenuncia = idUser;
-        this.tituloDenuncia = titulo;
-        this.descripcionDenuncia = descripcion;
-        this.context = ct;
+        this.nuevo = nuevo;
     }
 
     @Override
-    protected String doInBackground(String... urls) {
+    protected Boolean doInBackground(String... urls) {
         String response = "";
 
         try {
@@ -39,33 +34,24 @@ public class DMAGuardarDenunciaProyecto extends AsyncTask<String, Void, String> 
             String query = "INSERT INTO DENUNCIAS_PROYECTOS (ID_PROYECTO ,ID_USER ,ID_ESTADO ,TITULO ,DESCRIPCION, FECHA_CREACION) VALUES (?,?,?,?,?,?);";
 
             PreparedStatement ps = con.prepareStatement(query);
+            ps.setInt(1,nuevo.getPublicacion().getId());
+            ps.setInt(2,nuevo.getDenunciante().getId());
+            ps.setInt(3,nuevo.getEstado().getId());
+            ps.setString(4, nuevo.getTitulo());
+            ps.setString(5,nuevo.getDescripcion());
+            ps.setDate(6, new java.sql.Date(nuevo.getFecha_creacion().getTime()));
 
-            ps.setInt(1,idProyectoDenuncia);
-            ps.setInt(2,idUserDenuncia);
-            ps.setInt(3,1);
-            ps.setString(4, tituloDenuncia);
-            ps.setString(5,descripcionDenuncia);
-            ps.setDate(6, new Date(System.currentTimeMillis()));
-            dataRowModif = ps.executeUpdate();
-            result2 = " ";
+            int dataRowModif = ps.executeUpdate();
             ps.close();
             con.close();
+            if(dataRowModif !=0){
+                return true;
+            }
+            return false;
         }
         catch(Exception e) {
             e.printStackTrace();
-            result2 = "Conexion no exitosa";
+            return false;
         }
-        return response;
-    }
-    @Override
-    protected void onPostExecute(String response) {
-        if(dataRowModif!=0){
-            Toast.makeText(context, "Denuncia generada", Toast.LENGTH_SHORT).show();
-            DMAUpdateProyecto DMAestado = new DMAUpdateProyecto(idProyectoDenuncia, 5,context);
-            DMAestado.execute();
-        }else{
-            Toast.makeText(context, "No se generó la denuncia.", Toast.LENGTH_SHORT).show();
-        }
-
     }
 }

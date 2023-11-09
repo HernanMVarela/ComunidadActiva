@@ -41,6 +41,8 @@ import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaProyectoDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
+import frgp.utn.edu.ar.controllers.utils.LogService;
+import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class DetalleProyectoFragment extends Fragment {
@@ -52,6 +54,7 @@ public class DetalleProyectoFragment extends Fragment {
     private Usuario loggedInUser = null;
     private Proyecto seleccionado;
     private Voluntario existe = null;
+    private LogService logService = new LogService();
     public static DetalleProyectoFragment newInstance() {return new DetalleProyectoFragment();}
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -91,7 +94,7 @@ public class DetalleProyectoFragment extends Fragment {
         cupo = view.findViewById(R.id.txt_detalle_proyecto_cupo);
 
         Bundle bundle = this.getArguments();
-        /// OBTIENE EL REPORTE SELECCIONADO EN LA PANTALLA ANTERIOR
+        /// OBTIENE EL PROYECTO SELECCIONADO EN LA PANTALLA ANTERIOR
         if (bundle != null) {
             seleccionado = (Proyecto) bundle.getSerializable("proyectoactual");
             /// VALIDA QUE EL REPORTE EXISTA
@@ -301,6 +304,7 @@ public class DetalleProyectoFragment extends Fragment {
                         /// SI SE INTEGRA CON ÉXITO, CAMBIA EL BOTON Y ACTUALIZA EL ESTADO DEL USUARIO
                         bUnirse.setText("ABANDONAR PROYECTO");
                         Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.UNION_PROYECTO, String.format("Se unió al proyecto %s ", seleccionado.getTitulo()));
                     }else{
                         Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
                     }
@@ -331,6 +335,7 @@ public class DetalleProyectoFragment extends Fragment {
                         existe.setActivo(true);
                         bUnirse.setText("ABANDONAR PROYECTO");
                         Toast.makeText(getContext(), "Voluntario reingresado!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.UNION_PROYECTO, String.format("Se volvio a unir al proyecto %s ", seleccionado.getTitulo()));
                     } else {
                         Toast.makeText(getContext(), "No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
                     }
@@ -357,6 +362,7 @@ public class DetalleProyectoFragment extends Fragment {
                     DMAFinalizar.execute();
                     if(DMAFinalizar.get()){
                         Toast.makeText(getContext(),"Proyecto finalizado!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.FINALIZAR_PROYECTO, String.format("Se finalizó el proyecto %s ", seleccionado.getTitulo()));
                         regresar();
                     }else{
                         Toast.makeText(getContext(),"No se pudo finalizar el proyecto", Toast.LENGTH_LONG).show();
@@ -378,6 +384,7 @@ public class DetalleProyectoFragment extends Fragment {
                     DMACancelar.execute();
                     if(DMACancelar.get()){
                         Toast.makeText(getContext(),"Proyecto cancelado!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.CANCELAR_PROYECTO, String.format("Se canceló el proyecto %s ", seleccionado.getTitulo()));
                         regresar();
                     }else{
                         Toast.makeText(getContext(),"No se pudo cancelar el proyecto", Toast.LENGTH_LONG).show();
@@ -399,6 +406,7 @@ public class DetalleProyectoFragment extends Fragment {
                     DMAIniciar.execute();
                     if(DMAIniciar.get()){
                         Toast.makeText(getContext(),"Proyecto iniciado!!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.INICIAR_PROYECTO, String.format("Se inició el proyecto %s ", seleccionado.getTitulo()));
                         regresar();
                     }else{
                         Toast.makeText(getContext(),"No se pudo iniciar el proyecto", Toast.LENGTH_LONG).show();
@@ -418,8 +426,8 @@ public class DetalleProyectoFragment extends Fragment {
                 }
                 else {
                     Bundle args = new Bundle();
-                    args.putInt("DidProyecto",seleccionado.getId());
-                    args.putInt("DidUsuario",loggedInUser.getId());
+                    args.putSerializable("selected_proyect", seleccionado);
+                    args.putSerializable("logged_in_user", loggedInUser);
                     DenunciaProyectoDialogFragment dialogFragment = new DenunciaProyectoDialogFragment();
                     dialogFragment.setArguments(args);
                     dialogFragment.show(getFragmentManager(), "layout_denuciar_proyecto");
