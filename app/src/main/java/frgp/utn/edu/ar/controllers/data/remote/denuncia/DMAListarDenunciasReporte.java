@@ -57,6 +57,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, List<Denu
                     "U.CORREO AS CorreoUsuario, " +
                     "U.FECHA_NAC AS FechaNacimientoUsuario, " +
                     "U.CREACION AS FechaCreacionUsuario, " +
+                    "U.PUNTUACION AS PuntajeUsuario, " +
                     "UP.ID AS IDUserPublicacion, " +
                     "UP.USERNAME AS UsernameUsuarioPublicacion, " +
                     "UP.NOMBRE AS NombreUsuarioPublicacion, " +
@@ -65,6 +66,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, List<Denu
                     "UP.CORREO AS CorreoUsuarioPublicacion, " +
                     "UP.FECHA_NAC AS FechaNacimientoUsuarioPublicacion, " +
                     "UP.CREACION AS FechaCreacionUsuarioPublicacion, " +
+                    "UP.PUNTUACION AS PuntajeUsuarioPublicacion, " +
                     "UP.ID_TIPO AS IDTipoUsuarioPublicacion, " +
                     "UP.ID_ESTADO AS IDEstadoUserPublicacion, " +
                     "EUP.ESTADO AS EstadoUsuarioPublicacion, " +
@@ -100,6 +102,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, List<Denu
                 userPublicacion.setCorreo(rs.getString("CorreoUsuarioPublicacion"));
                 userPublicacion.setFecha_nac(rs.getDate("FechaNacimientoUsuarioPublicacion"));
                 userPublicacion.setFecha_alta(rs.getDate("FechaCreacionUsuarioPublicacion"));
+                userPublicacion.setPuntuacion(rs.getInt("PuntajeUsuarioPublicacion"));
                 userPublicacion.setEstado(estadoUsuarioPublicacion);
                 userPublicacion.setTipo(tipoUsuarioPublicacion);
 
@@ -119,6 +122,7 @@ public class DMAListarDenunciasReporte extends AsyncTask<String, Void, List<Denu
                 user.setCorreo(rs.getString("CorreoUsuario"));
                 user.setFecha_nac(rs.getDate("FechaNacimientoUsuario"));
                 user.setFecha_alta(rs.getDate("FechaCreacionUsuario"));
+                user.setPuntuacion(rs.getInt("PuntajeUsuario"));
 
                 denuncia.setDescripcion(rs.getString("Descripcion"));
                 denuncia.setTitulo(rs.getString("Titulo"));

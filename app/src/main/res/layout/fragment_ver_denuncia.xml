@@ -13,7 +13,6 @@
         android:background="@color/green_100"
         android:layout_weight="1">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -31,6 +30,7 @@
             android:textAlignment="center"
             android:textSize="20sp"
             tools:text="VER DENUNCIA" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:layout_marginEnd="10dp"
                 android:paddingVertical="5dp"
                 android:text="Titulo Publicacion"
-                android:layout_weight="1"/>
+                android:layout_weight="2"/>
 
             <TextView
                 android:id="@+id/tvFechaPublicacion"
@@ -70,7 +70,7 @@
             android:layout_marginVertical="5dp"
             android:gravity="center"
             android:text="Nombre"
-            android:background="@color/green_100"
+            android:background="@drawable/dialog_corner_bgd"
             android:textSize="18sp"/>
 
         <Button
@@ -80,7 +80,7 @@
             android:layout_marginVertical="5dp"
             android:gravity="center"
             android:text="Nombre"
-            android:background="@color/green_100"
+            android:background="@drawable/dialog_corner_bgd"
             android:textSize="18sp"/>
 
         <TextView
@@ -138,7 +138,18 @@
             android:layout_height="200dp"
             android:layout_marginHorizontal="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginBottom="25dp"/>
+            android:layout_marginBottom="15dp"/>
+
+        <Button
+            android:id="@+id/btnVerPublicacion"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="35dp"
+            android:layout_marginHorizontal="50dp"
+            android:gravity="center"
+            android:text="@string/ver_publicaci_n"
+            android:background="@drawable/boton_redondeado"
+            android:textSize="18sp"/>
 
     </LinearLayout>
     </ScrollView>

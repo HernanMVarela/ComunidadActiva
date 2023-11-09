@@ -7,16 +7,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompatSideChannelService;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -33,23 +29,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
-import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAActualizarEstadoProyecto;
-import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACargarVoluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACuposDisponibles;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAReUnirseProyecto;
-import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectos;
-import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMASpinnerEstadosProyectosSinDenuncia;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUnirseAProyecto;
-import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUpdateProyecto;
-import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAUsuarioExisteEnProyecto;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaProyectoDialogFragment;
-import frgp.utn.edu.ar.controllers.ui.dialogs.DenunciaReporteDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.DetalleReporteViewModel;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
@@ -181,7 +170,10 @@ public class DetalleProyectoFragment extends Fragment {
                 comportamiento_boton_denunciar(bDenunciar);
             }
         }
-        if(seleccionado.getEstado().getEstado().equals("CANCELADO")||seleccionado.getEstado().getEstado().equals("DENUNCIADO")||seleccionado.getEstado().getEstado().equals("ELIMINADO")){
+        if(seleccionado.getEstado().getEstado().equals("CANCELADO") ||
+           seleccionado.getEstado().getEstado().equals("DENUNCIADO") ||
+           seleccionado.getEstado().getEstado().equals("ELIMINADO") ||
+           seleccionado.getEstado().getEstado().equals("CERRADO")){
             bUnirse.setEnabled(false);
             bDenunciar.setEnabled(false);
             bFinalizar.setEnabled(false);
@@ -435,7 +427,6 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
-
     private void regresar(){
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
         navController.popBackStack();

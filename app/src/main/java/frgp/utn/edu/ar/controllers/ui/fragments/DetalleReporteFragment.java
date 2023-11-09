@@ -116,6 +116,10 @@ public class DetalleReporteFragment extends Fragment {
         if(seleccionado.getEstado().getEstado().equals("DENUNCIADO")) {
             bDenunciar.setVisibility(View.VISIBLE);
         }
+        if(seleccionado.getEstado().getEstado().equals("ELIMINADO")){
+            Toast.makeText(getContext(), "Este reporte fue eliminado!", Toast.LENGTH_LONG).show();
+            regresar();
+        }
         if(seleccionado.getOwner().getUsername().equals(loggedInUser.getUsername())){
             bSolicitarCierre.setText("CERRAR REPORTE");
             bSolicitarCierre.setVisibility(View.VISIBLE);

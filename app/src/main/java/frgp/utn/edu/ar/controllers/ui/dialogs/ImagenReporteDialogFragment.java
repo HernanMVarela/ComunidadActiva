@@ -48,7 +48,6 @@ public class ImagenReporteDialogFragment extends DialogFragment {
         }else{
             dismiss();
         }
-
         builder.setView(dialogView);
         return builder.create();
     }
@@ -59,23 +58,26 @@ public class ImagenReporteDialogFragment extends DialogFragment {
             DMACargarImagen.execute();
             Bitmap imagen_cargada = DMACargarImagen.get();
             if(imagen_cargada!=null){
-                int maxWidth = 700; // El ancho máximo deseado en píxeles
-                int maxHeight = 700; // El alto máximo deseado en píxeles
+                int maxWidth = 700; // ANCHO MAXIMO
+                int maxHeight = 700; // ALTO MAXIMO
 
+                /// DIMENSIONES DE LA IMAGEN ORIGINAL
                 int originalWidth = imagen_cargada.getWidth();
                 int originalHeight = imagen_cargada.getHeight();
 
+                /// CALCULO PARA LA RELACION DE ASPECTO
                 float widthRatio = (float) maxWidth / originalWidth;
                 float heightRatio = (float) maxHeight / originalHeight;
 
-// Elige el factor de escala más pequeño para mantener la relación de aspecto
+                /// FACTOR DE ESCALADO CALCULADO
                 float scaleFactor = Math.min(widthRatio, heightRatio);
 
+                /// NUEVAS DIMENSIONES
                 int newWidth = (int) (originalWidth * scaleFactor);
                 int newHeight = (int) (originalHeight * scaleFactor);
 
+                /// ESCALADO DE LA IMAGEN
                 Bitmap scaledBitmap = Bitmap.createScaledBitmap(imagen_cargada, newWidth, newHeight, true);
-                // Carga la imagen escalada en el ImageView
                 imagen.setImageBitmap(scaledBitmap);
             }else{
                 dismiss();

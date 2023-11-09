@@ -167,7 +167,7 @@
     <fragment
         android:id="@+id/nav_ver_denuncia"
         android:name="frgp.utn.edu.ar.controllers.ui.fragments.DetalleDenunciaFragment"
-        android:label="fragment_ver_denuncia"
+        android:label="Detalle de la denuncia"
         tools:layout="@layout/fragment_ver_denuncia" >
         <action
             android:id="@+id/action_listar_denunicas_to_nav_eliminar_publicacion"
@@ -175,6 +175,12 @@
         <action
             android:id="@+id/action_listar_denunicas_to_nav_suspender_usuario"
             app:destination="@id/nav_suspender_usuario" />
+        <action
+            android:id="@+id/action_nav_denuncia_to_nav_detalle_reporte"
+            app:destination="@id/detalle_reporte" />
+        <action
+            android:id="@+id/action_nav_denuncia_to_nav_detalle_proyecto"
+            app:destination="@id/detalleProyectoFragment" />
     </fragment>
 
     <fragment

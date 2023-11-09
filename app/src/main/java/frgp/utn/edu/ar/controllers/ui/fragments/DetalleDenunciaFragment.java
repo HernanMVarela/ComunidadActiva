@@ -32,6 +32,8 @@ import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarProyectoPorId;
+import frgp.utn.edu.ar.controllers.data.remote.reporte.DMABuscarReportePorId;
 import frgp.utn.edu.ar.controllers.data.repository.proyecto.ProyectoRepository;
 import frgp.utn.edu.ar.controllers.data.repository.reporte.ReporteRepository;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarDenunciaDialogFragment;
@@ -44,7 +46,6 @@ public class DetalleDenunciaFragment extends Fragment {
     private TextView tvTituloPublicacion, tvTituloDenuncia, tvDescripcion, tvEstadoDenuncia, tvFecha, tvTipoPublic;
     private Denuncia seleccionado;
     private NotificacionService serviceNotificacion = new NotificacionService();
-    private String tipoDenuncia = "";
     private ReporteRepository reporteRepository = new ReporteRepository();
     private ProyectoRepository proyectoRepository = new ProyectoRepository();
     public static DetalleDenunciaFragment newInstance() {
@@ -112,6 +113,9 @@ public class DetalleDenunciaFragment extends Fragment {
         Button btnNotificarCerrar = view.findViewById(R.id.btnNotificarDenuncia);
         Button btnDenunciante = view.findViewById(R.id.btnDenuncianteUser);
         Button btnDenunciado = view.findViewById(R.id.btnDenunciadoUser);
+        Button btnVerPublicacion = view.findViewById(R.id.btnVerPublicacion);
+
+        btnVerPublicacion.setVisibility(View.VISIBLE);
 
         btnDenunciado.setText("Denunciado: " + seleccionado.getPublicacion().getOwner().getUsername());
         btnDenunciante.setText("Denunciante: "+seleccionado.getDenunciante().getUsername());
@@ -120,11 +124,11 @@ public class DetalleDenunciaFragment extends Fragment {
             btnSuspenderUsuario.setVisibility(View.GONE);
         }
 
-
        if(seleccionado.getTipo().getTipo().equals("REPORTE")) {
             Reporte reporte =  reporteRepository.buscarReportePorId(seleccionado.getPublicacion().getId());
             if(reporte.getEstado().getEstado().equals("ELIMINADO")){
                 btnEliminarPublicacion.setVisibility(View.GONE);
+                btnVerPublicacion.setVisibility(View.GONE);
             }
         }
 
@@ -132,6 +136,7 @@ public class DetalleDenunciaFragment extends Fragment {
             Proyecto proyecto = proyectoRepository.buscarProyectoPorId(seleccionado.getPublicacion().getId());
             if(proyecto.getEstado().getEstado().equals("ELIMINADO")){
                 btnEliminarPublicacion.setVisibility(View.GONE);
+                btnVerPublicacion.setVisibility(View.GONE);
             }
         }
 
@@ -186,6 +191,13 @@ public class DetalleDenunciaFragment extends Fragment {
             }
         });
 
+        btnVerPublicacion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navegarVerPublicacion();
+            }
+        });
+
     }
     private void cargarDatosDenuncia(){
         /// CONFIGURO DATOS DEL REPORTE
@@ -201,28 +213,56 @@ public class DetalleDenunciaFragment extends Fragment {
         tvFecha.setText(seleccionado.getFecha_creacion().toString());
 
     }
+    private void navegarVerPublicacion() {
+        try {
+            if(seleccionado!=null){
+                Bundle bundle = new Bundle();
+                if(seleccionado.getTipo().getTipo().equals("REPORTE")){
+                    DMABuscarReportePorId DMAReporte = new DMABuscarReportePorId(seleccionado.getPublicacion().getId());
+                    DMAReporte.execute();
+                    Reporte reporte = DMAReporte.get();
+                    if(reporte!=null){
+                        bundle.putSerializable("selected_report", reporte);
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                        navController.navigate(R.id.action_nav_denuncia_to_nav_detalle_reporte, bundle);
+                    }
+                }else {
+                    DMABuscarProyectoPorId DMAProyecto = new DMABuscarProyectoPorId(seleccionado.getPublicacion().getId());
+                    DMAProyecto.execute();
+                    Proyecto proyecto = DMAProyecto.get();
+                    if (proyecto != null) {
+                        bundle.putSerializable("proyectoactual", proyecto);
+                        NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                        navController.navigate(R.id.action_nav_denuncia_to_nav_detalle_proyecto, bundle);
+                    }
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
 
-    public void navegarUsuarioSuspender(){
+    private void navegarUsuarioSuspender(){
         if(seleccionado != null){
             Bundle bundle = new Bundle();
             bundle.putSerializable("selected_usuarioSuspender", seleccionado);
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.nav_suspender_usuario, bundle);
+            navController.navigate(R.id.action_listar_denunicas_to_nav_suspender_usuario, bundle);
         }else {
             Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
         }
     }
-    public void navegarEliminarPublicacion(){
+    private void navegarEliminarPublicacion(){
         if(seleccionado != null){
             Bundle bundle = new Bundle();
             bundle.putSerializable("selected_eliminarPublicacion", seleccionado);
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
-            navController.navigate(R.id.nav_eliminar_publicacion, bundle);
+            navController.navigate(R.id.action_listar_denunicas_to_nav_eliminar_publicacion, bundle);
         }else {
             Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
         }
     }
-    public void navegarAtenderDenuncia(){
+    private void navegarAtenderDenuncia(){
         if(seleccionado != null){
             Bundle bundle = new Bundle();
             bundle.putSerializable("selected_denuncia", seleccionado);
@@ -235,7 +275,7 @@ public class DetalleDenunciaFragment extends Fragment {
         }
     }
 
-    public void navegarDetalleUsuario(Usuario user){
+    private void navegarDetalleUsuario(Usuario user){
         UserDetailDialogFragment dialogFragment = UserDetailDialogFragment.newInstance(user);
         dialogFragment.show(getFragmentManager(), "user_detail");
     }
