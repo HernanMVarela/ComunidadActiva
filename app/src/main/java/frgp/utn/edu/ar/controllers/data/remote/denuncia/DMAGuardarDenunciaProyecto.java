@@ -42,7 +42,7 @@ public class DMAGuardarDenunciaProyecto extends AsyncTask<String, Void, String> 
 
             ps.setInt(1,idProyectoDenuncia);
             ps.setInt(2,idUserDenuncia);
-            ps.setInt(3,2);
+            ps.setInt(3,1);
             ps.setString(4, tituloDenuncia);
             ps.setString(5,descripcionDenuncia);
             ps.setDate(6, new Date(System.currentTimeMillis()));

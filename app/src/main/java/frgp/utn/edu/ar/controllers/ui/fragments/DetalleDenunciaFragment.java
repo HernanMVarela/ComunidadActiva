@@ -32,7 +32,8 @@ import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.repository.publicacion.PublicacionRepository;
+import frgp.utn.edu.ar.controllers.data.repository.proyecto.ProyectoRepository;
+import frgp.utn.edu.ar.controllers.data.repository.reporte.ReporteRepository;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarDenunciaDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
@@ -44,7 +45,8 @@ public class DetalleDenunciaFragment extends Fragment {
     private Denuncia seleccionado;
     private NotificacionService serviceNotificacion = new NotificacionService();
     private String tipoDenuncia = "";
-    private PublicacionRepository publicacionRepository = new PublicacionRepository();
+    private ReporteRepository reporteRepository = new ReporteRepository();
+    private ProyectoRepository proyectoRepository = new ProyectoRepository();
     public static DetalleDenunciaFragment newInstance() {
         return new DetalleDenunciaFragment();
     }
@@ -114,28 +116,31 @@ public class DetalleDenunciaFragment extends Fragment {
         btnDenunciado.setText("Denunciado: " + seleccionado.getPublicacion().getOwner().getUsername());
         btnDenunciante.setText("Denunciante: "+seleccionado.getDenunciante().getUsername());
 
-        if(seleccionado.getEstado().getEstado().equals("CERRADA") ||
-           seleccionado.getEstado().getEstado().equals("CANCELADA") ||
-           seleccionado.getPublicacion().getOwner().getEstado().getEstado().equals("SUSPENDIDO")) {
+        if(seleccionado.getPublicacion().getOwner().getEstado().getEstado().equals("SUSPENDIDO")) {
             btnSuspenderUsuario.setVisibility(View.GONE);
         }
 
 
        if(seleccionado.getTipo().getTipo().equals("REPORTE")) {
-            Reporte reporte =  publicacionRepository.buscarReportePorId(seleccionado.getPublicacion().getId());
+            Reporte reporte =  reporteRepository.buscarReportePorId(seleccionado.getPublicacion().getId());
             if(reporte.getEstado().getEstado().equals("ELIMINADO")){
                 btnEliminarPublicacion.setVisibility(View.GONE);
             }
         }
 
         if(seleccionado.getTipo().getTipo().equals("PROYECTO")){
-            Proyecto proyecto = publicacionRepository.buscarProyectoPorId(seleccionado.getPublicacion().getId());
+            Proyecto proyecto = proyectoRepository.buscarProyectoPorId(seleccionado.getPublicacion().getId());
             if(proyecto.getEstado().getEstado().equals("ELIMINADO")){
                 btnEliminarPublicacion.setVisibility(View.GONE);
             }
         }
 
-
+        if(seleccionado.getEstado().getEstado().equals("CERRADA") ||
+           seleccionado.getEstado().getEstado().equals("CANCELADA")) {
+            btnNotificarCerrar.setVisibility(View.GONE);
+            btnSuspenderUsuario.setVisibility(View.GONE);
+            btnEliminarPublicacion.setVisibility(View.GONE);
+        }
 
         if (seleccionado != null) {
             cargarDatosDenuncia();
@@ -157,7 +162,7 @@ public class DetalleDenunciaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 System.out.println(seleccionado.getPublicacion());
-                //navegarEliminarPublicacion();
+                navegarEliminarPublicacion();
             }
         });
         btnNotificarCerrar.setOnClickListener(new View.OnClickListener() {
@@ -221,9 +226,10 @@ public class DetalleDenunciaFragment extends Fragment {
         if(seleccionado != null){
             Bundle bundle = new Bundle();
             bundle.putSerializable("selected_denuncia", seleccionado);
+            bundle.putSerializable("logged_user", seleccionado.getPublicacion().getOwner());
             CerrarDenunciaDialogFragment dialogFragment = new CerrarDenunciaDialogFragment();
             dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-            dialogFragment.show(getFragmentManager(), "layout_atender_denuncia");
+            dialogFragment.show(getFragmentManager(), "cerrar_denuncia");
         }else {
             Toast.makeText(this.getContext(), "Debes seleccionar una Denuncia", Toast.LENGTH_LONG).show();
         }

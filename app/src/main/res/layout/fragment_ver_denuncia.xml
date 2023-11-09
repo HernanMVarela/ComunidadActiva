@@ -177,13 +177,13 @@
             android:id="@+id/btnNotificarDenuncia"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:lines="2"
-            android:textStyle="bold"
             android:layout_gravity="center"
             android:layout_marginHorizontal="10dp"
+            android:layout_weight="1"
             android:background="@drawable/boton_notificar_denuncia"
-            android:text="Atender Denuncia" />
+            android:lines="2"
+            android:text="Finalizar Denuncia"
+            android:textStyle="bold" />
     </LinearLayout>
 
 

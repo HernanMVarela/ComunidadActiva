@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
@@ -37,6 +39,7 @@ public class EliminarPublicacionDialogFragment extends DialogFragment {
     private LogService logService = new LogService();
     private Usuario loggedInUser = null;
     private NotificacionService serviceNotificacion= new NotificacionService();
+    private MailService mailService = new MailService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -104,8 +107,12 @@ public class EliminarPublicacionDialogFragment extends DialogFragment {
                     logService.log(loggedInUser.getId(), LogsEnum.ELIMINAR_PUBLICACION, String.format("Eliminaste la publicacion %s", seleccionado.getTitulo()));
                     serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(), String.format("Se notifica que la publicacion %s que denunciaste ha sido eliminada por los siguientes motivos: %s", seleccionado.getPublicacion().getTitulo() ,  motivo));
                     serviceNotificacion.notificacion(seleccionado.getPublicacion().getOwner().getId(), String.format("Se notifica la eliminacion de la publicacion %s por los motivos: %s", seleccionado.getPublicacion().getTitulo() ,  motivo));
-
+                    mailService.sendMail(seleccionado.getDenunciante().getCorreo(), "Denuncia de Publicacion", String.format("Se notifica que la publicacion %s que denunciaste ha sido eliminada por los siguientes motivos: %s", seleccionado.getPublicacion().getTitulo() ,  motivo));
+                    mailService.sendMail(seleccionado.getPublicacion().getOwner().getCorreo(), "Denuncia de Publicacion", String.format("Se notifica la eliminacion de la publicacion %s por los motivos: %s", seleccionado.getPublicacion().getTitulo() ,  motivo));
+                    Toast.makeText(getContext(), "PUBLICACION ELIMINADA", Toast.LENGTH_LONG).show();
                     dismiss();
+                    NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
+                    navController.popBackStack();
                 }else{
                     Toast.makeText(getContext(), "IMPOSIBLE COMPLETAR LA OPERACIÓN", Toast.LENGTH_LONG).show();
                 }
@@ -130,18 +137,15 @@ public class EliminarPublicacionDialogFragment extends DialogFragment {
                 DMAActualizarEstadoReporte DMAActualizarReporte = new DMAActualizarEstadoReporte(eliminar);
                 DMAActualizarReporte.execute();
                 if(DMAActualizarReporte.get()){
-                    Toast.makeText(getContext(), "REPORTE CERRADO - DENUNCIA ATENDIDA", Toast.LENGTH_LONG).show();
                     return true;
                 }else{
                     /// SI FALLA LA ACTUALIZACIÓN DEL REPORTE, SE REVIERTE EL CAMBIO EN LA DENUNCIA
                     seleccionado.setEstado(estado_orig);
                     DMAActualizarEstadoDenuncia = new DMAActualizarEstadoDenunciaReporte(seleccionado);
                     DMAActualizarEstadoDenuncia.execute();
-                    Toast.makeText(getContext(), "ERROR - NO SE PUDO CERRAR EL REPORTE", Toast.LENGTH_LONG).show();
                     return false;
                 }
             }else{
-                Toast.makeText(getContext(), "ERROR - NO SE PUDO PROCESAR EL PEDIDO", Toast.LENGTH_LONG).show();
                 return false;
             }
         }catch (Exception e){
@@ -166,18 +170,15 @@ public class EliminarPublicacionDialogFragment extends DialogFragment {
                 DMAActualizarEstadoProyecto DMAActualizarReporte = new DMAActualizarEstadoProyecto(eliminar);
                 DMAActualizarReporte.execute();
                 if(DMAActualizarReporte.get()){
-                    Toast.makeText(getContext(), "PROYECTO CERRADO - DENUNCIA ATENDIDA", Toast.LENGTH_LONG).show();
                     return true;
                 }else{
                     /// SI FALLA LA ACTUALIZACIÓN DEL PROYECTO, SE REVIERTE EL CAMBIO EN LA DENUNCIA
                     seleccionado.setEstado(estado_orig);
                     DMAActualizarEstadoDenuncia = new DMAActualizarEstadoDenunciaProyecto(seleccionado);
                     DMAActualizarEstadoDenuncia.execute();
-                    Toast.makeText(getContext(), "ERROR - NO SE PUDO CERRAR EL PROYECTO", Toast.LENGTH_LONG).show();
                     return false;
                 }
             }else{
-                Toast.makeText(getContext(), "ERROR - NO SE PUDO PROCESAR EL PEDIDO", Toast.LENGTH_LONG).show();
                 return false;
             }
         }catch (Exception e){

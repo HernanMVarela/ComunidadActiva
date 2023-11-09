@@ -3,7 +3,6 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
@@ -21,31 +22,34 @@ import frgp.utn.edu.ar.controllers.data.model.EstadoReporte;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.Reporte;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
-import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAActualizarEstadoDenunciaProyecto;
-import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAActualizarEstadoDenunciaReporte;
-import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAActualizarEstadoProyecto;
-import frgp.utn.edu.ar.controllers.data.remote.reporte.DMAActualizarEstadoReporte;
+import frgp.utn.edu.ar.controllers.data.repository.denuncia.DenunciaRepository;
+import frgp.utn.edu.ar.controllers.data.repository.proyecto.ProyectoRepository;
+import frgp.utn.edu.ar.controllers.data.repository.reporte.ReporteRepository;
 import frgp.utn.edu.ar.controllers.utils.LogService;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
+import frgp.utn.edu.ar.controllers.utils.MailService;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
-import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class CerrarDenunciaDialogFragment extends DialogFragment {
     private EditText resolucion;
-    private Denuncia seleccionado;
+    private Denuncia seleccionado = null;
     private Usuario loggedInUser = null;
-    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private NotificacionService serviceNotificacion= new NotificacionService();
     private LogService logService = new LogService();
+    private MailService mailService = new MailService();
+    private DenunciaRepository denunciaRepository = new DenunciaRepository();
+    private ReporteRepository reporteRepository = new ReporteRepository();
+    private ProyectoRepository proyectoRepository = new ProyectoRepository();
+    Reporte reporte;
+    Proyecto proyecto;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Recupera los datos del Bundle
-        loggedInUser = sharedPreferences.getUsuarioData(getContext());
-        Bundle bundle = this.getArguments();
-        /// OBTIENE LA DENUNCIA SELECCIONADA EN LA PANTALLA ANTERIOR
-        if (bundle != null) {
-            seleccionado = (Denuncia) bundle.getSerializable("selected_denuncia");
+        Bundle args = getArguments();
+        if (args != null) {
+            seleccionado = (Denuncia) args.getSerializable("selected_denuncia");
+            loggedInUser = (Usuario) args.getSerializable("logged_user");
         }else{
             Toast.makeText(getContext(), "No se pudo cargar la denuncia!", Toast.LENGTH_LONG).show();
             dismiss();
@@ -59,6 +63,25 @@ public class CerrarDenunciaDialogFragment extends DialogFragment {
         Button bDesestimar = dialogView.findViewById(R.id.btnDesestimarDenuncia);
         Button bCerrarDenuncia = dialogView.findViewById(R.id.btnCerrarDenuncia);
         resolucion = dialogView.findViewById(R.id.etResolucionDenuncia);
+
+        if(seleccionado.getTipo().getTipo().equals("REPORTE")) {
+            reporte =  reporteRepository.buscarReportePorId(seleccionado.getPublicacion().getId());
+            if(reporte.getEstado().getEstado().equals("ELIMINADO")){
+                bDesestimar.setVisibility(View.GONE);
+            }
+        }
+
+        if(seleccionado.getTipo().getTipo().equals("PROYECTO")){
+            proyecto = proyectoRepository.buscarProyectoPorId(seleccionado.getPublicacion().getId());
+            if(proyecto.getEstado().getEstado().equals("ELIMINADO")){
+                bDesestimar.setVisibility(View.GONE);
+            }
+        }
+
+        if(seleccionado.getEstado().getEstado().equals("ATENDIDA")){
+            bDesestimar.setVisibility(View.GONE);
+        }
+
         bDesestimar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,155 +100,91 @@ public class CerrarDenunciaDialogFragment extends DialogFragment {
     }
     private void comportamiento_boton_desestimar(){
         if(!validarCampos()) {
-            dismiss();
+            return;
         }
+
         if(seleccionado == null) {
             Toast.makeText(getContext(), "Error al cargar la denuncia!", Toast.LENGTH_LONG).show();
             dismiss();
         }
-        if(seleccionado.getEstado().getEstado().equals("PENDIENTE")) {
-            seleccionado.setEstado(new EstadoDenuncia(2, "CERRADA"));
-            boolean exito = false;
-            Log.i("LOG_DENUNCIA", "Tipo: "+seleccionado.getTipo());
-            if(seleccionado.getTipo().getTipo().equals("REPORTE")){
-                exito = actualizar_reporte();
-            }else if (seleccionado.getTipo().getTipo().equals("PROYECTO")){
-                exito = actualizar_proyecto();
-            }
-            if(exito){
-                logService.log(loggedInUser.getId(), LogsEnum.CERRAR_DENUNCIA_Y_NOTIFICAR, String.format("DESESTIMASTE la Denuncia %s", seleccionado.getTitulo()));
-                serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(), "Se notifica la cancelación de la Denuncia sobre la publicacion: " + seleccionado.getPublicacion().getId() + " por los motivos: " + resolucion.getText().toString());
-            }else{
-                Toast.makeText(getContext(), "No se pudo completar el proceso.", Toast.LENGTH_LONG).show();
-            }
+
+        if(desestimarDenuncia()){
+            logService.log(loggedInUser.getId(), LogsEnum.DESESTIMAR_DENUNCIA, String.format("Desestimaste la Denuncia %s", seleccionado.getTitulo()));
+            serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(), String.format("Se notifica la cancelacion de la Denuncia sobre la publicacion %s por los motivos $s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText().toString()));
+            serviceNotificacion.notificacion(seleccionado.getPublicacion().getOwner().getId(), String.format("Se notifica la cancelacion de la Denuncia sobre la publicacion %s por los motivos $s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText().toString()));
+            mailService.sendMail(seleccionado.getDenunciante().getCorreo(), "Denuncia desestimada", String.format("Se desestimo la denuncia sobre la publicacion %s por los motivos %s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText().toString()));
+            mailService.sendMail(seleccionado.getPublicacion().getOwner().getCorreo(), "Denuncia desestimada", String.format("Se desestimo la denuncia sobre la publicacion %s por los motivos %s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText().toString()));
+            Toast.makeText(getContext(), "Denuncia desestimada correctamente.", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(getContext(), "No se pudo completar el proceso.", Toast.LENGTH_LONG).show();
         }
         dismiss();
     }
     private void comportamiento_boton_cerrar(){
         if(!validarCampos()){
-            dismiss();
+            return;
         }
         if(seleccionado == null) {
             Toast.makeText(getContext(), "Error al cargar la denuncia!", Toast.LENGTH_LONG).show();
             dismiss();
         }
-        if(seleccionado.getEstado().getEstado().equals("PENDIENTE")) {
-            seleccionado.setEstado(new EstadoDenuncia(2, "ATENDIDA"));
-            boolean exito = false;
-            if(seleccionado.getPublicacion().getClass().isInstance(Reporte.class)){
-                exito = cerrar_reporte();
-            }else if (seleccionado.getPublicacion().getClass().isInstance(Proyecto.class)){
-                exito = cerrar_proyecto();
-            }
-            if(exito){
-                logService.log(loggedInUser.getId(), LogsEnum.CERRAR_DENUNCIA_Y_NOTIFICAR, String.format("CERRASTE la Denuncia %s", seleccionado.getTitulo()));
-                serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(), "Se notifica el cierre de la Denuncia sobre la publicacion: " + seleccionado.getPublicacion().getId() + " por los motivos: " + resolucion);
+        if(seleccionado.getEstado().getEstado().equals("ATENDIDA")){
+            if(cerrar_denuncia()){
+                logService.log(loggedInUser.getId(), LogsEnum.CERRAR_DENUNCIA, String.format("CERRASTE la Denuncia %s", seleccionado.getTitulo()));
+                serviceNotificacion.notificacion(seleccionado.getDenunciante().getId(), String.format("Se notifica el cierre de la Denuncia sobre la publicacion %s por los motivos $s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText()));
+                serviceNotificacion.notificacion(seleccionado.getPublicacion().getOwner().getId(), String.format("Se notifica el cierre de la Denuncia sobre la publicacion %s por los motivos $s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText().toString()));
+                mailService.sendMail(seleccionado.getDenunciante().getCorreo(), "Denuncia cerrada", String.format("Se cerro la denuncia sobre la publicacion %s por los motivos %s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText().toString()));
+                mailService.sendMail(seleccionado.getPublicacion().getOwner().getCorreo(), "Denuncia cerrada", String.format("Se cerro la denuncia sobre la publicacion %s por los motivos %s.",seleccionado.getPublicacion().getTitulo(), resolucion.getText().toString()));
+                Toast.makeText(getContext(), "Denuncia cerrada correctamente.", Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(getContext(), "No se pudo completar el proceso.", Toast.LENGTH_LONG).show();
             }
         }
+        else {
+            Toast.makeText(getContext(), "La denuncia debe ser ATENDIDA para poder cerrarla.", Toast.LENGTH_LONG).show();
+        }
         dismiss();
     }
-    private boolean cerrar_reporte(){
-        try{
-            DMAActualizarEstadoDenunciaProyecto DMAEstadoDenuncia = new DMAActualizarEstadoDenunciaProyecto(seleccionado);
-            DMAEstadoDenuncia.execute();
-            if(DMAEstadoDenuncia.get()){
-                Proyecto modificar = (Proyecto) seleccionado.getPublicacion();
-                modificar.setEstado(new EstadoProyecto(4,"CANCELADO"));
-                return actualizar_estado_proyecto(modificar);
+
+    private boolean cerrar_denuncia(){
+        seleccionado.setEstado(new EstadoDenuncia(3, "CERRADA"));
+
+        if(seleccionado.getTipo().getTipo().equals("REPORTE")) {
+            denunciaRepository.cambiarEstadoDenunciaReporte(seleccionado);
+            if(!reporte.getEstado().getEstado().equals("ELIMINADO")){
+                reporte.setEstado(new EstadoReporte(4,"CERRADO"));
+                reporteRepository.actualizarEstadoReporte(reporte);
             }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            return true;
         }
-    }
-    private boolean cerrar_proyecto(){
-        try{
-            DMAActualizarEstadoDenunciaReporte DMAEstadoDenuncia = new DMAActualizarEstadoDenunciaReporte(seleccionado);
-            DMAEstadoDenuncia.execute();
-            if(DMAEstadoDenuncia.get()){
-                Reporte modificar = (Reporte) seleccionado.getPublicacion();
-                modificar.setEstado(new EstadoReporte(4,"CERRADO"));
-                return actualizar_estado_reporte(modificar);
+
+        if(seleccionado.getTipo().getTipo().equals("PROYECTO")) {
+            denunciaRepository.cambiarEstadoDenunciaProyecto(seleccionado);
+            if(!proyecto.getEstado().getEstado().equals("ELIMINADO")){
+                proyecto.setEstado(new EstadoProyecto(7,"CERRADO"));
+                proyectoRepository.actualizarEstadoProyecto(proyecto);
             }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            return true;
         }
-    }
-    private boolean actualizar_reporte(){
-        try{
-            Log.i("LOG_DENUNCIA", "ACCESO A ACTUALIZAR DENUNCIA");
-            DMAActualizarEstadoDenunciaReporte DMAEstadoDenuncia = new DMAActualizarEstadoDenunciaReporte(seleccionado);
-            DMAEstadoDenuncia.execute();
-            if(DMAEstadoDenuncia.get()){
-                Reporte modificar = cargar_datos_reporte();
-                modificar.setEstado(new EstadoReporte(1,"ABIERTO"));
-                return actualizar_estado_reporte(modificar);
-            }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    private boolean actualizar_estado_reporte(Reporte modificar){
-        try {
-            Log.i("LOG_DENUNCIA", "ACCESO A ACTUALIZAR REPORTE");
-            DMAActualizarEstadoReporte DMAActualizarReporte = new DMAActualizarEstadoReporte(modificar);
-            DMAActualizarReporte.execute();
-            return DMAActualizarReporte.get();
-        }catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    private boolean actualizar_proyecto(){
-        try{
-            DMAActualizarEstadoDenunciaProyecto DMAEstadoDenuncia = new DMAActualizarEstadoDenunciaProyecto(seleccionado);
-            DMAEstadoDenuncia.execute();
-            if(DMAEstadoDenuncia.get()){
-                Proyecto modificar = cargar_datos_proyecto();
-                modificar.setEstado(new EstadoProyecto(1,"ABIERTO"));
-                return actualizar_estado_proyecto(modificar);
-            }
-            return false;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    private boolean actualizar_estado_proyecto(Proyecto modificar){
-        try {
-            DMAActualizarEstadoProyecto DMAActualizarProyecto = new DMAActualizarEstadoProyecto(modificar);
-            DMAActualizarProyecto.execute();
-            return DMAActualizarProyecto.get();
-        }catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    private Reporte cargar_datos_reporte(){
-        Reporte modificar = new Reporte();
-        modificar.setId(seleccionado.getPublicacion().getId());
-        modificar.setTitulo(seleccionado.getPublicacion().getTitulo());
-        modificar.setOwner(seleccionado.getPublicacion().getOwner());
-        modificar.setLatitud(seleccionado.getPublicacion().getLatitud());
-        modificar.setLongitud(seleccionado.getPublicacion().getLongitud());
-        return modificar;
+        return false;
     }
 
-    private Proyecto cargar_datos_proyecto(){
-        Proyecto modificar = new Proyecto();
-        modificar.setId(seleccionado.getPublicacion().getId());
-        modificar.setTitulo(seleccionado.getPublicacion().getTitulo());
-        modificar.setOwner(seleccionado.getPublicacion().getOwner());
-        modificar.setLatitud(seleccionado.getPublicacion().getLatitud());
-        modificar.setLongitud(seleccionado.getPublicacion().getLongitud());
-        return modificar;
+    private boolean desestimarDenuncia() {
+        seleccionado.setEstado(new EstadoDenuncia(4, "CANCELADA"));
+        if(seleccionado.getTipo().getTipo().equals("REPORTE")) {
+            denunciaRepository.cambiarEstadoDenunciaReporte(seleccionado);
+            reporte.setEstado(new EstadoReporte(1,"ABIERTO"));
+            reporteRepository.actualizarEstadoReporte(reporte);
+            return true;
+        }
+
+        if(seleccionado.getTipo().getTipo().equals("PROYECTO")) {
+            denunciaRepository.cambiarEstadoDenunciaProyecto(seleccionado);
+            proyecto.setEstado(new EstadoProyecto(1,"ABIERTO"));
+            proyectoRepository.actualizarEstadoProyecto(proyecto);
+            return true;
+        }
+        return false;
     }
 
     private boolean validarCampos(){
