@@ -39,6 +39,7 @@ import frgp.utn.edu.ar.controllers.data.repository.reporte.ReporteRepository;
 import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarDenunciaDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
 import frgp.utn.edu.ar.controllers.utils.NotificacionService;
+import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class DetalleDenunciaFragment extends Fragment {
 
@@ -48,6 +49,8 @@ public class DetalleDenunciaFragment extends Fragment {
     private NotificacionService serviceNotificacion = new NotificacionService();
     private ReporteRepository reporteRepository = new ReporteRepository();
     private ProyectoRepository proyectoRepository = new ProyectoRepository();
+    private SharedPreferencesService sharedPreferencesService = new SharedPreferencesService();
+    private Usuario usuarioLogueado;
     public static DetalleDenunciaFragment newInstance() {
         return new DetalleDenunciaFragment();
     }
@@ -101,6 +104,7 @@ public class DetalleDenunciaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        usuarioLogueado = sharedPreferencesService.getUsuarioData(this.getContext());
 
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapListaDenuncias);
@@ -119,6 +123,12 @@ public class DetalleDenunciaFragment extends Fragment {
 
         btnDenunciado.setText("Denunciado: " + seleccionado.getPublicacion().getOwner().getUsername());
         btnDenunciante.setText("Denunciante: "+seleccionado.getDenunciante().getUsername());
+
+        if(usuarioLogueado.getTipo().getTipo().equals("ADMINISTRADOR")) {
+            btnNotificarCerrar.setVisibility(View.GONE);
+            btnSuspenderUsuario.setVisibility(View.GONE);
+            btnEliminarPublicacion.setVisibility(View.GONE);
+        }
 
         if(seleccionado.getPublicacion().getOwner().getEstado().getEstado().equals("SUSPENDIDO")) {
             btnSuspenderUsuario.setVisibility(View.GONE);

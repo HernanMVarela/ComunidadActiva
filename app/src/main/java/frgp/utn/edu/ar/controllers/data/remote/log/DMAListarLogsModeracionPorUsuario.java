@@ -31,7 +31,14 @@ public class DMAListarLogsModeracionPorUsuario extends AsyncTask<String, Void, L
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             PreparedStatement preparedStatement = con.prepareStatement("SELECT * FROM LOGS " +
                                                                            "WHERE ID_USER = ? " +
-                                                                           "AND (ACCION = 'SUSPENSION_USUARIO' OR ACCION = 'ELIMINAR_PUBLICACION' OR ACCION = 'DESESTIMAR_DENUNCIA' OR ACCION = 'CERRAR_DENUNCIA') " +
+                                                                           "AND (ACCION = 'SUSPENSION_USUARIO' OR " +
+                                                                                "ACCION = 'ELIMINAR_PUBLICACION' OR " +
+                                                                                "ACCION = 'DESESTIMAR_DENUNCIA' OR " +
+                                                                                "ACCION = 'CERRAR_DENUNCIA' OR " +
+                                                                                "ACCION = 'SUSPENSION_USUARIO' OR " +
+                                                                                "ACCION = 'ACTIVACION_USUARIO' OR " +
+                                                                                "ACCION = 'ELIMINACION_USUARIO' OR " +
+                                                                                "ACCION = 'MODIFICACION_USUARIO') " +
                                                                            "ORDER BY FECHA DESC;");
             preparedStatement.setInt(1, userId);
             ResultSet rs = preparedStatement.executeQuery();

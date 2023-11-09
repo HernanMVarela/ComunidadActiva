@@ -49,7 +49,6 @@ public class HistorialModeracionFragment extends Fragment {
 
     private LogRepository logRepository = new LogRepository();
     private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
-
     private List<Logs> listaLogsModeracion;
     private Usuario usuario;
     private ListView listaActividadRecienteModeracion;
