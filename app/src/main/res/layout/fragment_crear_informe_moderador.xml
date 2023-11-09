@@ -7,118 +7,118 @@
     android:background="@color/green_100"
     tools:context=".ui.fragments.CrearInformeModeradorFragment">
 
-    <DatePicker
-        android:id="@+id/dpFechaInicioModerador"
-        android:layout_width="324dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="56dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <DatePicker
-        android:id="@+id/dpFechaFinModerador"
-        android:layout_width="380dp"
-        android:layout_height="327dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/editTextFechaInicioModerador"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:ems="10"
-        android:hint="PRUEBA"
-        android:inputType="date"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextFechaFinModerador"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="@string/fecha_fin"
-        android:inputType="date"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFechaInicioModerador"
-        tools:ignore="MissingConstraints" />
-
-    <ImageButton
-        android:id="@+id/btnFechaInicioModerador"
-        android:layout_width="51dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="40dp"
-        android:contentDescription="@string/fecha_inicio"
-        android:src="@android:drawable/ic_menu_today"
-        app:layout_constraintStart_toEndOf="@+id/editTextFechaInicioModerador"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <ImageButton
-        android:id="@+id/btnFechaFinModerador"
-        android:layout_width="51dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="20dp"
-        android:contentDescription="@string/fecha_fin"
-        android:src="@android:drawable/ic_menu_today"
-        app:layout_constraintStart_toEndOf="@+id/editTextFechaFinModerador"
-        app:layout_constraintTop_toBottomOf="@+id/btnFechaInicioModerador"
-        tools:ignore="MissingConstraints" />
-
-    <Spinner
-        android:id="@+id/spTipoInformeModerador"
-        android:layout_width="290dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/edittext_grey_roundead"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTipoInformeModerador"
-        tools:ignore="MissingConstraints" />
-
-    <Button
-        android:id="@+id/btnCrearInformeModerador"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="30dp"
-        android:layout_marginTop="248dp"
-        android:layout_weight="1"
-        android:background="@drawable/boton_redondeado"
-        android:text="@string/crear_informe"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:layout_margin="15dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spTipoInformeModerador" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tvTipoInformeModerador"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="@string/tipo_informe"
-        android:hint="@string/tipo_informe"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextFechaFinModerador"
-        tools:ignore="MissingConstraints"
-        tools:text="@string/tipo_informe" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginVertical="5dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:text="CREAR INFORME"
+            >
+
+        </TextView>
+
+        <DatePicker
+            android:id="@+id/dpFechaInicioModerador"
+            android:layout_width="wrap_content"
+            android:layout_height="387dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="56dp"
+            android:visibility="gone" />
+
+        <DatePicker
+            android:id="@+id/dpFechaFinModerador"
+            android:layout_width="380dp"
+            android:layout_height="327dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="40dp"
+            android:visibility="gone"
+             />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:hint="DESDE"
+                android:id="@+id/editTextFechaInicioModerador"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:hint="HASTA"
+                android:id="@+id/editTextFechaFinModerador"
+                />
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </ScrollView>
+
+
+        <Button
+            android:id="@+id/btnCrearInformeDenunciasCerradas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_redondeado"
+            android:text="Denuncias Cerradas"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_redondeado"
+            android:text="Usuarios Suspendidos"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_redondeado"
+            android:text="Pulicaciones Eliminadas"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
+
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

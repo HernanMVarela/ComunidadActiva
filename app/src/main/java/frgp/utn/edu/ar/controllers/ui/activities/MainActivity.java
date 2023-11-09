@@ -144,8 +144,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void IrModerador(View view){
-        etNombre.setText("userModerador1");
-        etPassword.setText("123456");
+        etNombre.setText("mcliftonmod");
+        etPassword.setText("12345678");
     }
 
     public void IrAdministrador(View view){

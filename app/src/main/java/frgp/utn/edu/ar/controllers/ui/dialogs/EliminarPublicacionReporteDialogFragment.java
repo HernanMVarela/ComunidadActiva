@@ -45,7 +45,7 @@ public class EliminarPublicacionReporteDialogFragment extends DialogFragment {
     MailService mailService = new MailService();
     private Usuario loggedInUser = null;
     private Reporte reporte;
-    NotificacionService serviceNotificacion= new NotificacionService();
+    NotificacionService serviceNotificacion = new NotificacionService();
 
 
     @Override
