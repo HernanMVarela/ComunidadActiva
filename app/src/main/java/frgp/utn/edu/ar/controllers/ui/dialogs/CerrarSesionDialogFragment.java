@@ -3,6 +3,8 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
@@ -22,6 +25,8 @@ import frgp.utn.edu.ar.controllers.data.model.EstadoUsuario;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.repository.denuncia.DenunciaRepository;
 import frgp.utn.edu.ar.controllers.data.repository.usuario.UsuarioRepository;
+import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
+import frgp.utn.edu.ar.controllers.ui.activities.MainActivity;
 import frgp.utn.edu.ar.controllers.utils.LogService;
 import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.MailService;
@@ -61,7 +66,6 @@ public class CerrarSesionDialogFragment extends DialogFragment {
                 logger.log(loggedInUser.getId(), LogsEnum.LOGOUT, String.format("El Usuario %s cerro sesion", loggedInUser.getUsername()));
                 sharedPreferences.deleteUsuarioData(getContext());
                 dismiss();
-                getActivity().finish();
             }
         });
 
@@ -75,5 +79,12 @@ public class CerrarSesionDialogFragment extends DialogFragment {
 
         builder.setView(dialogView);
         return builder.create();
+    }
+
+    @Override
+    public void onDismiss(@NonNull DialogInterface dialog) {
+        super.onDismiss(dialog);
+        Intent registro = new Intent(getContext(), MainActivity.class);
+        startActivity(registro);
     }
 }
