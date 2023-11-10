@@ -7,7 +7,7 @@ import frgp.utn.edu.ar.controllers.data.model.Logs;
 import frgp.utn.edu.ar.controllers.data.repository.log.LogRepository;
 
 public class LogService {
-    LogRepository logRepository = new LogRepository();
+    private LogRepository logRepository = new LogRepository();
     public void log(int idUser, LogsEnum accion, String descripcion) {
         ///LOG WITH CURRENT DATE INCLUDING HOUR AND SECONDS
         Logs log = new Logs();

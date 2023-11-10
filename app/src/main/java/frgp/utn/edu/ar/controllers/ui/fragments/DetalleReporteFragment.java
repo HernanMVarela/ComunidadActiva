@@ -141,7 +141,7 @@ public class DetalleReporteFragment extends Fragment {
     }
 
 
-    public void actualizar_campos(){
+    private void actualizar_campos(){
         if(seleccionado!=null){
             try {
                 DMABuscarReportePorId DMAReporte = new DMABuscarReportePorId(seleccionado.getId());

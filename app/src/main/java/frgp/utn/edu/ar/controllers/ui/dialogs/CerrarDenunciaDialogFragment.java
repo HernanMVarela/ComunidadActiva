@@ -40,8 +40,8 @@ public class CerrarDenunciaDialogFragment extends DialogFragment {
     private DenunciaRepository denunciaRepository = new DenunciaRepository();
     private ReporteRepository reporteRepository = new ReporteRepository();
     private ProyectoRepository proyectoRepository = new ProyectoRepository();
-    Reporte reporte;
-    Proyecto proyecto;
+    private Reporte reporte;
+    private Proyecto proyecto;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

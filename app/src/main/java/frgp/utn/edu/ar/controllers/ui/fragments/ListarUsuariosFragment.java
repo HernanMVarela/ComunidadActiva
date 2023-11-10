@@ -110,7 +110,7 @@ public class ListarUsuariosFragment extends Fragment {
         });
     }
 
-    public void navegarDetalle(){
+    private void navegarDetalle(){
         if(selectedUser != null){
             Bundle bundle = new Bundle();
             bundle.putSerializable("selected_user", selectedUser);

@@ -59,7 +59,7 @@ public class CambiarClaveFragment extends Fragment {
         });
     }
 
-    public void changePass() {
+    private void changePass() {
         if(!isFormValid()) {
             return;
         }
@@ -73,7 +73,7 @@ public class CambiarClaveFragment extends Fragment {
     }
 
 
-    public boolean isFormValid() {
+    private boolean isFormValid() {
         if(tvCurrentPass.getText().toString().isEmpty()
         || tvNewPass.getText().toString().isEmpty()
         || tvNewPassRepeat.getText().toString().isEmpty()) {

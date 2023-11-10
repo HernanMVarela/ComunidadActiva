@@ -248,7 +248,7 @@ public class NuevoProyectoFragment extends Fragment {
         }
         return true;
     }
-    public void limpiarCampos (){
+    private void limpiarCampos (){
         edTitulo.setText("");
         edContacto.setText("");
         edCupos.setText("");

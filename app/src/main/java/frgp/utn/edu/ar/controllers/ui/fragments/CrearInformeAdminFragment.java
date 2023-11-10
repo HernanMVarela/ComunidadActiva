@@ -185,7 +185,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
             fechaHasta.setText(mFormat.format(mCalendar.getTime()));
     }
 
-    public boolean isFormValid() {
+    private boolean isFormValid() {
         //CHECK FORM VACIO
         if (fechaDesde.getText().toString().isEmpty() ||
                 fechaHasta.getText().toString().isEmpty()) {
@@ -226,7 +226,7 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         return true;
     }
 
-    public void crearInforme(JSONArray pdfData, String reporte)  throws IOException {
+    private void crearInforme(JSONArray pdfData, String reporte)  throws IOException {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // Si no tiene permisos, se solicitan al usuario
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);

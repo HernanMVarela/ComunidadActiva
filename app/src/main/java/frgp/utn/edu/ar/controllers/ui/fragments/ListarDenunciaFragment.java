@@ -96,7 +96,7 @@ public class ListarDenunciaFragment extends Fragment {
         });
     }
 
-    public void navegarDetalle(){
+    private void navegarDetalle(){
         Bundle bundle = new Bundle();
         bundle.putSerializable("selected_denuncia", seleccionado);
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);

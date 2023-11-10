@@ -36,7 +36,7 @@ public class SuspenderUsuarioFragment extends Fragment {
     private EditText motivo;
     private Button btnSuspender;
     private Denuncia seleccionado;
-    SharedPreferencesService sharedPreferences = new SharedPreferencesService();
+    private SharedPreferencesService sharedPreferences = new SharedPreferencesService();
     private Usuario loggedInUser = null;
 
     public static SuspenderUsuarioFragment newInstance() {

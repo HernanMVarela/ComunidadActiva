@@ -32,8 +32,8 @@ public class DenunciaReporteDialogFragment extends DialogFragment {
     private EditText etxMotivoDenuncia;
     private Reporte selectedReport = null;
     private Usuario loggedInUser = null;
-    LogService logService = new LogService();
-    NotificacionService notificacionService = new NotificacionService();
+    private LogService logService = new LogService();
+    private NotificacionService notificacionService = new NotificacionService();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -109,7 +109,7 @@ public class DenunciaReporteDialogFragment extends DialogFragment {
         return builder.create();
     }
 
-    public boolean validarCampos(){
+    private boolean validarCampos(){
         if(etxTituloDenuncia.getText().toString().trim().isEmpty() || etxTituloDenuncia.getText().toString().trim().length()<5){
             Toast.makeText(getContext(), "Debes ingresar un título de al menos 4 carácteres", Toast.LENGTH_LONG).show();
             return false;

@@ -237,7 +237,7 @@ public class BuscarReporteFragment extends Fragment {
         });
     }
 
-    public void navegarDetalle(){
+    private void navegarDetalle(){
         if(seleccionado != null){
             Bundle bundle = new Bundle();
             bundle.putSerializable("selected_report", seleccionado);

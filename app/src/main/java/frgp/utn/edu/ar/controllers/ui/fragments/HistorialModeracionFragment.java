@@ -121,7 +121,7 @@ public class HistorialModeracionFragment extends Fragment {
         binding = null;
     }
 
-    public void createPdfReport() throws IOException {
+    private void createPdfReport() throws IOException {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // Si no tiene permisos, se solicitan al usuario
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);

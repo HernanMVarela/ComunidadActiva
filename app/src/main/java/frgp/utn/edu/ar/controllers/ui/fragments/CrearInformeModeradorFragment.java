@@ -108,7 +108,7 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
         });
     }
 
-    public void crearInforme(JSONArray pdfData, String informe)  throws IOException {
+    private void crearInforme(JSONArray pdfData, String informe)  throws IOException {
         if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // Si no tiene permisos, se solicitan al usuario
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
@@ -184,7 +184,7 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
         }
     }
 
-    public boolean isFormValid() {
+    private boolean isFormValid() {
         //CHECK FORM VACIO
         if (etFechaInicio.getText().toString().isEmpty() ||
                 etFechaFin.getText().toString().isEmpty()) {
@@ -260,6 +260,4 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
         if (etFechaFin.hasFocus())
             etFechaFin.setText(mFormat.format(mCalendar.getTime()));
     }
-
-
 }

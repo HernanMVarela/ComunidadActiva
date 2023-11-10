@@ -7,7 +7,7 @@ import frgp.utn.edu.ar.controllers.data.model.Notificacion;
 import frgp.utn.edu.ar.controllers.data.repository.notificacion.NotificacionRepository;
 
 public class NotificacionService {
-    NotificacionRepository notificacionesRepository = new NotificacionRepository();
+    private NotificacionRepository notificacionesRepository = new NotificacionRepository();
     public void notificacion(int idUser, String descripcion) {
         Notificacion notificacion = new Notificacion();
         notificacion.setIdUser(idUser);

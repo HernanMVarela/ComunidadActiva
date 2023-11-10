@@ -19,10 +19,10 @@ import frgp.utn.edu.ar.controllers.ui.adapters.ListaUsuariosAdapter;
 
 public class DMAListarUsuariosCompleto extends AsyncTask<String, Void, String> {
 
-    List<Usuario> listaUsuarios;
-    ListView lvUsuarios;
-    Context ct;
-    String result = "";
+    private List<Usuario> listaUsuarios;
+    private ListView lvUsuarios;
+    private Context ct;
+    private String result = "";
 
     public DMAListarUsuariosCompleto(Context ct, ListView lvUsuarios){
         this.ct = ct;

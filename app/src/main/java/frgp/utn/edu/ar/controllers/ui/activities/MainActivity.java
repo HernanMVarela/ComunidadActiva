@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
         View view = super.onCreateView(name, context, attrs);
-
         return view;
     }
 

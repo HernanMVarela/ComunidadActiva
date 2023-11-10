@@ -138,14 +138,14 @@ public class BuscarProyectoFragment extends Fragment {
         // TODO: Use the ViewModel
     }
 
-    public void iraDetalles(){
+    private void iraDetalles(){
         Bundle bundle = new Bundle();
         bundle.putSerializable("proyectoactual", proyectoSeleccionado);
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
         navController.navigate(R.id.detalleProyectoFragment, bundle);
 
     }
-    public void cargarProyectos(View view){
+    private void cargarProyectos(View view){
         buscadorT = spTipoProyecto.getSelectedItemPosition()+1;
         if(buscadorT<1){buscadorT=1;}
         buscadorE = spEstadoP.getSelectedItemPosition()+1;

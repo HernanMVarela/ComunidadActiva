@@ -14,7 +14,7 @@ import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
 public class DMACerrarReporte extends AsyncTask<String, Void, Boolean> {
 
-    CierreReporte cierreReporte;
+    private CierreReporte cierreReporte;
     private int dataRowModif;
 
     //Constructor

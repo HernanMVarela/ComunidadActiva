@@ -191,7 +191,7 @@ public class SolicitarCierreFragment extends Fragment {
         }
     }
 
-    public boolean validarCampos(){
+    private boolean validarCampos(){
         if(motivo.getText().toString().isEmpty()){
             Toast.makeText(getContext(), "Debe indicar el motivo.", Toast.LENGTH_LONG).show();
             return false;

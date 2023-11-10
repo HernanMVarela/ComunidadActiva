@@ -54,12 +54,12 @@ public class HomeActivity extends AppCompatActivity {
         ///CIERRE SESION
         navigationView.getMenu().findItem(R.id.nav_cerrarsesion).setOnMenuItemClickListener(menuItem -> {
 
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("logged_in_user", usuario);
-            CerrarSesionDialogFragment dialogFragment = new CerrarSesionDialogFragment();
-            dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
-            dialogFragment.show(getFragmentManager(), "layout_cerrar_sesion");
-            return true;
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("logged_in_user", usuario);
+        CerrarSesionDialogFragment dialogFragment = new CerrarSesionDialogFragment();
+        dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+        dialogFragment.show(getSupportFragmentManager(), "layout_cerrar_sesion");
+        return true;
         });
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
