@@ -4,16 +4,16 @@ import org.json.JSONArray;
 
 import java.util.Date;
 
-import frgp.utn.edu.ar.controllers.data.remote.informesModerador.DMAListarDenucniasCerradas;
+import frgp.utn.edu.ar.controllers.data.remote.informesModerador.DMAListarDenunciasCerradas;
 import frgp.utn.edu.ar.controllers.data.remote.informesModerador.DMAListarDenunciasAtendidas;
-import frgp.utn.edu.ar.controllers.data.remote.informesModerador.DMAListarDenunciasPendiantes;
+import frgp.utn.edu.ar.controllers.data.remote.informesModerador.DMAListarDenunciasPendientes;
 import frgp.utn.edu.ar.controllers.data.remote.informesModerador.DMAListarPublicacionesEliminadas;
 import frgp.utn.edu.ar.controllers.data.remote.informesModerador.DMAListarUsuariosSuspendidos;
 
 public class InformesModeradorRepository {
 
     public JSONArray listarDenunciasCerradas(Date fechaInicio, Date fechaFin){
-        DMAListarDenucniasCerradas DMAListaDenunciasCerradas = new DMAListarDenucniasCerradas(fechaInicio, fechaFin);
+        DMAListarDenunciasCerradas DMAListaDenunciasCerradas = new DMAListarDenunciasCerradas(fechaInicio, fechaFin);
         DMAListaDenunciasCerradas.execute();
         try {
             return DMAListaDenunciasCerradas.get();
@@ -33,7 +33,7 @@ public class InformesModeradorRepository {
     }
 
     public JSONArray listarDenunciasPendientes(Date fechaInicio, Date fechaFin){
-        DMAListarDenunciasPendiantes DMAListaDenunciasPendientes = new DMAListarDenunciasPendiantes(fechaInicio, fechaFin);
+        DMAListarDenunciasPendientes DMAListaDenunciasPendientes = new DMAListarDenunciasPendientes(fechaInicio, fechaFin);
         DMAListaDenunciasPendientes.execute();
         try {
             return DMAListaDenunciasPendientes.get();

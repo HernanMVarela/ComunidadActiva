@@ -13,12 +13,12 @@ import java.util.Date;
 
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAListarDenunciasPendiantes extends AsyncTask<String, Void, JSONArray> {
+public class DMAListarDenunciasPendientes extends AsyncTask<String, Void, JSONArray> {
 
     Date fechaInicio;
     Date fechaFin;
 
-    public DMAListarDenunciasPendiantes(Date fechaInicio, Date fechaFin) {
+    public DMAListarDenunciasPendientes(Date fechaInicio, Date fechaFin) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }

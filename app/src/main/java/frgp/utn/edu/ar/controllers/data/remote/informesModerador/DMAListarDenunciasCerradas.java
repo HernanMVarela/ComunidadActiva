@@ -13,12 +13,12 @@ import java.util.Date;
 
 import frgp.utn.edu.ar.controllers.data.remote.DataDB;
 
-public class DMAListarDenucniasCerradas extends AsyncTask<String, Void, JSONArray> {
+public class DMAListarDenunciasCerradas extends AsyncTask<String, Void, JSONArray> {
 
     Date fechaInicio;
     Date fechaFin;
 
-    public DMAListarDenucniasCerradas(Date fechaInicio, Date fechaFin) {
+    public DMAListarDenunciasCerradas(Date fechaInicio, Date fechaFin) {
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
     }
@@ -33,21 +33,21 @@ public class DMAListarDenucniasCerradas extends AsyncTask<String, Void, JSONArra
             Connection con = DriverManager.getConnection(DataDB.urlMySQL, DataDB.user, DataDB.pass);
             PreparedStatement preparedStatement = con.prepareStatement(
                     "SELECT TITULO, USERNAME, ESTADO, Fecha_Creacion "+
-                            "FROM ("+
-                                "SELECT DP.TITULO, U.USERNAME, ED.ESTADO, DP.FECHA_CREACION"+
-                                "FROM DENUNCIAS_PROYECTOS DP"+
-                                "JOIN USUARIOS U ON DP.ID_USER = U.ID"+
-                                "JOIN ESTADOS_DENUNCIA ED ON DP.ID_ESTADO = ED.ID"+
-                                "WHERE ED.ESTADO IN ('Cerrada', 'Cancelada')"+
-                                "AND DP.FECHA_CREACION BETWEEN ? AND ?" +
-                                "UNION ALL"+
-                                "SELECT DR.TITULO, U.USERNAME, ED.ESTADO, DR.FECHA_CREACION"+
-                                "FROM DENUNCIAS_REPORTES DR"+
-                                "JOIN USUARIOS U ON DR.ID_USER = U.ID"+
-                                "JOIN ESTADOS_DENUNCIA ED ON DR.ID_ESTADO = ED.ID"+
-                                "WHERE ED.ESTADO IN ('Cerrada', 'Cancelada')"+
-                                "AND DR.FECHA_CREACION BETWEEN ? AND ?" +
-                            ") AS DenunciasCombinadas"+
+                            "FROM " +
+                               "(SELECT DP.TITULO, U.USERNAME, ED.ESTADO, DP.FECHA_CREACION "+
+                                "FROM DENUNCIAS_PROYECTOS DP "+
+                                "JOIN USUARIOS U ON DP.ID_USER = U.ID "+
+                                "JOIN ESTADOS_DENUNCIA ED ON DP.ID_ESTADO = ED.ID "+
+                                "WHERE ED.ESTADO IN ('CERRADA', 'CANCELADA') "+
+                                "AND DP.FECHA_CREACION BETWEEN ? AND ? " +
+                                "UNION ALL "+
+                                "SELECT DR.TITULO, U.USERNAME, ED.ESTADO, DR.FECHA_CREACION "+
+                                "FROM DENUNCIAS_REPORTES DR "+
+                                "JOIN USUARIOS U ON DR.ID_USER = U.ID "+
+                                "JOIN ESTADOS_DENUNCIA ED ON DR.ID_ESTADO = ED.ID "+
+                                "WHERE ED.ESTADO IN ('CERRADA', 'CANCELADA') "+
+                                "AND DR.FECHA_CREACION BETWEEN ? AND ?) " +
+                            "AS DenunciasCombinadas "+
                             "GROUP BY TITULO, USERNAME, ESTADO, Fecha_Creacion;");
             preparedStatement.setDate(1, new java.sql.Date(fechaInicio.getTime()));
             preparedStatement.setDate(2, new java.sql.Date(fechaFin.getTime()));
