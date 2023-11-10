@@ -89,7 +89,35 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             />
+
         <Button
+            android:id="@+id/btnDenunciasAtendidas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_redondeado"
+            android:text="Denuncias Atendidas"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnDenunciasPendientes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/boton_redondeado"
+            android:text="Denuncias pendientes"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btnUsuariosSuspendidos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
@@ -99,9 +127,10 @@
             android:text="Usuarios Suspendidos"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
+
         <Button
+            android:id="@+id/btnPublicacionesEliminadas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="30dp"
@@ -111,8 +140,7 @@
             android:text="Pulicaciones Eliminadas"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

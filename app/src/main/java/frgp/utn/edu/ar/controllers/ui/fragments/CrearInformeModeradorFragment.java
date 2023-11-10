@@ -106,6 +106,68 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
                 }
             }
         });
+
+        binding.btnDenunciasAtendidas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFormValid()) {
+                    pdfData = informesModeradorRepository.listarDenunciasAtendidas(dateDesde, dateHasta);
+                    try {
+                        System.out.println(pdfData);
+                        crearInforme(pdfData, "denunciasAtendidas");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        binding.btnDenunciasPendientes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFormValid()) {
+                    pdfData = informesModeradorRepository.listarDenunciasPendientes(dateDesde, dateHasta);
+                    try {
+                        System.out.println(pdfData);
+                        crearInforme(pdfData, "denunciasPendientes");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        binding.btnPublicacionesEliminadas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFormValid()) {
+                    pdfData = informesModeradorRepository.listaPublicacionesEliminadas(dateDesde, dateHasta);
+                    try {
+                        System.out.println(pdfData);
+                        crearInforme(pdfData, "publicacionesEliminadas");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        binding.btnUsuariosSuspendidos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isFormValid()) {
+                    pdfData = informesModeradorRepository.listaUsuariosSuspendidos(dateDesde, dateHasta);
+                    try {
+                        System.out.println(pdfData);
+                        crearInforme(pdfData, "usuariosSuspendidos");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+
     }
 
     private void crearInforme(JSONArray pdfData, String informe)  throws IOException {
@@ -149,6 +211,18 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
                         case("denunciasCerradas"):
                             canvas.drawText("TITULO: " + pdfData.getJSONObject(i).getString("TITULO") + "  ---  " + "NOMBRE: " + pdfData.getJSONObject(i).getString("USERNAME") + "  ---  " + "ESTADO: " + pdfData.getJSONObject(i).getString("ESTADO"), 50, y, paintText);
                             break;
+                        case("denunciasAtendidas"):
+                            canvas.drawText("TITULO: " + pdfData.getJSONObject(i).getString("TITULO") + "  ---  " + "NOMBRE: " + pdfData.getJSONObject(i).getString("USERNAME") + "  ---  " + "ESTADO: " + pdfData.getJSONObject(i).getString("ESTADO"), 50, y, paintText);
+                            break;
+                        case("denunciasPendientes"):
+                            canvas.drawText("TITULO: " + pdfData.getJSONObject(i).getString("TITULO") + "  ---  " + "NOMBRE: " + pdfData.getJSONObject(i).getString("USERNAME") + "  ---  " + "ESTADO: " + pdfData.getJSONObject(i).getString("ESTADO"), 50, y, paintText);
+                            break;
+                        case("publicacionesEliminadas"):
+                            canvas.drawText("TITULO: " + pdfData.getJSONObject(i).getString("TITULO") + "  ---  " + "NOMBRE: " + pdfData.getJSONObject(i).getString("USERNAME") + "  ---  " + "ESTADO: " + pdfData.getJSONObject(i).getString("ESTADO"), 50, y, paintText);
+                            break;
+                        case("usuariosSuspendidos"):
+                            canvas.drawText("NOMBRE: " + pdfData.getJSONObject(i).getString("NOMBRE") + "  ---  " + "APELLIDO: " + pdfData.getJSONObject(i).getString("APELLIDO") + "  ---  " + "ESTADO: " + pdfData.getJSONObject(i).getString("ESTADO") + "  ---  " + "TIPO: " + pdfData.getJSONObject(i).getString("TIPO") + "  ---  " + "CREACION: " + pdfData.getJSONObject(i).getString("CREACION"), 50, y, paintText);
+                            break;
                     }
                 } catch (JSONException e) {
                     logger.log(usuario.getId(), LogsEnum.CREACION_INFORME, String.format("Error al crear Informe Cantidad denuncias Cerradas", "denunciasCerradas"));
@@ -166,6 +240,18 @@ public class CrearInformeModeradorFragment extends Fragment implements View.OnFo
             switch(informe) {
                 case("denunciasCerradas"):
                     fileName = "Informe Cantidad denuncias Cerradas o Canceladas.pdf";
+                    break;
+                case("denunciasAtendidas"):
+                    fileName = "Informe Cantidad denuncias Atendidas.pdf";
+                    break;
+                case("denunciasPendientes"):
+                    fileName = "Informe Cantidad denuncias Pendientes.pdf";
+                    break;
+                case("publicacionesEliminadas"):
+                    fileName = "Informe Cantidad Publicaciones Eliminadas.pdf";
+                    break;
+                case("usuariosSuspendidos"):
+                    fileName = "Informe Cantidad Usuarios Suspendidos.pdf";
                     break;
             }
             File file = new File(downloadsDir, fileName);
