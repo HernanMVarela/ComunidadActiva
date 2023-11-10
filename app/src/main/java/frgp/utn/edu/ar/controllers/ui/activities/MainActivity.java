@@ -1,12 +1,16 @@
 package frgp.utn.edu.ar.controllers.ui.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import frgp.utn.edu.ar.controllers.R;
@@ -33,7 +37,33 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         etNombre = findViewById(R.id.etNombre);
         etPassword = findViewById(R.id.etPassword);
-        //checkActiveUser(null);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkActiveUser(getCurrentFocus());
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        checkActiveUser(getCurrentFocus());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        checkActiveUser(getCurrentFocus());
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
+        View view = super.onCreateView(name, context, attrs);
+
+        return view;
     }
 
     public void iniciarSesion(View view){
