@@ -21,9 +21,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.databinding.ActivityHomeBinding;
+import frgp.utn.edu.ar.controllers.ui.dialogs.CerrarSesionDialogFragment;
 import frgp.utn.edu.ar.controllers.ui.viewmodels.UsuarioViewModel;
 import frgp.utn.edu.ar.controllers.utils.LogService;
-import frgp.utn.edu.ar.controllers.utils.LogsEnum;
 import frgp.utn.edu.ar.controllers.utils.SharedPreferencesService;
 
 public class HomeActivity extends AppCompatActivity {
@@ -53,9 +53,12 @@ public class HomeActivity extends AppCompatActivity {
 
         ///CIERRE SESION
         navigationView.getMenu().findItem(R.id.nav_cerrarsesion).setOnMenuItemClickListener(menuItem -> {
-            logger.log(usuario.getId(), LogsEnum.LOGOUT, String.format("El Usuario %s cerro sesion", usuario.getUsername()));
-            sharedPreferences.deleteUsuarioData(this);
-            finish();
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("logged_in_user", usuario);
+            CerrarSesionDialogFragment dialogFragment = new CerrarSesionDialogFragment();
+            dialogFragment.setArguments(bundle); // Establece el Bundle como argumento
+            dialogFragment.show(getFragmentManager(), "layout_cerrar_sesion");
             return true;
         });
 
