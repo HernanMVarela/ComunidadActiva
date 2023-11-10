@@ -2,9 +2,13 @@ package frgp.utn.edu.ar.controllers.data.repository.denuncia;
 
 import java.util.List;
 
+import frgp.utn.edu.ar.controllers.data.model.AtencionDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 
+import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAActualizarEstadoDenunciaProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAActualizarEstadoDenunciaReporte;
+import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAGuardarAtencionDenuncia;
 import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAListarDenunciasProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.denuncia.DMAListarDenunciasReporte;
 
@@ -15,6 +19,16 @@ public class DenunciaRepository {
         LDR.execute();
         try {
             return LDR.get();
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public Boolean GuardarAtencionDenuncia(AtencionDenuncia nuevo) {
+        DMAGuardarAtencionDenuncia DMAGuardarAtencion = new DMAGuardarAtencionDenuncia(nuevo);
+        DMAGuardarAtencion.execute();
+        try {
+            return DMAGuardarAtencion.get();
         } catch (Exception e) {
             return null;
         }
@@ -41,10 +55,10 @@ public class DenunciaRepository {
     }
 
     public Boolean cambiarEstadoDenunciaReporte(Denuncia modificar) {
-        DMAActualizarEstadoDenunciaProyecto AEDP = new DMAActualizarEstadoDenunciaProyecto(modificar);
-        AEDP.execute();
+        DMAActualizarEstadoDenunciaReporte AEDR = new DMAActualizarEstadoDenunciaReporte(modificar);
+        AEDR.execute();
         try {
-            return AEDP.get();
+            return AEDR.get();
         } catch (Exception e) {
             return false;
         }

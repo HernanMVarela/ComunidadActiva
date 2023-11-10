@@ -15,6 +15,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
 import frgp.utn.edu.ar.controllers.R;
+import frgp.utn.edu.ar.controllers.data.model.AtencionDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.Denuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoDenuncia;
 import frgp.utn.edu.ar.controllers.data.model.EstadoProyecto;
@@ -150,21 +151,28 @@ public class CerrarDenunciaDialogFragment extends DialogFragment {
         seleccionado.setEstado(new EstadoDenuncia(3, "CERRADA"));
 
         if(seleccionado.getTipo().getTipo().equals("REPORTE")) {
-            denunciaRepository.cambiarEstadoDenunciaReporte(seleccionado);
+            if(!denunciaRepository.cambiarEstadoDenunciaReporte(seleccionado)){
+                return false;
+            }
             if(!reporte.getEstado().getEstado().equals("ELIMINADO")){
                 reporte.setEstado(new EstadoReporte(4,"CERRADO"));
-                reporteRepository.actualizarEstadoReporte(reporte);
+                if(!reporteRepository.actualizarEstadoReporte(reporte)){
+                    return false;
+                }
             }
-            return true;
+            return denunciaRepository.GuardarAtencionDenuncia(guardar_atencion_denuncia());
         }
-
         if(seleccionado.getTipo().getTipo().equals("PROYECTO")) {
-            denunciaRepository.cambiarEstadoDenunciaProyecto(seleccionado);
+            if(!denunciaRepository.cambiarEstadoDenunciaProyecto(seleccionado)){
+                return false;
+            }
             if(!proyecto.getEstado().getEstado().equals("ELIMINADO")){
                 proyecto.setEstado(new EstadoProyecto(7,"CERRADO"));
-                proyectoRepository.actualizarEstadoProyecto(proyecto);
+                if(!proyectoRepository.actualizarEstadoProyecto(proyecto)){
+                    return false;
+                }
             }
-            return true;
+            return denunciaRepository.GuardarAtencionDenuncia(guardar_atencion_denuncia());
         }
         return false;
     }
@@ -172,19 +180,37 @@ public class CerrarDenunciaDialogFragment extends DialogFragment {
     private boolean desestimarDenuncia() {
         seleccionado.setEstado(new EstadoDenuncia(4, "CANCELADA"));
         if(seleccionado.getTipo().getTipo().equals("REPORTE")) {
-            denunciaRepository.cambiarEstadoDenunciaReporte(seleccionado);
+            if(!denunciaRepository.cambiarEstadoDenunciaReporte(seleccionado)){
+                return false;
+            }
             reporte.setEstado(new EstadoReporte(1,"ABIERTO"));
-            reporteRepository.actualizarEstadoReporte(reporte);
-            return true;
+            if(!reporteRepository.actualizarEstadoReporte(reporte)){
+                return false;
+            }
+            return denunciaRepository.GuardarAtencionDenuncia(guardar_atencion_denuncia());
         }
-
         if(seleccionado.getTipo().getTipo().equals("PROYECTO")) {
-            denunciaRepository.cambiarEstadoDenunciaProyecto(seleccionado);
+            if(!denunciaRepository.cambiarEstadoDenunciaProyecto(seleccionado)){
+                return false;
+            }
             proyecto.setEstado(new EstadoProyecto(1,"ABIERTO"));
-            proyectoRepository.actualizarEstadoProyecto(proyecto);
-            return true;
+            if(!proyectoRepository.actualizarEstadoProyecto(proyecto)){
+                return false;
+            }
+            return denunciaRepository.GuardarAtencionDenuncia(guardar_atencion_denuncia());
         }
         return false;
+    }
+
+    private AtencionDenuncia guardar_atencion_denuncia(){
+        AtencionDenuncia atendido = new AtencionDenuncia();
+        atendido.setComentario(resolucion.getText().toString().trim());
+        atendido.setPublicacion(seleccionado.getPublicacion());
+        atendido.setModerador(loggedInUser);
+        atendido.setEstado(seleccionado.getEstado());
+        atendido.setTipo(seleccionado.getTipo());
+
+        return atendido;
     }
 
     private boolean validarCampos(){

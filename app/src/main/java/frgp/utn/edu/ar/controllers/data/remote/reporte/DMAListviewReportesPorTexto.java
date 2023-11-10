@@ -42,7 +42,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
     private final GoogleMap mapa;
     private final String texto;
     private static List<Reporte> listaReporte;
-    private final boolean abiertos;
+    private boolean abiertos;
 
     //Constructor
     public DMAListviewReportesPorTexto(ListView listview, Context ct, LatLng ubicacion, GoogleMap mapa, String texto, boolean abiertos) {
@@ -222,7 +222,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
                     "POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2))) AS Distancia " +
                     "FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
                     "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "WHERE (U.USERNAME LIKE ? OR R.TITULO LIKE ? OR TR.TIPO LIKE ?) AND R.ID_ESTADO = 1 " +
+                    "WHERE (U.USERNAME LIKE ? OR R.TITULO LIKE ? OR TR.TIPO LIKE ?) AND ER.ESTADO IN ('ABIERTO') " +
                     "AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) ORDER BY Distancia LIMIT 15;";
         } else {
             query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +

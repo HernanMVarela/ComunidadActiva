@@ -218,7 +218,7 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
                     "COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * POW(SIN(RADIANS(R.LONGITUD - ?) / 2), 2)" +
                     ")) AS Distancia FROM REPORTES AS R INNER JOIN USUARIOS AS U ON R.ID_USER = U.ID " +
                     "INNER JOIN TIPOS_REPORTE AS TR ON R.ID_TIPO = TR.ID INNER JOIN ESTADOS_REPORTE AS ER ON R.ID_ESTADO = ER.ID " +
-                    "WHERE ER.ESTADO = 1 AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
+                    "WHERE ER.ESTADO IN ('ABIERTO') AND R.FECHA >= DATE_SUB(NOW(), INTERVAL 3 MONTH) " +
                     "HAVING Distancia <= 10 ORDER BY Distancia LIMIT 15;";
         }else{
             query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
