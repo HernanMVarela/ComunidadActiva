@@ -33,6 +33,7 @@ import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAActualizarEstadoProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACargarVoluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACuposDisponibles;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAReUnirseProyecto;
@@ -159,6 +160,18 @@ public class DetalleProyectoFragment extends Fragment {
                 comportamiento_boton_cancelar(bCancelar);
             }else{
                 /// SI EL ESTADO ESTA ABIERTO Y EL USUARIO NO ES EL OWNER
+                try {
+                    DMABuscarUsuarioEnProyecto DMABuscarUsuario = new DMABuscarUsuarioEnProyecto(loggedInUser.getId(),seleccionado.getId());
+                    DMABuscarUsuario.execute();
+                    if(DMABuscarUsuario.get()){
+                        bUnirse.setText("ABANDONAR PROYECTO");
+                    }else{
+                        bUnirse.setText("UNIRSE");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 bUnirse.setVisibility(View.VISIBLE);
                 bDenunciar.setVisibility(View.VISIBLE);
                 bUnirse.setEnabled(true);
@@ -177,6 +190,17 @@ public class DetalleProyectoFragment extends Fragment {
                 comportamiento_boton_finalizar(bFinalizar);
             }else{
                 /// SI EL ESTADO ESTA EN PROCESO Y EL USUARIO NO ES EL OWNER
+                try {
+                    DMABuscarUsuarioEnProyecto DMABuscarUsuario = new DMABuscarUsuarioEnProyecto(loggedInUser.getId(),seleccionado.getId());
+                    DMABuscarUsuario.execute();
+                    if(DMABuscarUsuario.get()){
+                        bUnirse.setText("ABANDONAR PROYECTO");
+                    }else{
+                        bUnirse.setText("UNIRSE");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 bUnirse.setVisibility(View.VISIBLE);
                 bDenunciar.setVisibility(View.VISIBLE);
                 bUnirse.setEnabled(true);
