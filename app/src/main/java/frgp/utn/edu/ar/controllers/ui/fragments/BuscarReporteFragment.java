@@ -129,7 +129,7 @@ public class BuscarReporteFragment extends Fragment {
                             Reporte reporte = (Reporte) listaReportes.getItemAtPosition(i);
                             if (reporte.getLatitud() == ubicacionMapa.latitude && reporte.getLongitud() == ubicacionMapa.longitude) {
                                 seleccionado = (Reporte) listaReportes.getItemAtPosition(i);
-                                break;
+                                navegarDetalle();
                             }
                         }
                         return false;
@@ -228,8 +228,6 @@ public class BuscarReporteFragment extends Fragment {
                 // Almacena la vista del elemento seleccionado actualmente
                 viewSeleccionado = view;
                 navegarDetalle();
-
-
             }
         });
     }
