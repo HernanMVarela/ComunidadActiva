@@ -179,7 +179,9 @@
     <string name="preg_dos">+ ¿Cómo valorar un reporte?</string>
     <string name="preg_uno">+ ¿Cómo hacer un reporte?</string>
     <string name="cerrar_x">X</string>
-    <string name="ver_imagen">Ver imagen</string>
+    <string name="ver_imagen">Ver Detalle</string>
     <string name="ver_publicaci_n">Ver publicación</string>
     <string name="acciones_de_moderacion_recientes">ACCIONES DE MODERACION RECIENTES</string>
+    <string name="cupo_proyecto">Cupo Proyecto</string>
+    <string name="estado_proyecto_list">Estado proyecto</string>
 </resources>

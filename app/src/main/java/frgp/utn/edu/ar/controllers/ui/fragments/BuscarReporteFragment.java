@@ -158,7 +158,6 @@ public class BuscarReporteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // BOTON VER REPORTE - PRUEBA
-        Button bVerReporte = view.findViewById(R.id.btnVerDetalle);
 
         listaReportes = view.findViewById(R.id.listReportes);
         SearchView barraBusqueda = view.findViewById(R.id.busquedaReporte);
@@ -228,11 +227,9 @@ public class BuscarReporteFragment extends Fragment {
                 view.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.green_700));
                 // Almacena la vista del elemento seleccionado actualmente
                 viewSeleccionado = view;
-            }
-        });
-        bVerReporte.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
                 navegarDetalle();
+
+
             }
         });
     }

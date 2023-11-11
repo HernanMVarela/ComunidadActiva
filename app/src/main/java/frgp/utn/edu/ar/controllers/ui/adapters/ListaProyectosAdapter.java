@@ -15,6 +15,7 @@ import java.util.List;
 
 import frgp.utn.edu.ar.controllers.R;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACuposDisponibles;
 
 public class ListaProyectosAdapter extends ArrayAdapter<Proyecto> {
 
@@ -45,6 +46,8 @@ public class ListaProyectosAdapter extends ArrayAdapter<Proyecto> {
         TextView titulo = convertView.findViewById(R.id.txtTituloProyecto);
         TextView datos = convertView.findViewById(R.id.txDatosProyecto);
         TextView telefono = convertView.findViewById(R.id.txTelefonoContacto);
+        TextView cupo = convertView.findViewById(R.id.txCupoProyecto);
+        TextView estado = convertView.findViewById(R.id.txEstadoProyecto);
 
         String timeStamp = new Timestamp(proyecto.getFecha().getTime()).toString();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -58,7 +61,19 @@ public class ListaProyectosAdapter extends ArrayAdapter<Proyecto> {
 
         titulo.setText(proyecto.getTitulo());
         datos.setText(String.format("Creado por %s el %s", proyecto.getOwner().getUsername(), sdf.format(date)));
+        DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(proyecto.getCupo(),proyecto.getId());
+        try {
+            DMAValidarCupos.execute();
+            if(DMAValidarCupos.get())
+                cupo.setText(String.format("Cupos: SI"));
+            else
+                cupo.setText(String.format("Cupos: NO"));
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         telefono.setText("Telefono: " + proyecto.getContacto());
+        estado.setText(String.format("Estado: %s", proyecto.getEstado().getEstado()));
         return convertView;
     }
 

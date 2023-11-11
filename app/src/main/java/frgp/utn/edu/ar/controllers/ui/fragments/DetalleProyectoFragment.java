@@ -133,6 +133,18 @@ public class DetalleProyectoFragment extends Fragment {
         bFinalizar.setVisibility(View.GONE);
         bCancelar.setVisibility(View.GONE);
 
+        DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
+        try {
+            DMAValidarCupos.execute();
+            if(DMAValidarCupos.get())
+                cupo.setText(String.format("Cupos: SI"));
+            else
+                cupo.setText(String.format("Cupos: NO"));
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
         if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
             if(loggedInUser.getId()==seleccionado.getOwner().getId()){
                 /// SI EL ESTADO ESTA ABIERTO Y EL USUARIO ES EL OWNER

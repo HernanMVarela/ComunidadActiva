@@ -3,6 +3,7 @@ package frgp.utn.edu.ar.controllers.ui.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -180,7 +181,29 @@ public class CerrarReporteDialogFragment extends DialogFragment {
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         String fechaFormateada = formatoFecha.format(fechaCierre);
         atendido.setText("Atendido por " + cierreReporte.getUser().getUsername() + " el día "+ fechaFormateada);
-        imagen.setImageBitmap(cierreReporte.getImagen());
+
+        Bitmap imagenEscalada =  cierreReporte.getImagen();
+        int maxWidth = 700; // ANCHO MAXIMO
+        int maxHeight = 700; // ALTO MAXIMO
+
+        /// DIMENSIONES DE LA IMAGEN ORIGINAL
+        int originalWidth = imagenEscalada.getWidth();
+        int originalHeight = imagenEscalada.getHeight();
+
+        /// CALCULO PARA LA RELACION DE ASPECTO
+        float widthRatio = (float) maxWidth / originalWidth;
+        float heightRatio = (float) maxHeight / originalHeight;
+
+        /// FACTOR DE ESCALADO CALCULADO
+        float scaleFactor = Math.min(widthRatio, heightRatio);
+
+        /// NUEVAS DIMENSIONES
+        int newWidth = (int) (originalWidth * scaleFactor);
+        int newHeight = (int) (originalHeight * scaleFactor);
+
+        /// ESCALADO DE LA IMAGEN
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(imagenEscalada, newWidth, newHeight, true);
+        imagen.setImageBitmap(scaledBitmap);
     }
 
     private boolean cerrarCierreReporte(){

@@ -22,11 +22,12 @@ public class ImagenReporteDialogFragment extends DialogFragment {
     private ImageView imagen;
 
     // Método estático para crear una instancia del fragmento con argumentos
-    public static ImagenReporteDialogFragment newInstance(int reporte_id) {
+    public static ImagenReporteDialogFragment newInstance(int reporte_id, String titulo) {
         ImagenReporteDialogFragment fragment = new ImagenReporteDialogFragment();
 
         Bundle args = new Bundle();
         args.putInt("reporte_id", reporte_id);
+        args.putString("titulo", titulo);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,8 +44,9 @@ public class ImagenReporteDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         if (args != null) {
             int reporte_id = args.getInt("reporte_id");
+            String descripcion = args.getString("titulo");
             carga_datos(reporte_id);
-            titulo.setText("Imagen del reporte " + reporte_id);
+            titulo.setText(descripcion);
         }else{
             dismiss();
         }

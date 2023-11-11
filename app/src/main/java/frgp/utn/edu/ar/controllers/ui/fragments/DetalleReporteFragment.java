@@ -172,7 +172,7 @@ public class DetalleReporteFragment extends Fragment {
         bImagen.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // BOTON DETALLE DE USUARIO REPORTE
-                ImagenReporteDialogFragment dialogFragment = ImagenReporteDialogFragment.newInstance(seleccionado.getId());
+                ImagenReporteDialogFragment dialogFragment = ImagenReporteDialogFragment.newInstance(seleccionado.getId(), seleccionado.getTitulo());
                 dialogFragment.show(getFragmentManager(), "reporte_imagen");
             }
         });
@@ -253,7 +253,7 @@ public class DetalleReporteFragment extends Fragment {
     private void cargarDatosReporte(){
         /// CONFIGURO DATOS DEL REPORTE
         titulo.setText(seleccionado.getTitulo());
-        descripcion.setText(seleccionado.getTitulo());
+        descripcion.setText(seleccionado.getDescripcion());
         String status_rep = "Estado: " + seleccionado.getEstado().getEstado();
         estado.setText(status_rep);
         color_estado();
