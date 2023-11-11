@@ -122,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
+        if(usuario.getEstado().getEstado().equals("INACTIVO")) {
+            Toast.makeText(this, "Su usuario todavia no fue aprobado por el administrador", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
         if(usuario.getEstado().getEstado().equals("BLOQUEADO")) {
             //Check if bloqueo date is more than two days old
             if(!(usuario.getFecha_bloqueo().getTime() + 172800000 < System.currentTimeMillis())) {
@@ -131,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
             bloqueoDesbloqueoUser("DESBLOQUEO");
             return true;
         }
+
+
         return true;
     }
 

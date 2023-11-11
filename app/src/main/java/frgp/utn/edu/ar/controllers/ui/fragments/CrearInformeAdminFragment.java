@@ -131,23 +131,22 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
                 }
             }
         });
-
+        /*
         binding.btnProyectosPorCategoria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Funcionalidad a la espera de fix BD y codigo", Toast.LENGTH_LONG).show();
-                /*
                 if(isFormValid()) {
                     pdfData = informesAdminRepository.listarProyectosPorCategoria(dateDesde, dateHasta);
                     try {
-                        crearInformeUsuariosActivosPorRol(pdfData, "proyectosPorCategoria");
+                        crearInforme(pdfData, "proyectosPorCategoria");
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
                 }
-                 */
+
             }
         });
+        */
     }
 
     @Override
@@ -335,7 +334,3 @@ public class CrearInformeAdminFragment extends Fragment  implements View.OnFocus
         }
     }
 }
-
-
-
-

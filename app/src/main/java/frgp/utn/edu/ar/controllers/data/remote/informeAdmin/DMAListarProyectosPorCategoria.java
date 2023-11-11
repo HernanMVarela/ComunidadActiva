@@ -48,6 +48,7 @@ public class DMAListarProyectosPorCategoria extends AsyncTask<String, Void, JSON
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.print(response);
         return response;
     }
 }
