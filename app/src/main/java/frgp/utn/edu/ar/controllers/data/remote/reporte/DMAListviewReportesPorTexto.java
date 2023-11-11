@@ -94,6 +94,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
                 user.setCorreo(rs.getString("CorreoUsuario"));
                 user.setFecha_nac(rs.getDate("FechaNacimientoUsuario"));
                 user.setFecha_alta(rs.getDate("FechaCreacionUsuario"));
+                user.setPuntuacion(rs.getInt("PuntuacionUsuario"));
                 user.setTipo(new TipoUsuario());
                 user.setEstado(new EstadoUsuario());
                 TipoReporte tipo = new TipoReporte(rs.getInt("IDTipoReporte"), rs.getString("TipoReporte"));
@@ -215,7 +216,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
                     "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
                     "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
                     "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
-                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, U.PUNTUACION AS PuntuacionUsuario, " +
                     "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
                     "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
                     "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * " +
@@ -229,7 +230,7 @@ public class DMAListviewReportesPorTexto extends AsyncTask<String, Void, String>
                     "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
                     "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
                     "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
-                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
+                    "U.NOMBRE AS NombreUsuario, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, U.PUNTUACION AS PuntuacionUsuario, " +
                     "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
                     "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
                     "6371 * 2 * ASIN(SQRT(POW(SIN(RADIANS(R.LATITUD - ?) / 2), 2) + COS(RADIANS(?)) * COS(RADIANS(R.LATITUD)) * " +

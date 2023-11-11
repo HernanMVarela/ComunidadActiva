@@ -210,7 +210,7 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
             query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
                     "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
                     "R.CANT_VOTOS AS CantidadVotos, R.PUNTAJE AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
-                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, U.PUNTUACION AS PuntuacionUsuario, " +
                     "U.NOMBRE AS NombreUsuario, U.PUNTUACION, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
                     "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
                     "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
@@ -224,7 +224,7 @@ public class DMAListviewReportes extends AsyncTask<String, Void, String> {
             query = "SELECT R.ID AS ReporteID, R.TITULO AS TituloReporte, R.DESCRIPCION AS DescripcionReporte, " +
                     "R.LATITUD AS LatitudReporte, R.LONGITUD AS LongitudReporte, R.FECHA AS FechaReporte, " +
                     "R.CANT_VOTOS AS CantidadVotos, R.Puntaje AS PuntajeReporte, R.ID_USER AS IDUsuarioReporte, " +
-                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, " +
+                    "R.ID_TIPO AS IDTipoReporte, R.ID_ESTADO AS IDEstadoReporte, U.USERNAME AS UsernameUsuario, U.PUNTUACION AS PuntuacionUsuario, " +
                     "U.NOMBRE AS NombreUsuario, U.PUNTUACION, U.APELLIDO AS ApellidoUsuario, U.TELEFONO AS TelefonoUsuario, " +
                     "U.CORREO AS CorreoUsuario, U.FECHA_NAC AS FechaNacimientoUsuario, U.CREACION AS FechaCreacionUsuario, " +
                     "TR.TIPO AS TipoReporte, ER.ESTADO AS EstadoReporte, " +
