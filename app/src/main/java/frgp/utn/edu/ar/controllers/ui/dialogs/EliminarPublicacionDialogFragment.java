@@ -72,7 +72,7 @@ public class EliminarPublicacionDialogFragment extends DialogFragment {
 
         /// ASIGNA Y ESCRIBE EL TITULO
         TextView titulo = dialogView.findViewById(R.id.dialog_titulo_elimiar_publicacion);
-        titulo.setText("¿Desea Eliminar la Publicacion N° " + seleccionado.getPublicacion().getId()+ "?");
+        titulo.setText("¿Desea Eliminar la Publicacion " + seleccionado.getPublicacion().getTitulo() +  "?");
 
         /// COMPORTAMIENTO DEL BOTON CONFIRMAR
         comportamiento_boton_confirmar(btnConfirmar);

@@ -76,6 +76,9 @@ public class ListaParticipantesProyectoFragment extends Fragment {
                 Button bDetalleUser = view.findViewById(R.id.btn_listado_participantes_detalle);
                 comportamiento_boton_usuario(bDetalleUser);
                 Button bEliminarSelected = view.findViewById(R.id.btn_listado_participantes_eliminar);
+                if(!(seleccionado.getOwner().getId()==loggedInUser.getId())){
+                    bEliminarSelected.setVisibility(View.GONE);
+                }
                 comportamiento_boton_eliminar(bEliminarSelected);
             }else {
                 /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR

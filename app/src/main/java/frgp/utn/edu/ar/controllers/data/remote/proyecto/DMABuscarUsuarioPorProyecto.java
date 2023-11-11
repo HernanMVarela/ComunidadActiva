@@ -48,7 +48,8 @@ public class DMABuscarUsuarioPorProyecto extends AsyncTask<String, Void, String>
                     "INNER JOIN USUARIOS u ON up.ID_USER = u.ID " +
                     "INNER JOIN ESTADOS_USUARIO eu ON u.ID_ESTADO = eu.ID " +
                     "INNER JOIN TIPOS_USUARIO tu ON u.ID_TIPO = tu.ID " +
-                    "WHERE up.ID_PROYECTO = ?";
+                    "WHERE up.ID_PROYECTO = ? " +
+                    "AND up.FECHA_SALIDA IS NULL";
 
             PreparedStatement preparedStatement = con.prepareStatement(consulta);
             preparedStatement.setInt(1, id_proyecto);
