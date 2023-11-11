@@ -34,6 +34,7 @@ import frgp.utn.edu.ar.controllers.data.model.Voluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAActualizarEstadoProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioEnProyecto;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACantidadCuposDisponibles;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACargarVoluntario;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMACuposDisponibles;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAReUnirseProyecto;
@@ -210,6 +211,17 @@ public class DetalleProyectoFragment extends Fragment {
             bFinalizar.setVisibility(View.GONE);
             bCancelar.setVisibility(View.GONE);
         }
+
+        DMACantidadCuposDisponibles DMAValidarCupos = new DMACantidadCuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
+        try {
+            DMAValidarCupos.execute();
+            cupo.setText(DMAValidarCupos.get().toString());
+            if(DMAValidarCupos.get()<=0){
+                bUnirse.setVisibility(View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void cargarDatos(){
@@ -220,7 +232,8 @@ public class DetalleProyectoFragment extends Fragment {
         tipo.setText(seleccionado.getTipo().getTipo());
         requerimiento.setText(seleccionado.getRequerimientos());
         contacto.setText(seleccionado.getContacto());
-        cupo.setText(String.valueOf(seleccionado.getCupo()-1));
+
+
     }
     private void color_estado(){
         if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
