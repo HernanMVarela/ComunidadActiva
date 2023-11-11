@@ -66,17 +66,19 @@
 
                 <Spinner
                     android:id="@+id/spFiltroA"
-                    android:layout_width="481dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:layout_weight="1" />
+                    android:textSize="14sp"
+                    android:layout_weight="3" />
 
                 <Spinner
                     android:id="@+id/spFiltroB"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
-                    android:layout_weight="1" />
+                    android:textSize="14sp"
+                    android:layout_weight="2" />
 
             </LinearLayout>
 

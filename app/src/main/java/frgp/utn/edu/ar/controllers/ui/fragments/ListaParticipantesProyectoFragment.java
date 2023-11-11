@@ -25,6 +25,7 @@ import android.widget.Toast;
 import frgp.utn.edu.ar.controllers.data.model.Proyecto;
 import frgp.utn.edu.ar.controllers.data.model.Usuario;
 import frgp.utn.edu.ar.controllers.data.model.Voluntario;
+import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMAAbandonarProyecto;
 import frgp.utn.edu.ar.controllers.data.remote.proyecto.DMABuscarUsuarioPorProyecto;
 import frgp.utn.edu.ar.controllers.ui.activities.HomeActivity;
 import frgp.utn.edu.ar.controllers.ui.dialogs.UserDetailDialogFragment;
@@ -75,10 +76,6 @@ public class ListaParticipantesProyectoFragment extends Fragment {
                 Button bDetalleUser = view.findViewById(R.id.btn_listado_participantes_detalle);
                 comportamiento_boton_usuario(bDetalleUser);
                 Button bEliminarSelected = view.findViewById(R.id.btn_listado_participantes_eliminar);
-                if(seleccionado.getOwner().getId()==loggedInUser.getId()){
-                    Drawable drawable = getResources().getDrawable(R.drawable.border_text);
-                    bEliminarSelected.setBackground(drawable);
-                }
                 comportamiento_boton_eliminar(bEliminarSelected);
             }else {
                 /// MODIFICAR PARA REGRESAR A PANTALLA ANTERIOR
@@ -94,10 +91,13 @@ public class ListaParticipantesProyectoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if(seleccionado!=null){
-            /// CARGA LISTA DE VOLUNTARIOS DEL PROYECTO
-            DMABuscarUsuarioPorProyecto DMAListaParticipantes = new DMABuscarUsuarioPorProyecto(listado,getContext(),seleccionado.getId());
-            DMAListaParticipantes.execute();
+            cargar_lista_participantes();
         }
+    }
+    private void cargar_lista_participantes(){
+        /// CARGA LISTA DE VOLUNTARIOS DEL PROYECTO
+        DMABuscarUsuarioPorProyecto DMAListaParticipantes = new DMABuscarUsuarioPorProyecto(listado,getContext(),seleccionado.getId());
+        DMAListaParticipantes.execute();
     }
 
     private void comportamiento_boton_usuario(Button bUsuario){
@@ -147,11 +147,26 @@ public class ListaParticipantesProyectoFragment extends Fragment {
     private void comportamiento_boton_eliminar(Button bEliminar){
         bEliminar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(seleccionado.getOwner().getId()==loggedInUser.getId()){
+                if(voluntario.getId()==loggedInUser.getId()){
                     Toast.makeText(getContext(),"No puedes eliminarte del tu proyecto",Toast.LENGTH_LONG).show();
                 }else{
                     /// TERMINAR FUNCIONALIDAD
-                    Toast.makeText(getContext(),"Hagamos de cuenta que lo borraste",Toast.LENGTH_LONG).show();
+                    try {
+                        if (voluntario != null) {
+                            DMAAbandonarProyecto DMAAbandonar = new DMAAbandonarProyecto(voluntario.getId(),seleccionado.getId());
+                            DMAAbandonar.execute();
+                            if(DMAAbandonar.get()){
+                                Toast.makeText(getContext(),voluntario.getUsername() + " eliminado!",Toast.LENGTH_LONG).show();
+                                cargar_lista_participantes();
+                            }else{
+                                Toast.makeText(getContext(),"Error al eliminar",Toast.LENGTH_LONG).show();
+                            }
+                        }{
+                            Toast.makeText(getContext(),"Ningun usuario seleccionado",Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         });
