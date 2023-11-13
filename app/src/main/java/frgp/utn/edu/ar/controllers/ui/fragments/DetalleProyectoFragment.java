@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -119,97 +120,84 @@ public class DetalleProyectoFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+        /// COMPORTAMIENTO BOTONES COMUNES
+        Button bUsuario = view.findViewById(R.id.btn_detalle_proyecto_owner);
+        Button bListado = view.findViewById(R.id.btn_detalle_proyecto_participantes);
 
+        comportamiento_boton_usuario(bUsuario);
+        comportamiento_boton_participantes(bListado);
+
+        /// COMPORTAMIENTO BOTONES EXCLUSIVOS
+        Button bDenunciar = view.findViewById(R.id.btn_detalle_proyecto_denunciar);
         Button bUnirse = view.findViewById(R.id.btn_detalle_proyecto_unirse);
         Button bFinalizar = view.findViewById(R.id.btn_detalle_proyecto_finalizar);
         Button bCancelar = view.findViewById(R.id.btn_detalle_proyecto_cancelar);
-        Button bUsuario = view.findViewById(R.id.btn_detalle_proyecto_owner);
-        comportamiento_boton_usuario(bUsuario);
-        Button bListado = view.findViewById(R.id.btn_detalle_proyecto_participantes);
-        comportamiento_boton_participantes(bListado);
-        Button bDenunciar = view.findViewById(R.id.btn_detalle_proyecto_denunciar);
-        comportamiento_boton_denunciar(bDenunciar);
+        Button bReunirse = view.findViewById(R.id.btn_detalle_proyecto_reunirse);
+        Button bAbandonar = view.findViewById(R.id.btn_detalle_proyecto_abandonar);
+        Button bIniciar = view.findViewById(R.id.btn_detalle_proyecto_iniciar);
 
-        bUnirse.setVisibility(View.GONE);
         bDenunciar.setVisibility(View.GONE);
+        bUnirse.setVisibility(View.GONE);
         bFinalizar.setVisibility(View.GONE);
         bCancelar.setVisibility(View.GONE);
+        bReunirse.setVisibility(View.GONE);
+        bAbandonar.setVisibility(View.GONE);
+        bIniciar.setVisibility(View.GONE);
 
-        if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
-            if(loggedInUser.getId()==seleccionado.getOwner().getId()){
-                /// SI EL ESTADO ESTA ABIERTO Y EL USUARIO ES EL OWNER
-                bFinalizar.setText("INICIAR PROYECTO");
-                Drawable boton_redondeado = ContextCompat.getDrawable(getContext(), R.drawable.boton_redondeado);
-                bFinalizar.setBackground(boton_redondeado);
-                bFinalizar.setVisibility(View.VISIBLE);
-                bFinalizar.setEnabled(true);
-                bCancelar.setVisibility(View.VISIBLE);
-                bCancelar.setEnabled(true);
-                comportamiento_boton_inicar(bFinalizar);
-                comportamiento_boton_cancelar(bCancelar);
-            }else{
-                /// SI EL ESTADO ESTA ABIERTO Y EL USUARIO NO ES EL OWNER
-                try {
-                    DMABuscarUsuarioEnProyecto DMABuscarUsuario = new DMABuscarUsuarioEnProyecto(loggedInUser.getId(),seleccionado.getId());
-                    DMABuscarUsuario.execute();
-                    if(DMABuscarUsuario.get()){
-                        bUnirse.setText("ABANDONAR PROYECTO");
-                    }else{
-                        bUnirse.setText("UNIRSE");
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
+        if(!loggedInUser.getTipo().getTipo().equals("VECINO")){
+            return;
+        }
 
-                bUnirse.setVisibility(View.VISIBLE);
-                bDenunciar.setVisibility(View.VISIBLE);
-                bUnirse.setEnabled(true);
-                bDenunciar.setEnabled(true);
-                comportamiento_boton_unirse(bUnirse);
-                comportamiento_boton_denunciar(bDenunciar);
-            }
-        }
-        if(seleccionado.getEstado().getEstado().equals("EN PROCESO")){
-            if(loggedInUser.getId()==seleccionado.getOwner().getId()){
-                /// SI EL ESTADO ESTA EN PROCESO Y EL USUARIO NO ES EL OWNER
-                Drawable boton_redondeado = ContextCompat.getDrawable(getContext(), R.drawable.boton_redondeado_danger);
-                bFinalizar.setBackground(boton_redondeado);
-                bFinalizar.setVisibility(View.VISIBLE);
-                bFinalizar.setEnabled(true);
-                comportamiento_boton_finalizar(bFinalizar);
-            }else{
-                /// SI EL ESTADO ESTA EN PROCESO Y EL USUARIO NO ES EL OWNER
-                try {
-                    DMABuscarUsuarioEnProyecto DMABuscarUsuario = new DMABuscarUsuarioEnProyecto(loggedInUser.getId(),seleccionado.getId());
-                    DMABuscarUsuario.execute();
-                    if(DMABuscarUsuario.get()){
-                        bUnirse.setText("ABANDONAR PROYECTO");
-                    }else{
-                        bUnirse.setText("UNIRSE");
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                bUnirse.setVisibility(View.VISIBLE);
-                bDenunciar.setVisibility(View.VISIBLE);
-                bUnirse.setEnabled(true);
-                bDenunciar.setEnabled(true);
-                comportamiento_boton_unirse(bUnirse);
-                comportamiento_boton_denunciar(bDenunciar);
-            }
-        }
-        if(seleccionado.getEstado().getEstado().equals("CANCELADO") ||
-           seleccionado.getEstado().getEstado().equals("DENUNCIADO") ||
-           seleccionado.getEstado().getEstado().equals("ELIMINADO") ||
-           seleccionado.getEstado().getEstado().equals("CERRADO")){
-            bUnirse.setEnabled(false);
-            bDenunciar.setEnabled(false);
-            bFinalizar.setEnabled(false);
-            bCancelar.setEnabled(false);
-            bUnirse.setVisibility(View.GONE);
+        /// VISIBILIDAD DEL BOTON DENUNCIAR
+        if(loggedInUser.getId()!=seleccionado.getOwner().getId() && !seleccionado.getEstado().getEstado().equals("DENUNCIADO") && !seleccionado.getEstado().getEstado().equals("CANCELADO")){
+            bDenunciar.setVisibility(View.VISIBLE);
+            comportamiento_boton_denunciar(bDenunciar);
+        }else{
             bDenunciar.setVisibility(View.GONE);
-            bFinalizar.setVisibility(View.GONE);
+        }
+
+        if(loggedInUser.getId()!=seleccionado.getOwner().getId() || seleccionado.getEstado().getEstado().equals("ABIERTO")|| seleccionado.getEstado().getEstado().equals("EN PROCESO")){
+            existe_usuario();
+            if(existe!=null){
+                if(existe.isActivo()){
+                    /// VISIBILIDAD DEL BOTON ABANDONAR
+                    bAbandonar.setVisibility(View.VISIBLE);
+                    comportamiento_boton_abandonar(bAbandonar, bReunirse);
+                }else{
+                    /// VISIBILIDAD DEL BOTON REUNIRSE
+                    bReunirse.setVisibility(View.VISIBLE);
+                    comportamiento_boton_reunirse(bReunirse, bAbandonar);
+                }
+            }else{
+                /// VISIBILIDAD DEL BOTON UNIRSE
+                bUnirse.setVisibility(View.VISIBLE);
+                comportamiento_boton_unirse(bUnirse,bAbandonar);
+            }
+        }else{
+            bUnirse.setVisibility(View.GONE);
+        }
+
+        if(loggedInUser.getId() == seleccionado.getOwner().getId()){
+            bAbandonar.setVisibility(View.GONE);
+            if(seleccionado.getEstado().getEstado().equals("ABIERTO")){
+                bCancelar.setVisibility(View.VISIBLE);
+                bIniciar.setVisibility(View.VISIBLE);
+                comportamiento_boton_inicar(bIniciar, bFinalizar, bCancelar);
+                comportamiento_boton_cancelar(bCancelar, bFinalizar, bIniciar);
+            }else{
+                bCancelar.setVisibility(View.GONE);
+                bIniciar.setVisibility(View.GONE);
+            }
+            if(seleccionado.getEstado().getEstado().equals("EN PROCESO")){
+                comportamiento_boton_finalizar(bFinalizar,bCancelar,bIniciar);
+                bFinalizar.setVisibility(View.VISIBLE);
+            }else{
+                bFinalizar.setVisibility(View.GONE);
+            }
+        }else{
             bCancelar.setVisibility(View.GONE);
+            bIniciar.setVisibility(View.GONE);
+            bFinalizar.setVisibility(View.GONE);
         }
 
         DMACantidadCuposDisponibles DMAValidarCupos = new DMACantidadCuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
@@ -271,35 +259,6 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
-    private void comportamiento_boton_unirse(Button bUnirse){
-        bUnirse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    /// DMA PARA VALIDAR SI EL USUARIO YA FORMA PARTE DEL PROYECTO
-                    DMACargarVoluntario DMAExisteUsuario = new DMACargarVoluntario(loggedInUser.getId(),seleccionado.getId());
-                    DMAExisteUsuario.execute();
-                    /// SI EXISTE DEVUELVE EL USUARIO COMO VOLUNTARIO - SINO DEVUELVE NULL
-                    existe = DMAExisteUsuario.get();
-                    if(existe!=null){
-                        if(existe.isActivo()){
-                            /// SI ESTA EN EL PROYECTO, HABILITA BOTÓN PARA ABANDONAR
-                            bUnirse.setText("ABANDONAR PROYECTO");
-                            comportamiento_abandonar(bUnirse);
-                        }else{
-                            /// SI EXISTE PERO ESTÁ INACTIVO (SALIO DEL PROYECTO EN ALGUN MOMENTO), PERMITE EL REINGRESO
-                            comportamiento_reunirse(bUnirse);
-                        }
-                    }else{
-                        /// SI NUNCA FUE PARTE DEL PROYECTO, PERMITE UNIRSE NUEVAMENTE
-                        comportamiento_unirse(bUnirse);
-                    }
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
     private void comportamiento_boton_participantes(Button bParticipantes){
         bParticipantes.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -311,98 +270,46 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
-    private void comportamiento_abandonar(Button bAbandonar){
-        try {
-            DMAAbandonarProyecto DMAAbandonar = new DMAAbandonarProyecto(loggedInUser.getId(),seleccionado.getId());
-            DMAAbandonar.execute();
-            if(DMAAbandonar.get()){
-                bAbandonar.setText("UNIRSE");
-                existe.setActivo(false);
-                Toast.makeText(getContext(),"Has abandonado el proyecto!", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(getContext(),"Ha ocurrido un error", Toast.LENGTH_LONG).show();
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-    private void comportamiento_unirse(Button bUnirse){
-        if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO") || seleccionado.getEstado().getEstado().equals("EN PROCESO")){
-            try {
-                /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
-                DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
-                DMAValidarCupos.execute();
-                /// CONDICION CON EL RESULTADO DE LA CONSULTA
-                if(DMAValidarCupos.get()){
+    private void comportamiento_boton_unirse(Button bUnirse, Button bAbandonar){
+        bUnirse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(validar_cupos()){
                     /// SI TIENE CUPOS DISPONIBLES, SE INTENTA REINGRESAR AL USAURIO
                     DMAUnirseAProyecto DMAUnirseProyecto = new DMAUnirseAProyecto(loggedInUser.getId(),seleccionado.getId());
                     DMAUnirseProyecto.execute();
-                    if(DMAUnirseProyecto.get()){
-                        /// SI SE INTEGRA CON ÉXITO, CAMBIA EL BOTON Y ACTUALIZA EL ESTADO DEL USUARIO
-                        bUnirse.setText("ABANDONAR PROYECTO");
-                        Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
-                        logService.log(loggedInUser.getId(), LogsEnum.UNION_PROYECTO, String.format("Se unió al proyecto %s ", seleccionado.getTitulo()));
-                    }else{
-                        Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                    try {
+                        if(DMAUnirseProyecto.get()){
+                            /// SI SE INTEGRA CON ÉXITO, CAMBIA EL BOTON Y ACTUALIZA EL ESTADO DEL USUARIO
+                            Toast.makeText(getContext(),"Voluntario agregado!", Toast.LENGTH_LONG).show();
+                            logService.log(loggedInUser.getId(), LogsEnum.UNION_PROYECTO, String.format("Se unió al proyecto %s ", seleccionado.getTitulo()));
+                            recarga_fragmento();
+                        }else{
+                            Toast.makeText(getContext(),"No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                        }
+                    }catch (Exception e){
+                    e.printStackTrace();
+                    Log.e("Error", "No se pudo registrar la operación");
                     }
                 }else{
                     Toast.makeText(getContext(),"No quedan cupos disponibles!", Toast.LENGTH_LONG).show();
                 }
-            }catch (Exception e){
-                e.printStackTrace();
-                Log.e("Error", "No se pudo registrar la operación");
             }
-        }else{
-            Toast.makeText(getContext(),"El proyecto no está abierto o en proceso", Toast.LENGTH_LONG).show();
-        }
+        });
     }
-    private void comportamiento_reunirse(Button bUnirse){
-        if(seleccionado.getEstado().getEstado().equals("ABIERTO") || seleccionado.getEstado().getEstado().equals("DENUNCIADO")){
-            try {
-                /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
-                DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
-                DMAValidarCupos.execute();
-                /// CONDICION CON EL RESULTADO DE LA CONSULTA
-                if(DMAValidarCupos.get()) {
-                    /// SI TIENE CUPOS DISPONIBLES, SE INTENTA REINGRESAR AL USAURIO
-                    DMAReUnirseProyecto DMAREUnirse = new DMAReUnirseProyecto(loggedInUser.getId(), seleccionado.getId());
-                    DMAREUnirse.execute();
-                    if (DMAREUnirse.get()) {
-                        /// SI SE REINTEGRA CON ÉXITO, CAMBIA EL BOTON Y ACTUALIZA EL ESTADO DEL USUARIO
-                        existe.setActivo(true);
-                        bUnirse.setText("ABANDONAR PROYECTO");
-                        Toast.makeText(getContext(), "Voluntario reingresado!", Toast.LENGTH_LONG).show();
-                        logService.log(loggedInUser.getId(), LogsEnum.UNION_PROYECTO, String.format("Se volvio a unir al proyecto %s ", seleccionado.getTitulo()));
-                    } else {
-                        Toast.makeText(getContext(), "No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
-                    }
-                }else{
-                    Toast.makeText(getContext(),"No quedan cupos disponibles!", Toast.LENGTH_LONG).show();
-                }
-            }catch (Exception e){
-                e.printStackTrace();
-                Log.e("Error", "No se pudo registrar la operación");
-            }
-        }else{
-            Toast.makeText(getContext(),"El proyecto no está abierto", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void comportamiento_boton_finalizar(Button bFinalizar){
-        bFinalizar.setOnClickListener(new View.OnClickListener() {
+    private void comportamiento_boton_abandonar(Button bAbandonar, Button bReunirse){
+        bAbandonar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-
+            public void onClick(View v) {
                 try {
-                    seleccionado.setEstado(new EstadoProyecto(2,"FINALIZADO"));
-                    DMAActualizarEstadoProyecto DMAFinalizar = new DMAActualizarEstadoProyecto(seleccionado);
-                    DMAFinalizar.execute();
-                    if(DMAFinalizar.get()){
-                        Toast.makeText(getContext(),"Proyecto finalizado!", Toast.LENGTH_LONG).show();
-                        logService.log(loggedInUser.getId(), LogsEnum.FINALIZAR_PROYECTO, String.format("Se finalizó el proyecto %s ", seleccionado.getTitulo()));
-                        regresar();
+                    DMAAbandonarProyecto DMAAbandonar = new DMAAbandonarProyecto(loggedInUser.getId(),seleccionado.getId());
+                    DMAAbandonar.execute();
+                    if(DMAAbandonar.get()){
+                        Toast.makeText(getContext(),"Has abandonado el proyecto!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.ABANDONO_PROYECTO, String.format("Abandonó el proyecto %s ", seleccionado.getTitulo()));
+                        recarga_fragmento();
                     }else{
-                        Toast.makeText(getContext(),"No se pudo finalizar el proyecto", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(),"Ha ocurrido un error", Toast.LENGTH_LONG).show();
                     }
                 }catch (Exception e){
                     e.printStackTrace();
@@ -410,30 +317,34 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
-
-    private void comportamiento_boton_cancelar(Button bCancelar){
-        bCancelar.setOnClickListener(new View.OnClickListener() {
+    private void comportamiento_boton_reunirse(Button bReunirse, Button bAbandonar){
+        bReunirse.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                try {
-                    seleccionado.setEstado(new EstadoProyecto(4,"CANCELADO"));
-                    DMAActualizarEstadoProyecto DMACancelar = new DMAActualizarEstadoProyecto(seleccionado);
-                    DMACancelar.execute();
-                    if(DMACancelar.get()){
-                        Toast.makeText(getContext(),"Proyecto cancelado!", Toast.LENGTH_LONG).show();
-                        logService.log(loggedInUser.getId(), LogsEnum.CANCELAR_PROYECTO, String.format("Se canceló el proyecto %s ", seleccionado.getTitulo()));
-                        regresar();
-                    }else{
-                        Toast.makeText(getContext(),"No se pudo cancelar el proyecto", Toast.LENGTH_LONG).show();
+            public void onClick(View v) {
+                if (validar_cupos()) {
+                    try {
+                        /// SI TIENE CUPOS DISPONIBLES, SE INTENTA REINGRESAR AL USAURIO
+                        DMAReUnirseProyecto DMAREUnirse = new DMAReUnirseProyecto(loggedInUser.getId(), seleccionado.getId());
+                        DMAREUnirse.execute();
+                        if (DMAREUnirse.get()) {
+                            /// SI SE REINTEGRA CON ÉXITO, CAMBIA EL BOTON Y ACTUALIZA EL ESTADO DEL USUARIO
+                            Toast.makeText(getContext(), "Voluntario reingresado!", Toast.LENGTH_LONG).show();
+                            logService.log(loggedInUser.getId(), LogsEnum.UNION_PROYECTO, String.format("Se volvio a unir al proyecto %s ", seleccionado.getTitulo()));
+                            recarga_fragmento();
+                        } else {
+                            Toast.makeText(getContext(), "No se pudo agregar al usuario!", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("Error", "No se pudo registrar la operación");
                     }
-                }catch (Exception e){
-                    e.printStackTrace();
+                } else {
+                    Toast.makeText(getContext(), "No quedan cupos disponibles!", Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
-
-    private void comportamiento_boton_inicar(Button bIniciar){
+    private void comportamiento_boton_inicar(Button bIniciar, Button bFinalizar, Button bCancelar){
         bIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -444,7 +355,7 @@ public class DetalleProyectoFragment extends Fragment {
                     if(DMAIniciar.get()){
                         Toast.makeText(getContext(),"Proyecto iniciado!!", Toast.LENGTH_LONG).show();
                         logService.log(loggedInUser.getId(), LogsEnum.INICIAR_PROYECTO, String.format("Se inició el proyecto %s ", seleccionado.getTitulo()));
-                        regresar();
+                        recarga_fragmento();
                     }else{
                         Toast.makeText(getContext(),"No se pudo iniciar el proyecto", Toast.LENGTH_LONG).show();
                     }
@@ -454,7 +365,48 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
-
+    private void comportamiento_boton_cancelar(Button bCancelar, Button bFinalizar, Button bIniciar){
+        bCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    seleccionado.setEstado(new EstadoProyecto(4,"CANCELADO"));
+                    DMAActualizarEstadoProyecto DMACancelar = new DMAActualizarEstadoProyecto(seleccionado);
+                    DMACancelar.execute();
+                    if(DMACancelar.get()){
+                        Toast.makeText(getContext(),"Proyecto cancelado!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.CANCELAR_PROYECTO, String.format("Se canceló el proyecto %s ", seleccionado.getTitulo()));
+                        recarga_fragmento();
+                    }else{
+                        Toast.makeText(getContext(),"No se pudo cancelar el proyecto", Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+    private void comportamiento_boton_finalizar(Button bFinalizar, Button bCancelar, Button bIniciar){
+        bFinalizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    seleccionado.setEstado(new EstadoProyecto(2,"FINALIZADO"));
+                    DMAActualizarEstadoProyecto DMAFinalizar = new DMAActualizarEstadoProyecto(seleccionado);
+                    DMAFinalizar.execute();
+                    if(DMAFinalizar.get()){
+                        Toast.makeText(getContext(),"Proyecto finalizado!", Toast.LENGTH_LONG).show();
+                        logService.log(loggedInUser.getId(), LogsEnum.FINALIZAR_PROYECTO, String.format("Se finalizó el proyecto %s ", seleccionado.getTitulo()));
+                        recarga_fragmento();
+                    }else{
+                        Toast.makeText(getContext(),"No se pudo finalizar el proyecto", Toast.LENGTH_LONG).show();
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
     private void comportamiento_boton_denunciar(Button bDenunciar){
         bDenunciar.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -472,8 +424,47 @@ public class DetalleProyectoFragment extends Fragment {
             }
         });
     }
+    private boolean validar_cupos(){
+        try {
+            /// DMA PARA VALIDAR QUE EL PROYECTO TIENE CUPOS DISPONIBLES
+            DMACuposDisponibles DMAValidarCupos = new DMACuposDisponibles(seleccionado.getCupo(),seleccionado.getId());
+            DMAValidarCupos.execute();
+            /// CONDICION CON EL RESULTADO DE LA CONSULTA
+            return DMAValidarCupos.get();
+        }catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private void existe_usuario(){
+        try {
+            /// DMA PARA VALIDAR SI EL USUARIO YA FORMA PARTE DEL PROYECTO
+            DMACargarVoluntario DMAExisteUsuario = new DMACargarVoluntario(loggedInUser.getId(),seleccionado.getId());
+            DMAExisteUsuario.execute();
+            /// SI EXISTE DEVUELVE EL USUARIO COMO VOLUNTARIO - SINO DEVUELVE NULL
+            existe = DMAExisteUsuario.get();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
     private void regresar(){
         NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment_content_main);
         navController.popBackStack();
+    }
+
+    private void recarga_fragmento(){
+        // Crea un Bundle y agrega los datos necesarios
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("proyectoactual", seleccionado);
+
+        // Realiza una transacción para reemplazar el fragmento actual con el nuevo Bundle
+        FragmentTransaction fragmentTransaction = requireActivity().getSupportFragmentManager().beginTransaction();
+        DetalleProyectoFragment nuevoFragmento = new DetalleProyectoFragment();
+        nuevoFragmento.setArguments(bundle);
+        fragmentTransaction.replace(R.id.nav_host_fragment_content_main, nuevoFragmento);
+        fragmentTransaction.addToBackStack(null);  // Opcional: agrega a la pila de retroceso
+        fragmentTransaction.commit();
     }
 }

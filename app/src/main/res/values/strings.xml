@@ -184,4 +184,6 @@
     <string name="acciones_de_moderacion_recientes">ACCIONES DE MODERACION RECIENTES</string>
     <string name="cupo_proyecto">Cupo Proyecto</string>
     <string name="estado_proyecto_list">Estado proyecto</string>
+    <string name="iniciar">Iniciar</string>
+    <string name="abandonar">Abandonar</string>
 </resources>

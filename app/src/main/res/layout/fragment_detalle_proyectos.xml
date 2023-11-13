@@ -213,6 +213,45 @@
             android:textSize="20sp" />
 
         <Button
+            android:id="@+id/btn_detalle_proyecto_reunirse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/boton_redondeado"
+            android:text="@string/unirse_proyecto_boton"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_detalle_proyecto_iniciar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/boton_redondeado"
+            android:text="@string/iniciar"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_detalle_proyecto_abandonar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/boton_redondeado_danger"
+            android:text="@string/abandonar"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <Button
             android:id="@+id/btn_detalle_proyecto_finalizar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
